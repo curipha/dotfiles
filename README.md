@@ -20,7 +20,7 @@ This is a response for it.
 About script
 ------------
 
-### setup.sh
+### _setup.sh
 Run it when clone this repository in new environment.
 `~/.*rc` of symbolic links will be created.
 
