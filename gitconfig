@@ -3,16 +3,19 @@
   diff   = auto
 [alias]
   a     = add
+  ad    = add
   br    = branch --color --verbose --verbose
   ci    = commit
+  cl    = clone
   co    = checkout
   d     = diff
   dc    = diff --cached
   fixup = commit --amend -C HEAD
   g     = grep --break --color --heading --line-number --show-function
   l     = log --decorate --stat
-  st    = status --branch --short
+  pu    = push -u origin master
   sh    = show
+  st    = status --branch --short
 [user]
   name  = Taichi
   email = taichi@curipha.jp
