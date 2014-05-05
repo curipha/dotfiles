@@ -1,0 +1,21 @@
+[color]
+  status = auto
+  diff   = auto
+[alias]
+  a     = add
+  br    = branch --color --verbose --verbose
+  ci    = commit
+  co    = checkout
+  d     = diff
+  dc    = diff --cached
+  fixup = commit --amend -C HEAD
+  g     = grep --break --color --heading --line-number --show-function
+  l     = log --decorate --stat
+  st    = status --branch --short
+  sh    = show
+[user]
+  name  = Taichi
+  email = taichi@curipha.jp
+[github]
+  user  = curipha
+

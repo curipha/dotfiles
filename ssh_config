@@ -1,0 +1,27 @@
+#
+# ~/.ssh/config (2014-1-11)
+#
+
+Protocol 2
+
+Host *
+  IdentityFile         ~/.ssh/id_rsa
+
+  Ciphers              aes256-gcm@openssh.com,aes256-ctr
+  MACs                 hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-sha1
+
+  GSSAPIAuthentication no
+  HashKnownHosts       yes
+
+  Compression          no
+  ForwardAgent         no
+
+  TCPKeepAlive         yes
+  ServerAliveInterval  3
+  ServerAliveCountMax  5
+
+  RekeyLimit           100M 1h
+
+# ControlMaster        auto
+# ControlPath          ~/.ssh/control-%r@%h:%p
+

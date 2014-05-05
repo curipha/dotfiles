@@ -1,0 +1,25 @@
+#
+# ~/.ssh/config for legacy OpenSSH (2014-4-10)
+#
+
+Protocol 2
+
+Host *
+  IdentityFile         ~/.ssh/id_rsa
+
+  Ciphers              aes256-ctr
+  MACs                 hmac-sha1
+
+  GSSAPIAuthentication no
+  HashKnownHosts       yes
+
+  Compression          no
+  ForwardAgent         no
+
+  TCPKeepAlive         yes
+  ServerAliveInterval  3
+  ServerAliveCountMax  5
+
+# ControlMaster        auto
+# ControlPath          ~/.ssh/control-%r@%h:%p
+
