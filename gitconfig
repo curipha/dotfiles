@@ -12,10 +12,10 @@
   cl    = clone
   co    = checkout
   d     = diff
-  d1    = diff HEAD~
   dc    = diff --cached
+  dd    = diff HEAD~
   ds    = diff --staged
-  fixup = commit --amend -C HEAD
+  fix   = commit --amend
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
   l     = log --decorate --stat
