@@ -336,6 +336,11 @@ nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [T :<C-u>tabfirst<CR>
 nnoremap <silent> ]T :<C-u>tablast<CR>
 
+nnoremap <silent> <C-p> :tabprevious<CR>
+nnoremap <silent> <C-n> :tabnext<CR>
+
+nnoremap <silent> tt :<C-u>tabe<CR>
+
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
 set showmatch
