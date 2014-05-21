@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-4-13)
+" .vimrc (2014-5-15)
 "
 
 " Mode {{{
@@ -117,6 +117,9 @@ set softtabstop=0
 
 set complete=.,w,b,u,t,i,d,]
 set pumheight=18
+
+set spell spelllang=en_us
+nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
