@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-5-21)
+" .vimrc (2014-5-25)
 "
 
 " Mode {{{
@@ -325,6 +325,11 @@ set splitbelow
 set splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
+
+nnoremap <silent> [w <C-w>W
+nnoremap <silent> ]w <C-w>w
+nnoremap <silent> [W <C-w>t
+nnoremap <silent> ]W <C-w>b
 
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
