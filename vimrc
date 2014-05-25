@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-5-15)
+" .vimrc (2014-5-25)
 "
 
 " Mode {{{
@@ -284,6 +284,11 @@ nnoremap ? ?\v
 nnoremap * g*zz
 nnoremap # g#zz
 
+nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
+nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
+vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
+vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
+
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
@@ -321,6 +326,11 @@ set splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
+nnoremap <silent> [w <C-w>W
+nnoremap <silent> ]w <C-w>w
+nnoremap <silent> [W <C-w>t
+nnoremap <silent> ]W <C-w>b
+
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :<C-u>bfirst<CR>
@@ -330,6 +340,11 @@ nnoremap <silent> [t :tabprevious<CR>
 nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [T :<C-u>tabfirst<CR>
 nnoremap <silent> ]T :<C-u>tablast<CR>
+
+nnoremap <silent> <C-p> :tabprevious<CR>
+nnoremap <silent> <C-n> :tabnext<CR>
+
+nnoremap <silent> tt :<C-u>tabe<CR>
 
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
