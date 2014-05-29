@@ -18,6 +18,7 @@
   dddd  = diff HEAD~~~
   ddddd = diff HEAD~~~~
   ds    = diff --staged
+  fe    = fetch
   fix   = commit --amend
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
