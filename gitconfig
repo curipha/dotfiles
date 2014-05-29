@@ -27,6 +27,8 @@
   pul   = pull
   sh    = show
   st    = status --branch --short
+[diff]
+  algorithm = patience
 [merge]
   ff    = false
 [user]
