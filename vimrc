@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-5-25)
+" .vimrc (2014-5-29)
 "
 
 " Mode {{{
@@ -185,6 +185,8 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
+
+autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
 autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
