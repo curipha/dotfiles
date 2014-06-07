@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-5-14)
+# .zshrc (2014-6-7)
 #
 
 # Environments {{{
@@ -33,6 +33,7 @@ export LESSHISTFILE=/dev/null
 
 export RUBYOPT=-Ku
 #export MAKEFLAGS=-j4
+export WINEDEBUG=-all
 
 path=(
   ~/sbin(N-/)
