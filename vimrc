@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-5-29)
+" .vimrc (2014-6-9)
 "
 
 " Mode {{{
@@ -189,6 +189,7 @@ endfor
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
 autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> !! !!<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> :// ://
 autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
