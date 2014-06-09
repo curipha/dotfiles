@@ -175,8 +175,9 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
+nnoremap <Leader>e :<C-u>e ++enc=
 nnoremap <Leader>o :<C-u>only<CR>
-nnoremap <Leader>r :<C-u>e ++enc=
+nnoremap <Leader>r :<C-u>registers<CR>
 nnoremap <Leader>w :<C-u>update<CR>
 
 inoremap , ,<Space>
