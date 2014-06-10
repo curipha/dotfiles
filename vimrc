@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-5-29)
+" .vimrc (2014-6-9)
 "
 
 " Mode {{{
@@ -175,8 +175,9 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
+nnoremap <Leader>e :<C-u>e ++enc=
 nnoremap <Leader>o :<C-u>only<CR>
-nnoremap <Leader>r :<C-u>e ++enc=
+nnoremap <Leader>r :<C-u>registers<CR>
 nnoremap <Leader>w :<C-u>update<CR>
 
 inoremap , ,<Space>
@@ -185,10 +186,15 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
+for s:p in ['(', ')', '<', '>', '[', ']', '{', '}', ',']
+  execute 'onoremap ' . s:p . ' t' . s:p
+  execute 'vnoremap ' . s:p . ' t' . s:p
+endfor
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
 autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> !! !!<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> :// ://
 autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
