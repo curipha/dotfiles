@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-6-9)
+" .vimrc (2014-6-10)
 "
 
 " Mode {{{
@@ -375,6 +375,10 @@ autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 set lazyredraw
 set ttyfast
 set visualbell t_vb=
+
+set notimeout
+set ttimeout
+set timeoutlen=100
 
 set shortmess& shortmess+=I
 set report=0
