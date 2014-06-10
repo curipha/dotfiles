@@ -194,7 +194,9 @@ endfor
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
 autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> :// ://
 autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
