@@ -186,7 +186,7 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
-for s:p in ['(', ')', '<', '>', '[', ']', '{', '}', ',']
+for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
