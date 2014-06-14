@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-6-7)
+# .zshrc (2014-6-12)
 #
 
 # Environments {{{
@@ -31,7 +31,7 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --ignore-case --jump-targ
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-export RUBYOPT=-Ku
+export RUBYOPT=-EUTF-8
 #export MAKEFLAGS=-j4
 export WINEDEBUG=-all
 
