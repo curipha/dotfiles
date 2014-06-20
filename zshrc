@@ -337,7 +337,7 @@ alias mkdir='nocorrect mkdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias cls='clear'
+alias cls='tput clear'
 
 alias vi='vim'
 alias view='vim -R'
@@ -359,7 +359,7 @@ alias ,,,='cd ../..'
 alias ~='cd ~'
 alias /='cd /'
 
-alias rst='clear ; exec zsh'
+alias rst='tput clear && exec zsh'
 alias hs='history 0 | grep -iE'
 
 alias a='./a.out'
