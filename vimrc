@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-6-9)
+" .vimrc (2014-6-10)
 "
 
 " Mode {{{
@@ -186,7 +186,7 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
-for s:p in ['(', ')', '<', '>', '[', ']', '{', '}', ',']
+for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
@@ -194,7 +194,9 @@ endfor
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
 autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> !! !!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> :// ://
 autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
@@ -375,6 +377,10 @@ autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 set lazyredraw
 set ttyfast
 set visualbell t_vb=
+
+set notimeout
+set ttimeout
+set timeoutlen=100
 
 set shortmess& shortmess+=I
 set report=0
