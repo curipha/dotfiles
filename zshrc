@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-6-12)
+# .zshrc (2014-6-21)
 #
 
 # Environments {{{
@@ -314,13 +314,15 @@ bindkey "^S^S" sudo-command-line
 # Alias {{{
 alias l.='ls -d .*'
 alias la='ls -AF'
-alias lf='ls -F'
 alias ll='ls -l'
-alias lr='ls -R'
 alias lla='ls -AFl'
+alias llh='ls -Flh'
+alias llha='ls -AFlh'
+alias llr='ls -FlhR'
+alias llra='ls -AFlhR'
 alias lls='ls -AFl'
-alias llh='ls -AFlh'
-alias llr='ls -AFlhR'
+alias lr='ls -FR'
+alias lra='ls -AFR'
 
 alias kk='ls -l'
 
