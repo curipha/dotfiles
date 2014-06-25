@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-6-12)
+# .zshrc (2014-6-21)
 #
 
 # Environments {{{
@@ -314,13 +314,15 @@ bindkey "^S^S" sudo-command-line
 # Alias {{{
 alias l.='ls -d .*'
 alias la='ls -AF'
-alias lf='ls -F'
 alias ll='ls -l'
-alias lr='ls -R'
 alias lla='ls -AFl'
+alias llh='ls -Flh'
+alias llha='ls -AFlh'
+alias llr='ls -FlhR'
+alias llra='ls -AFlhR'
 alias lls='ls -AFl'
-alias llh='ls -AFlh'
-alias llr='ls -AFlhR'
+alias lr='ls -FR'
+alias lra='ls -AFR'
 
 alias kk='ls -l'
 
@@ -335,7 +337,7 @@ alias mkdir='nocorrect mkdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias cls='clear'
+alias cls='tput clear'
 
 alias vi='vim'
 alias view='vim -R'
@@ -357,7 +359,7 @@ alias ,,,='cd ../..'
 alias ~='cd ~'
 alias /='cd /'
 
-alias rst='clear ; exec zsh'
+alias rst='tput clear && exec zsh'
 alias hs='history 0 | grep -iE'
 
 alias a='./a.out'
@@ -365,8 +367,8 @@ alias a='./a.out'
 #alias c=''
 alias d='du -skh .'
 #alias e=''
-#alias f=''
-#alias g=''
+alias f='find'
+alias g='git'
 #alias h=''
 #alias i=''
 alias j='jobs -l'
