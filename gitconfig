@@ -23,10 +23,13 @@
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
   l     = log --decorate --stat
+  pl    = pull
   pu    = push -u origin master
   pul   = pull
   sh    = show
   st    = status --branch --short
+[diff]
+  algorithm = patience
 [merge]
   ff    = false
 [user]

@@ -1,5 +1,5 @@
 "
-" .gvimrc (2013-10-21)
+" .gvimrc (2014-6-14)
 "
 
 scriptencoding utf-8
@@ -12,6 +12,7 @@ let s:isunix = has('unix') || has('win32unix')
 " Font {{{
 if s:iswin
   set guifont=MigMix_2M:h10:cSHIFTJIS
+  set renderoptions=type:directx,renmode:5
   set linespace=1
 elseif s:ismac
   set guifont=MigMix_2M:h10
