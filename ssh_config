@@ -1,11 +1,11 @@
 #
-# ~/.ssh/config (2014-6-21)
+# ~/.ssh/config (2014-7-5)
 #
 
 Protocol 2
 
 Host *
-  IdentityFile         ~/.ssh/id_rsa
+  IdentityFile         ~/.ssh/id_ecdsa
 
 # IgnoreUnknown        yes
 
