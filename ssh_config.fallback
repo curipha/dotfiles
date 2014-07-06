@@ -1,13 +1,15 @@
 #
-# ~/.ssh/config for legacy OpenSSH (2014-4-10)
+# ~/.ssh/config for legacy OpenSSH (2014-7-6)
 #
 
 Protocol 2
 
 Host *
+  IdentityFile         ~/.ssh/id_ecdsa
   IdentityFile         ~/.ssh/id_rsa
 
   Ciphers              aes256-ctr
+  KexAlgorithms        ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
   MACs                 hmac-sha1
 
   GSSAPIAuthentication no
