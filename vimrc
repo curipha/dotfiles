@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-1)
+" .vimrc (2014-7-6)
 "
 
 " Mode {{{
@@ -325,6 +325,7 @@ set statusline+=[%{&fenc=='utf-8'?'U+':'0x'}%04B]
 set statusline+=\ %3v\ \ %3l/%3L\ %P
 
 set nowrap
+nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 set scrolloff=5
 set sidescroll=1
