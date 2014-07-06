@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-6-10)
+" .vimrc (2014-7-1)
 "
 
 " Mode {{{
@@ -307,8 +307,9 @@ vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " }}}
 " Display {{{
 set notitle
-set number
 set noruler
+set number
+nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
 
 set laststatus=2
 set showcmd
