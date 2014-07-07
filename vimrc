@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-6)
+" .vimrc (2014-7-7)
 "
 
 " Mode {{{
@@ -290,6 +290,8 @@ nmap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 
 nnoremap / /\v
 nnoremap ? ?\v
+
+vnoremap <silent> // y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
 nnoremap * g*zz
 nnoremap # g#zz
