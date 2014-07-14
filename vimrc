@@ -175,6 +175,11 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
+nnoremap gc `[v`]
+
+nnoremap VV ggVG
+nnoremap vv ^v$h
+
 nnoremap <Leader>e :<C-u>e ++enc=
 nnoremap <Leader>o :<C-u>only<CR>
 nnoremap <Leader>r :<C-u>registers<CR>
