@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-1)
+" .vimrc (2014-7-7)
 "
 
 " Mode {{{
@@ -291,6 +291,8 @@ nmap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 nnoremap / /\v
 nnoremap ? ?\v
 
+vnoremap <silent> // y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
+
 nnoremap * g*zz
 nnoremap # g#zz
 
@@ -325,6 +327,7 @@ set statusline+=[%{&fenc=='utf-8'?'U+':'0x'}%04B]
 set statusline+=\ %3v\ \ %3l/%3L\ %P
 
 set nowrap
+nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 set scrolloff=5
 set sidescroll=1
