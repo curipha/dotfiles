@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-6-21)
+# .zshrc (2014-7-19)
 #
 
 # Environments {{{
@@ -25,7 +25,7 @@ export VISUAL=vim
 
 export TERM=xterm-256color
 
-export GREP_OPTIONS=--color=auto
+export GREP_OPTIONS='--color=auto --binary-files=without-match'
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
@@ -123,6 +123,12 @@ fi
 
 if exists pry; then
   alias irb='pry'
+fi
+
+if grep --help 2>&1 | grep -q -- --exclude-dir; then
+  for EXCLUDE_DIR in .cvs .git .hg .svn .deps .libs; do
+    GREP_OPTIONS+=" --exclude-dir=${EXCLUDE_DIR}"
+  done
 fi
 # }}}
 
