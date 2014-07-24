@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-14)
+" .vimrc (2014-7-24)
 "
 
 " Mode {{{
@@ -305,6 +305,11 @@ nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'N
 nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
 vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
+
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
+nnoremap <silent> [Q :<C-u>cfirst<CR>
+nnoremap <silent> ]Q :<C-u>clast<CR>
 
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
