@@ -179,7 +179,7 @@ nnoremap R    gR
 
 nnoremap gc `[v`]
 
-nnoremap VV ggVG
+nnoremap vV ggVG
 nnoremap vv ^v$h
 
 nnoremap <Leader>e :<C-u>e ++enc=
