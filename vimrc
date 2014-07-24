@@ -121,6 +121,8 @@ set pumheight=18
 set spell spelllang=en_us
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 
+autocmd MyAutoCmd FileType qf setlocal nospell
+
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
 set virtualedit=block
