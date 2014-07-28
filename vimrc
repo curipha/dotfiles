@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-14)
+" .vimrc (2014-7-24)
 "
 
 " Mode {{{
@@ -121,6 +121,8 @@ set pumheight=18
 set spell spelllang=en_us
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 
+autocmd MyAutoCmd FileType qf setlocal nospell
+
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
 set virtualedit=block
@@ -177,7 +179,7 @@ nnoremap R    gR
 
 nnoremap gc `[v`]
 
-nnoremap VV ggVG
+nnoremap vV ggVG
 nnoremap vv ^v$h
 
 nnoremap <Leader>e :<C-u>e ++enc=
@@ -305,6 +307,11 @@ nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'N
 nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
 vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
+
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
+nnoremap <silent> [Q :<C-u>cfirst<CR>
+nnoremap <silent> ]Q :<C-u>clast<CR>
 
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
