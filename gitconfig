@@ -24,7 +24,6 @@
   g     = grep --break --color --heading --line-number --show-function
   l     = log --decorate --stat
   lp    = log --decorate --patch-with-stat
-  p     = push
   pl    = pull
   pu    = push
   pul   = pull
