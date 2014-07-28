@@ -35,12 +35,12 @@
 [diff]
   algorithm = patience
 [merge]
-  ff    = false
+  ff = false
 [push]
   default = current
 [user]
   name  = Taichi
   email = taichi@curipha.jp
 [github]
-  user  = curipha
+  user = curipha
 
