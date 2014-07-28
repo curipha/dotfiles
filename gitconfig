@@ -34,6 +34,8 @@
   algorithm = patience
 [merge]
   ff    = false
+[push]
+  default = current
 [user]
   name  = Taichi
   email = taichi@curipha.jp
