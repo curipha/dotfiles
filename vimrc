@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-24)
+" .vimrc (2014-7-28)
 "
 
 " Mode {{{
@@ -197,6 +197,26 @@ for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
+
+onoremap aa  a>
+vnoremap aa  a>
+onoremap ia  i>
+vnoremap ia  i>
+
+onoremap ar  a]
+vnoremap ar  a]
+onoremap ir  i]
+vnoremap ir  i]
+
+onoremap aq  a'
+vnoremap aq  a'
+onoremap iq  i'
+vnoremap iq  i'
+
+onoremap ad  a"
+vnoremap ad  a"
+onoremap id  i"
+vnoremap id  i"
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
