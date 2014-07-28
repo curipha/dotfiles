@@ -238,7 +238,7 @@ autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#Compl
 autocmd MyAutoCmd FileType php        setlocal omnifunc=phpcomplete#CompletePHP
 autocmd MyAutoCmd FileType python     setlocal omnifunc=pythoncomplete#Complete
 autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
-autocmd MyAutoCmd FileType sql        setlocal omnifunc=sqlcomplete#Complete
+"autocmd MyAutoCmd FileType sql        setlocal omnifunc=sqlcomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
