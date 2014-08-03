@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-14)
+" .vimrc (2014-7-28)
 "
 
 " Mode {{{
@@ -121,6 +121,8 @@ set pumheight=18
 set spell spelllang=en_us
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 
+autocmd MyAutoCmd FileType qf setlocal nospell
+
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
 set virtualedit=block
@@ -177,7 +179,7 @@ nnoremap R    gR
 
 nnoremap gc `[v`]
 
-nnoremap VV ggVG
+nnoremap vV ggVG
 nnoremap vv ^v$h
 
 nnoremap <Leader>e :<C-u>e ++enc=
@@ -195,6 +197,26 @@ for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
+
+onoremap aa  a>
+vnoremap aa  a>
+onoremap ia  i>
+vnoremap ia  i>
+
+onoremap ar  a]
+vnoremap ar  a]
+onoremap ir  i]
+vnoremap ir  i]
+
+onoremap aq  a'
+vnoremap aq  a'
+onoremap iq  i'
+vnoremap iq  i'
+
+onoremap ad  a"
+vnoremap ad  a"
+onoremap id  i"
+vnoremap id  i"
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
@@ -216,7 +238,7 @@ autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#Compl
 autocmd MyAutoCmd FileType php        setlocal omnifunc=phpcomplete#CompletePHP
 autocmd MyAutoCmd FileType python     setlocal omnifunc=pythoncomplete#Complete
 autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
-autocmd MyAutoCmd FileType sql        setlocal omnifunc=sqlcomplete#Complete
+"autocmd MyAutoCmd FileType sql        setlocal omnifunc=sqlcomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
@@ -305,6 +327,11 @@ nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'N
 nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
 vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
+
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
+nnoremap <silent> [Q :<C-u>cfirst<CR>
+nnoremap <silent> ]Q :<C-u>clast<CR>
 
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
