@@ -372,6 +372,11 @@ set splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
+autocmd MyAutoCmd WinEnter *
+\   if winnr('$') == 1 && getbufvar(winbufnr(0), '&diff') == 1
+\ |   diffoff
+\ | endif
+
 nnoremap <silent> [w <C-w>W
 nnoremap <silent> ]w <C-w>w
 nnoremap <silent> [W <C-w>t
