@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-4)
+# .zshrc (2014-8-6)
 #
 
 # Environments {{{
@@ -84,7 +84,6 @@ case ${OSTYPE} in
     alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
-    setterm -blank 0
   ;;
 
   darwin*)
