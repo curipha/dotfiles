@@ -198,25 +198,12 @@ for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
 
-onoremap aa  a>
-vnoremap aa  a>
-onoremap ia  i>
-vnoremap ia  i>
-
-onoremap ar  a]
-vnoremap ar  a]
-onoremap ir  i]
-vnoremap ir  i]
-
-onoremap aq  a'
-vnoremap aq  a'
-onoremap iq  i'
-vnoremap iq  i'
-
-onoremap ad  a"
-vnoremap ad  a"
-onoremap id  i"
-vnoremap id  i"
+for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
+  execute 'onoremap a' . s:k . ' a' . s:p
+  execute 'vnoremap a' . s:k . ' a' . s:p
+  execute 'onoremap i' . s:k . ' i' . s:p
+  execute 'vnoremap i' . s:k . ' i' . s:p
+endfor
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
@@ -331,11 +318,6 @@ nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'n
 vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
 
-nnoremap <silent> [q :cprevious<CR>
-nnoremap <silent> ]q :cnext<CR>
-nnoremap <silent> [Q :<C-u>cfirst<CR>
-nnoremap <silent> ]Q :<C-u>clast<CR>
-
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
@@ -385,15 +367,12 @@ nnoremap <silent> ]w <C-w>w
 nnoremap <silent> [W <C-w>t
 nnoremap <silent> ]W <C-w>b
 
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :<C-u>bfirst<CR>
-nnoremap <silent> ]B :<C-u>blast<CR>
-
-nnoremap <silent> [t :tabprevious<CR>
-nnoremap <silent> ]t :tabnext<CR>
-nnoremap <silent> [T :<C-u>tabfirst<CR>
-nnoremap <silent> ]T :<C-u>tablast<CR>
+for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
+  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
+  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>'
+  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>'
+  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
+endfor
 
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>
