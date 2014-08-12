@@ -128,7 +128,7 @@ set nrformats=alpha,hex
 set virtualedit=block
 set cryptmethod=blowfish
 
-nnoremap <F1> <Nop>
+nnoremap <F1> <Esc>
 nnoremap ZZ   <Nop>
 nnoremap ZQ   <Nop>
 nnoremap Q    <Nop>
