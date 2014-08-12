@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-28)
+" .vimrc (2014-8-12)
 "
 
 " Mode {{{
@@ -267,7 +267,10 @@ endif
 set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
-autocmd MyAutoCmd BufEnter * execute ':lcd ' . fnameescape(expand('%:p:h'))
+autocmd MyAutoCmd BufEnter *
+\   if &filetype !=# 'help'
+\ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
+\ | endif
 
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
