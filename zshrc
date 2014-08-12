@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-6)
+# .zshrc (2014-8-12)
 #
 
 # Environments {{{
@@ -337,6 +337,7 @@ alias srr='screen -d -RR'
 alias rm='rm -i'
 alias cp='nocorrect cp -iv'
 alias mv='nocorrect mv -iv'
+alias ln='ln -v'
 alias mkdir='nocorrect mkdir -vp'
 
 alias chmod='chmod -v'
