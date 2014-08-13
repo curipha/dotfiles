@@ -31,15 +31,11 @@ let mapleader = ','
 let maplocalleader = ','
 
 if has('vim_starting')
-  if s:iswin
-    let s:path_dotvim = $VIM . '/plugins/*'
-  else
-    let s:path_dotvim = $HOME . '/.vim/*'
-  endif
+  let s:path_dotvim = s:iswin ? $VIM . '/plugins/*' : $HOME . '/.vim/*'
 
   for s:path_plugin in split(glob(s:path_dotvim), '\n')
     if s:path_plugin !~# '\~$' && isdirectory(s:path_plugin)
-      let &runtimepath = &runtimepath . ',' . s:path_plugin
+      let &runtimepath .= ',' . s:path_plugin
     end
   endfor
 endif
