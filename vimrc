@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-8-12)
+" .vimrc (2014-8-13)
 "
 
 " Mode {{{
@@ -239,7 +239,7 @@ autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
-\   if &omnifunc == ''
+\   if empty(&omnifunc)
 \ |   setlocal omnifunc=syntaxcomplete#Complete
 \ | endif
 
