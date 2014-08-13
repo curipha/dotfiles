@@ -153,11 +153,6 @@ vnoremap <Tab> %
 
 nnoremap P [P
 nnoremap p ]p
-nnoremap [P P
-nnoremap ]p p
-
-nnoremap [p P
-nnoremap ]P P
 
 xnoremap >       >gv
 xnoremap <       <gv
