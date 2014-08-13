@@ -6,7 +6,7 @@
 set nocompatible
 scriptencoding utf-8
 
-let s:iswin  = has('win32') || has('win64')
+let s:iswin = has('win32') || has('win64')
 
 if s:iswin
   language message en
@@ -49,7 +49,7 @@ set encoding=utf-8
 
 let s:enc_jis = 'iso-2022-jp'
 let s:enc_euc = 'euc-jp'
-let s:guess   = has('guess_encode') ? ',guess,' :  ','
+let s:guess   = has('guess_encode') ? ',guess,' : ','
 
 if has('iconv')
   if iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
