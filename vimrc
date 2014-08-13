@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-7-24)
+" .vimrc (2014-8-12)
 "
 
 " Mode {{{
@@ -128,7 +128,7 @@ set nrformats=alpha,hex
 set virtualedit=block
 set cryptmethod=blowfish
 
-nnoremap <F1> <Nop>
+nnoremap <F1> <Esc>
 nnoremap ZZ   <Nop>
 nnoremap ZQ   <Nop>
 nnoremap Q    <Nop>
@@ -154,6 +154,14 @@ vnoremap <Up>   gk
 
 nnoremap <Tab> %
 vnoremap <Tab> %
+
+nnoremap P [P
+nnoremap p ]p
+nnoremap [P P
+nnoremap ]p p
+
+nnoremap [p P
+nnoremap ]P P
 
 xnoremap >       >gv
 xnoremap <       <gv
@@ -198,6 +206,15 @@ for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
 
+for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
+  execute 'onoremap a' . s:k . ' a' . s:p
+  execute 'vnoremap a' . s:k . ' a' . s:p
+  execute 'onoremap i' . s:k . ' i' . s:p
+  execute 'vnoremap i' . s:k . ' i' . s:p
+endfor
+
+autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
+
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
 autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
@@ -218,7 +235,7 @@ autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#Compl
 autocmd MyAutoCmd FileType php        setlocal omnifunc=phpcomplete#CompletePHP
 autocmd MyAutoCmd FileType python     setlocal omnifunc=pythoncomplete#Complete
 autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
-autocmd MyAutoCmd FileType sql        setlocal omnifunc=sqlcomplete#Complete
+"autocmd MyAutoCmd FileType sql        setlocal omnifunc=sqlcomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
@@ -247,7 +264,10 @@ endif
 set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
-autocmd MyAutoCmd BufEnter * execute ':lcd ' . fnameescape(expand('%:p:h'))
+autocmd MyAutoCmd BufEnter *
+\   if &filetype !=# 'help'
+\ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
+\ | endif
 
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
@@ -308,11 +328,6 @@ nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'n
 vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
 
-nnoremap <silent> [q :cprevious<CR>
-nnoremap <silent> ]q :cnext<CR>
-nnoremap <silent> [Q :<C-u>cfirst<CR>
-nnoremap <silent> ]Q :<C-u>clast<CR>
-
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
@@ -352,20 +367,22 @@ set splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
+autocmd MyAutoCmd WinEnter *
+\   if winnr('$') == 1 && getbufvar(winbufnr(0), '&diff') == 1
+\ |   diffoff
+\ | endif
+
 nnoremap <silent> [w <C-w>W
 nnoremap <silent> ]w <C-w>w
 nnoremap <silent> [W <C-w>t
 nnoremap <silent> ]W <C-w>b
 
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :<C-u>bfirst<CR>
-nnoremap <silent> ]B :<C-u>blast<CR>
-
-nnoremap <silent> [t :tabprevious<CR>
-nnoremap <silent> ]t :tabnext<CR>
-nnoremap <silent> [T :<C-u>tabfirst<CR>
-nnoremap <silent> ]T :<C-u>tablast<CR>
+for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
+  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
+  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>'
+  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>'
+  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
+endfor
 
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>

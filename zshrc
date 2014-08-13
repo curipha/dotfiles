@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-7-19)
+# .zshrc (2014-8-12)
 #
 
 # Environments {{{
@@ -27,7 +27,7 @@ export TERM=xterm-256color
 
 export GREP_OPTIONS='--color=auto --binary-files=without-match'
 export GZIP=-v9N
-export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
+export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
@@ -84,7 +84,6 @@ case ${OSTYPE} in
     alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
-    setterm -blank 0
   ;;
 
   darwin*)
@@ -338,6 +337,7 @@ alias srr='screen -d -RR'
 alias rm='rm -i'
 alias cp='nocorrect cp -iv'
 alias mv='nocorrect mv -iv'
+alias ln='ln -v'
 alias mkdir='nocorrect mkdir -vp'
 
 alias chmod='chmod -v'
