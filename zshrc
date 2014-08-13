@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-12)
+# .zshrc (2014-8-13)
 #
 
 # Environments {{{
@@ -289,6 +289,7 @@ setopt auto_param_slash
 setopt auto_remove_slash
 setopt complete_aliases
 setopt complete_in_word
+setopt glob_dots
 setopt list_packed
 setopt list_types
 
