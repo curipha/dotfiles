@@ -108,10 +108,7 @@ esac
 
 if exists rlwrap; then
   alias rlwrap='rlwrap -pBlue -s500 -D2 -i'
-
   alias irb='rlwrap -a irb'
-  alias nslookup='rlwrap nslookup'
-  alias telnet='rlwrap telnet'
 fi
 
 if exists colordiff; then
@@ -319,7 +316,7 @@ bindkey "^S^S" sudo-command-line
 #}}}
 
 # Alias {{{
-alias l.='ls -d .*'
+alias l.='ls -F -d .*'
 alias la='ls -AF'
 alias ll='ls -l'
 alias lla='ls -AFl'
@@ -390,7 +387,7 @@ alias q='exit'
 #alias r=''
 alias s='screen'
 #alias t=''
-alias u='who && echo && w && echo && finger'
+#alias u=''
 #alias v=''
 #alias w=''
 alias x='exit'
