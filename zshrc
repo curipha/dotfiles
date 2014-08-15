@@ -295,8 +295,7 @@ alias rename='noglob zmv -ivW'
 function chpwd() { ls -AF }
 
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
-function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{.bak,} }
-
+function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 sudo-command-line() {
   [[ -z $BUFFER ]] && zle up-history
