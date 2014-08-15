@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-8-13)
+" .vimrc (2014-8-15)
 "
 
 " Mode {{{
@@ -33,7 +33,7 @@ let maplocalleader = ','
 if has('vim_starting')
   let s:path_dotvim = s:iswin ? $VIM . '/plugins/*' : $HOME . '/.vim/*'
 
-  for s:path_plugin in split(glob(s:path_dotvim), '\n')
+  for s:path_plugin in glob(s:path_dotvim, 1, 1)
     if s:path_plugin !~# '\~$' && isdirectory(s:path_plugin)
       let &runtimepath .= ',' . s:path_plugin
     end
