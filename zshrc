@@ -288,7 +288,7 @@ setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_param_slash
 setopt auto_remove_slash
-setopt complete_aliases
+#setopt complete_aliases
 setopt complete_in_word
 setopt glob_dots
 setopt list_packed
