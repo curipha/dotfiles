@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-13)
+# .zshrc (2014-8-15)
 #
 
 # Environments {{{
@@ -31,7 +31,7 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignor
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-export RUBYOPT=-EUTF-8
+export RUBYOPT='-w -EUTF-8'
 #export MAKEFLAGS=-j4
 export WINEDEBUG=-all
 
@@ -81,7 +81,6 @@ case ${OSTYPE} in
     limit coredumpsize 0
 
     alias ls='ls --color=auto'
-    alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
   ;;
@@ -102,7 +101,6 @@ case ${OSTYPE} in
     alias ls='ls --color=auto'
     alias open='cygstart'
     alias start='cygstart'
-    alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
   ;;
@@ -167,7 +165,10 @@ RPROMPT="  %D{%b.%e (%a) %k:%M} [%j]"
 
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && PROMPT="[%m@ssh:%~] %n%# "
 
-unsetopt prompt_cr
+setopt prompt_cr
+setopt prompt_sp
+PROMPT_EOL_MARK="%B%S<EOL>%s%b"
+
 setopt prompt_subst
 setopt transient_rprompt
 
@@ -287,7 +288,7 @@ setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_param_slash
 setopt auto_remove_slash
-setopt complete_aliases
+#setopt complete_aliases
 setopt complete_in_word
 setopt glob_dots
 setopt list_packed
