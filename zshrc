@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-13)
+# .zshrc (2014-8-15)
 #
 
 # Environments {{{
@@ -81,7 +81,6 @@ case ${OSTYPE} in
     limit coredumpsize 0
 
     alias ls='ls --color=auto'
-    alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
   ;;
@@ -102,7 +101,6 @@ case ${OSTYPE} in
     alias ls='ls --color=auto'
     alias open='cygstart'
     alias start='cygstart'
-    alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
   ;;
