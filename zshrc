@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-12)
+# .zshrc (2014-8-13)
 #
 
 # Environments {{{
@@ -142,7 +142,7 @@ bindkey "[4~" end-of-line
 
 bindkey ' ' magic-space
 
-setopt correct_all
+setopt correct
 setopt no_flow_control
 setopt ignore_eof
 setopt print_exit_value
@@ -289,6 +289,7 @@ setopt auto_param_slash
 setopt auto_remove_slash
 setopt complete_aliases
 setopt complete_in_word
+setopt glob_dots
 setopt list_packed
 setopt list_types
 
@@ -335,10 +336,10 @@ alias sl='screen -list'
 alias srr='screen -d -RR'
 
 alias rm='rm -i'
-alias cp='nocorrect cp -iv'
-alias mv='nocorrect mv -iv'
+alias cp='cp -iv'
+alias mv='mv -iv'
 alias ln='ln -v'
-alias mkdir='nocorrect mkdir -vp'
+alias mkdir='mkdir -vp'
 
 alias chmod='chmod -v'
 alias chown='chown -v'

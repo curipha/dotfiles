@@ -1,12 +1,12 @@
 "
-" .vimrc (2014-8-12)
+" .vimrc (2014-8-13)
 "
 
 " Mode {{{
 set nocompatible
 scriptencoding utf-8
 
-let s:iswin  = has('win32') || has('win64')
+let s:iswin = has('win32') || has('win64')
 
 if s:iswin
   language message en
@@ -31,15 +31,11 @@ let mapleader = ','
 let maplocalleader = ','
 
 if has('vim_starting')
-  if s:iswin
-    let s:path_dotvim = $VIM . '/plugins/*'
-  else
-    let s:path_dotvim = $HOME . '/.vim/*'
-  endif
+  let s:path_dotvim = s:iswin ? $VIM . '/plugins/*' : $HOME . '/.vim/*'
 
   for s:path_plugin in split(glob(s:path_dotvim), '\n')
     if s:path_plugin !~# '\~$' && isdirectory(s:path_plugin)
-      let &runtimepath = &runtimepath . ',' . s:path_plugin
+      let &runtimepath .= ',' . s:path_plugin
     end
   endfor
 endif
@@ -49,7 +45,7 @@ set encoding=utf-8
 
 let s:enc_jis = 'iso-2022-jp'
 let s:enc_euc = 'euc-jp'
-let s:guess   = has('guess_encode') ? ',guess,' :  ','
+let s:guess   = has('guess_encode') ? ',guess,' : ','
 
 if has('iconv')
   if iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
@@ -157,11 +153,6 @@ vnoremap <Tab> %
 
 nnoremap P [P
 nnoremap p ]p
-nnoremap [P P
-nnoremap ]p p
-
-nnoremap [p P
-nnoremap ]P P
 
 xnoremap >       >gv
 xnoremap <       <gv
@@ -239,7 +230,7 @@ autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
-\   if &omnifunc == ''
+\   if empty(&omnifunc)
 \ |   setlocal omnifunc=syntaxcomplete#Complete
 \ | endif
 
