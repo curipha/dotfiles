@@ -165,7 +165,10 @@ RPROMPT="  %D{%b.%e (%a) %k:%M} [%j]"
 
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && PROMPT="[%m@ssh:%~] %n%# "
 
-unsetopt prompt_cr
+setopt prompt_cr
+setopt prompt_sp
+PROMPT_EOL_MARK="%B%S<EOL>%s%b"
+
 setopt prompt_subst
 setopt transient_rprompt
 
