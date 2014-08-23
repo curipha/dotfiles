@@ -31,8 +31,8 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignor
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-export RUBYOPT='-w -EUTF-8'
 #export MAKEFLAGS=-j4
+export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
 path=(
