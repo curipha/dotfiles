@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-15)
+# .zshrc (2014-8-16)
 #
 
 # Environments {{{
@@ -66,7 +66,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
-autoload -Uz is-at-least
 #autoload -Uz predict-on
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
@@ -108,10 +107,7 @@ esac
 
 if exists rlwrap; then
   alias rlwrap='rlwrap -pBlue -s500 -D2 -i'
-
   alias irb='rlwrap -a irb'
-  alias nslookup='rlwrap nslookup'
-  alias telnet='rlwrap telnet'
 fi
 
 if exists colordiff; then
@@ -172,24 +168,22 @@ PROMPT_EOL_MARK="%B%S<EOL>%s%b"
 setopt prompt_subst
 setopt transient_rprompt
 
-if is-at-least 4.3.10; then
-  zstyle ':vcs_info:*' enable git svn
-  zstyle ':vcs_info:*' stagedstr '(+)'
-  zstyle ':vcs_info:*' unstagedstr '(!)'
-  zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' stagedstr '(+)'
+zstyle ':vcs_info:*' unstagedstr '(!)'
+zstyle ':vcs_info:git:*' check-for-changes true
 
-  zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
-  zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
+zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
+zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
 
-  function precmd_vcs_info() {
-    psvar=()
-    LANG=en_US.UTF-8 vcs_info
-    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-  }
+function precmd_vcs_info() {
+  psvar=()
+  LANG=en_US.UTF-8 vcs_info
+  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
 
-  add-zsh-hook precmd precmd_vcs_info
-  RPROMPT="  %1v${RPROMPT}"
-fi
+add-zsh-hook precmd precmd_vcs_info
+RPROMPT="  %1v${RPROMPT}"
 # }}}
 
 # Jobs {{{
@@ -215,13 +209,8 @@ zle -N history-beginning-search-forward-end history-search-end
 
 bindkey '^P' history-beginning-search-backward-end
 bindkey '^N' history-beginning-search-forward-end
-bindkey '^R' history-incremental-search-backward
-bindkey '^S' history-incremental-search-forward
-
-if is-at-least 4.3.10; then
-  bindkey '^R' history-incremental-pattern-search-backward
-  bindkey '^S' history-incremental-pattern-search-forward
-fi
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
 # }}}
 # Complement {{{
 compinit
@@ -306,8 +295,7 @@ alias rename='noglob zmv -ivW'
 function chpwd() { ls -AF }
 
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
-function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{.bak,} }
-
+function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 sudo-command-line() {
   [[ -z $BUFFER ]] && zle up-history
@@ -319,7 +307,7 @@ bindkey "^S^S" sudo-command-line
 #}}}
 
 # Alias {{{
-alias l.='ls -d .*'
+alias l.='ls -F -d .*'
 alias la='ls -AF'
 alias ll='ls -l'
 alias lla='ls -AFl'
@@ -390,7 +378,7 @@ alias q='exit'
 #alias r=''
 alias s='screen'
 #alias t=''
-alias u='who && echo && w && echo && finger'
+#alias u=''
 #alias v=''
 #alias w=''
 alias x='exit'
