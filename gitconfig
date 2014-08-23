@@ -7,7 +7,7 @@
 [alias]
   a     = add
   ad    = add
-  br    = branch --color --verbose --verbose
+  br    = branch --all --color --verbose --verbose
   ci    = commit
   cl    = clone
   co    = checkout
