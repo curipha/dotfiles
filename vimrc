@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-8-15)
+" .vimrc (2014-8-23)
 "
 
 " Mode {{{
@@ -151,8 +151,8 @@ vnoremap <Up>   gk
 nnoremap <Tab> %
 vnoremap <Tab> %
 
-nnoremap P [P
-nnoremap p ]p
+"nnoremap P [P
+"nnoremap p ]p
 
 xnoremap >       >gv
 xnoremap <       <gv
