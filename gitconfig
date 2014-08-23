@@ -28,6 +28,7 @@
   pu    = push
   pul   = pull
   pus   = push
+  rmt   = remote --verbose
   sh    = show
   st    = status --branch --short
   tree  = log --graph --oneline
