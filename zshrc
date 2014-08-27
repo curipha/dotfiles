@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-7-19)
+# .zshrc (2014-8-23)
 #
 
 # Environments {{{
@@ -27,12 +27,12 @@ export TERM=xterm-256color
 
 export GREP_OPTIONS='--color=auto --binary-files=without-match'
 export GZIP=-v9N
-export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
+export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-export RUBYOPT=-EUTF-8
 #export MAKEFLAGS=-j4
+export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
 path=(
@@ -66,7 +66,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
-autoload -Uz is-at-least
 #autoload -Uz predict-on
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
@@ -81,10 +80,8 @@ case ${OSTYPE} in
     limit coredumpsize 0
 
     alias ls='ls --color=auto'
-    alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
-    setterm -blank 0
   ;;
 
   darwin*)
@@ -103,7 +100,6 @@ case ${OSTYPE} in
     alias ls='ls --color=auto'
     alias open='cygstart'
     alias start='cygstart'
-    alias top='top -d 1.0'
 
     eval "$(dircolors -b)"
   ;;
@@ -111,10 +107,7 @@ esac
 
 if exists rlwrap; then
   alias rlwrap='rlwrap -pBlue -s500 -D2 -i'
-
   alias irb='rlwrap -a irb'
-  alias nslookup='rlwrap nslookup'
-  alias telnet='rlwrap telnet'
 fi
 
 if exists colordiff; then
@@ -143,7 +136,7 @@ bindkey "[4~" end-of-line
 
 bindkey ' ' magic-space
 
-setopt correct_all
+setopt correct
 setopt no_flow_control
 setopt ignore_eof
 setopt print_exit_value
@@ -168,28 +161,29 @@ RPROMPT="  %D{%b.%e (%a) %k:%M} [%j]"
 
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && PROMPT="[%m@ssh:%~] %n%# "
 
-unsetopt prompt_cr
+setopt prompt_cr
+setopt prompt_sp
+PROMPT_EOL_MARK="%B%S<EOL>%s%b"
+
 setopt prompt_subst
 setopt transient_rprompt
 
-if is-at-least 4.3.10; then
-  zstyle ':vcs_info:*' enable git svn
-  zstyle ':vcs_info:*' stagedstr '(+)'
-  zstyle ':vcs_info:*' unstagedstr '(!)'
-  zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' stagedstr '(+)'
+zstyle ':vcs_info:*' unstagedstr '(!)'
+zstyle ':vcs_info:git:*' check-for-changes true
 
-  zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
-  zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
+zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
+zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
 
-  function precmd_vcs_info() {
-    psvar=()
-    LANG=en_US.UTF-8 vcs_info
-    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-  }
+function precmd_vcs_info() {
+  psvar=()
+  LANG=en_US.UTF-8 vcs_info
+  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
 
-  add-zsh-hook precmd precmd_vcs_info
-  RPROMPT="  %1v${RPROMPT}"
-fi
+add-zsh-hook precmd precmd_vcs_info
+RPROMPT="  %1v${RPROMPT}"
 # }}}
 
 # Jobs {{{
@@ -215,13 +209,8 @@ zle -N history-beginning-search-forward-end history-search-end
 
 bindkey '^P' history-beginning-search-backward-end
 bindkey '^N' history-beginning-search-forward-end
-bindkey '^R' history-incremental-search-backward
-bindkey '^S' history-incremental-search-forward
-
-if is-at-least 4.3.10; then
-  bindkey '^R' history-incremental-pattern-search-backward
-  bindkey '^S' history-incremental-pattern-search-forward
-fi
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
 # }}}
 # Complement {{{
 compinit
@@ -288,8 +277,9 @@ setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_param_slash
 setopt auto_remove_slash
-setopt complete_aliases
+#setopt complete_aliases
 setopt complete_in_word
+setopt glob_dots
 setopt list_packed
 setopt list_types
 
@@ -305,8 +295,7 @@ alias rename='noglob zmv -ivW'
 function chpwd() { ls -AF }
 
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
-function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{.bak,} }
-
+function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 sudo-command-line() {
   [[ -z $BUFFER ]] && zle up-history
@@ -336,9 +325,10 @@ alias sl='screen -list'
 alias srr='screen -d -RR'
 
 alias rm='rm -i'
-alias cp='nocorrect cp -iv'
-alias mv='nocorrect mv -iv'
-alias mkdir='nocorrect mkdir -vp'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias ln='ln -v'
+alias mkdir='mkdir -vp'
 
 alias chmod='chmod -v'
 alias chown='chown -v'
@@ -388,7 +378,7 @@ alias q='exit'
 #alias r=''
 alias s='screen'
 #alias t=''
-alias u='who && echo && w && echo && finger'
+#alias u=''
 #alias v=''
 #alias w=''
 alias x='exit'

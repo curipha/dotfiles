@@ -1,12 +1,12 @@
 "
-" .vimrc (2014-7-28)
+" .vimrc (2014-8-23)
 "
 
 " Mode {{{
 set nocompatible
 scriptencoding utf-8
 
-let s:iswin  = has('win32') || has('win64')
+let s:iswin = has('win32') || has('win64')
 
 if s:iswin
   language message en
@@ -31,15 +31,11 @@ let mapleader = ','
 let maplocalleader = ','
 
 if has('vim_starting')
-  if s:iswin
-    let s:path_dotvim = $VIM . '/plugins/*'
-  else
-    let s:path_dotvim = $HOME . '/.vim/*'
-  endif
+  let s:path_dotvim = s:iswin ? $VIM . '/plugins/*' : $HOME . '/.vim/*'
 
-  for s:path_plugin in split(glob(s:path_dotvim), '\n')
+  for s:path_plugin in glob(s:path_dotvim, 1, 1)
     if s:path_plugin !~# '\~$' && isdirectory(s:path_plugin)
-      let &runtimepath = &runtimepath . ',' . s:path_plugin
+      let &runtimepath .= ',' . s:path_plugin
     end
   endfor
 endif
@@ -49,7 +45,7 @@ set encoding=utf-8
 
 let s:enc_jis = 'iso-2022-jp'
 let s:enc_euc = 'euc-jp'
-let s:guess   = has('guess_encode') ? ',guess,' :  ','
+let s:guess   = has('guess_encode') ? ',guess,' : ','
 
 if has('iconv')
   if iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
@@ -128,7 +124,7 @@ set nrformats=alpha,hex
 set virtualedit=block
 set cryptmethod=blowfish
 
-nnoremap <F1> <Nop>
+nnoremap <F1> <Esc>
 nnoremap ZZ   <Nop>
 nnoremap ZQ   <Nop>
 nnoremap Q    <Nop>
@@ -154,6 +150,9 @@ vnoremap <Up>   gk
 
 nnoremap <Tab> %
 vnoremap <Tab> %
+
+"nnoremap P [P
+"nnoremap p ]p
 
 xnoremap >       >gv
 xnoremap <       <gv
@@ -198,25 +197,14 @@ for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
 
-onoremap aa  a>
-vnoremap aa  a>
-onoremap ia  i>
-vnoremap ia  i>
+for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
+  execute 'onoremap a' . s:k . ' a' . s:p
+  execute 'vnoremap a' . s:k . ' a' . s:p
+  execute 'onoremap i' . s:k . ' i' . s:p
+  execute 'vnoremap i' . s:k . ' i' . s:p
+endfor
 
-onoremap ar  a]
-vnoremap ar  a]
-onoremap ir  i]
-vnoremap ir  i]
-
-onoremap aq  a'
-vnoremap aq  a'
-onoremap iq  i'
-vnoremap iq  i'
-
-onoremap ad  a"
-vnoremap ad  a"
-onoremap id  i"
-vnoremap id  i"
+autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
@@ -242,7 +230,7 @@ autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
-\   if &omnifunc == ''
+\   if empty(&omnifunc)
 \ |   setlocal omnifunc=syntaxcomplete#Complete
 \ | endif
 
@@ -267,7 +255,10 @@ endif
 set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
-autocmd MyAutoCmd BufEnter * execute ':lcd ' . fnameescape(expand('%:p:h'))
+autocmd MyAutoCmd BufEnter *
+\   if &filetype !=# 'help'
+\ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
+\ | endif
 
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
@@ -328,11 +319,6 @@ nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'n
 vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
 
-nnoremap <silent> [q :cprevious<CR>
-nnoremap <silent> ]q :cnext<CR>
-nnoremap <silent> [Q :<C-u>cfirst<CR>
-nnoremap <silent> ]Q :<C-u>clast<CR>
-
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
@@ -382,15 +368,12 @@ nnoremap <silent> ]w <C-w>w
 nnoremap <silent> [W <C-w>t
 nnoremap <silent> ]W <C-w>b
 
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :<C-u>bfirst<CR>
-nnoremap <silent> ]B :<C-u>blast<CR>
-
-nnoremap <silent> [t :tabprevious<CR>
-nnoremap <silent> ]t :tabnext<CR>
-nnoremap <silent> [T :<C-u>tabfirst<CR>
-nnoremap <silent> ]T :<C-u>tablast<CR>
+for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
+  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
+  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>'
+  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>'
+  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
+endfor
 
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>
