@@ -7,7 +7,7 @@
 [alias]
   a     = add
   ad    = add
-  br    = branch --color --verbose --verbose
+  br    = branch --all --color --verbose --verbose
   ci    = commit
   cl    = clone
   co    = checkout
@@ -28,6 +28,7 @@
   pu    = push
   pul   = pull
   pus   = push
+  rmt   = remote --verbose
   sh    = show
   st    = status --branch --short
   tree  = log --graph --oneline

@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-16)
+# .zshrc (2014-8-23)
 #
 
 # Environments {{{
@@ -31,8 +31,8 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignor
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-export RUBYOPT='-w -EUTF-8'
 #export MAKEFLAGS=-j4
+export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
 path=(
@@ -307,7 +307,7 @@ bindkey "^S^S" sudo-command-line
 #}}}
 
 # Alias {{{
-alias l.='ls -F -d .*'
+alias l.='ls -d .*'
 alias la='ls -AF'
 alias ll='ls -l'
 alias lla='ls -AFl'
