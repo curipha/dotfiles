@@ -5,7 +5,7 @@
 
 SOURCE_DIR=$HOME/dotfiles
 
-DOTFILES=( inputrc screenrc vimrc wgetrc zshrc gemrc gitconfig )
+DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
 makeln()
