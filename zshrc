@@ -107,13 +107,11 @@ esac
 
 if exists rlwrap; then
   alias rlwrap='rlwrap -pBlue -s500 -D2 -i'
-  alias irb='rlwrap -a irb'
 fi
 
 if exists colordiff; then
   alias diff='colordiff'
 fi
-
 if exists pry; then
   alias irb='pry'
 fi
