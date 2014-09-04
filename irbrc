@@ -1,15 +1,16 @@
 #
-# .irbrc (2014-9-1)
+# .irbrc (2014-9-4)
 #
 
 # Requires
 %w(
+cgi/util
 date
 digest
 fileutils
 irb/completion
-pathname
 pp
+prime
 thread
 ).each do |lib|
   begin

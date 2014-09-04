@@ -1,14 +1,16 @@
 #
-# .pryrc (2014-9-1)
+# .pryrc (2014-9-4)
 #
 
 # Requires
 %w(
+cgi/util
 date
 digest
 fileutils
-pathname
+irb/completion
 pp
+prime
 thread
 ).each do |lib|
   begin
