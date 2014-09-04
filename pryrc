@@ -8,7 +8,6 @@ cgi/util
 date
 digest
 fileutils
-irb/completion
 pp
 prime
 thread
