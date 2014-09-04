@@ -22,6 +22,7 @@ end
 
 # Configure
 IRB.conf[:AUTO_INDENT] = true
+IRB.conf[:PROMPT_MODE] = :SIMPLE
 
 # Banner
 puts "ruby #{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]"
