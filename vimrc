@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-9-11)
+" .vimrc (2014-9-14)
 "
 
 " Mode {{{
@@ -78,6 +78,7 @@ set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.bz2,*.gz,*.tar,*.xz,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
 set wildignore+=.git/*,.svn/*
+set wildignore+=$RECYCLE.BIN/*,System\ Volume\ Information/*
 set suffixes=.bak,.tmp,.out,.aux,.dvi,.toc
 
 set history=100
