@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-8-23)
+# .zshrc (2014-9-1)
 #
 
 # Environments {{{
@@ -25,7 +25,7 @@ export VISUAL=vim
 
 export TERM=xterm-256color
 
-export GREP_OPTIONS='--color=auto --binary-files=without-match'
+export GREP_OPTIONS='--color=auto --extended-regexp --binary-files=without-match'
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
@@ -107,13 +107,11 @@ esac
 
 if exists rlwrap; then
   alias rlwrap='rlwrap -pBlue -s500 -D2 -i'
-  alias irb='rlwrap -a irb'
 fi
 
 if exists colordiff; then
   alias diff='colordiff'
 fi
-
 if exists pry; then
   alias irb='pry'
 fi

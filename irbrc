@@ -1,5 +1,5 @@
 #
-# .pryrc (2014-9-4)
+# .irbrc (2014-9-4)
 #
 
 # Requires
@@ -8,6 +8,7 @@ cgi/util
 date
 digest
 fileutils
+irb/completion
 pp
 prime
 thread
@@ -20,7 +21,8 @@ thread
 end
 
 # Configure
-Pry.config.history.should_save = false
+IRB.conf[:AUTO_INDENT] = true
+IRB.conf[:PROMPT_MODE] = :SIMPLE
 
 # Banner
 puts "ruby #{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]"

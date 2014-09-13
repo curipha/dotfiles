@@ -5,7 +5,7 @@
 
 SOURCE_DIR=$HOME/dotfiles
 
-DOTFILES=( inputrc screenrc vimrc wgetrc zshrc gemrc gitconfig )
+DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
 makeln()
@@ -47,6 +47,12 @@ if [ -n $SSH_CONFIG ]
 then
   SOURCE=$SOURCE_DIR/$SSH_CONFIG
   TARGET=$HOME/.ssh/config
+
+  if [ ! -e $HOME/.ssh ]
+  then
+    mkdir -p $HOME/.ssh
+    chmod 0700 $HOME/.ssh
+  fi
 
   makeln $SOURCE $TARGET
 fi

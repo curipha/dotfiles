@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-8-27)
+" .vimrc (2014-9-11)
 "
 
 " Mode {{{
@@ -440,6 +440,9 @@ for s:f in ['dos', 'unix', 'mac']
         \ substitute(toupper(s:f[0]).tolower(s:f[1:]), '\W', '', 'g')
         \ 'edit<bang> ++ff='.s:f '<args>'
 endfor
+" }}}
+" Abbreviation {{{
+iabbrev <expr> #! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' ' . &filetype)
 " }}}
 " Syntax {{{
 let g:rubycomplete_buffer_loading = 1
