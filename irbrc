@@ -1,5 +1,5 @@
 #
-# .irbrc (2014-9-14)
+# .irbrc (2014-9-15)
 #
 
 # Requires
@@ -36,7 +36,7 @@ def ls(dir = Dir.pwd)
   irbrc_get_direntry(dir).each_slice(col) {|x| lst << x }
 
   lst.each {|x| x = x.fill('', x.length, col - x.length) if x.length != col }
-  lst.transpose.each_with_index {|x, i| max[i] = x.map {|y| y.length }.max + margin }
+  lst.transpose.each_with_index {|x, i| max[i] = x.inject(0) {|max, y| y.length > max ? y.length : max} + margin }
 
   lst.each {|x|
     x.each_with_index {|y, i| print y.ljust(max[i]) }
