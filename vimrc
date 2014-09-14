@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-9-14)
+" .vimrc (2014-9-15)
 "
 
 " Mode {{{
@@ -260,6 +260,9 @@ autocmd MyAutoCmd BufEnter *
 \   if &filetype !=# 'help'
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
+
+autocmd MyAutoCmd FileType ruby compiler ruby
+autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -c % | redraw!
 
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
