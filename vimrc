@@ -77,8 +77,8 @@ set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.bz2,*.gz,*.tar,*.xz,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
-set wildignore+=.git/*,.svn/*
-set wildignore+=$RECYCLE.BIN/*,System\ Volume\ Information/*
+set wildignore+=*/.git/*,*/.svn/*
+set wildignore+=*/$RECYCLE.BIN/*,*/System\ Volume\ Information/*
 set suffixes=.bak,.tmp,.out,.aux,.dvi,.toc
 
 set history=100
