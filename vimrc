@@ -24,6 +24,8 @@ augroup END
 syntax enable
 filetype plugin indent on
 
+let $RUBYOPT = ''
+
 set t_Co=256
 set background=dark
 
