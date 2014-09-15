@@ -299,7 +299,9 @@ set smartcase
 set grepprg=internal
 
 autocmd MyAutoCmd QuickFixCmdPost make,grep,grepadd,vimgrep
-\   if len(getqflist()) != 0
+\   if len(getqflist()) == 0
+\ |   cclose
+\ | else
 \ |   cwindow
 \ | endif
 
