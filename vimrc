@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-9-14)
+" .vimrc (2014-9-15)
 "
 
 " Mode {{{
@@ -23,6 +23,8 @@ augroup END
 
 syntax enable
 filetype plugin indent on
+
+let $RUBYOPT = ''
 
 set t_Co=256
 set background=dark
@@ -261,6 +263,9 @@ autocmd MyAutoCmd BufEnter *
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
 
+autocmd MyAutoCmd FileType ruby compiler ruby
+autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -c % | redraw!
+
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
 \ |   execute 'write'.(v:cmdbang ? '!' : '') expand('<afile>')
@@ -294,7 +299,9 @@ set smartcase
 set grepprg=internal
 
 autocmd MyAutoCmd QuickFixCmdPost make,grep,grepadd,vimgrep
-\   if len(getqflist()) != 0
+\   if len(getqflist()) == 0
+\ |   cclose
+\ | else
 \ |   cwindow
 \ | endif
 
