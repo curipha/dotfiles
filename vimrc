@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-9-15)
+" .vimrc (2014-9-16)
 "
 
 " Mode {{{
@@ -258,7 +258,7 @@ endif
 set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
-autocmd MyAutoCmd BufEnter *
+autocmd MyAutoCmd BufEnter,BufFilePost *
 \   if &filetype !=# 'help'
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
