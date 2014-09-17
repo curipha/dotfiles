@@ -4,7 +4,9 @@
 
 " Mode {{{
 set nocompatible
+
 scriptencoding utf-8
+set encoding=utf-8
 
 let s:iswin = has('win32') || has('win64')
 
@@ -42,15 +44,12 @@ if has('vim_starting')
   endfor
 endif
 " }}}
-" Encoding {{{
-set encoding=utf-8
-set fileencodings=ucs-bom,utf-8
-
-set fileformat=unix
-set fileformats=unix,dos,mac
-" }}}
 
 " Edit {{{
+set fileencodings=ucs-bom,utf-8
+set fileformat=unix
+set fileformats=unix,dos,mac
+
 set wildmenu
 set wildchar=<tab>
 set wildmode=list:full
