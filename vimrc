@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-9-16)
+" .vimrc (2014-9-17)
 "
 
 " Mode {{{
@@ -44,24 +44,7 @@ endif
 " }}}
 " Encoding {{{
 set encoding=utf-8
-
-let s:enc_jis = 'iso-2022-jp'
-let s:enc_euc = 'euc-jp'
-let s:guess   = has('guess_encode') ? ',guess,' : ','
-
-if has('iconv')
-  if iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-    let s:enc_jis = 'iso-2022-jp-3'
-    let s:enc_euc = 'euc-jisx0213'
-  endif
-endif
-
-let &fileencodings = 'ucs-bom,' . s:enc_jis . s:guess . s:enc_euc . ',cp932,utf-8'
-
-autocmd MyAutoCmd BufReadPost *
-\   if &fileencoding =~# 'iso-2022-jp' && search('[^\x01-\x7e]', 'cnw') == 0
-\ |   let &fileencoding = 'utf-8'
-\ | endif
+set fileencodings=ucs-bom,utf-8
 
 set fileformat=unix
 set fileformats=unix,dos,mac
