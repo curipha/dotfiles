@@ -31,7 +31,9 @@
   rmt   = remote --verbose
   sh    = show
   st    = status --branch --short
+  sync  = !git fetch && git reset --hard FETCH_HEAD
   tree  = log --graph --oneline
+  unstg = reset HEAD
 [diff]
   algorithm = patience
 [merge]
