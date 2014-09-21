@@ -8,7 +8,7 @@
   a     = add
   ad    = add
   br    = branch --all --color --verbose --verbose
-  ci    = commit
+  ci    = commit -v
   cl    = clone
   co    = checkout
   d     = diff
