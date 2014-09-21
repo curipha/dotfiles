@@ -105,9 +105,6 @@ case ${OSTYPE} in
   ;;
 esac
 
-if exists rlwrap; then
-  alias rlwrap='rlwrap -pBlue -s500 -D2 -i'
-fi
 
 if exists colordiff; then
   alias diff='colordiff'
