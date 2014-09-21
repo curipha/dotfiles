@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-9-1)
+# .zshrc (2014-9-21)
 #
 
 # Environments {{{
@@ -105,15 +105,9 @@ case ${OSTYPE} in
   ;;
 esac
 
-if exists rlwrap; then
-  alias rlwrap='rlwrap -pBlue -s500 -D2 -i'
-fi
 
 if exists colordiff; then
   alias diff='colordiff'
-fi
-if exists pry; then
-  alias irb='pry'
 fi
 
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
