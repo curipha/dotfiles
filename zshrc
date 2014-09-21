@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-9-1)
+# .zshrc (2014-9-21)
 #
 
 # Environments {{{
@@ -111,9 +111,6 @@ fi
 
 if exists colordiff; then
   alias diff='colordiff'
-fi
-if exists pry; then
-  alias irb='pry'
 fi
 
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
