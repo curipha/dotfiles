@@ -1,5 +1,5 @@
 "
-" .gvimrc (2014-6-14)
+" .gvimrc (2014-9-24)
 "
 
 scriptencoding utf-8
@@ -23,7 +23,7 @@ endif
 " GUI {{{
 colorscheme desert
 
-set guioptions=aegi
+set guioptions=aei
 set visualbell t_vb=
 
 highlight IdeographicSpace gui=underline guifg=lightblue
