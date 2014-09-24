@@ -2,7 +2,7 @@ dotfiles
 ========
 dotfiles for Linux/BSD/Cygwin.
 
-`vimrc` and `gvimrc` use also by Vim on Windows.
+`vimrc` and `gvimrc` are also used by Vim on Windows.
 Refer to the `dotfiles_w` repository for what is used only on Windows.
 
 About dotfiles
