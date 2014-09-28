@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-9-17)
+" .vimrc (2014-9-28)
 "
 
 " Mode {{{
@@ -348,6 +348,7 @@ set splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
+set diffopt=filler,context:3,vertical
 autocmd MyAutoCmd WinEnter *
 \   if winnr('$') == 1 && getbufvar(winbufnr(0), '&diff') == 1
 \ |   diffoff
