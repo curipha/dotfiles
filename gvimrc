@@ -1,5 +1,5 @@
 "
-" .gvimrc (2014-6-14)
+" .gvimrc (2014-9-28)
 "
 
 scriptencoding utf-8
@@ -9,11 +9,13 @@ let s:iswin  = has('win32') || has('win64')
 let s:ismac  = has('mac')
 let s:isunix = has('unix') || has('win32unix')
 "}}}
-" Font {{{
+" Environment specific {{{
 if s:iswin
   set guifont=MigMix_2M:h10:cSHIFTJIS
   set renderoptions=type:directx,renmode:5
   set linespace=1
+
+  let $PATH .= ';C:\cygwin\bin'
 elseif s:ismac
   set guifont=MigMix_2M:h10
 elseif s:isunix
@@ -23,7 +25,7 @@ endif
 " GUI {{{
 colorscheme desert
 
-set guioptions=aegi
+set guioptions=aei
 set visualbell t_vb=
 
 highlight IdeographicSpace gui=underline guifg=lightblue

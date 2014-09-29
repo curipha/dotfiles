@@ -8,7 +8,7 @@
   a     = add
   ad    = add
   br    = branch --all --color --verbose --verbose
-  ci    = commit
+  ci    = commit --verbose
   cl    = clone
   co    = checkout
   d     = diff
@@ -31,7 +31,9 @@
   rmt   = remote --verbose
   sh    = show
   st    = status --branch --short
+  sync  = !git fetch && git reset --hard FETCH_HEAD
   tree  = log --graph --oneline
+  unstg = reset HEAD
 [diff]
   algorithm = patience
 [merge]
