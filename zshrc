@@ -149,9 +149,9 @@ zle -N self-insert url-quote-magic
 # Prompt {{{
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH="@ssh"
 
-PROMPT="[%m${IS_SSH}:%~] %n%# "
+PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
 PROMPT2="%_ %# "
-RPROMPT="  %1v  %D{%b.%e (%a) %k:%M} [%j]"
+RPROMPT="  %1v  %D{%b.%e (%a) %k:%M}"
 
 setopt prompt_cr
 setopt prompt_sp
