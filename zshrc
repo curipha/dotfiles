@@ -151,7 +151,7 @@ zle -N self-insert url-quote-magic
 
 PROMPT="[%m${IS_SSH}:%~] %n%# "
 PROMPT2="%_ %# "
-RPROMPT="  %D{%b.%e (%a) %k:%M} [%j]"
+RPROMPT="  %1v  %D{%b.%e (%a) %k:%M} [%j]"
 
 setopt prompt_cr
 setopt prompt_sp
@@ -173,9 +173,7 @@ function precmd_vcs_info() {
   LANG=en_US.UTF-8 vcs_info
   [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
-
 add-zsh-hook precmd precmd_vcs_info
-RPROMPT="  %1v${RPROMPT}"
 # }}}
 
 # Jobs {{{
