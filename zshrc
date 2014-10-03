@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-9-21)
+# .zshrc (2014-10-3)
 #
 
 # Environments {{{
@@ -147,11 +147,11 @@ colors
 zle -N self-insert url-quote-magic
 # }}}
 # Prompt {{{
-PROMPT="[%m:%~] %n%# "
+[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH="@ssh"
+
+PROMPT="[%m${IS_SSH}:%~] %n%# "
 PROMPT2="%_ %# "
 RPROMPT="  %D{%b.%e (%a) %k:%M} [%j]"
-
-[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && PROMPT="[%m@ssh:%~] %n%# "
 
 setopt prompt_cr
 setopt prompt_sp
