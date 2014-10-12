@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Dotfiles initializer
 #  * Create symlinks to dotfiles in your repository.
