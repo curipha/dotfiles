@@ -5,13 +5,13 @@
 Protocol 2
 
 Host *
-  IdentityFile         ~/.ssh/id_ecdsa
-  IdentityFile         ~/.ssh/id_rsa
-  IdentitiesOnly       yes
+  IdentityFile          ~/.ssh/id_ecdsa
+  IdentityFile          ~/.ssh/id_rsa
+  IdentitiesOnly        yes
 
-  Ciphers              aes256-ctr
-  KexAlgorithms        ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256
-  MACs                 hmac-sha1
+  Ciphers               aes256-ctr
+  KexAlgorithms         ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256
+  MACs                  hmac-sha1
 
   PubKeyAuthentication            yes
   ChallengeResponseAuthentication no
@@ -25,15 +25,15 @@ Host *
   StrictHostKeyChecking ask
   HashKnownHosts        yes
 
-  Compression          no
-  ForwardAgent         no
+  Compression           no
+  ForwardAgent          no
 
-  TCPKeepAlive         yes
-  ServerAliveInterval  3
-  ServerAliveCountMax  5
+  TCPKeepAlive          yes
+  ServerAliveInterval   3
+  ServerAliveCountMax   5
 
-  RekeyLimit           100M
+  RekeyLimit            100M
 
-# ControlMaster        auto
-# ControlPath          ~/.ssh/control-%r@%h:%p
+# ControlMaster         auto
+# ControlPath           ~/.ssh/control-%r@%h:%p
 
