@@ -1,5 +1,5 @@
 #
-# ~/.ssh/config for legacy OpenSSH (2014-7-20)
+# ~/.ssh/config for legacy OpenSSH (2014-10-13)
 #
 
 Protocol 2
@@ -10,12 +10,20 @@ Host *
   IdentitiesOnly       yes
 
   Ciphers              aes256-ctr
-  KexAlgorithms        diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
+  KexAlgorithms        ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256
   MACs                 hmac-sha1
 
-  PubKeyAuthentication yes
-  GSSAPIAuthentication no
-  HashKnownHosts       yes
+  PubKeyAuthentication            yes
+  ChallengeResponseAuthentication no
+  GSSAPIAuthentication            no
+  HostbasedAuthentication         no
+  KbdInteractiveAuthentication    no
+  PasswordAuthentication          no
+
+  CheckHostIP           yes
+  VerifyHostKeyDNS      ask
+  StrictHostKeyChecking ask
+  HashKnownHosts        yes
 
   Compression          no
   ForwardAgent         no
@@ -23,6 +31,8 @@ Host *
   TCPKeepAlive         yes
   ServerAliveInterval  3
   ServerAliveCountMax  5
+
+  RekeyLimit           100M
 
 # ControlMaster        auto
 # ControlPath          ~/.ssh/control-%r@%h:%p
