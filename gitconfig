@@ -29,7 +29,6 @@
   pul   = pull
   pus   = push
   r     = remote --verbose
-  rmt   = remote --verbose
   sh    = show
   st    = status --branch --short
   sync  = !git fetch && git reset --hard FETCH_HEAD
