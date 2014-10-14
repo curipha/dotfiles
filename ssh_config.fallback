@@ -1,29 +1,39 @@
 #
-# ~/.ssh/config for legacy OpenSSH (2014-7-20)
+# ~/.ssh/config for legacy OpenSSH (2014-10-13)
 #
 
 Protocol 2
 
 Host *
-  IdentityFile         ~/.ssh/id_ecdsa
-  IdentityFile         ~/.ssh/id_rsa
-  IdentitiesOnly       yes
+  IdentityFile          ~/.ssh/id_ecdsa
+  IdentityFile          ~/.ssh/id_rsa
+  IdentitiesOnly        yes
 
-  Ciphers              aes256-ctr
-  KexAlgorithms        diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
-  MACs                 hmac-sha1
+  Ciphers               aes256-ctr
+  KexAlgorithms         ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256
+  MACs                  hmac-sha1
 
-  PubKeyAuthentication yes
-  GSSAPIAuthentication no
-  HashKnownHosts       yes
+  PubKeyAuthentication            yes
+  ChallengeResponseAuthentication no
+  GSSAPIAuthentication            no
+  HostbasedAuthentication         no
+  KbdInteractiveAuthentication    no
+  PasswordAuthentication          no
 
-  Compression          no
-  ForwardAgent         no
+  CheckHostIP           yes
+  VerifyHostKeyDNS      ask
+  StrictHostKeyChecking ask
+  HashKnownHosts        yes
 
-  TCPKeepAlive         yes
-  ServerAliveInterval  3
-  ServerAliveCountMax  5
+  Compression           no
+  ForwardAgent          no
 
-# ControlMaster        auto
-# ControlPath          ~/.ssh/control-%r@%h:%p
+  TCPKeepAlive          yes
+  ServerAliveInterval   3
+  ServerAliveCountMax   5
+
+  RekeyLimit            100M
+
+# ControlMaster         auto
+# ControlPath           ~/.ssh/control-%r@%h:%p
 
