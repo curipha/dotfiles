@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-9-28)
+" .vimrc (2014-10-15)
 "
 
 " Mode {{{
@@ -99,7 +99,7 @@ set softtabstop=0
 set complete=.,w,b,u,t,i,d,]
 set pumheight=18
 
-set spell spelllang=en_us
+set spell spelllang=en_us,cjk
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 
 autocmd MyAutoCmd FileType qf setlocal nospell
