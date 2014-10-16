@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-10-3)
+# .zshrc (2014-10-17)
 #
 
 # Environments {{{
@@ -309,11 +309,6 @@ alias lls='ls -AFl'
 alias lr='ls -FR'
 alias lra='ls -AFR'
 
-alias kk='ls -l'
-
-alias sl='screen -list'
-alias srr='screen -d -RR'
-
 alias rm='rm -i'
 alias cp='cp -iv'
 alias mv='mv -iv'
@@ -327,9 +322,6 @@ alias cls='tput clear'
 
 alias vi='vim'
 alias view='vim -R'
-
-alias xs='cd'
-alias vf='cd'
 
 alias :q='exit'
 
@@ -353,8 +345,8 @@ alias a='./a.out'
 #alias c=''
 alias d='du -skh .'
 #alias e=''
-alias f='find'
-alias g='git'
+#alias f=''
+#alias g=''
 #alias h=''
 #alias i=''
 alias j='jobs -l'
@@ -366,7 +358,7 @@ alias l='last -a | less'
 #alias p=''
 alias q='exit'
 #alias r=''
-alias s='screen'
+#alias s=''
 #alias t=''
 #alias u=''
 #alias v=''
