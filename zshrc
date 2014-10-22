@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-10-17)
+# .zshrc (2014-10-22)
 #
 
 # Environments {{{
@@ -152,6 +152,7 @@ zle -N self-insert url-quote-magic
 PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
 PROMPT2="%_ %# "
 RPROMPT="  %1v  %D{%b.%f (%a) %K:%M}"
+SPROMPT="zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: "
 
 setopt prompt_cr
 setopt prompt_sp
