@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-11-05)
+" .vimrc (2014-11-10)
 "
 
 " Mode {{{
@@ -387,7 +387,8 @@ set foldcolumn=0
 set foldmethod=marker
 "set foldmethod=syntax
 
-autocmd MyAutoCmd FileType css setlocal foldmethod=marker foldmarker={,}
+autocmd MyAutoCmd FileType css       setlocal foldmethod=marker foldmarker={,}
+autocmd MyAutoCmd FileType gitcommit setlocal nofoldenable
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw
