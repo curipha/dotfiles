@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-10-22)
+# .zshrc (2014-11-24)
 #
 
 # Environments {{{
@@ -31,7 +31,10 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignor
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
+#export CFLAGS='-march=native -mtune=native -O2 -pipe'
+#export CXXFLAGS='-march=native -mtune=native -O2 -pipe'
 #export MAKEFLAGS=-j4
+
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
