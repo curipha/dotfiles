@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-11-10)
+" .vimrc (2014-11-25)
 "
 
 " Mode {{{
@@ -121,6 +121,8 @@ vnoremap ; :
 
 inoremap jj <Esc>
 onoremap jj <Esc>
+inoremap kk <Esc>
+onoremap kk <Esc>
 
 vnoremap . :<C-u>normal .<CR>
 
