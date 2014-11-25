@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-11-24)
+# .zshrc (2014-11-25)
 #
 
 # Environments {{{
@@ -322,7 +322,8 @@ alias mkdir='mkdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias cls='tput clear'
+alias cls='echo -en "\033c" && tput clear'
+alias rst='echo -en "\033c" && tput clear && exec zsh'
 
 alias vi='vim'
 alias view='vim -R'
@@ -341,7 +342,6 @@ alias ,,,='cd ../..'
 alias ~='cd ~'
 alias /='cd /'
 
-alias rst='tput clear && exec zsh'
 alias hs='history 0 | grep -iE'
 
 alias a='./a.out'
