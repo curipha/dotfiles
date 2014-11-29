@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-10-22)
+# .zshrc (2014-11-25)
 #
 
 # Environments {{{
@@ -31,7 +31,10 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignor
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
+#export CFLAGS='-march=native -mtune=native -O2 -pipe'
+#export CXXFLAGS='-march=native -mtune=native -O2 -pipe'
 #export MAKEFLAGS=-j4
+
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
@@ -319,7 +322,8 @@ alias mkdir='mkdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias cls='tput clear'
+alias cls='echo -en "\033c" && tput clear'
+alias rst='echo -en "\033c" && tput clear && exec zsh'
 
 alias vi='vim'
 alias view='vim -R'
@@ -338,7 +342,6 @@ alias ,,,='cd ../..'
 alias ~='cd ~'
 alias /='cd /'
 
-alias rst='tput clear && exec zsh'
 alias hs='history 0 | grep -iE'
 
 alias a='./a.out'

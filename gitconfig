@@ -35,7 +35,7 @@
   tree  = log --graph --oneline
   unstg = reset HEAD
 [diff]
-  algorithm = patience
+  algorithm = histogram
 [merge]
   ff = false
 [push]
