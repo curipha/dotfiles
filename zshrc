@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-11-25)
+# .zshrc (2014-11-30)
 #
 
 # Environments {{{
@@ -25,7 +25,6 @@ export VISUAL=vim
 
 export TERM=xterm-256color
 
-export GREP_OPTIONS='--color=auto --extended-regexp --binary-files=without-match'
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
@@ -113,11 +112,14 @@ if exists colordiff; then
   alias diff='colordiff'
 fi
 
+GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
   for EXCLUDE_DIR in .cvs .git .hg .svn .deps .libs; do
-    GREP_OPTIONS+=" --exclude-dir=${EXCLUDE_DIR}"
+    GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
+
+alias grep="grep ${GREP_PARAM}"
 # }}}
 
 # Core {{{
