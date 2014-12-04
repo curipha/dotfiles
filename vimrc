@@ -28,8 +28,8 @@ let $RUBYOPT = ''
 set t_Co=256
 set background=dark
 
-let mapleader = ','
-let maplocalleader = ','
+let g:mapleader = ','
+let g:maplocalleader = ','
 
 if has('vim_starting')
   let s:path_dotvim = s:iswin ? $VIM . '/plugins/*' : $HOME . '/.vim/*'
@@ -444,9 +444,9 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
-let php_sql_query = 1
-let php_htmlInStrings = 1
-let php_noShortTags = 1
+let g:php_sql_query = 1
+let g:php_htmlInStrings = 1
+let g:php_noShortTags = 1
 " }}}
 " Plugin {{{
 " neocomplete {{{
