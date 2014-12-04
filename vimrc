@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-11-10)
+" .vimrc (2014-12-3)
 "
 
 " Mode {{{
@@ -121,6 +121,8 @@ vnoremap ; :
 
 inoremap jj <Esc>
 onoremap jj <Esc>
+inoremap kk <Esc>
+onoremap kk <Esc>
 
 vnoremap . :<C-u>normal .<CR>
 
@@ -242,7 +244,7 @@ set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
-\   if &filetype !=# 'help'
+\   if isdirectory(expand('%:p:h')) && &filetype !=# 'help'
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
 
