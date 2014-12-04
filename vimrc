@@ -23,9 +23,6 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-syntax enable
-filetype plugin indent on
-
 let $RUBYOPT = ''
 
 set t_Co=256
@@ -43,6 +40,9 @@ if has('vim_starting')
     end
   endfor
 endif
+
+syntax enable
+filetype plugin indent on
 " }}}
 
 " Edit {{{
