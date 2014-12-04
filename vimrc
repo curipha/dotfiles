@@ -1,12 +1,12 @@
 "
-" .vimrc (2014-12-3)
+" .vimrc (2014-12-4)
 "
 
 " Mode {{{
 set nocompatible
 
-scriptencoding utf-8
 set encoding=utf-8
+scriptencoding utf-8
 
 let s:iswin = has('win32') || has('win64')
 
