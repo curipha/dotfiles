@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-11-30)
+# .zshrc (2014-12-6)
 #
 
 # Environments {{{
@@ -30,8 +30,8 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignor
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-#export CFLAGS='-march=native -mtune=native -O2 -pipe'
-#export CXXFLAGS='-march=native -mtune=native -O2 -pipe'
+#export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4'
+#export CXXFLAGS=${CFLAGS}
 #export MAKEFLAGS=-j4
 
 export RUBYOPT='-w -EUTF-8'
