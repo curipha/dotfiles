@@ -41,6 +41,8 @@
   ff = false
 [push]
   default = current
+[interactive]
+  singlekey = true
 [user]
   name  = Taichi
   email = taichi@curipha.jp
