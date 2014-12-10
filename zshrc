@@ -293,6 +293,8 @@ function chpwd() { ls -AF }
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
+function mkdcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
+
 sudo-command-line() {
   [[ -z $BUFFER ]] && zle up-history
   [[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
