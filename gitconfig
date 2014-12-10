@@ -7,6 +7,7 @@
 [alias]
   a     = add
   ad    = add
+  ap    = add --patch
   br    = branch --all --color --verbose --verbose
   ci    = commit --verbose
   cl    = clone
@@ -23,6 +24,7 @@
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
   l     = log --decorate --stat
+  lo    = log --decorate --oneline --graph
   lp    = log --decorate --patch-with-stat
   pl    = pull
   pu    = push
@@ -40,6 +42,8 @@
   ff = false
 [push]
   default = current
+[interactive]
+  singlekey = true
 [user]
   name  = Taichi
   email = taichi@curipha.jp

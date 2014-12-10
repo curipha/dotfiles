@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-6)
+# .zshrc (2014-12-10)
 #
 
 # Environments {{{
@@ -69,6 +69,7 @@ autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
 #autoload -Uz predict-on
+autoload -Uz smart-insert-last-word
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
 autoload -Uz zmv
@@ -125,8 +126,8 @@ alias grep="grep ${GREP_PARAM}"
 # Core {{{
 bindkey -e
 
-bindkey "^?"      backward-delete-char
-bindkey "^H"      backward-delete-char
+bindkey '^?'      backward-delete-char
+bindkey '^H'      backward-delete-char
 bindkey "[3~" delete-char
 bindkey "[1~" beginning-of-line
 bindkey "[4~" end-of-line
@@ -284,6 +285,10 @@ setopt equals
 setopt magic_equal_subst
 setopt mark_dirs
 setopt path_dirs
+
+zle -N insert-last-word smart-insert-last-word
+zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
+bindkey '^]' insert-last-word
 #}}}
 # Utility{{{
 alias rename='noglob zmv -ivW'
@@ -293,13 +298,28 @@ function chpwd() { ls -AF }
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
-sudo-command-line() {
-  [[ -z $BUFFER ]] && zle up-history
-  [[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
+function mkdcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
+
+function sudo-command-line() {
+  [[ -z "$BUFFER" ]] && zle up-history
+  [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
   zle end-of-line
 }
 zle -N sudo-command-line
-bindkey "^S^S" sudo-command-line
+bindkey '^S^S' sudo-command-line
+
+function magic_enter() {
+  if [[ -z "$BUFFER" ]]; then
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+      BUFFER='git status --branch --short'
+    else
+      BUFFER='ls -AF'
+    fi
+  fi
+  zle accept-line
+}
+zle -N magic_enter
+bindkey '^M' magic_enter
 #}}}
 
 # Alias {{{
