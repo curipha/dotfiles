@@ -316,7 +316,7 @@ function magic_enter() {
       BUFFER='ls -AF'
     fi
   fi
-  builtin zle .accept-line
+  zle accept-line
 }
 zle -N magic_enter
 bindkey '^M' magic_enter
