@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-6)
+# .zshrc (2014-12-10)
 #
 
 # Environments {{{
@@ -293,6 +293,8 @@ function chpwd() { ls -AF }
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
+function mkdcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
+
 sudo-command-line() {
   [[ -z $BUFFER ]] && zle up-history
   [[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
@@ -300,6 +302,19 @@ sudo-command-line() {
 }
 zle -N sudo-command-line
 bindkey "^S^S" sudo-command-line
+
+function magic_enter() {
+  if [[ -z "$BUFFER" ]]; then
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+      BUFFER="git status --branch --short"
+    else
+      BUFFER="ls -AF"
+    fi
+  fi
+  builtin zle .accept-line
+}
+zle -N magic_enter
+bindkey '^M' magic_enter
 #}}}
 
 # Alias {{{
