@@ -69,6 +69,7 @@ autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
 #autoload -Uz predict-on
+autoload -Uz smart-insert-last-word
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
 autoload -Uz zmv
@@ -284,6 +285,10 @@ setopt equals
 setopt magic_equal_subst
 setopt mark_dirs
 setopt path_dirs
+
+zle -N insert-last-word smart-insert-last-word
+zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
+bindkey '^]' insert-last-word
 #}}}
 # Utility{{{
 alias rename='noglob zmv -ivW'
