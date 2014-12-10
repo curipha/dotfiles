@@ -1,12 +1,12 @@
 "
-" .vimrc (2014-11-10)
+" .vimrc (2014-12-4)
 "
 
 " Mode {{{
 set nocompatible
 
-scriptencoding utf-8
 set encoding=utf-8
+scriptencoding utf-8
 
 let s:iswin = has('win32') || has('win64')
 
@@ -23,16 +23,13 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-syntax enable
-filetype plugin indent on
-
 let $RUBYOPT = ''
 
 set t_Co=256
 set background=dark
 
-let mapleader = ','
-let maplocalleader = ','
+let g:mapleader = ','
+let g:maplocalleader = ','
 
 if has('vim_starting')
   let s:path_dotvim = s:iswin ? $VIM . '/plugins/*' : $HOME . '/.vim/*'
@@ -43,6 +40,9 @@ if has('vim_starting')
     end
   endfor
 endif
+
+syntax enable
+filetype plugin indent on
 " }}}
 
 " Edit {{{
@@ -121,6 +121,8 @@ vnoremap ; :
 
 inoremap jj <Esc>
 onoremap jj <Esc>
+inoremap kk <Esc>
+onoremap kk <Esc>
 
 vnoremap . :<C-u>normal .<CR>
 
@@ -242,7 +244,7 @@ set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
-\   if &filetype !=# 'help'
+\   if isdirectory(expand('%:p:h')) && &filetype !=# 'help'
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
 
@@ -438,13 +440,15 @@ endfor
 iabbrev <expr> #! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' ' . &filetype)
 " }}}
 " Syntax {{{
+" autoload/rubycomplete.vim
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
-let php_sql_query = 1
-let php_htmlInStrings = 1
-let php_noShortTags = 1
+" syntax/php.vim
+let g:php_sql_query = 1
+let g:php_htmlInStrings = 1
+let g:php_noShortTags = 1
 " }}}
 " Plugin {{{
 " neocomplete {{{

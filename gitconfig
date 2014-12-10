@@ -23,6 +23,7 @@
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
   l     = log --decorate --stat
+  lo    = log --decorate --oneline
   lp    = log --decorate --patch-with-stat
   pl    = pull
   pu    = push
@@ -35,11 +36,13 @@
   tree  = log --graph --oneline
   unstg = reset HEAD
 [diff]
-  algorithm = patience
+  algorithm = histogram
 [merge]
   ff = false
 [push]
   default = current
+[interactive]
+  singlekey = true
 [user]
   name  = Taichi
   email = taichi@curipha.jp

@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-10-22)
+# .zshrc (2014-12-6)
 #
 
 # Environments {{{
@@ -25,13 +25,15 @@ export VISUAL=vim
 
 export TERM=xterm-256color
 
-export GREP_OPTIONS='--color=auto --extended-regexp --binary-files=without-match'
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-#export MAKEFLAGS=-j4
+export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4'
+export CXXFLAGS=${CFLAGS}
+export MAKEFLAGS=-j4
+
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
@@ -110,11 +112,14 @@ if exists colordiff; then
   alias diff='colordiff'
 fi
 
+GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
   for EXCLUDE_DIR in .cvs .git .hg .svn .deps .libs; do
-    GREP_OPTIONS+=" --exclude-dir=${EXCLUDE_DIR}"
+    GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
+
+alias grep="grep ${GREP_PARAM}"
 # }}}
 
 # Core {{{
@@ -319,7 +324,8 @@ alias mkdir='mkdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias cls='tput clear'
+alias cls='echo -en "\033c" && tput clear'
+alias rst='echo -en "\033c" && tput clear && exec zsh'
 
 alias vi='vim'
 alias view='vim -R'
@@ -338,7 +344,6 @@ alias ,,,='cd ../..'
 alias ~='cd ~'
 alias /='cd /'
 
-alias rst='tput clear && exec zsh'
 alias hs='history 0 | grep -iE'
 
 alias a='./a.out'
