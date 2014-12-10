@@ -23,7 +23,7 @@
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
   l     = log --decorate --stat
-  lo    = log --decorate --oneline
+  lo    = log --decorate --oneline --graph
   lp    = log --decorate --patch-with-stat
   pl    = pull
   pu    = push
