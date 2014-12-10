@@ -295,13 +295,13 @@ function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 function mkdcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
 
-sudo-command-line() {
-  [[ -z $BUFFER ]] && zle up-history
-  [[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
+function sudo-command-line() {
+  [[ -z "$BUFFER" ]] && zle up-history
+  [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
   zle end-of-line
 }
 zle -N sudo-command-line
-bindkey "^S^S" sudo-command-line
+bindkey '^S^S' sudo-command-line
 
 function magic_enter() {
   if [[ -z "$BUFFER" ]]; then
