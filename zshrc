@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-6)
+# .zshrc (2014-12-10)
 #
 
 # Environments {{{
@@ -300,6 +300,19 @@ sudo-command-line() {
 }
 zle -N sudo-command-line
 bindkey "^S^S" sudo-command-line
+
+function magic_enter() {
+  if [[ -z "$BUFFER" ]]; then
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+      BUFFER="git status --branch --short"
+    else
+      BUFFER="ls -AF"
+    fi
+  fi
+  builtin zle .accept-line
+}
+zle -N magic_enter
+bindkey '^M' magic_enter
 #}}}
 
 # Alias {{{
