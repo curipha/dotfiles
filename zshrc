@@ -125,8 +125,8 @@ alias grep="grep ${GREP_PARAM}"
 # Core {{{
 bindkey -e
 
-bindkey "^?"      backward-delete-char
-bindkey "^H"      backward-delete-char
+bindkey '^?'      backward-delete-char
+bindkey '^H'      backward-delete-char
 bindkey "[3~" delete-char
 bindkey "[1~" beginning-of-line
 bindkey "[4~" end-of-line
@@ -306,9 +306,9 @@ bindkey '^S^S' sudo-command-line
 function magic_enter() {
   if [[ -z "$BUFFER" ]]; then
     if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-      BUFFER="git status --branch --short"
+      BUFFER='git status --branch --short'
     else
-      BUFFER="ls -AF"
+      BUFFER='ls -AF'
     fi
   fi
   builtin zle .accept-line
