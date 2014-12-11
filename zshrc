@@ -76,6 +76,7 @@ autoload -Uz zmv
 #}}}
 # Functions {{{
 function exists() { whence -p $1 &> /dev/null }
+function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` = 'true' ]] }
 # }}}
 # Macros {{{
 case ${OSTYPE} in
@@ -310,7 +311,7 @@ bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
   if [[ -z "$BUFFER" ]]; then
-    if git rev-parse --is-inside-work-tree &> /dev/null; then
+    if isinsiderepo; then
       BUFFER='git status --branch --short'
     else
       BUFFER='ls -AF'
@@ -322,7 +323,7 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_circumflex() {
-  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  if isinsiderepo; then
     BUFFER="cd $(git rev-parse --show-toplevel)"
   else
     BUFFER='cd ..'
@@ -331,6 +332,7 @@ function magic_circumflex() {
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
+
 #}}}
 
 # Alias {{{
