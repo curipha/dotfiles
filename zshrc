@@ -320,6 +320,17 @@ function magic_enter() {
 }
 zle -N magic_enter
 bindkey '^M' magic_enter
+
+function magic_circumflex() {
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    BUFFER="cd $(git rev-parse --show-toplevel)"
+  else
+    BUFFER='cd ..'
+  fi
+  zle accept-line
+}
+zle -N magic_circumflex
+bindkey '\^' magic_circumflex
 #}}}
 
 # Alias {{{
