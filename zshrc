@@ -310,13 +310,13 @@ bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
   if [[ -z "$BUFFER" ]]; then
-    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    if git rev-parse --is-inside-work-tree &> /dev/null; then
       BUFFER='git status --branch --short'
     else
       BUFFER='ls -AF'
     fi
   fi
-  builtin zle .accept-line
+  zle accept-line
 }
 zle -N magic_enter
 bindkey '^M' magic_enter
