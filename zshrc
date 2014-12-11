@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-10)
+# .zshrc (2014-12-11)
 #
 
 # Environments {{{
@@ -300,13 +300,13 @@ function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 function mkdcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
 
-function sudo-command-line() {
+function prefix_with_sudo() {
   [[ -z "$BUFFER" ]] && zle up-history
   [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
   zle end-of-line
 }
-zle -N sudo-command-line
-bindkey '^S^S' sudo-command-line
+zle -N prefix_with_sudo
+bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
   if [[ -z "$BUFFER" ]]; then
