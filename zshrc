@@ -324,7 +324,7 @@ bindkey '^M' magic_enter
 
 function magic_circumflex() {
   if isinsiderepo; then
-    BUFFER="cd $(git rev-parse --show-toplevel)"
+    BUFFER="cd `git rev-parse --show-toplevel`"
   else
     BUFFER='cd ..'
   fi
@@ -332,7 +332,6 @@ function magic_circumflex() {
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
-
 #}}}
 
 # Alias {{{
