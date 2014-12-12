@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-10)
+# .zshrc (2014-12-11)
 #
 
 # Environments {{{
@@ -76,6 +76,7 @@ autoload -Uz zmv
 #}}}
 # Functions {{{
 function exists() { whence -p $1 &> /dev/null }
+function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` = 'true' ]] }
 # }}}
 # Macros {{{
 case ${OSTYPE} in
@@ -300,17 +301,17 @@ function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 function mkdcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
 
-function sudo-command-line() {
+function prefix_with_sudo() {
   [[ -z "$BUFFER" ]] && zle up-history
   [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
   zle end-of-line
 }
-zle -N sudo-command-line
-bindkey '^S^S' sudo-command-line
+zle -N prefix_with_sudo
+bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
   if [[ -z "$BUFFER" ]]; then
-    if git rev-parse --is-inside-work-tree &> /dev/null; then
+    if isinsiderepo; then
       BUFFER='git status --branch --short'
     else
       BUFFER='ls -AF'
@@ -320,6 +321,17 @@ function magic_enter() {
 }
 zle -N magic_enter
 bindkey '^M' magic_enter
+
+function magic_circumflex() {
+  if isinsiderepo; then
+    BUFFER="cd `git rev-parse --show-toplevel`"
+  else
+    BUFFER='cd ..'
+  fi
+  zle accept-line
+}
+zle -N magic_circumflex
+bindkey '\^' magic_circumflex
 #}}}
 
 # Alias {{{
