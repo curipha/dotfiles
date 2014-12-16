@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-11)
+# .zshrc (2014-12-16)
 #
 
 # Environments {{{
@@ -136,6 +136,7 @@ bindkey "[4~" end-of-line
 bindkey ' ' magic-space
 
 setopt correct
+setopt combining_chars
 setopt no_flow_control
 setopt ignore_eof
 setopt print_exit_value
