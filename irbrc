@@ -1,5 +1,5 @@
 #
-# .irbrc (2014-9-15)
+# .irbrc (2014-12-16)
 #
 
 # Requires
@@ -30,23 +30,16 @@ def pwd
 end
 
 def ls(dir = Dir.pwd)
-  col, margin = 5, 4
-  lst, max = [], []
-
-  irbrc_get_direntry(dir).each_slice(col) {|x| lst << x }
-
-  lst.each {|x| x = x.fill('', x.length, col - x.length) if x.length != col }
-  lst.transpose.each_with_index {|x, i| max[i] = x.inject(0) {|m, y| y.length > m ? y.length : m} + margin }
-
-  lst.each {|x|
-    x.each_with_index {|y, i| print y.ljust(max[i]) }
-    print "\n"
-  }
-
-  return nil
+  system("ls #{dir}")
+end
+def la(dir = Dir.pwd)
+  system("ls -AF #{dir}")
 end
 def ll(dir = Dir.pwd)
-  puts irbrc_get_direntry(dir)
+  system("ls -l #{dir}")
+end
+def lla(dir = Dir.pwd)
+  system("ls -AFl #{dir}")
 end
 
 def cd(dir = File.expand_path('~'))
@@ -56,19 +49,6 @@ def cd(dir = File.expand_path('~'))
   end
   Dir.chdir(dir)
   Dir.pwd
-end
-
-def irbrc_get_direntry(dir)
-  Dir.entries(dir).delete_if {|x| x =~ /^\.+$/ }.sort
-    .map {|x|
-      case File.ftype("#{dir}/#{x}")
-      when 'directory' then x + '/'
-      when 'fifo'      then x + '|'
-      when 'link'      then x + '@'
-      when 'socket'    then x + '='
-      else x
-      end
-    }
 end
 
 # Alias
