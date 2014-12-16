@@ -235,7 +235,7 @@ zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:manuals' separate-sections true
 
-zstyle ':completion:*:*:*:users' ignored-patterns \
+zstyle ':completion:*:users' ignored-patterns \
 adm amanda apache avahi avahi-autoipd backup beaglidx bin cacti canna clamav colord \
 daemon dbus distcache dovecot fax ftp games gdm git gkrellmd gnats gopher \
 hacluster haldaemon halt hplip hsqldb http ident irc junkbust kernoops \
@@ -255,8 +255,8 @@ typeset -U cdpath
 
 zstyle ':completion:*:sudo:*' command-path
 
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,cmd -w -w"
+zstyle ':completion:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:processes' command "ps -u `whoami` -o pid,user,cmd -w -w"
 zstyle ':completion:*:(processes|jobs)' menu yes select=2
 
 zstyle ':completion:*:complete:scp:*:files' command command -
