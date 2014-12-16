@@ -31,10 +31,11 @@
   pul   = pull
   pus   = push
   r     = remote --verbose
+  rvt   = reset --hard HEAD
   sh    = show
+  ss    = stash
   st    = status --branch --short
   sync  = !git fetch && git reset --hard FETCH_HEAD
-  tree  = log --graph --oneline
   unstg = reset HEAD
 [diff]
   algorithm = histogram
