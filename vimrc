@@ -1,5 +1,5 @@
 "
-" .vimrc (2014-12-4)
+" .vimrc (2014-12-13)
 "
 
 " Mode {{{
@@ -283,7 +283,7 @@ set smartcase
 
 set grepprg=internal
 
-autocmd MyAutoCmd QuickFixCmdPost make,grep,grepadd,vimgrep
+autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) == 0
 \ |   cclose
 \ | else
