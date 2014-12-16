@@ -256,7 +256,7 @@ typeset -U cdpath
 
 zstyle ':completion:*:sudo:*' command-path
 
-zstyle ':completion:*:processes' command "ps -u `whoami` -o pid,user,cmd -w -w"
+zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
 zstyle ':completion:*:(processes|jobs)' menu yes select=2
 
 zstyle ':completion:*:complete:scp:*:files' command command -
