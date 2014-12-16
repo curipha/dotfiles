@@ -324,12 +324,16 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_circumflex() {
-  if isinsiderepo; then
-    BUFFER="cd `git rev-parse --show-toplevel`"
+  if [[ -z "$BUFFER" ]]; then
+    if isinsiderepo; then
+      BUFFER="cd `git rev-parse --show-toplevel`"
+    else
+      BUFFER='cd ..'
+    fi
+    zle accept-line
   else
-    BUFFER='cd ..'
+    zle self-insert '^'
   fi
-  zle accept-line
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
