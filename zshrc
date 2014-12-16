@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-11)
+# .zshrc (2014-12-16)
 #
 
 # Environments {{{
@@ -136,6 +136,7 @@ bindkey "[4~" end-of-line
 bindkey ' ' magic-space
 
 setopt correct
+setopt combining_chars
 setopt no_flow_control
 setopt ignore_eof
 setopt print_exit_value
@@ -234,7 +235,8 @@ zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:manuals' separate-sections true
 
-zstyle ':completion:*:*:*:users' ignored-patterns \
+zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*:users' ignored-patterns \
 adm amanda apache avahi avahi-autoipd backup beaglidx bin cacti canna clamav colord \
 daemon dbus distcache dovecot fax ftp games gdm git gkrellmd gnats gopher \
 hacluster haldaemon halt hplip hsqldb http ident irc junkbust kernoops \
@@ -254,8 +256,7 @@ typeset -U cdpath
 
 zstyle ':completion:*:sudo:*' command-path
 
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,cmd -w -w"
+zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
 zstyle ':completion:*:(processes|jobs)' menu yes select=2
 
 zstyle ':completion:*:complete:scp:*:files' command command -
@@ -323,12 +324,16 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_circumflex() {
-  if isinsiderepo; then
-    BUFFER="cd `git rev-parse --show-toplevel`"
+  if [[ -z "$BUFFER" ]]; then
+    if isinsiderepo; then
+      BUFFER="cd `git rev-parse --show-toplevel`"
+    else
+      BUFFER='cd ..'
+    fi
+    zle accept-line
   else
-    BUFFER='cd ..'
+    zle self-insert '^'
   fi
-  zle accept-line
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
