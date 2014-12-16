@@ -235,6 +235,7 @@ zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:manuals' separate-sections true
 
+zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:users' ignored-patterns \
 adm amanda apache avahi avahi-autoipd backup beaglidx bin cacti canna clamav colord \
 daemon dbus distcache dovecot fax ftp games gdm git gkrellmd gnats gopher \
