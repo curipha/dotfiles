@@ -313,7 +313,7 @@ zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
-  if [[ -z "$BUFFER" ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" = 'start' ]]; then
     if isinsiderepo; then
       BUFFER='git status --branch --short'
     else
@@ -326,7 +326,7 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_circumflex() {
-  if [[ -z "$BUFFER" ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" = 'start' ]]; then
     if isinsiderepo; then
       BUFFER="cd `git rev-parse --show-toplevel`"
     else
