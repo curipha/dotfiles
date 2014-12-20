@@ -31,6 +31,7 @@
   pul   = pull
   pus   = push
   r     = remote --verbose
+  rvt   = reset --hard HEAD
   sh    = show
   ss    = stash
   st    = status --branch --short
