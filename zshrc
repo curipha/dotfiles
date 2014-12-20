@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-16)
+# .zshrc (2014-12-20)
 #
 
 # Environments {{{
@@ -149,6 +149,8 @@ setopt no_beep
 setopt no_clobber
 
 REPORTTIME=2
+TIMEFMT="%J | user: %U, system: %S, cpu: %P, total: %*E"
+
 MAILCHECK=0
 
 colors
