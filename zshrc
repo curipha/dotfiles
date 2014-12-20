@@ -149,7 +149,7 @@ setopt no_beep
 setopt no_clobber
 
 REPORTTIME=2
-TIMEFMT="%J | user: %U, system: %S, cpu: %P, total: %*E"
+TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
 
 MAILCHECK=0
 
@@ -157,16 +157,16 @@ colors
 zle -N self-insert url-quote-magic
 # }}}
 # Prompt {{{
-[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH="@ssh"
+[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
 
 PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
-PROMPT2="%_ %# "
-RPROMPT="  %1v  %D{%b.%f (%a) %K:%M}"
-SPROMPT="zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: "
+PROMPT2='%_ %# '
+RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
+SPROMPT='zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 
 setopt prompt_cr
 setopt prompt_sp
-PROMPT_EOL_MARK="%B%S<EOL>%s%b"
+PROMPT_EOL_MARK='%B%S<EOL>%s%b'
 
 setopt prompt_subst
 setopt transient_rprompt
