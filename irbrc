@@ -1,5 +1,5 @@
 #
-# .irbrc (2014-12-16)
+# .irbrc (2014-12-20)
 #
 
 # Requires
@@ -56,5 +56,5 @@ alias q exit
 alias x exit
 
 # Banner
-puts "ruby #{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]"
+puts RUBY_DESCRIPTION
 

@@ -1,5 +1,5 @@
 #
-# .pryrc (2014-9-4)
+# .pryrc (2014-12-20)
 #
 
 # Requires
@@ -23,5 +23,5 @@ end
 Pry.config.history.should_save = false
 
 # Banner
-puts "ruby #{RUBY_VERSION}p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]"
+puts RUBY_DESCRIPTION
 
