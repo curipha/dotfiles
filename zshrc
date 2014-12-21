@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-20)
+# .zshrc (2014-12-21)
 #
 
 # Environments {{{
@@ -248,7 +248,7 @@ pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser r
 saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
 
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*' ignore-parents parent pwd ..
 cdpath=(
   $HOME
   ..
