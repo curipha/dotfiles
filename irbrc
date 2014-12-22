@@ -2,7 +2,7 @@
 #  .irbrc
 # ===============
 
-# Requires
+# Requires {{{
 %w(
 cgi/util
 date
@@ -19,12 +19,13 @@ thread
     puts e.message
   end
 end
-
-# Configure
+#}}}
+# Configure {{{
 IRB.conf[:AUTO_INDENT] = true
 IRB.conf[:PROMPT_MODE] = :SIMPLE
+#}}}
 
-# Methods
+# Methods {{{
 def pwd
   Dir.pwd
 end
@@ -50,11 +51,12 @@ def cd(dir = File.expand_path('~'))
   Dir.chdir(dir)
   Dir.pwd
 end
-
-# Alias
+#}}}
+# Alias {{{
 alias q exit
 alias x exit
-
-# Banner
+#}}}
+# Banner {{{
 puts RUBY_DESCRIPTION
+#}}}
 
