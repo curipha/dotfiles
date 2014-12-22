@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-21)
+# .zshrc (2014-12-22)
 #
 
 # Environments {{{
@@ -127,11 +127,11 @@ alias grep="grep ${GREP_PARAM}"
 # Core {{{
 bindkey -e
 
-bindkey '^?'      backward-delete-char
-bindkey '^H'      backward-delete-char
-bindkey "[3~" delete-char
-bindkey "[1~" beginning-of-line
-bindkey "[4~" end-of-line
+bindkey '^?'    backward-delete-char
+bindkey '^H'    backward-delete-char
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[[4~' end-of-line
 
 bindkey ' ' magic-space
 
