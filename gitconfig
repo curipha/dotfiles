@@ -27,9 +27,12 @@
   fix   = commit --amend
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
-  l     = log --decorate --stat
-  lo    = log --decorate --oneline --graph
-  lp    = log --decorate --patch-with-stat
+  l     = log --decorate --stat --no-merges
+  la    = log --decorate --stat
+  lo    = log --decorate --oneline --graph --no-merges
+  loa   = log --decorate --oneline --graph
+  lp    = log --decorate --patch-with-stat --no-merges
+  lpa   = log --decorate --patch-with-stat
   pl    = pull
   pu    = push
   pul   = pull
