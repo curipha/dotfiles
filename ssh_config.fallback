@@ -1,6 +1,6 @@
-#
-# ~/.ssh/config for legacy OpenSSH (2014-10-13)
-#
+# ===================================
+#  ~/.ssh/config for legacy OpenSSH
+# ===================================
 
 Protocol 2
 

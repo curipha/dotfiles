@@ -1,6 +1,6 @@
-#
-# .zshrc (2014-12-22)
-#
+# ===============
+#  .zshrc
+# ===============
 
 # Environments {{{
 #export LANG=ja_JP.UTF-8

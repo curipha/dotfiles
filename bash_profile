@@ -1,4 +1,7 @@
-# .bash_profile
+# ===============
+#  .bash_profile
+# ===============
+
 history -c
 unset HISTFILE
 
