@@ -47,6 +47,8 @@
   default = current
 [interactive]
   singlekey = true
+[help]
+  autocorrect = -1
 [user]
   name  = Taichi
   email = taichi@curipha.jp
