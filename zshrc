@@ -116,7 +116,7 @@ fi
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
-  for EXCLUDE_DIR in .cvs .git .hg .svn .deps .libs; do
+  for EXCLUDE_DIR in .git .hg .svn .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
