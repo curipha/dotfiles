@@ -2,12 +2,6 @@
 #  .gitconfig
 # ===============
 
-[color]
-  branch      = auto
-  diff        = auto
-  grep        = auto
-  interactive = auto
-  status      = auto
 [alias]
   a     = add
   ad    = add
@@ -46,19 +40,25 @@
   st    = status --branch --short
   sync  = !git fetch && git reset --hard FETCH_HEAD
   unstg = reset HEAD
+[color]
+  branch      = auto
+  diff        = auto
+  grep        = auto
+  interactive = auto
+  status      = auto
 [diff]
   algorithm = histogram
+[github]
+  user = curipha
+[help]
+  autocorrect = -1
+[interactive]
+  singlekey = true
 [merge]
   ff = false
 [push]
   default = current
-[interactive]
-  singlekey = true
-[help]
-  autocorrect = -1
 [user]
   name  = Taichi
   email = taichi@curipha.jp
-[github]
-  user = curipha
 
