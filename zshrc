@@ -1,6 +1,6 @@
-#
-# .zshrc (2014-12-16)
-#
+# ===============
+#  .zshrc
+# ===============
 
 # Environments {{{
 #export LANG=ja_JP.UTF-8
@@ -62,7 +62,7 @@ umask 022
 ulimit -c 0
 
 stty -ixon -ixoff
-# }}}
+#}}}
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz colors
@@ -76,8 +76,8 @@ autoload -Uz zmv
 #}}}
 # Functions {{{
 function exists() { whence -p $1 &> /dev/null }
-function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` = 'true' ]] }
-# }}}
+function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+#}}}
 # Macros {{{
 case ${OSTYPE} in
   linux*)
@@ -116,22 +116,24 @@ fi
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
-  for EXCLUDE_DIR in .cvs .git .hg .svn .deps .libs; do
+  for EXCLUDE_DIR in .git .hg .svn .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
 
 alias grep="grep ${GREP_PARAM}"
-# }}}
+#}}}
 
 # Core {{{
 bindkey -e
 
-bindkey '^?'      backward-delete-char
-bindkey '^H'      backward-delete-char
-bindkey "[3~" delete-char
-bindkey "[1~" beginning-of-line
-bindkey "[4~" end-of-line
+bindkey '^?'    backward-delete-char
+bindkey '^H'    backward-delete-char
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[[4~' end-of-line
+
+bindkey '^[[Z' reverse-menu-complete
 
 bindkey ' ' magic-space
 
@@ -148,23 +150,28 @@ setopt multios
 setopt no_beep
 setopt no_clobber
 
+setopt c_bases
+setopt octal_zeroes
+
 REPORTTIME=2
+TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
+
 MAILCHECK=0
 
 colors
 zle -N self-insert url-quote-magic
-# }}}
+#}}}
 # Prompt {{{
-[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH="@ssh"
+[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
 
 PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
-PROMPT2="%_ %# "
-RPROMPT="  %1v  %D{%b.%f (%a) %K:%M}"
-SPROMPT="zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: "
+PROMPT2='%_ %# '
+RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
+SPROMPT='zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 
 setopt prompt_cr
 setopt prompt_sp
-PROMPT_EOL_MARK="%B%S<EOL>%s%b"
+PROMPT_EOL_MARK='%B%S<EOL>%s%b'
 
 setopt prompt_subst
 setopt transient_rprompt
@@ -183,13 +190,13 @@ function precmd_vcs_info() {
   [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
 add-zsh-hook precmd precmd_vcs_info
-# }}}
+#}}}
 
 # Jobs {{{
 setopt auto_resume
 setopt bg_nice
 setopt long_list_jobs
-# }}}
+#}}}
 # History {{{
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -210,7 +217,7 @@ bindkey '^P' history-beginning-search-backward-end
 bindkey '^N' history-beginning-search-forward-end
 bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^S' history-incremental-pattern-search-forward
-# }}}
+#}}}
 # Complement {{{
 compinit
 
@@ -246,7 +253,7 @@ pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser r
 saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
 
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*' ignore-parents parent pwd ..
 cdpath=(
   $HOME
   ..
@@ -311,7 +318,7 @@ zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
-  if [[ -z "$BUFFER" ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER='git status --branch --short'
     else
@@ -324,7 +331,7 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_circumflex() {
-  if [[ -z "$BUFFER" ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER="cd `git rev-parse --show-toplevel`"
     else
@@ -337,6 +344,16 @@ function magic_circumflex() {
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
+
+function 256color() {
+  local code
+  for code in {0..255}; do
+    echo -en "\e[48;5;${code}m $(( [##16] ${code} )) \e[0m"
+    [[ $code == 15 ]] && echo
+    [[ $(( ${code} >= 16 && ${code} <= 231 && ( ${code} - 16 ) % 18 == 17 )) == 1 ]] && echo
+  done
+  echo
+}
 #}}}
 
 # Alias {{{
@@ -409,7 +426,7 @@ alias q='exit'
 alias x='exit'
 #alias y=''
 #alias z=''
-# }}}
+#}}}
 
 [[ -f ~/.zshrc.include ]] && source ~/.zshrc.include
 

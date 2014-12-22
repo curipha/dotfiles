@@ -1,6 +1,6 @@
-#
-# .screenrc (2013-7-23)
-#
+# ===============
+#  .screenrc
+# ===============
 
 # Core {{{
 defutf8 on
@@ -19,7 +19,7 @@ ignorecase on
 
 shell -$SHELL
 term xterm-256color
-# }}}
+#}}}
 # Display {{{
 defbce on
 altscreen on
@@ -30,9 +30,9 @@ vbell off
 
 caption always '%?%F%{= wk}%:%{= Kk}%?%3n %t'
 hardstatus alwayslastline "%{=b Wk}[%H] %-w%{=b kr} %n %t %{-}%+w %= %{=b Wb}%Y/%m/%d (%D) %{+ m}%c %{+ k}[%l]"
-# }}}
+#}}}
 
-# Keybind {{{
+# Key bind {{{
 bind b
 bind ^b
 bind ^g
@@ -75,5 +75,5 @@ bind -c resize k eval 'resize -1' 'command -c resize'
 
 bind p  paste .
 bind ^p paste .
-# }}}
+#}}}
 
