@@ -62,7 +62,7 @@ umask 022
 ulimit -c 0
 
 stty -ixon -ixoff
-# }}}
+#}}}
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz colors
@@ -77,7 +77,7 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p $1 &> /dev/null }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
-# }}}
+#}}}
 # Macros {{{
 case ${OSTYPE} in
   linux*)
@@ -122,7 +122,7 @@ if grep --help 2>&1 | grep -q -- --exclude-dir; then
 fi
 
 alias grep="grep ${GREP_PARAM}"
-# }}}
+#}}}
 
 # Core {{{
 bindkey -e
@@ -160,7 +160,7 @@ MAILCHECK=0
 
 colors
 zle -N self-insert url-quote-magic
-# }}}
+#}}}
 # Prompt {{{
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
 
@@ -190,13 +190,13 @@ function precmd_vcs_info() {
   [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
 add-zsh-hook precmd precmd_vcs_info
-# }}}
+#}}}
 
 # Jobs {{{
 setopt auto_resume
 setopt bg_nice
 setopt long_list_jobs
-# }}}
+#}}}
 # History {{{
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -217,7 +217,7 @@ bindkey '^P' history-beginning-search-backward-end
 bindkey '^N' history-beginning-search-forward-end
 bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^S' history-incremental-pattern-search-forward
-# }}}
+#}}}
 # Complement {{{
 compinit
 
@@ -426,7 +426,7 @@ alias q='exit'
 alias x='exit'
 #alias y=''
 #alias z=''
-# }}}
+#}}}
 
 [[ -f ~/.zshrc.include ]] && source ~/.zshrc.include
 
