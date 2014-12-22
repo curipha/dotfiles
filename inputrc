@@ -1,6 +1,6 @@
-#
-# .inputrc (2012-7-29)
-#
+# ===============
+#  .inputrc
+# ===============
 
 # Keybind {{{
 set editing-mode emacs

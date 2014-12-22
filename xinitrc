@@ -1,6 +1,6 @@
-#
-# .xinitrc (2014-9-29)
-#
+# ===============
+#  .xinitrc
+# ===============
 
 # Language
 export LANG=ja_JP.UTF-8

@@ -1,6 +1,6 @@
-#
-# .zshrc (2014-12-21)
-#
+# ===============
+#  .zshrc
+# ===============
 
 # Environments {{{
 #export LANG=ja_JP.UTF-8
@@ -76,7 +76,7 @@ autoload -Uz zmv
 #}}}
 # Functions {{{
 function exists() { whence -p $1 &> /dev/null }
-function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` = 'true' ]] }
+function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 # }}}
 # Macros {{{
 case ${OSTYPE} in
@@ -127,11 +127,13 @@ alias grep="grep ${GREP_PARAM}"
 # Core {{{
 bindkey -e
 
-bindkey '^?'      backward-delete-char
-bindkey '^H'      backward-delete-char
-bindkey "[3~" delete-char
-bindkey "[1~" beginning-of-line
-bindkey "[4~" end-of-line
+bindkey '^?'    backward-delete-char
+bindkey '^H'    backward-delete-char
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[[4~' end-of-line
+
+bindkey '^[[Z' reverse-menu-complete
 
 bindkey ' ' magic-space
 
@@ -147,6 +149,9 @@ setopt multios
 
 setopt no_beep
 setopt no_clobber
+
+setopt c_bases
+setopt octal_zeroes
 
 REPORTTIME=2
 TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
@@ -313,7 +318,7 @@ zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
-  if [[ -z "$BUFFER" && "$CONTEXT" = 'start' ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER='git status --branch --short'
     else
@@ -326,7 +331,7 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_circumflex() {
-  if [[ -z "$BUFFER" && "$CONTEXT" = 'start' ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER="cd `git rev-parse --show-toplevel`"
     else
@@ -339,6 +344,16 @@ function magic_circumflex() {
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
+
+function 256color() {
+  local code
+  for code in {0..255}; do
+    echo -en "\e[48;5;${code}m $(( [##16] ${code} )) \e[0m"
+    [[ $code == 15 ]] && echo
+    [[ $(( ${code} >= 16 && ${code} <= 231 && ( ${code} - 16 ) % 18 == 17 )) == 1 ]] && echo
+  done
+  echo
+}
 #}}}
 
 # Alias {{{

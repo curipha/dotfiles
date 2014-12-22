@@ -33,6 +33,8 @@
   r     = remote --verbose
   rvt   = reset --hard HEAD
   sh    = show
+  sl    = stash list
+  sp    = stash show --patch
   ss    = stash
   st    = status --branch --short
   sync  = !git fetch && git reset --hard FETCH_HEAD
@@ -45,6 +47,8 @@
   default = current
 [interactive]
   singlekey = true
+[help]
+  autocorrect = -1
 [user]
   name  = Taichi
   email = taichi@curipha.jp

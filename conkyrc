@@ -1,6 +1,6 @@
-#
-# .conkyrc (2013-9-20)
-#
+# ===============
+#  .conkyrc
+# ===============
 
 # Environment {{{
 update_interval 1.0
