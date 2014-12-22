@@ -150,6 +150,9 @@ setopt multios
 setopt no_beep
 setopt no_clobber
 
+setopt c_bases
+setopt octal_zeroes
+
 REPORTTIME=2
 TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
 
