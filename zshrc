@@ -1,5 +1,5 @@
 #
-# .zshrc (2014-12-16)
+# .zshrc (2014-12-21)
 #
 
 # Environments {{{
@@ -149,22 +149,24 @@ setopt no_beep
 setopt no_clobber
 
 REPORTTIME=2
+TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
+
 MAILCHECK=0
 
 colors
 zle -N self-insert url-quote-magic
 # }}}
 # Prompt {{{
-[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH="@ssh"
+[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
 
 PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
-PROMPT2="%_ %# "
-RPROMPT="  %1v  %D{%b.%f (%a) %K:%M}"
-SPROMPT="zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: "
+PROMPT2='%_ %# '
+RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
+SPROMPT='zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 
 setopt prompt_cr
 setopt prompt_sp
-PROMPT_EOL_MARK="%B%S<EOL>%s%b"
+PROMPT_EOL_MARK='%B%S<EOL>%s%b'
 
 setopt prompt_subst
 setopt transient_rprompt
@@ -246,7 +248,7 @@ pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser r
 saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
 
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*' ignore-parents parent pwd ..
 cdpath=(
   $HOME
   ..
@@ -311,7 +313,7 @@ zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
-  if [[ -z "$BUFFER" ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" = 'start' ]]; then
     if isinsiderepo; then
       BUFFER='git status --branch --short'
     else
@@ -324,7 +326,7 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_circumflex() {
-  if [[ -z "$BUFFER" ]]; then
+  if [[ -z "$BUFFER" && "$CONTEXT" = 'start' ]]; then
     if isinsiderepo; then
       BUFFER="cd `git rev-parse --show-toplevel`"
     else
