@@ -184,6 +184,8 @@ zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
 zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
 
+zstyle ':vcs_info:*' max-exports 1
+
 function precmd_vcs_info() {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
