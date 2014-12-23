@@ -1,9 +1,7 @@
-[color]
-  branch      = auto
-  diff        = auto
-  grep        = auto
-  interactive = auto
-  status      = auto
+# ===============
+#  .gitconfig
+# ===============
+
 [alias]
   a     = add
   ad    = add
@@ -23,9 +21,12 @@
   fix   = commit --amend
   ft    = fetch
   g     = grep --break --color --heading --line-number --show-function
-  l     = log --decorate --stat
-  lo    = log --decorate --oneline --graph
-  lp    = log --decorate --patch-with-stat
+  l     = log --decorate --stat --no-merges
+  la    = log --decorate --stat
+  lo    = log --decorate --oneline --graph --no-merges
+  loa   = log --decorate --oneline --graph
+  lp    = log --decorate --patch-with-stat --no-merges
+  lpa   = log --decorate --patch-with-stat
   pl    = pull
   pu    = push
   pul   = pull
@@ -39,19 +40,25 @@
   st    = status --branch --short
   sync  = !git fetch && git reset --hard FETCH_HEAD
   unstg = reset HEAD
+[color]
+  branch      = auto
+  diff        = auto
+  grep        = auto
+  interactive = auto
+  status      = auto
 [diff]
   algorithm = histogram
+[github]
+  user = curipha
+[help]
+  autocorrect = -1
+[interactive]
+  singlekey = true
 [merge]
   ff = false
 [push]
   default = current
-[interactive]
-  singlekey = true
-[help]
-  autocorrect = -1
 [user]
   name  = Taichi
   email = taichi@curipha.jp
-[github]
-  user = curipha
 
