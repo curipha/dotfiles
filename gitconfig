@@ -8,7 +8,7 @@
   ap     = add --patch
   br     = branch --all --color --verbose --verbose
   ci     = commit --verbose
-  cl     = clone
+  cl     = clean -d
   co     = checkout
   d      = diff
   dc     = diff --cached
