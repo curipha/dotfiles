@@ -54,6 +54,8 @@
   user = curipha
 [help]
   autocorrect = -1
+[include]
+  path = ~/.gitconfig.local
 [interactive]
   singlekey = true
 [merge]
