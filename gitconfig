@@ -32,7 +32,9 @@
   pul   = pull
   pus   = push
   r     = remote --verbose
-  rvt   = reset --hard HEAD
+  rvt   = checkout --
+  rvti  = checkout --         # Revert a file to index
+  rvth  = checkout HEAD --    # Revert a file to HEAD
   sh    = show
   sl    = stash list
   sp    = stash show --patch
