@@ -13,9 +13,9 @@
   d     = diff
   dc    = diff --cached
   dd    = diff HEAD~
-  ddd   = diff HEAD~~
-  dddd  = diff HEAD~~~
-  ddddd = diff HEAD~~~~
+  ddd   = diff HEAD~2
+  dddd  = diff HEAD~3
+  ddddd = diff HEAD~4
   ds    = diff --staged
   fe    = fetch
   fix   = commit --amend
