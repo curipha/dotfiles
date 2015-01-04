@@ -322,7 +322,7 @@ bindkey '^S^S' prefix_with_sudo
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
-      BUFFER='git status --branch --short'
+      BUFFER='git status --branch --short --untracked-files=all'
     else
       BUFFER='ls -AF'
     fi
@@ -371,7 +371,7 @@ alias lls='ls -AFl'
 alias lr='ls -FR'
 alias lra='ls -AFR'
 
-alias rm='rm -i'
+alias rm='rm -iv'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
