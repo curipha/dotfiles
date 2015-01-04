@@ -42,7 +42,7 @@ if [ -n ${SSH_CONFIG} ]; then
   SOURCE=${SOURCE_DIR}/${SSH_CONFIG}
   TARGET=${HOME}/.ssh/config
 
-  if [ ! -e ${HOME}/.ssh ]; then
+  if [ ! -d ${HOME}/.ssh ]; then
     mkdir -p ${HOME}/.ssh
     chmod 0700 ${HOME}/.ssh
   fi
