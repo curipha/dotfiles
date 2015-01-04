@@ -41,6 +41,7 @@
   ss    = stash
   st    = status --branch --short
   sync  = !git fetch && git reset --hard FETCH_HEAD
+  unlive= reset --hard HEAD
   unstg = reset HEAD
 [color]
   branch      = auto
