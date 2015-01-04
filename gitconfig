@@ -39,7 +39,7 @@
   sl     = stash list
   sp     = stash show --patch
   ss     = stash
-  st     = status --branch --short
+  st     = status --branch --short --untracked-files=all
   sync   = !git fetch && git reset --hard FETCH_HEAD
   unlive = reset --hard HEAD
   unstg  = reset HEAD
