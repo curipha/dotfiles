@@ -16,7 +16,6 @@
   ddd    = diff HEAD~2
   dddd   = diff HEAD~3
   ddddd  = diff HEAD~4
-  ds     = diff --staged
   fe     = fetch
   fix    = commit --amend
   ft     = fetch
@@ -29,8 +28,6 @@
   lpa    = log --decorate --patch-with-stat
   pl     = pull
   pu     = push
-  pul    = pull
-  pus    = push
   r      = remote --verbose
   rvt    = checkout --
   rvth   = checkout HEAD --    # Revert a file to HEAD
