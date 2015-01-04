@@ -48,6 +48,8 @@
   status      = auto
 [diff]
   algorithm = histogram
+[fetch]
+  prune = true
 [github]
   user = curipha
 [help]
