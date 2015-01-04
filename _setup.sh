@@ -21,13 +21,13 @@ makeln()
   fi
 
   if [ -L ${2} ]; then
-    rm -f ${2}
+    rm -fv ${2}
   fi
   if [ -f ${2} ]; then
     mv -iv ${2} ${2}.bak
   fi
 
-  ln -s ${1} ${2}
+  ln -sv ${1} ${2}
 }
 
 
@@ -43,7 +43,7 @@ if [ -n ${SSH_CONFIG} ]; then
   TARGET=${HOME}/.ssh/config
 
   if [ ! -d ${HOME}/.ssh ]; then
-    mkdir -p ${HOME}/.ssh
+    mkdir -vp ${HOME}/.ssh
     chmod 0700 ${HOME}/.ssh
   fi
 
