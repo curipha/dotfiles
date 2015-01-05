@@ -3,7 +3,7 @@
 # Dotfiles initializer
 #  * Create symlinks to dotfiles in your repository.
 
-SOURCE_DIR=${HOME}/dotfiles
+SOURCE_DIR="$(cd `dirname "${0}"` && pwd)"
 
 DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
