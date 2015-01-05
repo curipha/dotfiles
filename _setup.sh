@@ -33,7 +33,7 @@ done
 if [[ -n ${SSH_CONFIG} ]]; then
   if [[ ! -d "${HOME}/.ssh" ]]; then
     mkdir -vp "${HOME}/.ssh"
-    chmod 0700 "${HOME}/.ssh"
+    chmod -v 0700 "${HOME}/.ssh"
   fi
 
   makeln "${SOURCE_DIR}/${SSH_CONFIG}" "${HOME}/.ssh/config"
