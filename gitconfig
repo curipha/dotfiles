@@ -48,10 +48,14 @@
   status      = auto
 [diff]
   algorithm = histogram
+[fetch]
+  prune = true
 [github]
   user = curipha
 [help]
   autocorrect = -1
+[include]
+  path = ~/.gitconfig.local
 [interactive]
   singlekey = true
 [merge]
