@@ -8,16 +8,20 @@ SOURCE_DIR="$(cd `dirname "${0}"` && pwd)"
 DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
+abort()
+{
+  echo $@
+  exit 1
+}
+
 makeln()
 {
   if [ ${#} -ne 2 ]; then
-    echo 'ERR: Illegal usage of makeln().'
-    exit 1
+    abort 'ERR: Illegal usage of makeln().'
   fi
 
   if [ ! -f ${1} ]; then
-    echo "ERR: Source file (${1}) is not exists."
-    exit 1
+    abort "ERR: Source file (${1}) is not exists."
   fi
 
   if [ -L ${2} ]; then
