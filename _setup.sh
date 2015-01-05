@@ -32,21 +32,16 @@ makeln()
 
 
 for file in ${DOTFILES[@]}; do
-  SOURCE=${SOURCE_DIR}/${file}
-  TARGET=${HOME}/.${file}
-
-  makeln ${SOURCE} ${TARGET}
+  makeln "${SOURCE_DIR}/${file}" "${HOME}/.${file}"
 done
 
 if [ -n ${SSH_CONFIG} ]; then
-  SOURCE=${SOURCE_DIR}/${SSH_CONFIG}
-  TARGET=${HOME}/.ssh/config
 
   if [ ! -d ${HOME}/.ssh ]; then
     mkdir -vp ${HOME}/.ssh
     chmod 0700 ${HOME}/.ssh
   fi
 
-  makeln ${SOURCE} ${TARGET}
+  makeln "${SOURCE_DIR}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
 
