@@ -6,7 +6,6 @@ Protocol 2
 
 Host *
   IdentityFile          ~/.ssh/id_ecdsa
-  IdentityFile          ~/.ssh/id_rsa
   IdentitiesOnly        yes
 
   Ciphers               aes256-ctr
