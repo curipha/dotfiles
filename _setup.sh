@@ -3,50 +3,39 @@
 # Dotfiles initializer
 #  * Create symlinks to dotfiles in your repository.
 
-SOURCE_DIR=${HOME}/dotfiles
+SOURCE_DIR="$(cd `dirname "${0}"` && pwd)"
 
 DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
+abort()
+{
+  echo $@
+  exit 1
+}
+
 makeln()
 {
-  if [ ${#} -ne 2 ]; then
-    echo 'ERR: Illegal usage of makeln().'
-    exit 1
-  fi
+  [[ ${#} -ne 2 ]]  && abort 'ERR: Illegal usage of makeln().'
+  [[ ! -f "${1}" ]] && abort "ERR: Source file (${1}) is not exists."
 
-  if [ ! -f ${1} ]; then
-    echo "ERR: Source file (${1}) is not exists."
-    exit 1
-  fi
+  [[ -L "${2}" ]] && rm -fv "${2}"
+  [[ -f "${2}" ]] && mv -iv "${2}" "${2}.bak"
 
-  if [ -L ${2} ]; then
-    rm -fv ${2}
-  fi
-  if [ -f ${2} ]; then
-    mv -iv ${2} ${2}.bak
-  fi
-
-  ln -sv ${1} ${2}
+  ln -sv "${1}" "${2}"
 }
 
 
 for file in ${DOTFILES[@]}; do
-  SOURCE=${SOURCE_DIR}/${file}
-  TARGET=${HOME}/.${file}
-
-  makeln ${SOURCE} ${TARGET}
+  makeln "${SOURCE_DIR}/${file}" "${HOME}/.${file}"
 done
 
-if [ -n ${SSH_CONFIG} ]; then
-  SOURCE=${SOURCE_DIR}/${SSH_CONFIG}
-  TARGET=${HOME}/.ssh/config
-
-  if [ ! -d ${HOME}/.ssh ]; then
-    mkdir -vp ${HOME}/.ssh
-    chmod 0700 ${HOME}/.ssh
+if [[ -n ${SSH_CONFIG} ]]; then
+  if [[ ! -d "${HOME}/.ssh" ]]; then
+    mkdir -vp "${HOME}/.ssh"
+    chmod -v 0700 "${HOME}/.ssh"
   fi
 
-  makeln ${SOURCE} ${TARGET}
+  makeln "${SOURCE_DIR}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
 
