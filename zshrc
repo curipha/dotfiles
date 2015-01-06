@@ -233,8 +233,7 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu select=long
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
@@ -245,7 +244,6 @@ zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 
-zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
