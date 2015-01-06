@@ -5,7 +5,7 @@
 Protocol 2
 
 Host *
-  IdentityFile          ~/.ssh/id_ecdsa
+  IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
 
   IgnoreUnknown         yes
