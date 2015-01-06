@@ -69,6 +69,7 @@ autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
 #autoload -Uz predict-on
+autoload -Uz run-help
 autoload -Uz smart-insert-last-word
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
@@ -160,6 +161,8 @@ MAILCHECK=0
 
 colors
 zle -N self-insert url-quote-magic
+
+unalias run-help
 #}}}
 # Prompt {{{
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
@@ -226,22 +229,21 @@ compinit
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-zstyle ':completion:*' verbose yes
+zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu select=long
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' ignore-line true
 
 zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 
-zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
@@ -309,7 +311,7 @@ function chpwd() { ls -AF }
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
-function mkdcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
+function mkd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && cd "$1" }
 
 function prefix_with_sudo() {
   [[ -z "$BUFFER" ]] && zle up-history
