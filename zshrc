@@ -229,7 +229,7 @@ compinit
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-zstyle ':completion:*' verbose yes
+zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
 zstyle ':completion:*' group-name ''
