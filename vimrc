@@ -1,6 +1,6 @@
-"
-" .vimrc (2014-12-13)
-"
+" ===============
+"  .vimrc
+" ===============
 
 " Mode {{{
 set nocompatible
@@ -166,8 +166,8 @@ nnoremap R    gR
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
 
-nnoremap vV ggVG
-nnoremap vv ^v$h
+nnoremap vv ggVG
+nnoremap vV ^v$h
 
 nnoremap <Leader>e :<C-u>e ++enc=
 nnoremap <Leader>o :<C-u>only<CR>

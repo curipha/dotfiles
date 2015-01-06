@@ -1,6 +1,6 @@
-#
-# .zshrc (2014-12-22)
-#
+# ===============
+#  .zshrc
+# ===============
 
 # Environments {{{
 #export LANG=ja_JP.UTF-8
@@ -62,7 +62,7 @@ umask 022
 ulimit -c 0
 
 stty -ixon -ixoff
-# }}}
+#}}}
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz colors
@@ -77,7 +77,7 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p $1 &> /dev/null }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
-# }}}
+#}}}
 # Macros {{{
 case ${OSTYPE} in
   linux*)
@@ -116,13 +116,13 @@ fi
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
-  for EXCLUDE_DIR in .cvs .git .hg .svn .deps .libs; do
+  for EXCLUDE_DIR in .git .hg .svn .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
 
 alias grep="grep ${GREP_PARAM}"
-# }}}
+#}}}
 
 # Core {{{
 bindkey -e
@@ -160,7 +160,7 @@ MAILCHECK=0
 
 colors
 zle -N self-insert url-quote-magic
-# }}}
+#}}}
 # Prompt {{{
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
 
@@ -184,19 +184,21 @@ zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
 zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
 
+zstyle ':vcs_info:*' max-exports 1
+
 function precmd_vcs_info() {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
   [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
 add-zsh-hook precmd precmd_vcs_info
-# }}}
+#}}}
 
 # Jobs {{{
 setopt auto_resume
 setopt bg_nice
 setopt long_list_jobs
-# }}}
+#}}}
 # History {{{
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -217,7 +219,7 @@ bindkey '^P' history-beginning-search-backward-end
 bindkey '^N' history-beginning-search-forward-end
 bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^S' history-incremental-pattern-search-forward
-# }}}
+#}}}
 # Complement {{{
 compinit
 
@@ -320,7 +322,7 @@ bindkey '^S^S' prefix_with_sudo
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
-      BUFFER='git status --branch --short'
+      BUFFER='git status --branch --short --untracked-files=all'
     else
       BUFFER='ls -AF'
     fi
@@ -369,7 +371,7 @@ alias lls='ls -AFl'
 alias lr='ls -FR'
 alias lra='ls -AFR'
 
-alias rm='rm -i'
+alias rm='rm -iv'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
@@ -426,7 +428,7 @@ alias q='exit'
 alias x='exit'
 #alias y=''
 #alias z=''
-# }}}
+#}}}
 
 [[ -f ~/.zshrc.include ]] && source ~/.zshrc.include
 

@@ -1,6 +1,6 @@
-#
-# .conkyrc (2013-9-20)
-#
+# ===============
+#  .conkyrc
+# ===============
 
 # Environment {{{
 update_interval 1.0
@@ -17,7 +17,7 @@ own_window_colour black
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 own_window_type normal
 #own_window_type override
-# }}}
+#}}}
 # Fonts {{{
 use_xft yes
 override_utf8_locale yes
@@ -27,7 +27,7 @@ uppercase no
 default_color white
 default_shade_color black
 default_outline_color white
-# }}}
+#}}}
 # Window metrics {{{
 alignment top_right
 gap_x 15
@@ -43,12 +43,12 @@ draw_shades no
 
 show_graph_range no
 show_graph_scale no
-# }}}
+#}}}
 # System Settings {{{
 cpu_avg_samples 2
 format_human_readable yes
 if_up_strictness link
-# }}}
+#}}}
 
 #####################################################################
 TEXT
