@@ -9,7 +9,7 @@ Host *
   IdentitiesOnly        yes
 
   Ciphers               aes256-ctr
-  KexAlgorithms         ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256
+  KexAlgorithms         diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256
   MACs                  hmac-sha1
 
   PubKeyAuthentication            yes
