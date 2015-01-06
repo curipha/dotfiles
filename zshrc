@@ -69,6 +69,7 @@ autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
 #autoload -Uz predict-on
+autoload -Uz run-help
 autoload -Uz smart-insert-last-word
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
@@ -160,6 +161,8 @@ MAILCHECK=0
 
 colors
 zle -N self-insert url-quote-magic
+
+unalias run-help
 #}}}
 # Prompt {{{
 [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
