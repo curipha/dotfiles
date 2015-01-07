@@ -248,13 +248,13 @@ zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:users' ignored-patterns \
-adm amanda apache avahi avahi-autoipd backup beaglidx bin cacti canna clamav colord \
-daemon dbus distcache dovecot fax ftp games gdm git gkrellmd gnats gopher \
-hacluster haldaemon halt hplip hsqldb http ident irc junkbust kernoops \
-ldap libuuid lightdm list lp lxdm man mail mailman mailnull messagebus mldonkey mysql \
+'avahi*' 'mail*' 'systemd*' \
+adm amanda apache backup beaglidx bin cacti canna clamav colord daemon dbus distcache dovecot \
+fax ftp games gdm git gkrellmd gnats gopher hacluster haldaemon halt hplip hsqldb http \
+ident irc junkbust kernoops ldap libuuid lightdm list lp lxdm man messagebus mldonkey mysql \
 nagios named netdump news nfsnobody nobody nscd ntp nut nx openvpn operator \
 pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser rpm rtkit \
-saned shutdown squid sshd sync sys syslog 'systemd*' usbmux uucp uuidd vcsa www www-data xfs
+saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
 
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*' ignore-parents parent pwd ..
