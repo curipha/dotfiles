@@ -85,8 +85,6 @@ case ${OSTYPE} in
     limit coredumpsize 0
 
     alias ls='ls --color=auto'
-
-    eval "$(dircolors -b)"
   ;;
 
   darwin*)
@@ -105,11 +103,11 @@ case ${OSTYPE} in
     alias ls='ls --color=auto'
     alias open='cygstart'
     alias start='cygstart'
-
-    eval "$(dircolors -b)"
   ;;
 esac
 
+
+exists dircolors && eval `dircolors -b`
 
 exists colordiff && alias diff='colordiff'
 
@@ -119,7 +117,6 @@ if grep --help 2>&1 | grep -q -- --exclude-dir; then
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
-
 alias grep="grep ${GREP_PARAM}"
 #}}}
 
