@@ -111,9 +111,7 @@ case ${OSTYPE} in
 esac
 
 
-if exists colordiff; then
-  alias diff='colordiff'
-fi
+exists colordiff && alias diff='colordiff'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
