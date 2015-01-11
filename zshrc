@@ -31,7 +31,7 @@ export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
 export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4'
-export CXXFLAGS=${CFLAGS}
+export CXXFLAGS="${CFLAGS}"
 export MAKEFLAGS=-j4
 
 export RUBYOPT='-w -EUTF-8'
@@ -192,7 +192,7 @@ zstyle ':vcs_info:*' max-exports 1
 function precmd_vcs_info() {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
-  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+  [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
 add-zsh-hook precmd precmd_vcs_info
 #}}}
@@ -353,7 +353,7 @@ function 256color() {
   local code
   for code in {0..255}; do
     echo -en "\e[48;5;${code}m $(( [##16] ${code} )) \e[0m"
-    [[ $code == 15 ]] && echo
+    [[ "${code}" == 15 ]] && echo
     [[ $(( ${code} >= 16 && ${code} <= 231 && ( ${code} - 16 ) % 18 == 17 )) == 1 ]] && echo
   done
   echo
