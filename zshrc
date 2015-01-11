@@ -97,6 +97,9 @@ case ${OSTYPE} in
     limit coredumpsize 0
 
     alias ls='ls -G'
+
+    exists gmake && alias make=gmake
+    exists jot   && alias seq=jot
   ;;
 
   cygwin)
