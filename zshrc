@@ -31,7 +31,7 @@ export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
 export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4'
-export CXXFLAGS=${CFLAGS}
+export CXXFLAGS="${CFLAGS}"
 export MAKEFLAGS=-j4
 
 export RUBYOPT='-w -EUTF-8'
@@ -76,7 +76,7 @@ autoload -Uz vcs_info
 autoload -Uz zmv
 #}}}
 # Functions {{{
-function exists() { whence -p $1 &> /dev/null }
+function exists() {  [[ `whence -p $1` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
@@ -85,8 +85,6 @@ case ${OSTYPE} in
     limit coredumpsize 0
 
     alias ls='ls --color=auto'
-
-    eval "$(dircolors -b)"
   ;;
 
   darwin*)
@@ -99,21 +97,22 @@ case ${OSTYPE} in
     limit coredumpsize 0
 
     alias ls='ls -G'
+
+    exists gmake && alias make=gmake
+    exists jot   && alias seq=jot
   ;;
 
   cygwin)
     alias ls='ls --color=auto'
     alias open='cygstart'
     alias start='cygstart'
-
-    eval "$(dircolors -b)"
   ;;
 esac
 
 
-if exists colordiff; then
-  alias diff='colordiff'
-fi
+exists dircolors && eval `dircolors -b`
+
+exists colordiff && alias diff='colordiff'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
@@ -121,7 +120,6 @@ if grep --help 2>&1 | grep -q -- --exclude-dir; then
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
-
 alias grep="grep ${GREP_PARAM}"
 #}}}
 
@@ -170,7 +168,7 @@ unalias run-help
 PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
 RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
-SPROMPT='zsh: Did you mean '%B%r%b' ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
+SPROMPT='zsh: Did you mean %B%r%b ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 
 setopt prompt_cr
 setopt prompt_sp
@@ -192,7 +190,7 @@ zstyle ':vcs_info:*' max-exports 1
 function precmd_vcs_info() {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
-  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+  [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
 add-zsh-hook precmd precmd_vcs_info
 #}}}
@@ -356,7 +354,7 @@ function 256color() {
   local code
   for code in {0..255}; do
     echo -en "\e[48;5;${code}m $(( [##16] ${code} )) \e[0m"
-    [[ $code == 15 ]] && echo
+    [[ "${code}" == 15 ]] && echo
     [[ $(( ${code} >= 16 && ${code} <= 231 && ( ${code} - 16 ) % 18 == 17 )) == 1 ]] && echo
   done
   echo
