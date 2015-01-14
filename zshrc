@@ -257,6 +257,7 @@ ident irc junkbust kernoops ldap libuuid lightdm list lp lxdm man messagebus mld
 nagios named netdump news nfsnobody nobody nscd ntp nut nx openvpn operator \
 pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser rpm rtkit \
 saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
+# $(awk -F: '$3 < 1000 || $3 > 60000 { print $1 }' /etc/passwd)
 
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*' ignore-parents parent pwd ..
