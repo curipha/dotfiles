@@ -249,8 +249,8 @@ zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:users' ignored-patterns \
-'avahi*' 'mail*' 'systemd*' \
 Administrator Guest \
+'avahi*' 'mail*' 'systemd*' \
 adm amanda apache backup beaglidx bin cacti canna clamav colord daemon dbus distcache dovecot \
 fax ftp games gdm git gkrellmd gnats gopher hacluster haldaemon halt hplip hsqldb http \
 ident irc junkbust kernoops ldap libuuid lightdm list lp lxdm man messagebus mldonkey mysql \
