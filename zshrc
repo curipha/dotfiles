@@ -238,7 +238,8 @@ zstyle ':completion:*' menu select=long
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' ignore-line true
+
+zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
 
 zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
