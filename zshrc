@@ -383,26 +383,24 @@ function createpasswd() {
 
       * )
         cat <<HELP 1>&2
-Usage: ${0} [-p | -c <characters>] [-l <length>] [-n <number>]
+Usage: ${0} [-p | -c <chars>] [-l <length>] [-n <number>]
 
-  -c <characters>  Set characters to be used for passwords
-                   (It NEVER guarantee that all of specified chars are used)
-  -l <length>      Set length of passwords (Default=${LENGTH})
-  -n <number>      Set number of passwords (Default=${NUMBER})
-  -p               Paranoid mode
-                   (Guarantee that the symbol character MUST be included)
+  -c <chars>    Set characters to be used for passwords
+                (It NEVER guarantee that all of specified chars are used)
+  -l <length>   Set the length of password(s) (Default = ${LENGTH})
+  -n <number>   Set the number of password(s) (Default = ${NUMBER})
+  -p            Paranoid mode (Guarantee that the symbol char MUST be included)
 
 Example:
   ${0} -c "0-9A-Za-z"
   ${0} -c "[:alnum:]"
-      Create ${NUMBER} of passwords (${LENGTH} chars) contains letters and digits.
+    Create ${NUMBER} of passwords (${LENGTH} chars) contains letters and digits.
 
   ${0} -l 24 -n 1
-      Create a password (24 chars) contains all printable characters, not
-      including space.
+    Create a password (24 chars) contains printable chars, not including space.
 
   ${0} -c ACGT -n 20
-      Get a piece of DNA sequence.
+    Get a piece of DNA sequence.
 HELP
       return 1;;
     esac
