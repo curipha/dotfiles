@@ -359,6 +359,65 @@ function 256color() {
   done
   echo
 }
+
+function createpasswd() {
+  # Default
+  local CHARACTER="[:graph:]"
+  local LENGTH=18
+  local NUMBER=10
+
+  # Arguments
+  local F_CHARACTER=
+  local F_PARANOID=
+  local P_CHARACTER="${CHARACTER}"
+  local P_LENGTH="${LENGTH}"
+  local P_NUMBER="${NUMBER}"
+
+  while getopts hpc:l:n: ARG; do
+    case $ARG in
+      "c" ) F_CHARACTER=1
+            P_CHARACTER="$OPTARG";;
+      "l" ) P_LENGTH="$OPTARG";;
+      "n" ) P_NUMBER="$OPTARG";;
+      "p" ) F_PARANOID=1;;
+
+      * )
+        cat <<HELP 1>&2
+Usage: ${0} [-p | -c <characters>] [-l <length>] [-n <number>]
+
+  -c <characters>  Set characters to be used for passwords
+                   (It NEVER guarantee that all of specified chars are used)
+  -l <length>      Set length of passwords (Default=${LENGTH})
+  -n <number>      Set number of passwords (Default=${NUMBER})
+  -p               Paranoid mode
+                   (Guarantee that the symbol character MUST be included)
+
+Example:
+  ${0} -c "0-9A-Za-z"
+  ${0} -c "[:alnum:]"
+      Create ${NUMBER} of passwords (${LENGTH} chars) contains letters and digits.
+
+  ${0} -l 24 -n 1
+      Create a password (24 chars) contains all printable characters, not
+      including space.
+
+  ${0} -c ACGT -n 20
+      Get a piece of DNA sequence.
+HELP
+      return 1;;
+    esac
+  done
+
+  if [[ ! -z "${F_PARANOID}" ]]; then
+    P_CHARACTER="[:graph:]"
+    [[ ! -z "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
+  fi
+
+  LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
+    | fold -w "${P_LENGTH}" \
+    | if [[ ! -z "${F_PARANOID}" ]]; then grep '[[:punct:]]'; else cat; fi \
+    | head -n "${P_NUMBER}"
+}
 #}}}
 
 # Alias {{{
