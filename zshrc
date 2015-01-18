@@ -351,11 +351,11 @@ zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
 function 256color() {
-  local code
-  for code in {0..255}; do
-    echo -en "\e[48;5;${code}m $(( [##16] ${code} )) \e[0m"
-    [[ "${code}" == 15 ]] && echo
-    [[ $(( ${code} >= 16 && ${code} <= 231 && ( ${code} - 16 ) % 18 == 17 )) == 1 ]] && echo
+  local CODE
+  for CODE in {0..255}; do
+    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) \e[0m"
+    [[ "${CODE}" == 15 ]] && echo
+    [[ $(( ${CODE} >= 16 && ${CODE} <= 231 && ( ${CODE} - 16 ) % 18 == 17 )) == 1 ]] && echo
   done
   echo
 }
