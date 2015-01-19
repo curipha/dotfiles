@@ -7,17 +7,12 @@
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
-#export LC_ALL=ja_JP.UTF-8
-export LC_COLLATE=ja_JP.UTF-8
-export LC_CTYPE=ja_JP.UTF-8
-export LC_IDENTIFICATION=ja_JP.UTF-8
-export LC_MEASUREMENT=ja_JP.UTF-8
-#export LC_MESSAGES=C
+export LC_COLLATE=C.UTF-8
+export LC_CTYPE=C.UTF-8
+export LC_MESSAGES=en_US.UTF-8
 export LC_MONETARY=ja_JP.UTF-8
-#export LC_NUMERIC=C
-export LC_PAPER=ja_JP.UTF-8
-export LC_TELEPHONE=ja_JP.UTF-8
-#export LC_TIME=C
+export LC_NUMERIC=C.UTF-8
+export LC_TIME=C.UTF-8
 
 export EDITOR=vim
 export PAGER=less
