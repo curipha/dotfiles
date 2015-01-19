@@ -71,7 +71,7 @@ autoload -Uz vcs_info
 autoload -Uz zmv
 #}}}
 # Functions {{{
-function exists() {  [[ `whence -p $1` ]] }
+function exists() { [[ -n `whence -p $1` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
