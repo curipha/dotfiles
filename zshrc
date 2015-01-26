@@ -307,7 +307,7 @@ function chpwd() { ls -AF }
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
-function mkd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && builtin cd "$1" }
+function mkcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && builtin cd "$1" }
 
 function prefix_with_sudo() {
   [[ -z "$BUFFER" ]] && zle up-history
