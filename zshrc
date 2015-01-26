@@ -308,6 +308,7 @@ function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 function mkcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && builtin cd "$1" }
+function mkmv() { [[ $# -eq 2 ]] && mkdir -vp "${@: -1}" && mv -iv "$@" }
 
 function prefix_with_sudo() {
   [[ -z "$BUFFER" ]] && zle up-history
