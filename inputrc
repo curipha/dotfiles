@@ -19,6 +19,7 @@ set bell-style none
 set horizontal-scroll-mode off
 
 set visible-stats on
+set echo-control-characters off
 set mark-directories on
 set mark-symlinked-directories on
 set match-hidden-files on
@@ -27,6 +28,7 @@ set match-hidden-files on
 set completion-ignore-case on
 set expand-tilde on
 set show-all-if-ambiguous on
+set skip-completed-text on
 #}}}
 
 # Key bindings {{{
