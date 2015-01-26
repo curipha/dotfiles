@@ -141,6 +141,9 @@ vnoremap <Tab> %
 "nnoremap P [P
 "nnoremap p ]p
 
+nnoremap J  mzJ`z
+nnoremap gJ mzgJ`z
+
 xnoremap >       >gv
 xnoremap <       <gv
 xnoremap <Tab>   >gv
