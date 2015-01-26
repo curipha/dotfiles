@@ -401,14 +401,14 @@ HELP
     esac
   done
 
-  if [[ ! -z "${F_PARANOID}" ]]; then
+  if [[ -n "${F_PARANOID}" ]]; then
     P_CHARACTER="[:graph:]"
-    [[ ! -z "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
+    [[ -n "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
   fi
 
   LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
     | fold -w "${P_LENGTH}" \
-    | if [[ ! -z "${F_PARANOID}" ]]; then grep '[[:punct:]]'; else cat; fi \
+    | if [[ -n "${F_PARANOID}" ]]; then grep '[[:punct:]]'; else cat; fi \
     | head -n "${P_NUMBER}"
 }
 #}}}
