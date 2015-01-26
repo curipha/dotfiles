@@ -343,6 +343,10 @@ set statusline+=\ %3v\ \ %3l/%3L\ %P
 set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
+if has('linebreak')
+  set showbreak=...\ 
+endif
+
 set scrolloff=5
 set sidescroll=1
 set sidescrolloff=20
