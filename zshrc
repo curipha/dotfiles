@@ -73,6 +73,7 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { [[ -n `whence -p $1` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+function isremote() { [[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] }
 #}}}
 # Macros {{{
 case ${OSTYPE} in
@@ -158,7 +159,7 @@ zle -N self-insert url-quote-magic
 unalias run-help
 #}}}
 # Prompt {{{
-[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
+isremote && IS_SSH='@ssh'
 
 PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
