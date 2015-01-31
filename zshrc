@@ -19,6 +19,9 @@ export PAGER=less
 export VISUAL=vim
 
 export TERM=xterm-256color
+[[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
+[[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
+[[ -z "${USER}" ]]     && export USER=`whoami`
 
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
@@ -46,12 +49,14 @@ path=(
   $path
 )
 typeset -U path
+export PATH
 
 manpath=(
   ~/app/*/man(N-/)
   $manpath
 )
 typeset -U manpath
+export MANPATH
 
 umask 022
 ulimit -c 0
@@ -73,6 +78,7 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { [[ -n `whence -p $1` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+function isremote() { [[ -n "${REMOTEHOST}${SSH_CLIENT}${SSH_CONNECTION}" ]] || [[ `ps -o comm= -p $PPID 2> /dev/null` == 'sshd' ]] }
 #}}}
 # Macros {{{
 case ${OSTYPE} in
@@ -158,9 +164,9 @@ zle -N self-insert url-quote-magic
 unalias run-help
 #}}}
 # Prompt {{{
-[[ -n "${REMOTEHOST}${SSH_CONNECTION}" ]] && IS_SSH='@ssh'
+isremote && SSH_INDICATOR='@ssh'
 
-PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
+PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
 RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
