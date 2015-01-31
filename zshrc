@@ -159,9 +159,9 @@ zle -N self-insert url-quote-magic
 unalias run-help
 #}}}
 # Prompt {{{
-isremote && IS_SSH='@ssh'
+isremote && SSH_INDICATOR='@ssh'
 
-PROMPT="[%m${IS_SSH}:%~] %n%1(j.(%j%).)%# "
+PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
 RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
