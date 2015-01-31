@@ -19,6 +19,9 @@ export PAGER=less
 export VISUAL=vim
 
 export TERM=xterm-256color
+[[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
+[[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
+[[ -z "${USER}" ]]     && export USER=`whoami`
 
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
@@ -46,12 +49,14 @@ path=(
   $path
 )
 typeset -U path
+export PATH
 
 manpath=(
   ~/app/*/man(N-/)
   $manpath
 )
 typeset -U manpath
+export MANPATH
 
 umask 022
 ulimit -c 0
