@@ -125,7 +125,7 @@ if exists gcc; then
   GCC_HELP=`gcc -v --help 2> /dev/null`
 
   CFLAGS='-march=native -mtune=native -O2 -pipe'
-  if echo ${GCC_HELP} | grep -q -- -fstack-protector-strong; then
+  if   echo ${GCC_HELP} | grep -q -- -fstack-protector-strong; then
     CFLAGS+=' -fstack-protector-strong --param=ssp-buffer-size=4'
   elif echo ${GCC_HELP} | grep -q -- -fstack-protector; then
     CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
