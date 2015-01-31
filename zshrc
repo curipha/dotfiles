@@ -49,13 +49,6 @@ path=(
 typeset -U path
 export PATH
 
-manpath=(
-  ~/app/*/man(N-/)
-  $manpath
-)
-typeset -U manpath
-export MANPATH
-
 umask 022
 ulimit -c 0
 
@@ -108,9 +101,7 @@ case ${OSTYPE} in
   ;;
 esac
 
-
 exists dircolors && eval `dircolors -b`
-
 exists colordiff && alias diff='colordiff'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
@@ -132,6 +123,18 @@ if exists gcc; then
   fi
   export CFLAGS
   export CXXFLAGS="${CFLAGS}"
+fi
+
+if exists manpath; then
+  MANPATH=`MANPATH= manpath`
+
+  manpath=(
+    ~/app/*/man(N-/)
+    ~/app/*/share/man(N-/)
+    ${(s.:.)MANPATH}
+  )
+  typeset -U manpath
+  export MANPATH
 fi
 #}}}
 
