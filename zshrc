@@ -28,8 +28,6 @@ export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignor
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 
-export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4'
-export CXXFLAGS="${CFLAGS}"
 export MAKEFLAGS=-j4
 
 export RUBYOPT='-w -EUTF-8'
@@ -122,6 +120,19 @@ if grep --help 2>&1 | grep -q -- --exclude-dir; then
   done
 fi
 alias grep="grep ${GREP_PARAM}"
+
+if exists gcc; then
+  GCC_HELP=`gcc -v --help 2> /dev/null`
+
+  CFLAGS='-march=native -mtune=native -O2 -pipe'
+  if echo ${GCC_HELP} | grep -q -- -fstack-protector-strong; then
+    CFLAGS+=' -fstack-protector-strong --param=ssp-buffer-size=4'
+  elif echo ${GCC_HELP} | grep -q -- -fstack-protector; then
+    CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
+  fi
+  export CFLAGS
+  export CXXFLAGS="${CFLAGS}"
+fi
 #}}}
 
 # Core {{{
