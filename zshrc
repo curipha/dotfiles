@@ -457,7 +457,7 @@ alias chmod='chmod -v'
 alias chown='chown -v'
 
 alias cls='echo -en "\033c" && tput clear'
-alias rst='echo -en "\033c" && tput clear && exec -c zsh'
+alias rst='echo -en "\033c" && tput clear && exec zsh'
 
 alias vi='vim'
 alias view='vim -R'
