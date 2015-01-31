@@ -141,6 +141,9 @@ vnoremap <Tab> %
 "nnoremap P [P
 "nnoremap p ]p
 
+nnoremap J  mzJ`z
+nnoremap gJ mzgJ`z
+
 xnoremap >       >gv
 xnoremap <       <gv
 xnoremap <Tab>   >gv
@@ -339,6 +342,10 @@ set statusline+=\ %3v\ \ %3l/%3L\ %P
 
 set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
+
+if has('linebreak')
+  set showbreak=...\ 
+endif
 
 set scrolloff=5
 set sidescroll=1
