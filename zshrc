@@ -14,6 +14,8 @@ export LC_MONETARY=ja_JP.UTF-8
 export LC_NUMERIC=C.UTF-8
 export LC_TIME=C.UTF-8
 
+export TZ=Asia/Tokyo
+
 export EDITOR=vim
 export PAGER=less
 export VISUAL=vim
