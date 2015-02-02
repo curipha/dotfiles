@@ -19,7 +19,6 @@
   ddddd  = diff HEAD~4
   fe     = fetch --verbose
   fix    = commit --amend
-  ft     = fetch
   g      = grep --break --color --heading --line-number --show-function
   l      = log --decorate --stat --no-merges
   la     = log --decorate --stat
