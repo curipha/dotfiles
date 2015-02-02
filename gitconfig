@@ -17,7 +17,7 @@
   ddd    = diff HEAD~2
   dddd   = diff HEAD~3
   ddddd  = diff HEAD~4
-  fe     = fetch
+  fe     = fetch --verbose
   fix    = commit --amend
   ft     = fetch
   g      = grep --break --color --heading --line-number --show-function
