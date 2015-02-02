@@ -4,6 +4,7 @@
 
 [alias]
   a      = add
+  aa     = add --all
   ad     = add
   ap     = add --patch
   br     = branch --all --color --verbose --verbose
