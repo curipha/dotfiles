@@ -17,6 +17,13 @@ I made it because there was an environment where it could not `chsh`.
 It can no longer change the font from the GUI in latter Ubuntu.
 This is a response for it.
 
+### zshrc
+Execute the following command if your system does not provide C.UTF-8 locale by default.
+
+```
+sudo localedef -c -i POSIX -f UTF-8 C.UTF-8
+```
+
 About script
 ------------
 
