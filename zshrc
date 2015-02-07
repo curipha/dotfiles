@@ -461,7 +461,7 @@ alias lls='ls -AFl'
 alias lr='ls -FR'
 alias lra='ls -AFR'
 
-alias rm='rm -iv'
+alias rm='rm -i'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
