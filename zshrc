@@ -14,6 +14,8 @@ export LC_MONETARY=ja_JP.UTF-8
 export LC_NUMERIC=C.UTF-8
 export LC_TIME=C.UTF-8
 
+export TZ=Asia/Tokyo
+
 export EDITOR=vim
 export PAGER=less
 export VISUAL=vim
@@ -434,6 +436,17 @@ HELP
 }
 #}}}
 
+# Global alias {{{
+alias -g C=' | sort | uniq -c | sort -nr'
+alias -g E=' > /dev/null'
+alias -g G=' | grep -iE'
+alias -g H=' | head'
+alias -g L=' |& less'
+alias -g N=' | wc -l'
+alias -g S=' | sort'
+alias -g T=' | tail'
+alias -g U=' | sort | uniq'
+#}}}
 # Alias {{{
 alias l.='ls -d .*'
 alias la='ls -AF'
@@ -457,7 +470,7 @@ alias chmod='chmod -v'
 alias chown='chown -v'
 
 alias cls='echo -en "\033c" && tput clear'
-alias rst='echo -en "\033c" && tput clear && exec -c zsh'
+alias rst='echo -en "\033c" && tput clear && exec zsh'
 
 alias vi='vim'
 alias view='vim -R'
