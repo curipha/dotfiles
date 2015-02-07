@@ -437,6 +437,7 @@ HELP
 #}}}
 
 # Global alias {{{
+alias -g '?'=' --help |& less'
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
