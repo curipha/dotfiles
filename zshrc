@@ -14,6 +14,8 @@ export LC_MONETARY=ja_JP.UTF-8
 export LC_NUMERIC=C.UTF-8
 export LC_TIME=C.UTF-8
 
+export TZ=Asia/Tokyo
+
 export EDITOR=vim
 export PAGER=less
 export VISUAL=vim
@@ -434,6 +436,18 @@ HELP
 }
 #}}}
 
+# Global alias {{{
+alias -g '?'=' --help |& less'
+alias -g C=' | sort | uniq -c | sort -nr'
+alias -g E=' > /dev/null'
+alias -g G=' | grep -iE'
+alias -g H=' | head'
+alias -g L=' |& less'
+alias -g N=' | wc -l'
+alias -g S=' | sort'
+alias -g T=' | tail'
+alias -g U=' | sort | uniq'
+#}}}
 # Alias {{{
 alias l.='ls -d .*'
 alias la='ls -AF'
@@ -447,7 +461,7 @@ alias lls='ls -AFl'
 alias lr='ls -FR'
 alias lra='ls -AFR'
 
-alias rm='rm -iv'
+alias rm='rm -i'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'

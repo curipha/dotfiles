@@ -4,6 +4,7 @@
 
 [alias]
   a      = add
+  aa     = add --all
   ad     = add
   ap     = add --patch
   br     = branch --all --color --verbose --verbose
@@ -16,9 +17,8 @@
   ddd    = diff HEAD~2
   dddd   = diff HEAD~3
   ddddd  = diff HEAD~4
-  fe     = fetch
+  fe     = fetch --verbose
   fix    = commit --amend
-  ft     = fetch
   g      = grep --break --color --heading --line-number --show-function
   l      = log --decorate --stat --no-merges
   la     = log --decorate --stat
