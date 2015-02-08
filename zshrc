@@ -21,17 +21,15 @@ export PAGER=less
 export VISUAL=vim
 
 export TERM=xterm-256color
-[[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
+[[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
-
 export MAKEFLAGS=-j4
-
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
