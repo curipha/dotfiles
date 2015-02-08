@@ -102,8 +102,8 @@ set pumheight=18
 set spell spelllang=en_us,cjk
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 autocmd MyAutoCmd FileType diff setlocal nospell
-autocmd MyAutoCmd FileType qf setlocal nospell
-autocmd MyAutoCmd FileType xxd setlocal nospell
+autocmd MyAutoCmd FileType qf   setlocal nospell
+autocmd MyAutoCmd FileType xxd  setlocal nospell
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
