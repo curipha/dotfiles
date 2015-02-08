@@ -226,14 +226,13 @@ autocmd MyAutoCmd FileType *
 \ |   setlocal omnifunc=syntaxcomplete#Complete
 \ | endif
 
+if has('xim') && has('GUI_GTK')
+  set imactivatekey=Zenkaku_Hankaku
+endif
 if has('multi_byte_ime') || has('xim')
   set noimcmdline
   set iminsert=0
   set imsearch=0
-
-  if has('xim') && has('GUI_GTK')
-    set imactivatekey=Zenkaku_Hankaku
-  endif
 
   augroup MyAutoCmd
     "autocmd InsertEnter,CmdwinEnter * set noimdisable
