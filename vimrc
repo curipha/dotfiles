@@ -479,11 +479,8 @@ let g:php_noShortTags = 1
 " Plugin {{{
 " neocomplete {{{
 "  - https://github.com/Shougo/neocomplete.vim
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = has('lua')
 
-if !has('lua')
- let g:neocomplete#enable_at_startup = 0
-endif
 if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
   let g:neocomplete#enable_auto_select = 1
 
