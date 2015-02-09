@@ -275,7 +275,7 @@ autocmd MyAutoCmd BufWritePost *
 
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
-\ |   execute 'write'.(v:cmdbang ? '!' : '') expand('<afile>')
+\ |   execute 'write' . (v:cmdbang ? '!' : '') expand('<afile>')
 \ | else
 \ |   redraw
 \ |   echo 'File not saved.'
