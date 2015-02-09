@@ -21,17 +21,15 @@ export PAGER=less
 export VISUAL=vim
 
 export TERM=xterm-256color
-[[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
+[[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
 export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
-
 export MAKEFLAGS=-j4
-
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
@@ -437,6 +435,7 @@ HELP
 #}}}
 
 # Global alias {{{
+alias -g '?'=' --help |& less'
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
@@ -460,7 +459,7 @@ alias lls='ls -AFl'
 alias lr='ls -FR'
 alias lra='ls -AFR'
 
-alias rm='rm -iv'
+alias rm='rm -i'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'

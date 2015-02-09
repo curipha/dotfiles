@@ -101,8 +101,9 @@ set pumheight=18
 
 set spell spelllang=en_us,cjk
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
-
-autocmd MyAutoCmd FileType qf setlocal nospell
+autocmd MyAutoCmd FileType diff setlocal nospell
+autocmd MyAutoCmd FileType qf   setlocal nospell
+autocmd MyAutoCmd FileType xxd  setlocal nospell
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
@@ -225,14 +226,13 @@ autocmd MyAutoCmd FileType *
 \ |   setlocal omnifunc=syntaxcomplete#Complete
 \ | endif
 
+if has('xim') && has('GUI_GTK')
+  set imactivatekey=Zenkaku_Hankaku
+endif
 if has('multi_byte_ime') || has('xim')
   set noimcmdline
   set iminsert=0
   set imsearch=0
-
-  if has('xim') && has('GUI_GTK')
-    set imactivatekey=Zenkaku_Hankaku
-  endif
 
   augroup MyAutoCmd
     "autocmd InsertEnter,CmdwinEnter * set noimdisable
@@ -253,6 +253,25 @@ autocmd MyAutoCmd BufEnter,BufFilePost *
 
 autocmd MyAutoCmd FileType ruby compiler ruby
 autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -c % | redraw!
+
+autocmd MyAutoCmd BufReadPost *
+\   if &binary && executable('xxd')
+\ |   setlocal filetype=xxd
+\ |   setlocal noendofline
+\ | endif
+autocmd MyAutoCmd BufReadPost *
+\   if &binary && &filetype ==# 'xxd'
+\ |   execute 'silent %!xxd -g 1'
+\ | endif
+autocmd MyAutoCmd BufWritePre *
+\   if &binary && &filetype ==# 'xxd'
+\ |   execute '%!xxd -r'
+\ | endif
+autocmd MyAutoCmd BufWritePost *
+\   if &binary && &filetype ==# 'xxd'
+\ |   execute 'silent %!xxd -g 1'
+\ |   setlocal nomodified
+\ | endif
 
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
