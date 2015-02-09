@@ -463,7 +463,7 @@ for s:f in ['dos', 'unix', 'mac']
 endfor
 " }}}
 " Abbreviation {{{
-iabbrev <expr> #! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' ' . &filetype)
+iabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
 " }}}
 " Syntax {{{
 " autoload/rubycomplete.vim
