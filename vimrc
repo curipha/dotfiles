@@ -167,6 +167,8 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
+nnoremap gf :vertical wincmd f<CR>
+
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
 
