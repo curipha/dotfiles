@@ -48,15 +48,15 @@
   interactive = auto
   status      = auto
 [color "diff"]
-    meta = bold
-    frag = cyan bold
-    new  = green bold
-    old  = red bold
+  meta = bold
+  frag = cyan bold
+  new  = green bold
+  old  = red bold
 [color "status"]
-    header    = bold
-    added     = yellow bold
-    changed   = green bold
-    untracked = cyan bold
+  header    = bold
+  added     = yellow bold
+  changed   = green bold
+  untracked = cyan bold
 
 [diff]
   algorithm = histogram
