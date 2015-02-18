@@ -46,6 +46,15 @@
   grep        = auto
   interactive = auto
   status      = auto
+[color "diff"]
+    meta = bold
+    frag = magenta bold
+    new  = green bold
+    old  = red bold
+[color "status"]
+    added     = yellow bold
+    changed   = green bold
+    untracked = cyan bold
 [diff]
   algorithm = histogram
 [fetch]
