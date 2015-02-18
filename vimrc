@@ -275,7 +275,7 @@ autocmd MyAutoCmd BufWritePost *
 
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
-\ |   execute 'write'.(v:cmdbang ? '!' : '') expand('<afile>')
+\ |   execute 'write' . (v:cmdbang ? '!' : '') expand('<afile>')
 \ | else
 \ |   redraw
 \ |   echo 'File not saved.'
@@ -463,7 +463,7 @@ for s:f in ['dos', 'unix', 'mac']
 endfor
 " }}}
 " Abbreviation {{{
-iabbrev <expr> #! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' ' . &filetype)
+iabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
 " }}}
 " Syntax {{{
 " autoload/rubycomplete.vim
@@ -479,11 +479,8 @@ let g:php_noShortTags = 1
 " Plugin {{{
 " neocomplete {{{
 "  - https://github.com/Shougo/neocomplete.vim
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = has('lua')
 
-if !has('lua')
- let g:neocomplete#enable_at_startup = 0
-endif
 if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
   let g:neocomplete#enable_auto_select = 1
 
