@@ -49,10 +49,11 @@
   status      = auto
 [color "diff"]
     meta = bold
-    frag = magenta bold
+    frag = cyan bold
     new  = green bold
     old  = red bold
 [color "status"]
+    header    = bold
     added     = yellow bold
     changed   = green bold
     untracked = cyan bold
