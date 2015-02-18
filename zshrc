@@ -29,7 +29,7 @@ export GZIP=-v9N
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
-export MAKEFLAGS='--jobs=4'
+export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
 
