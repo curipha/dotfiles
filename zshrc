@@ -26,12 +26,20 @@ export TERM=xterm-256color
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
 export GZIP=-v9N
-export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
-export LESSCHARSET=utf-8
-export LESSHISTFILE=/dev/null
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
+
+export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
+export LESSCHARSET=utf-8
+export LESSHISTFILE=/dev/null
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;37m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[30;47m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[4;36m'
 
 path=(
   ~/sbin(N-/)
