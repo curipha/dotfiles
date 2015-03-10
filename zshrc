@@ -25,7 +25,6 @@ export TERM=xterm-256color
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
-export GZIP=-v9N
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
