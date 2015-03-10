@@ -329,6 +329,7 @@ bindkey '^]' insert-last-word
 #}}}
 # Utility{{{
 alias rename='noglob zmv -ivW'
+alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 function chpwd() { ls -AF }
 
