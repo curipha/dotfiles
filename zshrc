@@ -26,12 +26,20 @@ export TERM=xterm-256color
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
 export GZIP=-v9N
-export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
-export LESSCHARSET=utf-8
-export LESSHISTFILE=/dev/null
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
+
+export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
+export LESSCHARSET=utf-8
+export LESSHISTFILE=/dev/null
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;37m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[30;47m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[4;36m'
 
 path=(
   ~/sbin(N-/)
@@ -321,6 +329,7 @@ bindkey '^]' insert-last-word
 #}}}
 # Utility{{{
 alias rename='noglob zmv -ivW'
+alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 function chpwd() { ls -AF }
 
@@ -337,6 +346,16 @@ function prefix_with_sudo() {
 }
 zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
+
+function prefix_with_man() {
+  [[ -z "$BUFFER" ]] && zle up-history
+  local bufarr
+  bufarr=( ${(z)BUFFER} )
+  BUFFER="man ${bufarr[1]}"
+  zle accept-line
+}
+zle -N prefix_with_man
+bindkey '^H^H' prefix_with_man
 
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
@@ -439,6 +458,7 @@ alias -g '?'=' --help |& less'
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
+alias -g Gv=' | grep -ivE'
 alias -g H=' | head'
 alias -g L=' |& less'
 alias -g N=' | wc -l'
@@ -475,6 +495,7 @@ alias vi='vim'
 alias view='vim -R'
 
 alias :q='exit'
+alias :qa='exit'
 
 alias .='pwd'
 alias ..='cd ..'
