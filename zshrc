@@ -485,6 +485,7 @@ alias vi='vim'
 alias view='vim -R'
 
 alias :q='exit'
+alias :qa='exit'
 
 alias .='pwd'
 alias ..='cd ..'
