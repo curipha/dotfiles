@@ -40,28 +40,48 @@
   sync   = !git fetch && git reset --hard FETCH_HEAD
   unlive = reset --hard HEAD
   unstg  = reset HEAD
+
 [color]
   branch      = auto
   diff        = auto
   grep        = auto
   interactive = auto
   status      = auto
+[color "diff"]
+  meta = bold
+  frag = cyan bold
+  new  = green bold
+  old  = red bold
+[color "status"]
+  header    = bold
+  added     = yellow bold
+  changed   = green bold
+  untracked = cyan bold
+
 [diff]
   algorithm = histogram
+
 [fetch]
   prune = true
+
 [github]
   user = curipha
+
 [help]
   autocorrect = -1
+
 [include]
   path = ~/.gitconfig.local
+
 [interactive]
   singlekey = true
+
 [merge]
   ff = false
+
 [push]
   default = current
+
 [user]
   name  = Taichi
   email = taichi@curipha.jp

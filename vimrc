@@ -101,8 +101,9 @@ set pumheight=18
 
 set spell spelllang=en_us,cjk
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
-
-autocmd MyAutoCmd FileType qf setlocal nospell
+autocmd MyAutoCmd FileType diff setlocal nospell
+autocmd MyAutoCmd FileType qf   setlocal nospell
+autocmd MyAutoCmd FileType xxd  setlocal nospell
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
@@ -166,6 +167,8 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
+nnoremap gf :vertical wincmd f<CR>
+
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
 
@@ -225,14 +228,13 @@ autocmd MyAutoCmd FileType *
 \ |   setlocal omnifunc=syntaxcomplete#Complete
 \ | endif
 
+if has('xim') && has('GUI_GTK')
+  set imactivatekey=Zenkaku_Hankaku
+endif
 if has('multi_byte_ime') || has('xim')
   set noimcmdline
   set iminsert=0
   set imsearch=0
-
-  if has('xim') && has('GUI_GTK')
-    set imactivatekey=Zenkaku_Hankaku
-  endif
 
   augroup MyAutoCmd
     "autocmd InsertEnter,CmdwinEnter * set noimdisable
@@ -254,9 +256,28 @@ autocmd MyAutoCmd BufEnter,BufFilePost *
 autocmd MyAutoCmd FileType ruby compiler ruby
 autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -c % | redraw!
 
+autocmd MyAutoCmd BufReadPost *
+\   if &binary && executable('xxd')
+\ |   setlocal filetype=xxd
+\ |   setlocal noendofline
+\ | endif
+autocmd MyAutoCmd BufReadPost *
+\   if &binary && &filetype ==# 'xxd'
+\ |   execute 'silent %!xxd -g 1'
+\ | endif
+autocmd MyAutoCmd BufWritePre *
+\   if &binary && &filetype ==# 'xxd'
+\ |   execute '%!xxd -r'
+\ | endif
+autocmd MyAutoCmd BufWritePost *
+\   if &binary && &filetype ==# 'xxd'
+\ |   execute 'silent %!xxd -g 1'
+\ |   setlocal nomodified
+\ | endif
+
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
-\ |   execute 'write'.(v:cmdbang ? '!' : '') expand('<afile>')
+\ |   execute 'write' . (v:cmdbang ? '!' : '') expand('<afile>')
 \ | else
 \ |   redraw
 \ |   echo 'File not saved.'
@@ -444,7 +465,7 @@ for s:f in ['dos', 'unix', 'mac']
 endfor
 " }}}
 " Abbreviation {{{
-iabbrev <expr> #! "#!/usr/bin/env" . (empty(&filetype) ? '' : ' ' . &filetype)
+iabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
 " }}}
 " Syntax {{{
 " autoload/rubycomplete.vim
@@ -460,11 +481,8 @@ let g:php_noShortTags = 1
 " Plugin {{{
 " neocomplete {{{
 "  - https://github.com/Shougo/neocomplete.vim
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = has('lua')
 
-if !has('lua')
- let g:neocomplete#enable_at_startup = 0
-endif
 if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
   let g:neocomplete#enable_auto_select = 1
 
