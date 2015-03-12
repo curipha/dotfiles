@@ -25,7 +25,6 @@ export TERM=xterm-256color
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
-export GZIP=-v9N
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT='-w -EUTF-8'
 export WINEDEBUG=-all
@@ -329,6 +328,7 @@ bindkey '^]' insert-last-word
 #}}}
 # Utility{{{
 alias rename='noglob zmv -ivW'
+alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 function chpwd() { ls -AF }
 
@@ -345,6 +345,16 @@ function prefix_with_sudo() {
 }
 zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
+
+function prefix_with_man() {
+  [[ -z "$BUFFER" ]] && zle up-history
+  local bufarr
+  bufarr=( ${(z)BUFFER} )
+  BUFFER="man ${bufarr[1]}"
+  zle accept-line
+}
+zle -N prefix_with_man
+bindkey '^H^H' prefix_with_man
 
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
@@ -447,6 +457,7 @@ alias -g '?'=' --help |& less'
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
+alias -g Gv=' | grep -ivE'
 alias -g H=' | head'
 alias -g L=' |& less'
 alias -g N=' | wc -l'
@@ -483,6 +494,7 @@ alias vi='vim'
 alias view='vim -R'
 
 alias :q='exit'
+alias :qa='exit'
 
 alias .='pwd'
 alias ..='cd ..'
