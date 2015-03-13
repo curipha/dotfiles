@@ -23,8 +23,6 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-let $RUBYOPT = ''
-
 set t_Co=256
 set background=dark
 
