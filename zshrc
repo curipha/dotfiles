@@ -26,7 +26,7 @@ export TERM=xterm-256color
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
 export MAKEFLAGS='--jobs=4 --silent'
-export RUBYOPT='-w -EUTF-8'
+export RUBYOPT='-EUTF-8'
 export WINEDEBUG=-all
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
