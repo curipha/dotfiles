@@ -5,7 +5,6 @@
 [alias]
   a      = add
   aa     = add --all --verbose
-  ad     = add
   ap     = add --patch
   br     = branch --all --color --verbose --verbose
   ci     = commit --verbose
