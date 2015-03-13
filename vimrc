@@ -252,7 +252,7 @@ autocmd MyAutoCmd BufEnter,BufFilePost *
 \ | endif
 
 autocmd MyAutoCmd FileType ruby compiler ruby
-autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -c % | redraw!
+autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -cw % | redraw!
 
 autocmd MyAutoCmd BufReadPost *
 \   if &binary && executable('xxd')
