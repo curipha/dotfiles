@@ -98,6 +98,7 @@ case ${OSTYPE} in
     alias ls='ls -G'
 
     exists gmake && alias make=gmake
+    exists gmake && export MAKE=`whence -p gmake`
     exists jot   && alias seq=jot
   ;;
 
