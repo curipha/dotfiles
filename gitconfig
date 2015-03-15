@@ -6,6 +6,7 @@
   a      = add
   aa     = add --all --verbose
   ap     = add --patch
+  au     = add --update --verbose
   br     = branch --all --color --verbose --verbose
   ci     = commit --verbose
   cl     = clean -d
