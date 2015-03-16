@@ -61,8 +61,8 @@
   untracked = cyan bold
 
 [diff]
-  algorithm = histogram
-  renames = copy
+  algorithm      = histogram
+  renames        = copy
   statGraphWidth = 48
 
 [fetch]
