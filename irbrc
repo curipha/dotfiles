@@ -12,6 +12,7 @@ irb/completion
 pp
 prime
 thread
+time
 ).each do |lib|
   begin
     require lib
