@@ -27,7 +27,7 @@ export TERM=xterm-256color
 
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
-export RUBYOPT='-EUTF-8'
+export RUBYOPT=-EUTF-8
 export WINEDEBUG=-all
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
@@ -100,13 +100,14 @@ case ${OSTYPE} in
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=`whence -p gmake`
+
     exists jot   && alias seq=jot
   ;;
 
   cygwin)
     alias ls='ls --color=auto'
-    alias open='cygstart'
-    alias start='cygstart'
+    alias open=cygstart
+    alias start=cygstart
   ;;
 esac
 
