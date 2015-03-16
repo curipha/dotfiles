@@ -7,11 +7,11 @@
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
-export LC_COLLATE=C.UTF-8
-export LC_CTYPE=C.UTF-8
+export LC_COLLATE=ja_JP.UTF-8
+export LC_CTYPE=ja_JP.UTF-8
 export LC_MESSAGES=en_US.UTF-8
 export LC_MONETARY=ja_JP.UTF-8
-export LC_NUMERIC=C.UTF-8
+export LC_NUMERIC=ja_JP.UTF-8
 export LC_TIME=C.UTF-8
 
 export TZ=Asia/Tokyo
@@ -25,8 +25,9 @@ export TERM=xterm-256color
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
+export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
-export RUBYOPT='-EUTF-8'
+export RUBYOPT=-EUTF-8
 export WINEDEBUG=-all
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
@@ -99,18 +100,19 @@ case ${OSTYPE} in
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=`whence -p gmake`
+
     exists jot   && alias seq=jot
   ;;
 
   cygwin)
     alias ls='ls --color=auto'
-    alias open='cygstart'
-    alias start='cygstart'
+    alias open=cygstart
+    alias start=cygstart
   ;;
 esac
 
 exists dircolors && eval `dircolors -b`
-exists colordiff && alias diff='colordiff'
+exists colordiff && alias diff='colordiff -u'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
@@ -360,7 +362,7 @@ bindkey '^H^H' prefix_with_man
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
-      BUFFER='git status --branch --short --untracked-files=all && git diff'
+      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
       BUFFER='ls -AF'
     fi
