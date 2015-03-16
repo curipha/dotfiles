@@ -360,7 +360,7 @@ bindkey '^H^H' prefix_with_man
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
-      BUFFER='git status --branch --short --untracked-files=all && git diff'
+      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
       BUFFER='ls -AF'
     fi
