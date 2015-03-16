@@ -8,6 +8,7 @@ cgi/util
 date
 digest
 fileutils
+pathname
 pp
 prime
 thread

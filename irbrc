@@ -9,6 +9,7 @@ date
 digest
 fileutils
 irb/completion
+pathname
 pp
 prime
 thread
