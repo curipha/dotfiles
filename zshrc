@@ -7,11 +7,11 @@
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
-export LC_COLLATE=C.UTF-8
-export LC_CTYPE=C.UTF-8
+export LC_COLLATE=ja_JP.UTF-8
+export LC_CTYPE=ja_JP.UTF-8
 export LC_MESSAGES=en_US.UTF-8
 export LC_MONETARY=ja_JP.UTF-8
-export LC_NUMERIC=C.UTF-8
+export LC_NUMERIC=ja_JP.UTF-8
 export LC_TIME=C.UTF-8
 
 export TZ=Asia/Tokyo
