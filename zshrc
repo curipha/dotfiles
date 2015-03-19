@@ -461,11 +461,11 @@ alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
 alias -g Gv=' | grep -ivE'
-alias -g H=' | head'
+alias -g H=' | head -20'
 alias -g L=' |& less'
 alias -g N=' | wc -l'
 alias -g S=' | sort'
-alias -g T=' | tail'
+alias -g T=' | tail -20'
 alias -g U=' | sort | uniq'
 #}}}
 # Alias {{{
