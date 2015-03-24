@@ -19,6 +19,7 @@
   dddd   = diff --patch-with-stat HEAD~3
   ddddd  = diff --patch-with-stat HEAD~4
   dw     = diff --patch-with-stat --ignore-all-space
+  export = clone --depth 1
   fe     = fetch --verbose
   fix    = commit --amend
   g      = grep --break --color --heading --line-number --show-function
