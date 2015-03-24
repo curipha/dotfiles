@@ -238,6 +238,8 @@ setopt hist_reduce_blanks
 setopt inc_append_history
 setopt share_history
 
+setopt hist_ignore_space
+
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
