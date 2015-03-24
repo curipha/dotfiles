@@ -499,17 +499,11 @@ alias rst='echo -en "\033c" && tput clear && exec zsh'
 alias vi='vim'
 alias view='vim -R'
 
-alias :q='exit'
-alias :qa='exit'
-
 alias .='pwd'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-
-alias ,,='cd ..'
-alias ,,,='cd ../..'
 
 alias ~='cd ~'
 alias /='cd /'
