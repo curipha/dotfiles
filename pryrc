@@ -24,6 +24,10 @@ end
 # Configure
 Pry.config.history.should_save = false
 
+# Alias
+alias q exit
+alias x exit
+
 # Banner
 puts RUBY_DESCRIPTION
 
