@@ -4,6 +4,7 @@
 
 # Environments {{{
 #export LANG=ja_JP.UTF-8
+#export LANG=C.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
@@ -12,7 +13,7 @@ export LC_CTYPE=ja_JP.UTF-8
 export LC_MESSAGES=en_US.UTF-8
 export LC_MONETARY=ja_JP.UTF-8
 export LC_NUMERIC=ja_JP.UTF-8
-export LC_TIME=C.UTF-8
+export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
