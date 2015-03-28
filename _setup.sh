@@ -3,6 +3,9 @@
 # Dotfiles initializer
 #  * Create symlinks to dotfiles in your repository.
 
+set -o nounset
+set -o errexit
+
 SOURCE_DIR="$(cd `dirname "${0}"` && pwd)"
 
 DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
