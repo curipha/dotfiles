@@ -11,14 +11,12 @@ SOURCE_DIR="$(cd `dirname "${0}"` && pwd)"
 DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
-abort()
-{
+abort() {
   echo $@
   exit 1
 }
 
-makeln()
-{
+makeln() {
   [[ ${#} -ne 2 ]]  && abort 'ERR: Illegal usage of makeln().'
   [[ ! -f "${1}" ]] && abort "ERR: Source file (${1}) is not exists."
 
