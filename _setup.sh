@@ -3,26 +3,25 @@
 # Dotfiles initializer
 #  * Create symlinks to dotfiles in your repository.
 
+set -o nounset
+set -o errexit
+
 SOURCE_DIR="$(cd `dirname "${0}"` && pwd)"
 
 DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
-abort()
-{
+abort() {
   echo $@
   exit 1
 }
 
-makeln()
-{
-  [[ ${#} -ne 2 ]]  && abort 'ERR: Illegal usage of makeln().'
+makeln() {
   [[ ! -f "${1}" ]] && abort "ERR: Source file (${1}) is not exists."
 
-  [[ -L "${2}" ]] && rm -fv "${2}"
-  [[ -f "${2}" ]] && mv -iv "${2}" "${2}.bak"
+  [[ -f "${2}" ]] && [[ ! -L "${2}" ]] && mv -iv "${2}" "${2}.bak"
 
-  ln -sv "${1}" "${2}"
+  ln -fsv "${1}" "${2}"
 }
 
 

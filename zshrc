@@ -4,6 +4,7 @@
 
 # Environments {{{
 #export LANG=ja_JP.UTF-8
+#export LANG=C.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
@@ -12,7 +13,7 @@ export LC_CTYPE=ja_JP.UTF-8
 export LC_MESSAGES=en_US.UTF-8
 export LC_MONETARY=ja_JP.UTF-8
 export LC_NUMERIC=ja_JP.UTF-8
-export LC_TIME=C.UTF-8
+export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
@@ -238,6 +239,9 @@ setopt hist_reduce_blanks
 setopt inc_append_history
 setopt share_history
 
+setopt hist_ignore_space
+setopt hist_no_store
+
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
@@ -456,16 +460,16 @@ HELP
 #}}}
 
 # Global alias {{{
-alias -g '?'=' --help |& less'
+alias -g '?'=" --help |& ${PAGER}"
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
 alias -g Gv=' | grep -ivE'
-alias -g H=' | head'
-alias -g L=' |& less'
+alias -g H=' | head -20'
+alias -g L=" |& ${PAGER}"
 alias -g N=' | wc -l'
 alias -g S=' | sort'
-alias -g T=' | tail'
+alias -g T=' | tail -20'
 alias -g U=' | sort | uniq'
 #}}}
 # Alias {{{
@@ -496,17 +500,11 @@ alias rst='echo -en "\033c" && tput clear && exec zsh'
 alias vi='vim'
 alias view='vim -R'
 
-alias :q='exit'
-alias :qa='exit'
-
 alias .='pwd'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-
-alias ,,='cd ..'
-alias ,,,='cd ../..'
 
 alias ~='cd ~'
 alias /='cd /'
@@ -524,7 +522,7 @@ alias a='./a.out'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
-alias l='last -a | less'
+alias l="last -a | ${PAGER}"
 #alias m=''
 #alias n=''
 #alias o=''
