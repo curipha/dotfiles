@@ -195,7 +195,7 @@ isremote && SSH_INDICATOR='@ssh'
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
 RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
-SPROMPT='zsh: Did you mean %B%r%b ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
+SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 
 setopt prompt_cr
 setopt prompt_sp
