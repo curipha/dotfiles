@@ -461,6 +461,10 @@ HELP
 #}}}
 
 # Global alias {{{
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+
 alias -g '?'=" --help |& ${PAGER}"
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
@@ -503,10 +507,6 @@ alias view='vim -R'
 
 alias .='pwd'
 alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-
 alias ~='cd ~'
 alias /='cd /'
 
