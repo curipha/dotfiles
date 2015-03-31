@@ -3,8 +3,6 @@
 " ===============
 
 " Mode {{{
-set nocompatible
-
 set encoding=utf-8
 scriptencoding utf-8
 
@@ -22,8 +20,6 @@ endif
 augroup MyAutoCmd
   autocmd!
 augroup END
-
-let $RUBYOPT = ''
 
 set t_Co=256
 set background=dark
@@ -191,6 +187,8 @@ for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
 
+autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
+
 for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'onoremap a' . s:k . ' a' . s:p
   execute 'vnoremap a' . s:k . ' a' . s:p
@@ -254,7 +252,7 @@ autocmd MyAutoCmd BufEnter,BufFilePost *
 \ | endif
 
 autocmd MyAutoCmd FileType ruby compiler ruby
-autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -c % | redraw!
+autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -cw % | redraw!
 
 autocmd MyAutoCmd BufReadPost *
 \   if &binary && executable('xxd')
@@ -417,8 +415,8 @@ set foldcolumn=0
 set foldmethod=marker
 "set foldmethod=syntax
 
-autocmd MyAutoCmd FileType css       setlocal foldmethod=marker foldmarker={,}
-autocmd MyAutoCmd FileType gitcommit setlocal nofoldenable
+autocmd MyAutoCmd FileType css            setlocal foldmethod=marker foldmarker={,}
+autocmd MyAutoCmd FileType diff,gitcommit setlocal nofoldenable
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw

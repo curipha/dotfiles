@@ -4,15 +4,16 @@
 
 # Environments {{{
 #export LANG=ja_JP.UTF-8
+#export LANG=C.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
-export LC_COLLATE=C.UTF-8
-export LC_CTYPE=C.UTF-8
+export LC_COLLATE=ja_JP.UTF-8
+export LC_CTYPE=ja_JP.UTF-8
 export LC_MESSAGES=en_US.UTF-8
 export LC_MONETARY=ja_JP.UTF-8
-export LC_NUMERIC=C.UTF-8
-export LC_TIME=C.UTF-8
+export LC_NUMERIC=ja_JP.UTF-8
+export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
@@ -25,13 +26,15 @@ export TERM=xterm-256color
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`whoami`
 
+export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
-export RUBYOPT='-w -EUTF-8'
+export RUBYOPT=-EUTF-8
 export WINEDEBUG=-all
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
+export LESSSECURE=1
 export LESS_TERMCAP_mb=$'\e[1;31m'
 export LESS_TERMCAP_md=$'\e[1;37m'
 export LESS_TERMCAP_me=$'\e[0m'
@@ -98,18 +101,20 @@ case ${OSTYPE} in
     alias ls='ls -G'
 
     exists gmake && alias make=gmake
+    exists gmake && export MAKE=`whence -p gmake`
+
     exists jot   && alias seq=jot
   ;;
 
   cygwin)
     alias ls='ls --color=auto'
-    alias open='cygstart'
-    alias start='cygstart'
+    alias open=cygstart
+    alias start=cygstart
   ;;
 esac
 
-exists dircolors && eval `dircolors -b`
-exists colordiff && alias diff='colordiff'
+exists dircolors && eval `dircolors --bourne-shell`
+exists colordiff && alias diff='colordiff --unified'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
@@ -190,7 +195,7 @@ isremote && SSH_INDICATOR='@ssh'
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
 RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
-SPROMPT='zsh: Did you mean %B%r%b ?  [%Un%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
+SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 
 setopt prompt_cr
 setopt prompt_sp
@@ -234,6 +239,9 @@ setopt hist_ignore_dups
 setopt hist_reduce_blanks
 setopt inc_append_history
 setopt share_history
+
+setopt hist_ignore_space
+setopt hist_no_store
 
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -359,7 +367,7 @@ bindkey '^H^H' prefix_with_man
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
-      BUFFER='git status --branch --short --untracked-files=all'
+      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
       BUFFER='ls -AF'
     fi
@@ -453,16 +461,20 @@ HELP
 #}}}
 
 # Global alias {{{
-alias -g '?'=' --help |& less'
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+
+alias -g '?'=" --help |& ${PAGER}"
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
-alias -g Gv=' | grep -ivE'
-alias -g H=' | head'
-alias -g L=' |& less'
+alias -g GV=' | grep -ivE'
+alias -g H=' | head -20'
+alias -g L=" |& ${PAGER}"
 alias -g N=' | wc -l'
 alias -g S=' | sort'
-alias -g T=' | tail'
+alias -g T=' | tail -20'
 alias -g U=' | sort | uniq'
 #}}}
 # Alias {{{
@@ -493,18 +505,8 @@ alias rst='echo -en "\033c" && tput clear && exec zsh'
 alias vi='vim'
 alias view='vim -R'
 
-alias :q='exit'
-alias :qa='exit'
-
 alias .='pwd'
 alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-
-alias ,,='cd ..'
-alias ,,,='cd ../..'
-
 alias ~='cd ~'
 alias /='cd /'
 
@@ -521,7 +523,7 @@ alias a='./a.out'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
-alias l='last -a | less'
+alias l="last -a | ${PAGER}"
 #alias m=''
 #alias n=''
 #alias o=''

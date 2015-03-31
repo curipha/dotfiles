@@ -4,19 +4,22 @@
 
 [alias]
   a      = add
-  aa     = add --all
-  ad     = add
+  aa     = add --all --verbose
   ap     = add --patch
+  au     = add --update --verbose
   br     = branch --all --color --verbose --verbose
   ci     = commit --verbose
   cl     = clean -d
   co     = checkout
-  d      = diff
-  dc     = diff --cached
-  dd     = diff HEAD~
-  ddd    = diff HEAD~2
-  dddd   = diff HEAD~3
-  ddddd  = diff HEAD~4
+  d      = diff --patch-with-stat
+  dc     = diff --patch-with-stat --cached
+  dcw    = diff --patch-with-stat --cached --ignore-all-space
+  dd     = diff --patch-with-stat HEAD~
+  ddd    = diff --patch-with-stat HEAD~2
+  dddd   = diff --patch-with-stat HEAD~3
+  ddddd  = diff --patch-with-stat HEAD~4
+  dw     = diff --patch-with-stat --ignore-all-space
+  export = clone --depth 1
   fe     = fetch --verbose
   fix    = commit --amend
   g      = grep --break --color --heading --line-number --show-function
@@ -37,7 +40,7 @@
   sp     = stash show --patch
   ss     = stash
   st     = status --branch --short --untracked-files=all
-  sync   = !git fetch && git reset --hard FETCH_HEAD
+  sync   = !git fetch && git reset --hard FETCH_HEAD && git gc
   unlive = reset --hard HEAD
   unstg  = reset HEAD
 
@@ -59,7 +62,9 @@
   untracked = cyan bold
 
 [diff]
-  algorithm = histogram
+  algorithm      = histogram
+  renames        = copy
+  statGraphWidth = 48
 
 [fetch]
   prune = true

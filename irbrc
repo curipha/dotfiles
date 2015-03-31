@@ -9,9 +9,11 @@ date
 digest
 fileutils
 irb/completion
+pathname
 pp
 prime
 thread
+time
 ).each do |lib|
   begin
     require lib
