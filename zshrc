@@ -113,8 +113,8 @@ case ${OSTYPE} in
   ;;
 esac
 
-exists dircolors && eval `dircolors -b`
-exists colordiff && alias diff='colordiff -u'
+exists dircolors && eval `dircolors --bourne-shell`
+exists colordiff && alias diff='colordiff --unified'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
