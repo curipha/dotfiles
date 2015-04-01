@@ -182,13 +182,23 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
+
+autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
+autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
+
+autocmd MyAutoCmd FileType ruby     inoremap <buffer> :// ://
+autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
+
+autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php inoremap <buffer> </ </<C-x><C-o>
+
 for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
-
-autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
-
 for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'onoremap a' . s:k . ' a' . s:p
   execute 'vnoremap a' . s:k . ' a' . s:p
@@ -199,16 +209,6 @@ endfor
 autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
-
-autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> :// ://
-autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
-
-autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php inoremap <buffer> </ </<C-x><C-o>
 
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
 autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
