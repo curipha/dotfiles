@@ -394,12 +394,32 @@ bindkey '\^' magic_circumflex
 
 function 256color() {
   local CODE
-  for CODE in {0..255}; do
-    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) \e[0m"
-    [[ "${CODE}" == 15 ]] && echo
-    [[ $(( ${CODE} >= 16 && ${CODE} <= 231 && ( ${CODE} - 16 ) % 18 == 17 )) == 1 ]] && echo
+  local BASE
+  local ITERATION
+  local COUNT
+
+  for CODE in {0..15}; do
+    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+    [[ $(( ${CODE} % 8 )) == 7 ]] && echo -e "\e[0m"
   done
   echo
+
+  for BASE in {0..11}; do
+    for ITERATION in {0..2}; do
+      for COUNT in {0..5}; do
+        CODE=$(( 16 + $BASE * 6 + $ITERATION * 72 + $COUNT ))
+        echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+      done
+      echo -en "\e[0m  "
+    done
+    echo
+  done
+  echo
+
+  for CODE in {232..255}; do
+    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+  done
+  echo -e "\e[0m"
 }
 
 function createpasswd() {
