@@ -354,16 +354,6 @@ function prefix_with_sudo() {
 zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
-function prefix_with_man() {
-  [[ -z "$BUFFER" ]] && zle up-history
-  local bufarr
-  bufarr=( ${(z)BUFFER} )
-  BUFFER="man ${bufarr[1]}"
-  zle accept-line
-}
-zle -N prefix_with_man
-bindkey '^H^H' prefix_with_man
-
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
