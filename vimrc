@@ -33,7 +33,7 @@ if has('vim_starting')
   for s:path_plugin in glob(s:path_dotvim, 1, 1)
     if s:path_plugin !~# '\~$' && isdirectory(s:path_plugin)
       let &runtimepath .= ',' . s:path_plugin
-    end
+    endif
   endfor
 endif
 
