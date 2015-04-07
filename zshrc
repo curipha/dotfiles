@@ -69,6 +69,7 @@ autoload -Uz add-zsh-hook
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
+autoload -Uz modify-current-argument
 #autoload -Uz predict-on
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
