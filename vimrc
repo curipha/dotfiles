@@ -285,8 +285,9 @@ autocmd MyAutoCmd BufWritePre *
 \ |   endif
 \ | endif
 autocmd MyAutoCmd BufWriteCmd *[,*]
-\   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
-\ |   execute 'write' . (v:cmdbang ? '!' : '') expand('<afile>')
+\   let b:file = expand('<afile>')
+\ | if input(printf('Write to "%s". OK? [y/N]: ', b:file)) =~? '^y\%[es]$'
+\ |   execute 'write' . (v:cmdbang ? '!' : '') fnameescape(b:file)
 \ | else
 \ |   redraw
 \ |   echo 'File not saved.'
