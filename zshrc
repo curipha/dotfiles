@@ -382,6 +382,20 @@ function magic_circumflex() {
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
+function surround_with_single_quote() {
+    modify-current-argument '${(qq)${(Q)ARG}}'
+    zle vi-forward-blank-word
+}
+zle -N surround_with_single_quote
+bindkey '^[s' surround_with_single_quote
+
+function surround_with_double_quote() {
+    modify-current-argument '${(qqq)${(Q)ARG}}'
+    zle vi-forward-blank-word
+}
+zle -N surround_with_double_quote
+bindkey '^[d' surround_with_double_quote
+
 function 256color() {
   local CODE
   local BASE
