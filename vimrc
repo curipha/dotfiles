@@ -39,6 +39,12 @@ endif
 
 syntax enable
 filetype plugin indent on
+
+autocmd MyAutoCmd BufNewFile * setfiletype markdown
+autocmd MyAutoCmd BufEnter *
+\   if empty(expand('<afile>'))
+\ |   setfiletype markdown
+\ | endif
 " }}}
 
 " Edit {{{
