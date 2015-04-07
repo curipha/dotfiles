@@ -69,6 +69,7 @@ autoload -Uz add-zsh-hook
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
+autoload -Uz modify-current-argument
 #autoload -Uz predict-on
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
@@ -354,16 +355,6 @@ function prefix_with_sudo() {
 zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
-function prefix_with_man() {
-  [[ -z "$BUFFER" ]] && zle up-history
-  local bufarr
-  bufarr=( ${(z)BUFFER} )
-  BUFFER="man ${bufarr[1]}"
-  zle accept-line
-}
-zle -N prefix_with_man
-bindkey '^H^H' prefix_with_man
-
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
@@ -391,6 +382,20 @@ function magic_circumflex() {
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
+
+function surround_with_single_quote() {
+    modify-current-argument '${(qq)${(Q)ARG}}'
+    zle vi-forward-blank-word
+}
+zle -N surround_with_single_quote
+bindkey '^[s' surround_with_single_quote
+
+function surround_with_double_quote() {
+    modify-current-argument '${(qqq)${(Q)ARG}}'
+    zle vi-forward-blank-word
+}
+zle -N surround_with_double_quote
+bindkey '^[d' surround_with_double_quote
 
 function 256color() {
   local CODE
@@ -520,7 +525,7 @@ alias chmod='chmod -v'
 alias chown='chown -v'
 
 alias cls='echo -en "\033c" && tput clear'
-alias rst='echo -en "\033c" && tput clear && exec zsh'
+alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; else exec zsh; fi'
 
 alias vi='vim'
 alias view='vim -R'
