@@ -418,6 +418,7 @@ set foldenable
 set foldcolumn=0
 set foldmethod=marker
 "set foldmethod=syntax
+set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 autocmd MyAutoCmd FileType css            setlocal foldmethod=marker foldmarker={,}
 autocmd MyAutoCmd FileType diff,gitcommit setlocal nofoldenable
