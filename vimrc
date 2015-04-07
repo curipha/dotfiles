@@ -33,7 +33,7 @@ if has('vim_starting')
   for s:path_plugin in glob(s:path_dotvim, 1, 1)
     if s:path_plugin !~# '\~$' && isdirectory(s:path_plugin)
       let &runtimepath .= ',' . s:path_plugin
-    end
+    endif
   endfor
 endif
 
@@ -138,9 +138,6 @@ vnoremap <Up>   gk
 
 nnoremap <Tab> %
 vnoremap <Tab> %
-
-"nnoremap P [P
-"nnoremap p ]p
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
@@ -425,7 +422,6 @@ endif
 set foldenable
 set foldcolumn=0
 set foldmethod=marker
-"set foldmethod=syntax
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 autocmd MyAutoCmd FileType css            setlocal foldmethod=marker foldmarker={,}
