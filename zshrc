@@ -34,6 +34,7 @@ export WINEDEBUG=-all
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
+export LESSSECURE=1
 export LESS_TERMCAP_mb=$'\e[1;31m'
 export LESS_TERMCAP_md=$'\e[1;37m'
 export LESS_TERMCAP_me=$'\e[0m'
@@ -112,8 +113,8 @@ case ${OSTYPE} in
   ;;
 esac
 
-exists dircolors && eval `dircolors -b`
-exists colordiff && alias diff='colordiff -u'
+exists dircolors && eval `dircolors --bourne-shell`
+exists colordiff && alias diff='colordiff --unified'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
@@ -393,12 +394,32 @@ bindkey '\^' magic_circumflex
 
 function 256color() {
   local CODE
-  for CODE in {0..255}; do
-    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) \e[0m"
-    [[ "${CODE}" == 15 ]] && echo
-    [[ $(( ${CODE} >= 16 && ${CODE} <= 231 && ( ${CODE} - 16 ) % 18 == 17 )) == 1 ]] && echo
+  local BASE
+  local ITERATION
+  local COUNT
+
+  for CODE in {0..15}; do
+    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+    [[ $(( ${CODE} % 8 )) == 7 ]] && echo -e "\e[0m"
   done
   echo
+
+  for BASE in {0..11}; do
+    for ITERATION in {0..2}; do
+      for COUNT in {0..5}; do
+        CODE=$(( 16 + $BASE * 6 + $ITERATION * 72 + $COUNT ))
+        echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+      done
+      echo -en "\e[0m  "
+    done
+    echo
+  done
+  echo
+
+  for CODE in {232..255}; do
+    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+  done
+  echo -e "\e[0m"
 }
 
 function createpasswd() {
@@ -460,11 +481,15 @@ HELP
 #}}}
 
 # Global alias {{{
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+
 alias -g '?'=" --help |& ${PAGER}"
 alias -g C=' | sort | uniq -c | sort -nr'
 alias -g E=' > /dev/null'
 alias -g G=' | grep -iE'
-alias -g Gv=' | grep -ivE'
+alias -g GV=' | grep -ivE'
 alias -g H=' | head -20'
 alias -g L=" |& ${PAGER}"
 alias -g N=' | wc -l'
@@ -495,17 +520,13 @@ alias chmod='chmod -v'
 alias chown='chown -v'
 
 alias cls='echo -en "\033c" && tput clear'
-alias rst='echo -en "\033c" && tput clear && exec zsh'
+alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; else exec zsh; fi'
 
 alias vi='vim'
 alias view='vim -R'
 
 alias .='pwd'
 alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-
 alias ~='cd ~'
 alias /='cd /'
 

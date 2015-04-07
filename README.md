@@ -28,8 +28,8 @@ About script
 ------------
 
 ### _setup.sh
-Run it when clone this repository in new environment.
-`~/.*rc` of symbolic links will be created.
+Run it after cloning this repository in new environment.
+Symbolic links will be created.
 
 Links
 -----

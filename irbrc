@@ -28,6 +28,11 @@ IRB.conf[:PROMPT_MODE] = :SIMPLE
 #}}}
 
 # Methods {{{
+def req(lib)
+  puts "require '#{lib.to_s}'"
+  require(lib.to_s)
+end
+
 def pwd
   Dir.pwd
 end

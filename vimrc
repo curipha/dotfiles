@@ -39,6 +39,12 @@ endif
 
 syntax enable
 filetype plugin indent on
+
+autocmd MyAutoCmd BufNewFile * setfiletype markdown
+autocmd MyAutoCmd BufEnter *
+\   if empty(expand('<afile>'))
+\ |   setfiletype markdown
+\ | endif
 " }}}
 
 " Edit {{{
@@ -95,11 +101,9 @@ set softtabstop=0
 set complete=.,w,b,u,t,i,d,]
 set pumheight=18
 
-set spell spelllang=en_us,cjk
+autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
+autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
-autocmd MyAutoCmd FileType diff setlocal nospell
-autocmd MyAutoCmd FileType qf   setlocal nospell
-autocmd MyAutoCmd FileType xxd  setlocal nospell
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
@@ -182,13 +186,23 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
+
+autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
+autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
+
+autocmd MyAutoCmd FileType ruby     inoremap <buffer> :// ://
+autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
+
+autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php inoremap <buffer> </ </<C-x><C-o>
+
 for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
   execute 'vnoremap ' . s:p . ' t' . s:p
 endfor
-
-autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
-
 for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'onoremap a' . s:k . ' a' . s:p
   execute 'vnoremap a' . s:k . ' a' . s:p
@@ -199,16 +213,6 @@ endfor
 autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
-
-autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> :// ://
-autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
-
-autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php inoremap <buffer> </ </<C-x><C-o>
 
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
 autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
@@ -273,9 +277,17 @@ autocmd MyAutoCmd BufWritePost *
 \ |   setlocal nomodified
 \ | endif
 
+autocmd MyAutoCmd BufWritePre *
+\   let b:dir = expand('<afile>:p:h')
+\ | if !isdirectory(b:dir)
+\ |   if v:cmdbang || input(printf('"%s" does not exist. Create? [y/N]: ', b:dir)) =~? '^y\%[es]$'
+\ |     call mkdir(iconv(b:dir, &encoding, &termencoding), 'p')
+\ |   endif
+\ | endif
 autocmd MyAutoCmd BufWriteCmd *[,*]
-\   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
-\ |   execute 'write' . (v:cmdbang ? '!' : '') expand('<afile>')
+\   let b:file = expand('<afile>')
+\ | if input(printf('Write to "%s". OK? [y/N]: ', b:file)) =~? '^y\%[es]$'
+\ |   execute 'write' . (v:cmdbang ? '!' : '') fnameescape(b:file)
 \ | else
 \ |   redraw
 \ |   echo 'File not saved.'
@@ -414,6 +426,7 @@ set foldenable
 set foldcolumn=0
 set foldmethod=marker
 "set foldmethod=syntax
+set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 autocmd MyAutoCmd FileType css            setlocal foldmethod=marker foldmarker={,}
 autocmd MyAutoCmd FileType diff,gitcommit setlocal nofoldenable
