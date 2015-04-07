@@ -277,6 +277,13 @@ autocmd MyAutoCmd BufWritePost *
 \ |   setlocal nomodified
 \ | endif
 
+autocmd MyAutoCmd BufWritePre *
+\   let b:dir = expand('<afile>:p:h')
+\ | if !isdirectory(b:dir)
+\ |   if v:cmdbang || input(printf('"%s" does not exist. Create? [y/N]: ', b:dir)) =~? '^y\%[es]$'
+\ |     call mkdir(iconv(b:dir, &encoding, &termencoding), 'p')
+\ |   endif
+\ | endif
 autocmd MyAutoCmd BufWriteCmd *[,*]
 \   if input('Write to "' . expand('<afile>') . '". OK? [y/N]: ') =~? '^y\%[es]$'
 \ |   execute 'write' . (v:cmdbang ? '!' : '') expand('<afile>')
