@@ -189,7 +189,7 @@ MAILCHECK=0
 colors
 zle -N self-insert url-quote-magic
 
-unalias run-help
+[[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
 isremote && SSH_INDICATOR='@ssh'
