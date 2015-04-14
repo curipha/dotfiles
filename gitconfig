@@ -41,7 +41,6 @@
   ss     = stash
   st     = status --branch --short --untracked-files=all
   sync   = !git fetch && git reset --hard FETCH_HEAD && git gc
-  unlive = reset --hard HEAD
   unstg  = reset HEAD
 
 [color]
