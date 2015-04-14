@@ -533,6 +533,8 @@ alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; el
 alias vi='vim'
 alias view='vim -R'
 
+alias cal='cal -3'
+
 alias .='pwd'
 alias ..='cd ..'
 alias ~='cd ~'
