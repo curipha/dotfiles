@@ -70,6 +70,9 @@ set suffixes=.bak,.tmp,.out,.aux,.dvi,.toc
 set history=100
 set undolevels=4000
 
+set modeline
+set modelines=3
+
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
