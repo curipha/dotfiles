@@ -342,6 +342,8 @@ alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 function chpwd() { ls -AF }
 
+function +x() { chmod +x "$@" }
+
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
