@@ -76,6 +76,7 @@ set modelines=3
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
+set nojoinspaces
 set formatoptions& formatoptions+=mMj
 autocmd MyAutoCmd FileType * setlocal formatoptions-=ro
 
