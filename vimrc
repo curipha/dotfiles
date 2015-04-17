@@ -476,6 +476,43 @@ for s:f in ['dos', 'unix', 'mac']
         \ substitute(toupper(s:f[0]).tolower(s:f[1:]), '\W', '', 'g')
         \ 'edit<bang> ++ff='.s:f '<args>'
 endfor
+
+command! -bar PluginUpdate call s:plugin_update()
+function! s:plugin_update()
+  if executable('git')
+    let l:pwd    = getcwd()
+    let l:update = ''
+
+    for l:path in split(&runtimepath, ',')
+      if isdirectory(l:path . '/.git')
+        echohl WarningMsg
+        echomsg '* Updating:' l:path
+        echohl None
+
+        execute 'lcd' fnameescape(l:path)
+        silent let l:result = system('git fetch && git reset --hard FETCH_HEAD && git gc')
+        echo l:result
+
+        let l:update = 'up'
+      endif
+    endfor
+
+    if empty(l:update)
+      echomsg 'Nothing to update.'
+    else
+      silent! runtime! ftdetect/**/*.vim
+      silent! runtime! after/ftdetect/**/*.vim
+      silent! runtime! plugin/**/*.vim
+      silent! runtime! after/plugin/**/*.vim
+
+      execute 'lcd' fnameescape(l:pwd)
+    endif
+  else
+    echohl ErrorMsg
+    echomsg 'Install Git before run this command.'
+    echohl None
+  endif
+endfunction
 " }}}
 " Abbreviation {{{
 iabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
