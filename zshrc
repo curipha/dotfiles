@@ -361,7 +361,7 @@ bindkey '^S^S' prefix_with_sudo
 function magic_enter() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
-      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
+      BUFFER='git st && git d'
     else
       BUFFER='ls -AF'
     fi
