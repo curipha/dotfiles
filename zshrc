@@ -30,6 +30,7 @@ export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
 export WINEDEBUG=-all
+export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
@@ -188,7 +189,7 @@ MAILCHECK=0
 colors
 zle -N self-insert url-quote-magic
 
-unalias run-help
+[[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
 isremote && SSH_INDICATOR='@ssh'
@@ -340,6 +341,8 @@ alias rename='noglob zmv -ivW'
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 function chpwd() { ls -AF }
+
+function +x() { chmod +x "$@" }
 
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
@@ -529,6 +532,8 @@ alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; el
 
 alias vi='vim'
 alias view='vim -R'
+
+alias cal='cal -3'
 
 alias .='pwd'
 alias ..='cd ..'

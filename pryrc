@@ -37,3 +37,5 @@ alias x exit
 # Banner
 puts RUBY_DESCRIPTION
 
+
+# vim: filetype=ruby
