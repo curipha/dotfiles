@@ -430,6 +430,54 @@ function 256color() {
   echo -e "\e[0m"
 }
 
+function package-update() {
+  local CLEAN=
+  local YES=
+
+  while getopts hcy ARG; do
+    case $ARG in
+      "c" ) CLEAN=1;;
+      "y" ) YES=1;;
+
+      * )
+        cat <<HELP 1>&2
+Usage: ${0} [-cy]
+
+  -c            Run cleaning functionality if any
+  -y            Answer "yes" to any question
+HELP
+      return 1;;
+    esac
+  done
+
+  local OPTIONS=
+  if exists apt-get; then
+    [[ -n "${YES}" ]] && OPTIONS="-y"
+
+    sudo apt-get ${OPTIONS} update       && \
+    sudo apt-get ${OPTIONS} dist-upgrade && \
+    [[ -n "${CLEAN}" ]] && \
+      sudo apt-get ${OPTIONS} autoremove && \
+      sudo apt-get ${OPTIONS} clean
+  elif exists yum; then
+    [[ -n "${YES}" ]] && OPTIONS="-y"
+
+    sudo yum ${OPTIONS} upgrade          && \
+    [[ -n "${CLEAN}" ]] && \
+      sudo yum ${OPTIONS} autoremove     && \
+      sudo yum ${OPTIONS} clean packages
+  elif exists pacman; then
+    [[ -n "${YES}" ]] && OPTIONS="--noconfirm"
+
+    sudo pacman -Syu ${OPTIONS}          && \
+    [[ -n "${CLEAN}" ]] && \
+      sudo pacman -Sc ${OPTIONS}
+  else
+    echo 'Cannot find a package manager which I know.' 1>&2
+    return 1
+  fi
+}
+
 function createpasswd() {
   # Default
   local CHARACTER="[:graph:]"
