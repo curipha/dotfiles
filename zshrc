@@ -350,6 +350,24 @@ function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 function mkcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && builtin cd "$1" }
 function mkmv() { [[ $# -eq 2 ]] && mkdir -vp "${@: -1}" && mv -iv "$@" }
 
+function whois() {
+  local WHOIS
+  exists jwhois && WHOIS=`whence -p jwhois`
+  exists whois  && WHOIS=`whence -p whois`
+
+  if [[ -z "${WHOIS}" ]]; then
+    echo 'Error: Cannnot find whois command.' 1>&2
+    return 1
+  fi
+
+  local DOMAIN=`echo "$1" | perl -pe 's!^[^:]+://([^/]+).*$!\1!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
+  if [[ -z "${DOMAIN}" ]]; then
+    ${WHOIS}
+  else
+    ( echo "${WHOIS} ${DOMAIN}" && echo && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+  fi
+}
+
 function prefix_with_sudo() {
   [[ -z "$BUFFER" ]] && zle up-history
   [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
