@@ -32,17 +32,16 @@
   pl     = pull
   pu     = push
   r      = remote --verbose
-  rvt    = checkout --
-  rvth   = checkout HEAD --    # Revert a file to HEAD
-  rvti   = checkout --         # Revert a file to index
   sh     = show
   sl     = stash list
   sp     = stash show --patch
   ss     = stash
   st     = status --branch --short --untracked-files=all
   sync   = !git fetch && git reset --hard FETCH_HEAD && git gc
-  unlive = reset --hard HEAD
   unstg  = reset HEAD
+
+  revert-file-to-head  = checkout HEAD --
+  revert-file-to-index = checkout --
 
 [color]
   branch      = auto

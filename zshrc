@@ -30,6 +30,7 @@ export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
 export WINEDEBUG=-all
+export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
@@ -188,7 +189,7 @@ MAILCHECK=0
 colors
 zle -N self-insert url-quote-magic
 
-unalias run-help
+[[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
 isremote && SSH_INDICATOR='@ssh'
@@ -341,6 +342,8 @@ alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 function chpwd() { ls -AF }
 
+function +x() { chmod +x "$@" }
+
 function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
@@ -425,6 +428,54 @@ function 256color() {
     echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
   done
   echo -e "\e[0m"
+}
+
+function package-update() {
+  local CLEAN=
+  local YES=
+
+  while getopts hcy ARG; do
+    case $ARG in
+      "c" ) CLEAN=1;;
+      "y" ) YES=1;;
+
+      * )
+        cat <<HELP 1>&2
+Usage: ${0} [-cy]
+
+  -c            Run cleaning functionality if any
+  -y            Answer "yes" to any question
+HELP
+      return 1;;
+    esac
+  done
+
+  local OPTIONS=
+  if exists apt-get; then
+    [[ -n "${YES}" ]] && OPTIONS="-y"
+
+    sudo apt-get ${OPTIONS} update       && \
+    sudo apt-get ${OPTIONS} dist-upgrade && \
+    [[ -n "${CLEAN}" ]] && \
+      sudo apt-get ${OPTIONS} autoremove && \
+      sudo apt-get ${OPTIONS} clean
+  elif exists yum; then
+    [[ -n "${YES}" ]] && OPTIONS="-y"
+
+    sudo yum ${OPTIONS} upgrade          && \
+    [[ -n "${CLEAN}" ]] && \
+      sudo yum ${OPTIONS} autoremove     && \
+      sudo yum ${OPTIONS} clean packages
+  elif exists pacman; then
+    [[ -n "${YES}" ]] && OPTIONS="--noconfirm"
+
+    sudo pacman -Syu ${OPTIONS}          && \
+    [[ -n "${CLEAN}" ]] && \
+      sudo pacman -Sc ${OPTIONS}
+  else
+    echo 'Cannot find a package manager which I know.' 1>&2
+    return 1
+  fi
 }
 
 function createpasswd() {
@@ -529,6 +580,8 @@ alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; el
 
 alias vi='vim'
 alias view='vim -R'
+
+alias cal='cal -3'
 
 alias .='pwd'
 alias ..='cd ..'
