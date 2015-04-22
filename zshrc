@@ -368,6 +368,17 @@ function whois() {
   fi
 }
 
+function change_command() {
+  [[ -z "$BUFFER" ]] && zle up-history
+
+  zle beginning-of-line
+
+  [[ "$BUFFER" == sudo\ * ]] && zle kill-word
+  zle kill-word
+}
+zle -N change_command
+bindkey '^X^X' change_command
+
 function prefix_with_sudo() {
   [[ -z "$BUFFER" ]] && zle up-history
   [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
