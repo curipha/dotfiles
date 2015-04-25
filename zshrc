@@ -369,7 +369,7 @@ function whois() {
 }
 
 function change_command() {
-  [[ -z "$BUFFER" ]] && zle up-history
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
 
   zle beginning-of-line
 
@@ -380,7 +380,7 @@ zle -N change_command
 bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
-  [[ -z "$BUFFER" ]] && zle up-history
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
   [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
   zle end-of-line
 }
