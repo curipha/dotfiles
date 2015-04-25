@@ -369,7 +369,7 @@ function whois() {
 }
 
 function change_command() {
-  [[ -z "$BUFFER" ]] && zle up-history
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
 
   zle beginning-of-line
 
@@ -380,7 +380,7 @@ zle -N change_command
 bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
-  [[ -z "$BUFFER" ]] && zle up-history
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
   [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
   zle end-of-line
 }
@@ -415,16 +415,26 @@ function magic_circumflex() {
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
+function verbose_pushline() {
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
+
+  zle -M "zsh: Line pushed to buffer: $BUFFER"
+  zle push-line-or-edit
+}
+zle -N verbose_pushline
+bindkey '^Q'  verbose_pushline
+bindkey '^[q' verbose_pushline
+
 function surround_with_single_quote() {
-    modify-current-argument '${(qq)${(Q)ARG}}'
-    zle vi-forward-blank-word
+  modify-current-argument '${(qq)${(Q)ARG}}'
+  zle vi-forward-blank-word
 }
 zle -N surround_with_single_quote
 bindkey '^[s' surround_with_single_quote
 
 function surround_with_double_quote() {
-    modify-current-argument '${(qqq)${(Q)ARG}}'
-    zle vi-forward-blank-word
+  modify-current-argument '${(qqq)${(Q)ARG}}'
+  zle vi-forward-blank-word
 }
 zle -N surround_with_double_quote
 bindkey '^[d' surround_with_double_quote
