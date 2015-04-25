@@ -418,7 +418,7 @@ bindkey '\^' magic_circumflex
 function verbose_pushline() {
   [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
 
-  zle -M "zsh: Line pushed to buffer: $BUFFER"
+  zle -M "zsh: Buffer pushed to stack: $BUFFER"
   zle push-line-or-edit
 }
 zle -N verbose_pushline
