@@ -350,8 +350,37 @@ function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 function mkcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && builtin cd "$1" }
 function mkmv() { [[ $# -eq 2 ]] && mkdir -vp "${@: -1}" && mv -iv "$@" }
 
+function whois() {
+  local WHOIS
+  exists jwhois && WHOIS=`whence -p jwhois`
+  exists whois  && WHOIS=`whence -p whois`
+
+  if [[ -z "${WHOIS}" ]]; then
+    echo 'Error: Cannnot find whois command.' 1>&2
+    return 1
+  fi
+
+  local DOMAIN=`echo "$1" | perl -pe 's!^[^:]+://([^/]+).*$!\1!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
+  if [[ -z "${DOMAIN}" ]]; then
+    ${WHOIS}
+  else
+    ( echo "${WHOIS} ${DOMAIN}" && echo && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+  fi
+}
+
+function change_command() {
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
+
+  zle beginning-of-line
+
+  [[ "$BUFFER" == sudo\ * ]] && zle kill-word
+  zle kill-word
+}
+zle -N change_command
+bindkey '^X^X' change_command
+
 function prefix_with_sudo() {
-  [[ -z "$BUFFER" ]] && zle up-history
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
   [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
   zle end-of-line
 }
@@ -386,16 +415,26 @@ function magic_circumflex() {
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
+function verbose_pushline() {
+  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
+
+  zle -M "zsh: Buffer pushed to stack: $BUFFER"
+  zle push-line-or-edit
+}
+zle -N verbose_pushline
+bindkey '^Q'  verbose_pushline
+bindkey '^[q' verbose_pushline
+
 function surround_with_single_quote() {
-    modify-current-argument '${(qq)${(Q)ARG}}'
-    zle vi-forward-blank-word
+  modify-current-argument '${(qq)${(Q)ARG}}'
+  zle vi-forward-blank-word
 }
 zle -N surround_with_single_quote
 bindkey '^[s' surround_with_single_quote
 
 function surround_with_double_quote() {
-    modify-current-argument '${(qqq)${(Q)ARG}}'
-    zle vi-forward-blank-word
+  modify-current-argument '${(qqq)${(Q)ARG}}'
+  zle vi-forward-blank-word
 }
 zle -N surround_with_double_quote
 bindkey '^[d' surround_with_double_quote
@@ -476,6 +515,12 @@ HELP
     echo 'Cannot find a package manager which I know.' 1>&2
     return 1
   fi
+}
+
+function getrandomport() {
+  float   RAND=$(( $RANDOM * 1.0 / 32767 ))
+  integer BASE=$(( $RAND * 16383 ))
+  echo $(( $BASE + 49152 ))
 }
 
 function createpasswd() {
