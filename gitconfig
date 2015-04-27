@@ -60,6 +60,9 @@
   changed   = green bold
   untracked = cyan bold
 
+[core]
+  quotepath = false
+
 [diff]
   algorithm      = histogram
   renames        = copy
