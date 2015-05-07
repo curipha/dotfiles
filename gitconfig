@@ -3,40 +3,40 @@
 # ===============
 
 [alias]
-  a      = add
-  aa     = add --all --verbose
-  ap     = add --patch
-  au     = add --update --verbose
-  br     = branch --all --color --verbose --verbose
-  ci     = commit --verbose
-  co     = checkout
-  d      = diff --patch-with-stat
-  dc     = diff --patch-with-stat --cached
-  dcw    = diff --patch-with-stat --cached --ignore-all-space
-  dd     = diff --patch-with-stat HEAD~
-  ddd    = diff --patch-with-stat HEAD~2
-  dddd   = diff --patch-with-stat HEAD~3
-  ddddd  = diff --patch-with-stat HEAD~4
-  dw     = diff --patch-with-stat --ignore-all-space
-  fe     = fetch --verbose
-  fix    = commit --amend --verbose
-  g      = grep --break --color --heading --line-number --show-function
-  l      = log --decorate --stat --no-merges
-  la     = log --decorate --stat
-  ll     = log --decorate --oneline --graph --no-merges
-  lla    = log --decorate --oneline --graph
-  lp     = log --decorate --patch-with-stat --no-merges
-  lpa    = log --decorate --patch-with-stat
-  pl     = pull
-  pu     = push
-  r      = remote --verbose
-  sh     = show
-  sl     = stash list
-  sp     = stash show --patch
-  ss     = stash
-  st     = status --branch --short --untracked-files=all
-  sync   = !git fetch && git reset --hard FETCH_HEAD && git gc
-  unstg  = reset HEAD
+  a     = add
+  aa    = add --all --verbose
+  ap    = add --patch
+  au    = add --update --verbose
+  br    = branch --all --color --verbose --verbose
+  ci    = commit --verbose
+  co    = checkout
+  d     = diff --patch-with-stat
+  dc    = diff --patch-with-stat --cached
+  dcw   = diff --patch-with-stat --cached --ignore-all-space
+  dd    = diff --patch-with-stat HEAD~
+  ddd   = diff --patch-with-stat HEAD~2
+  dddd  = diff --patch-with-stat HEAD~3
+  ddddd = diff --patch-with-stat HEAD~4
+  dw    = diff --patch-with-stat --ignore-all-space
+  fe    = fetch --verbose
+  fix   = commit --amend --verbose
+  g     = grep --break --color --heading --line-number --show-function
+  l     = log --decorate --stat --no-merges
+  la    = log --decorate --stat
+  ll    = log --decorate --oneline --graph --no-merges
+  lla   = log --decorate --oneline --graph
+  lp    = log --decorate --patch-with-stat --no-merges
+  lpa   = log --decorate --patch-with-stat
+  pl    = pull
+  pu    = push
+  r     = remote --verbose
+  sh    = show
+  sl    = stash list
+  sp    = stash show --patch
+  ss    = stash
+  st    = status --branch --short --untracked-files=all
+  sync  = !git fetch && git reset --hard FETCH_HEAD && git gc
+  unstg = reset HEAD
 
   revert-file-to-head  = checkout HEAD --
   revert-file-to-index = checkout --
