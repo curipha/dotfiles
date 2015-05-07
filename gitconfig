@@ -87,6 +87,11 @@
 [push]
   default = current
 
+[url "git@github.com:"]
+  insteadOf     = gh:
+  pushInsteadOf = https://github.com/
+  pushInsteadOf = git://github.com/
+
 [user]
   name  = Taichi
   email = taichi@curipha.jp
