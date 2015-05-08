@@ -508,7 +508,7 @@ HELP
       sudo yum ${OPTIONS} upgrade          && \
       [[ -n "${CLEAN}" ]] && \
         sudo yum ${OPTIONS} autoremove     && \
-        sudo yum ${OPTIONS} clean packages
+        sudo yum ${OPTIONS} clean all
     elif exists pacman; then
       [[ -n "${YES}" ]] && OPTIONS="--noconfirm"
 
