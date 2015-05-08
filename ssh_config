@@ -4,6 +4,9 @@
 
 Protocol 2
 
+Host github.com
+  User git
+
 Host *
   IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
