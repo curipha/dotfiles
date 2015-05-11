@@ -112,7 +112,6 @@ nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
 set virtualedit=block
-set cryptmethod=blowfish
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
