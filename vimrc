@@ -60,7 +60,7 @@ set infercase
 set browsedir=buffer
 
 set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class
-set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.png,*.jpg,*.gif,*.bmp
 set wildignore+=*.bz2,*.gz,*.tar,*.xz,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
 set wildignore+=*/.git/*,*/.svn/*
