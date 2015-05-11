@@ -107,7 +107,7 @@ set pumheight=18
 
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
-nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
+nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
