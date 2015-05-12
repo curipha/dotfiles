@@ -300,6 +300,8 @@ if [[ -r /etc/passwd ]]; then
     $(awk -F: "\$3 < ${UID_MIN} || \$3 > ${UID_MAX} { print \$1 }" /etc/passwd)
 fi
 
+zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
+
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
