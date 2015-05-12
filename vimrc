@@ -58,6 +58,7 @@ set wildmode=list:full
 set wildignorecase
 set infercase
 set browsedir=buffer
+set isfname& isfname-==
 
 set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class
 set wildignore+=*.png,*.jpg,*.gif,*.bmp
