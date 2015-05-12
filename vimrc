@@ -50,7 +50,7 @@ autocmd MyAutoCmd BufEnter *
 " Edit {{{
 set fileencodings=ucs-bom,utf-8
 set fileformat=unix
-set fileformats=unix,dos,mac
+set fileformats=unix,dos
 
 set wildmenu
 set wildchar=<tab>
