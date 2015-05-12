@@ -468,12 +468,12 @@ command! -bar SSF syntax sync fromstart
 for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
   execute 'command! -bang -nargs=0'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
-        \ 'edit<bang> ++enc='.s:e '<args>'
+        \ 'edit<bang> ++encoding='.s:e '<args>'
 endfor
 for s:f in ['dos', 'unix', 'mac']
   execute 'command! -bang -nargs=0'
         \ substitute(toupper(s:f[0]).tolower(s:f[1:]), '\W', '', 'g')
-        \ 'edit<bang> ++ff='.s:f '<args>'
+        \ 'edit<bang> ++fileformat='.s:f '<args>'
 endfor
 
 command! -bar PluginUpdate call s:plugin_update()
