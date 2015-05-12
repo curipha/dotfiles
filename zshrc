@@ -301,6 +301,7 @@ if [[ -r /etc/passwd ]]; then
 fi
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
+zstyle ':completion:*:-subscript-:*' list-separator ':'
 
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
