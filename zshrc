@@ -264,7 +264,7 @@ zstyle ':completion:*' use-cache true
 zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' menu select=long
+zstyle ':completion:*' menu yes=2 select=long-list
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
