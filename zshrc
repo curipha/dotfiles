@@ -268,7 +268,17 @@ typeset -U cdpath
 
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
-zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+
+#zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+zstyle -e ':completion:*' completer '
+  COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
+  if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
+    reply=(_ignored _correct _approximate)
+  else
+    COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
+    reply=(_expand _complete _match _prefix _list)
+  fi'
+
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu yes=2 select=long-list
 
