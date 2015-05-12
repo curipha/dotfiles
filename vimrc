@@ -254,7 +254,7 @@ set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
-\   if isdirectory(expand('%:p:h')) && &filetype !=# 'help'
+\   if empty(&buftype) && isdirectory(expand('%:p:h'))
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
 
