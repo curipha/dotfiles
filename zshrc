@@ -301,7 +301,7 @@ typeset -U cdpath
 zstyle ':completion:*:sudo:*' command-path
 
 zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
-zstyle ':completion:*:(processes|jobs)' menu yes select=2
+zstyle ':completion:*:(processes|jobs)' menu select=2
 
 zstyle ':completion:*:scp:*:files' command command -
 
