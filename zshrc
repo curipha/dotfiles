@@ -259,23 +259,34 @@ compinit
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
+cdpath=(
+  $HOME
+  ..
+  ../..
+)
+typeset -U cdpath
+
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu yes=2 select=long-list
+
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' menu yes=2 select=long-list
+zstyle ':completion:*' ignore-parents parent pwd ..
+
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
-
-zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
 
 zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 
 zstyle ':completion:*:manuals' separate-sections true
+
+zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
+zstyle ':completion:*:(processes|jobs)' menu select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:users' ignored-patterns \
@@ -289,20 +300,9 @@ pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser r
 saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
 # $(awk -F: '$3 < 1000 || $3 > 60000 { print $1 }' /etc/passwd)
 
-zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*' ignore-parents parent pwd ..
-cdpath=(
-  $HOME
-  ..
-  ../..
-)
-typeset -U cdpath
-
 zstyle ':completion:*:sudo:*' command-path
-
-zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
-zstyle ':completion:*:(processes|jobs)' menu select=2
-
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
 zstyle ':completion:*:scp:*:files' command command -
 
 #predict-on
