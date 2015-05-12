@@ -289,16 +289,16 @@ zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w 
 zstyle ':completion:*:(processes|jobs)' menu select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
-zstyle ':completion:*:users' ignored-patterns \
-Administrator Guest \
-'avahi*' 'mail*' 'systemd*' \
-adm amanda apache backup beaglidx bin cacti canna clamav colord daemon dbus distcache dovecot \
-fax ftp games gdm git gkrellmd gnats gopher hacluster haldaemon halt hplip hsqldb http \
-ident irc junkbust kernoops ldap libuuid lightdm list lp lxdm man messagebus mldonkey mysql \
-nagios named netdump news nfsnobody nobody nscd ntp nut nx openvpn operator \
-pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser rpm rtkit \
-saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
-# $(awk -F: '$3 < 1000 || $3 > 60000 { print $1 }' /etc/passwd)
+
+if [[ -r /etc/passwd ]]; then
+  [[ -r /etc/login.defs ]] && \
+    eval `awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs`
+  [[ -z "${UID_MIN}" ]] && UID_MIN=1000
+  [[ -z "${UID_MAX}" ]] && UID_MAX=60000
+
+  zstyle ':completion:*:users' ignored-patterns \
+    $(awk -F: "\$3 < ${UID_MIN} || \$3 > ${UID_MAX} { print \$1 }" /etc/passwd)
+fi
 
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
