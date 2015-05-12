@@ -259,38 +259,6 @@ compinit
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-zstyle ':completion:*' verbose true
-zstyle ':completion:*' use-cache true
-zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
-
-zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
-
-zstyle ':completion:*:descriptions' format '%B%d%b'
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-
-zstyle ':completion:*:manuals' separate-sections true
-
-zstyle ':completion:*:functions' ignored-patterns '_*'
-zstyle ':completion:*:users' ignored-patterns \
-Administrator Guest \
-'avahi*' 'mail*' 'systemd*' \
-adm amanda apache backup beaglidx bin cacti canna clamav colord daemon dbus distcache dovecot \
-fax ftp games gdm git gkrellmd gnats gopher hacluster haldaemon halt hplip hsqldb http \
-ident irc junkbust kernoops ldap libuuid lightdm list lp lxdm man messagebus mldonkey mysql \
-nagios named netdump news nfsnobody nobody nscd ntp nut nx openvpn operator \
-pcap polkitd postfix postgres privoxy proxy pulse pvm quagga radvd rpc rpcuser rpm rtkit \
-saned shutdown squid sshd sync sys syslog usbmux uucp uuidd vcsa www www-data xfs
-# $(awk -F: '$3 < 1000 || $3 > 60000 { print $1 }' /etc/passwd)
-
-zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*' ignore-parents parent pwd ..
 cdpath=(
   $HOME
   ..
@@ -298,12 +266,44 @@ cdpath=(
 )
 typeset -U cdpath
 
-zstyle ':completion:*:sudo:*' command-path
+zstyle ':completion:*' verbose true
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu yes=2 select=long-list
+
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' ignore-parents parent pwd ..
+
+zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+
+zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
-zstyle ':completion:*:(processes|jobs)' menu yes select=2
+zstyle ':completion:*:(processes|jobs)' menu select=2
 
-zstyle ':completion:*:complete:scp:*:files' command command -
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+if [[ -r /etc/passwd ]]; then
+  [[ -r /etc/login.defs ]] && \
+    eval `awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs`
+  [[ -z "${UID_MIN}" ]] && UID_MIN=1000
+  [[ -z "${UID_MAX}" ]] && UID_MAX=60000
+
+  zstyle ':completion:*:users' ignored-patterns \
+    $(awk -F: "\$3 < ${UID_MIN} || \$3 > ${UID_MAX} { print \$1 }" /etc/passwd)
+fi
+
+zstyle ':completion:*:sudo:*' command-path
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
+zstyle ':completion:*:scp:*:files' command command -
 
 #predict-on
 
@@ -340,7 +340,8 @@ bindkey '^]' insert-last-word
 alias rename='noglob zmv -ivW'
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
-function chpwd() { ls -AF }
+function chpwd_ls() { ls -AF }
+add-zsh-hook chpwd chpwd_ls
 
 function +x() { chmod +x "$@" }
 
@@ -672,5 +673,5 @@ alias x='exit'
 #alias z=''
 #}}}
 
-[[ -f ~/.zshrc.include ]] && source ~/.zshrc.include
+[[ -r ~/.zshrc.include ]] && source ~/.zshrc.include
 
