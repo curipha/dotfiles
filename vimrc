@@ -60,7 +60,7 @@ set infercase
 set browsedir=buffer
 
 set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class
-set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.png,*.jpg,*.gif,*.bmp
 set wildignore+=*.bz2,*.gz,*.tar,*.xz,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
 set wildignore+=*/.git/*,*/.svn/*
@@ -107,12 +107,11 @@ set pumheight=18
 
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
-nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
+nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
 set virtualedit=block
-set cryptmethod=blowfish
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
