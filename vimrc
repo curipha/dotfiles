@@ -178,7 +178,6 @@ vnoremap gc :<C-u>normal `[v`]<CR>
 nnoremap vv ggVG
 nnoremap vV ^v$h
 
-nnoremap <Leader>e :<C-u>e ++enc=
 nnoremap <Leader>o :<C-u>only<CR>
 nnoremap <Leader>r :<C-u>registers<CR>
 nnoremap <Leader>w :<C-u>update<CR>
