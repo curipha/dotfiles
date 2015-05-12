@@ -50,7 +50,7 @@ autocmd MyAutoCmd BufEnter *
 " Edit {{{
 set fileencodings=ucs-bom,utf-8
 set fileformat=unix
-set fileformats=unix,dos,mac
+set fileformats=unix,dos
 
 set wildmenu
 set wildchar=<tab>
@@ -58,9 +58,10 @@ set wildmode=list:full
 set wildignorecase
 set infercase
 set browsedir=buffer
+set isfname& isfname-==
 
 set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class
-set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.png,*.jpg,*.gif,*.bmp
 set wildignore+=*.bz2,*.gz,*.tar,*.xz,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
 set wildignore+=*/.git/*,*/.svn/*
@@ -107,12 +108,11 @@ set pumheight=18
 
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
-nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
+nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
 set virtualedit=block
-set cryptmethod=blowfish
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
@@ -179,7 +179,6 @@ vnoremap gc :<C-u>normal `[v`]<CR>
 nnoremap vv ggVG
 nnoremap vV ^v$h
 
-nnoremap <Leader>e :<C-u>e ++enc=
 nnoremap <Leader>o :<C-u>only<CR>
 nnoremap <Leader>r :<C-u>registers<CR>
 nnoremap <Leader>w :<C-u>update<CR>
@@ -255,7 +254,7 @@ set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
-\   if isdirectory(expand('%:p:h')) && &filetype !=# 'help'
+\   if empty(&buftype) && isdirectory(expand('%:p:h'))
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
 
@@ -470,12 +469,12 @@ command! -bar SSF syntax sync fromstart
 for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
   execute 'command! -bang -nargs=0'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
-        \ 'edit<bang> ++enc='.s:e '<args>'
+        \ 'edit<bang> ++encoding='.s:e '<args>'
 endfor
 for s:f in ['dos', 'unix', 'mac']
   execute 'command! -bang -nargs=0'
         \ substitute(toupper(s:f[0]).tolower(s:f[1:]), '\W', '', 'g')
-        \ 'edit<bang> ++ff='.s:f '<args>'
+        \ 'edit<bang> ++fileformat='.s:f '<args>'
 endfor
 
 command! -bar PluginUpdate call s:plugin_update()
