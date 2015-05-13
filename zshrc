@@ -60,6 +60,13 @@ path=(
 typeset -U path
 export PATH
 
+cdpath=(
+  $HOME
+  ..
+  ../..
+)
+typeset -U cdpath
+
 umask 022
 ulimit -c 0
 
@@ -259,13 +266,6 @@ compinit
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-cdpath=(
-  $HOME
-  ..
-  ../..
-)
-typeset -U cdpath
-
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 
@@ -273,10 +273,10 @@ zstyle ':completion:*' use-cache true
 zstyle -e ':completion:*' completer '
   COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
   if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
-    reply=(_ignored _correct _approximate)
+    reply=(_ignored _approximate)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
-    reply=(_expand _complete _match _prefix _list)
+    reply=(_expand _complete _correct _match _prefix _list)
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
@@ -286,8 +286,8 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-parents parent pwd ..
 
-zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
 
 zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
@@ -307,8 +307,8 @@ if [[ -r /etc/passwd ]]; then
   [[ -z "${UID_MIN}" ]] && UID_MIN=1000
   [[ -z "${UID_MAX}" ]] && UID_MAX=60000
 
-  zstyle ':completion:*:users' ignored-patterns \
-    $(awk -F: "\$3 < ${UID_MIN} || \$3 > ${UID_MAX} { print \$1 }" /etc/passwd)
+  zstyle ':completion:*:users' users \
+    $(awk -F: "\$3 >= ${UID_MIN} && \$3 <= ${UID_MAX} { print \$1 }" /etc/passwd)
 fi
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
