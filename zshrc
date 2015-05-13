@@ -131,6 +131,7 @@ if grep --help 2>&1 | grep -q -- --exclude-dir; then
   done
 fi
 alias grep="grep ${GREP_PARAM}"
+unset GREP_PARAM EXCLUDE_DIR
 
 if exists gcc; then
   GCC_HELP=`gcc -v --help 2> /dev/null`
@@ -141,8 +142,10 @@ if exists gcc; then
   elif echo ${GCC_HELP} | grep -q -- -fstack-protector; then
     CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
   fi
+
   export CFLAGS
   export CXXFLAGS="${CFLAGS}"
+  unset GCC_HELP
 fi
 
 if exists manpath; then
@@ -204,6 +207,7 @@ PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
 RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
+unset SSH_INDICATOR
 
 setopt prompt_cr
 setopt prompt_sp
@@ -308,6 +312,7 @@ if [[ -r /etc/passwd ]]; then
 
   zstyle ':completion:*:users' users \
     $(awk -F: "\$3 >= ${UID_MIN} && \$3 <= ${UID_MAX} { print \$1 }" /etc/passwd)
+  unset UID_MIN UID_MAX
 fi
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
