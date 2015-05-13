@@ -78,7 +78,6 @@ autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
 autoload -Uz modify-current-argument
-#autoload -Uz predict-on
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
 autoload -Uz url-quote-magic
@@ -318,8 +317,6 @@ zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
 zstyle ':completion:*:scp:*:files' command command -
-
-#predict-on
 
 setopt auto_cd
 setopt auto_pushd
