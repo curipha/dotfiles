@@ -87,7 +87,7 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { [[ -n `whence -p "${1}"` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
-function isremote() { [[ -n "${REMOTEHOST}${SSH_CLIENT}${SSH_CONNECTION}" ]] || [[ `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function isremote() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" ]] || [[ `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 #}}}
 # Macros {{{
 case ${OSTYPE} in
