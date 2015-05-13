@@ -307,8 +307,8 @@ if [[ -r /etc/passwd ]]; then
   [[ -z "${UID_MIN}" ]] && UID_MIN=1000
   [[ -z "${UID_MAX}" ]] && UID_MAX=60000
 
-  zstyle ':completion:*:users' ignored-patterns \
-    $(awk -F: "\$3 < ${UID_MIN} || \$3 > ${UID_MAX} { print \$1 }" /etc/passwd)
+  zstyle ':completion:*:users' users \
+    $(awk -F: "\$3 >= ${UID_MIN} && \$3 <= ${UID_MAX} { print \$1 }" /etc/passwd)
 fi
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
