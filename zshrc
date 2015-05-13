@@ -453,16 +453,13 @@ bindkey '^[d' surround_with_double_quote
 
 function 256color() {
   local CODE
-  local BASE
-  local ITERATION
-  local COUNT
-
   for CODE in {0..15}; do
     echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
     [[ $(( ${CODE} % 8 )) == 7 ]] && echo -e "\e[0m"
   done
   echo
 
+  local BASE ITERATION COUNT
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
@@ -485,10 +482,8 @@ function package-update() {
   local REPORTTIME_ORIG="${REPORTTIME}"
   REPORTTIME=-1
 
-  local CLEAN=
-  local YES=
-
   {
+    local CLEAN YES
     while getopts hcy ARG; do
       case $ARG in
         "c" ) CLEAN=1;;
@@ -505,7 +500,7 @@ HELP
       esac
     done
 
-    local OPTIONS=
+    local OPTIONS
     if exists apt-get; then
       [[ -n "${YES}" ]] && OPTIONS="-y"
 
@@ -551,8 +546,8 @@ function createpasswd() {
   local NUMBER=10
 
   # Arguments
-  local F_CHARACTER=
-  local F_PARANOID=
+  local F_CHARACTER
+  local F_PARANOID
   local P_CHARACTER="${CHARACTER}"
   local P_LENGTH="${LENGTH}"
   local P_NUMBER="${NUMBER}"
