@@ -546,8 +546,7 @@ function createpasswd() {
   local NUMBER=10
 
   # Arguments
-  local F_CHARACTER
-  local F_PARANOID
+  local F_CHARACTER F_PARANOID
   local P_CHARACTER="${CHARACTER}"
   local P_LENGTH="${LENGTH}"
   local P_NUMBER="${NUMBER}"
