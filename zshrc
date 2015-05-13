@@ -60,6 +60,13 @@ path=(
 typeset -U path
 export PATH
 
+cdpath=(
+  $HOME
+  ..
+  ../..
+)
+typeset -U cdpath
+
 umask 022
 ulimit -c 0
 
@@ -258,13 +265,6 @@ compinit
 
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-
-cdpath=(
-  $HOME
-  ..
-  ../..
-)
-typeset -U cdpath
 
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
