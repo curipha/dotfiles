@@ -268,7 +268,17 @@ typeset -U cdpath
 
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
-zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+
+#zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+zstyle -e ':completion:*' completer '
+  COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
+  if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
+    reply=(_ignored _correct _approximate)
+  else
+    COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
+    reply=(_expand _complete _match _prefix _list)
+  fi'
+
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu yes=2 select=long-list
 
@@ -282,6 +292,7 @@ zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %
 zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 
 zstyle ':completion:*:manuals' separate-sections true
 
@@ -299,6 +310,9 @@ if [[ -r /etc/passwd ]]; then
   zstyle ':completion:*:users' ignored-patterns \
     $(awk -F: "\$3 < ${UID_MIN} || \$3 > ${UID_MAX} { print \$1 }" /etc/passwd)
 fi
+
+zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
+zstyle ':completion:*:-subscript-:*' list-separator ':'
 
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
