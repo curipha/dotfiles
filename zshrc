@@ -17,7 +17,6 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-export PAGER=less
 export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
@@ -125,6 +124,9 @@ if exists vim; then
   alias vi='vim'
   alias view='vim -R'
 fi
+
+export PAGER=cat
+exists less && export PAGER=less
 
 exists dircolors && eval `dircolors --bourne-shell`
 exists colordiff && alias diff='colordiff --unified'
