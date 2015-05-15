@@ -83,7 +83,6 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { [[ -n `whence -p "${1}"` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
-function isremote() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" ]] || [[ `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 #}}}
 # Macros {{{
 case ${OSTYPE} in
@@ -208,7 +207,8 @@ zle -N self-insert url-quote-magic
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-isremote && SSH_INDICATOR='@ssh'
+[[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] \
+  && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
