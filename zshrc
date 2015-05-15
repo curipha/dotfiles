@@ -650,14 +650,10 @@ alias chown='chown -v'
 alias cls='echo -en "\033c" && tput clear'
 alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; else exec zsh; fi'
 
-alias cal='cal -3'
-
 alias .='pwd'
 alias ..='cd ..'
 alias ~='cd ~'
 alias /='cd /'
-
-alias hs='history 0 | grep -iE'
 
 alias a='./a.out'
 #alias b=''
