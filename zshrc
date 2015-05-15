@@ -657,7 +657,7 @@ alias /='cd /'
 
 alias a='./a.out'
 #alias b=''
-#alias c=''
+alias c='cal -3'
 #alias d=''
 #alias e=''
 #alias f=''
