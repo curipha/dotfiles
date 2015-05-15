@@ -17,10 +17,7 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-export EDITOR=vim
 export PAGER=less
-export VISUAL=vim
-
 export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
@@ -120,6 +117,14 @@ case ${OSTYPE} in
     alias start=cygstart
   ;;
 esac
+
+if exists vim; then
+  export EDITOR=vim
+  export VISUAL=vim
+
+  alias vi='vim'
+  alias view='vim -R'
+fi
 
 exists dircolors && eval `dircolors --bourne-shell`
 exists colordiff && alias diff='colordiff --unified'
@@ -642,9 +647,6 @@ alias chown='chown -v'
 
 alias cls='echo -en "\033c" && tput clear'
 alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; else exec zsh; fi'
-
-alias vi='vim'
-alias view='vim -R'
 
 alias cal='cal -3'
 
