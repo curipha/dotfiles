@@ -17,7 +17,7 @@ abort() {
 makeln() {
   [[ ! -f "${1}" ]] && abort "ERR: Source file (${1}) is not exists."
 
-  [[ -f "${2}" ]] && [[ ! -L "${2}" ]] && mv -iv "${2}" "${2}.bak"
+  [[ -f "${2}" && ! -L "${2}" ]] && mv -iv "${2}" "${2}.bak"
 
   ln -fsv "${1}" "${2}"
 }
