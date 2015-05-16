@@ -17,10 +17,6 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-export EDITOR=vim
-export PAGER=less
-export VISUAL=vim
-
 export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
@@ -78,7 +74,6 @@ autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
 autoload -Uz modify-current-argument
-#autoload -Uz predict-on
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
 autoload -Uz url-quote-magic
@@ -88,7 +83,6 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { [[ -n `whence -p "${1}"` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
-function isremote() { [[ -n "${REMOTEHOST}${SSH_CLIENT}${SSH_CONNECTION}" ]] || [[ `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 #}}}
 # Macros {{{
 case ${OSTYPE} in
@@ -122,6 +116,17 @@ case ${OSTYPE} in
   ;;
 esac
 
+if exists vim; then
+  export EDITOR=vim
+  export VISUAL=vim
+
+  alias vi='vim'
+  alias view='vim -R'
+fi
+
+export PAGER=cat
+exists less && export PAGER=less
+
 exists dircolors && eval `dircolors --bourne-shell`
 exists colordiff && alias diff='colordiff --unified'
 
@@ -132,6 +137,7 @@ if grep --help 2>&1 | grep -q -- --exclude-dir; then
   done
 fi
 alias grep="grep ${GREP_PARAM}"
+unset GREP_PARAM EXCLUDE_DIR
 
 if exists gcc; then
   GCC_HELP=`gcc -v --help 2> /dev/null`
@@ -142,8 +148,10 @@ if exists gcc; then
   elif echo ${GCC_HELP} | grep -q -- -fstack-protector; then
     CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
   fi
+
   export CFLAGS
   export CXXFLAGS="${CFLAGS}"
+  unset GCC_HELP
 fi
 
 if exists manpath; then
@@ -199,12 +207,14 @@ zle -N self-insert url-quote-magic
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-isremote && SSH_INDICATOR='@ssh'
+[[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] \
+  && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
 RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
+unset SSH_INDICATOR
 
 setopt prompt_cr
 setopt prompt_sp
@@ -309,6 +319,7 @@ if [[ -r /etc/passwd ]]; then
 
   zstyle ':completion:*:users' users \
     $(awk -F: "\$3 >= ${UID_MIN} && \$3 <= ${UID_MAX} { print \$1 }" /etc/passwd)
+  unset UID_MIN UID_MAX
 fi
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
@@ -318,8 +329,6 @@ zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
 zstyle ':completion:*:scp:*:files' command command -
-
-#predict-on
 
 setopt auto_cd
 setopt auto_pushd
@@ -456,16 +465,13 @@ bindkey '^[d' surround_with_double_quote
 
 function 256color() {
   local CODE
-  local BASE
-  local ITERATION
-  local COUNT
-
   for CODE in {0..15}; do
     echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
     [[ $(( ${CODE} % 8 )) == 7 ]] && echo -e "\e[0m"
   done
   echo
 
+  local BASE ITERATION COUNT
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
@@ -488,10 +494,8 @@ function package-update() {
   local REPORTTIME_ORIG="${REPORTTIME}"
   REPORTTIME=-1
 
-  local CLEAN=
-  local YES=
-
   {
+    local CLEAN YES
     while getopts hcy ARG; do
       case $ARG in
         "c" ) CLEAN=1;;
@@ -508,7 +512,7 @@ HELP
       esac
     done
 
-    local OPTIONS=
+    local OPTIONS
     if exists apt-get; then
       [[ -n "${YES}" ]] && OPTIONS="-y"
 
@@ -554,8 +558,7 @@ function createpasswd() {
   local NUMBER=10
 
   # Arguments
-  local F_CHARACTER=
-  local F_PARANOID=
+  local F_CHARACTER F_PARANOID
   local P_CHARACTER="${CHARACTER}"
   local P_LENGTH="${LENGTH}"
   local P_NUMBER="${NUMBER}"
@@ -647,26 +650,19 @@ alias chown='chown -v'
 alias cls='echo -en "\033c" && tput clear'
 alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; else exec zsh; fi'
 
-alias vi='vim'
-alias view='vim -R'
-
-alias cal='cal -3'
-
 alias .='pwd'
 alias ..='cd ..'
 alias ~='cd ~'
 alias /='cd /'
 
-alias hs='history 0 | grep -iE'
-
 alias a='./a.out'
 #alias b=''
-#alias c=''
+alias c='cal -3'
 #alias d=''
 #alias e=''
 #alias f=''
 #alias g=''
-#alias h=''
+alias h='history'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
