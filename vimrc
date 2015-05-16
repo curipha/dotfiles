@@ -431,7 +431,7 @@ set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 autocmd MyAutoCmd FileType css            setlocal foldmethod=marker foldmarker={,}
-autocmd MyAutoCmd FileType diff,gitcommit setlocal nofoldenable
+autocmd MyAutoCmd FileType diff,gitcommit,xxd setlocal nofoldenable
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw
