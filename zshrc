@@ -17,10 +17,6 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-export EDITOR=vim
-export PAGER=less
-export VISUAL=vim
-
 export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
@@ -87,7 +83,6 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { [[ -n `whence -p "${1}"` ]] }
 function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
-function isremote() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" ]] || [[ `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 #}}}
 # Macros {{{
 case ${OSTYPE} in
@@ -120,6 +115,17 @@ case ${OSTYPE} in
     alias start=cygstart
   ;;
 esac
+
+if exists vim; then
+  export EDITOR=vim
+  export VISUAL=vim
+
+  alias vi='vim'
+  alias view='vim -R'
+fi
+
+export PAGER=cat
+exists less && export PAGER=less
 
 exists dircolors && eval `dircolors --bourne-shell`
 exists colordiff && alias diff='colordiff --unified'
@@ -201,7 +207,8 @@ zle -N self-insert url-quote-magic
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-isremote && SSH_INDICATOR='@ssh'
+[[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] \
+  && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
@@ -643,26 +650,19 @@ alias chown='chown -v'
 alias cls='echo -en "\033c" && tput clear'
 alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; else exec zsh; fi'
 
-alias vi='vim'
-alias view='vim -R'
-
-alias cal='cal -3'
-
 alias .='pwd'
 alias ..='cd ..'
 alias ~='cd ~'
 alias /='cd /'
 
-alias hs='history 0 | grep -iE'
-
 alias a='./a.out'
 #alias b=''
-#alias c=''
+alias c='cal -3'
 #alias d=''
 #alias e=''
 #alias f=''
 #alias g=''
-#alias h=''
+alias h='history'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
