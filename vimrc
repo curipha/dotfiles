@@ -372,7 +372,7 @@ set statusline=%<%F\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':BOM':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=\ %=
-set statusline+=[%{&fenc=='utf-8'?'U+':'0x'}%04B]
+set statusline+=[U+%04B]
 set statusline+=\ %3v\ \ %3l/%3L\ %P
 
 set nowrap
