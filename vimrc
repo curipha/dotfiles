@@ -578,42 +578,6 @@ if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
   inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup()."\<Down>" : "\<Down>"
 endif
 " }}}
-" unite.vim {{{
-"  - https://github.com/Shougo/unite.vim
-"  - http://www.vim.org/scripts/script.php?script_id=3396
-let g:unite_enable_start_insert = 0
-
-let g:unite_enable_split_vertically = 1
-let g:unite_split_rule = 'rightbelow'
-let g:unite_winwidth = 50
-let g:unite_winheight = 10
-
-let g:unite_source_file_mru_time_format = '(%m/%d %H:%M) '
-let g:unite_source_file_mru_filename_format = ''
-
-let g:unite_source_file_mru_limit = 120
-let g:unite_source_directory_mru_limit = 40
-
-let g:unite_source_grep_command = 'grep'
-let g:unite_source_grep_default_opts = '-iHn'
-
-nnoremap <Leader>U  :<C-u>Unite<Space>
-nnoremap <Leader>ub :<C-u>Unite bookmark<CR>
-nnoremap <Leader>uc :<C-u>Unite -no-quit -keep-focus change<CR>
-nnoremap <Leader>uf :<C-u>UniteWithBufferDir -auto-preview file<CR>
-nnoremap <Leader>uh :<C-u>Unite mapping<CR>
-nnoremap <Leader>ui :<C-u>Unite file_include<CR>
-nnoremap <Leader>um :<C-u>Unite -auto-preview file_mru<CR>
-nnoremap <Leader>ur :<C-u>Unite register<CR>
-nnoremap <Leader>uu :<C-u>Unite -auto-preview buffer<CR>
-
-autocmd MyAutoCmd FileType unite setlocal statusline=%<%m%y\ %=\ \ %3l/%3L\ %P
-
-autocmd MyAutoCmd FileType unite imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
-autocmd MyAutoCmd FileType unite imap <buffer> jj    <Plug>(unite_insert_leave)
-
-autocmd MyAutoCmd FileType unite inoremap <buffer> <C-l> <C-x><C-u><C-p><Down>
-" }}}
 " }}}
 
 set secure
