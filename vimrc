@@ -373,7 +373,7 @@ set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':BOM':'
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=%=
 set statusline+=[U+%04B]
-set statusline+=\ %3v\ \ %3l/%3L\ %P
+set statusline+=\ %3v\ %4l/%3L\ (%P)
 
 set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
