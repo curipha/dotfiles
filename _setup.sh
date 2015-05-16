@@ -6,8 +6,6 @@
 set -o nounset
 set -o errexit
 
-SOURCE_DIR="$(cd `dirname "${0}"` && pwd)"
-
 DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
@@ -24,9 +22,10 @@ makeln() {
   ln -fsv "${1}" "${2}"
 }
 
+cd `dirname "${0}"`
 
 for file in ${DOTFILES[@]}; do
-  makeln "${SOURCE_DIR}/${file}" "${HOME}/.${file}"
+  makeln "${PWD}/${file}" "${HOME}/.${file}"
 done
 
 if [[ -n ${SSH_CONFIG} ]]; then
@@ -35,6 +34,6 @@ if [[ -n ${SSH_CONFIG} ]]; then
     chmod -v 0700 "${HOME}/.ssh"
   fi
 
-  makeln "${SOURCE_DIR}/${SSH_CONFIG}" "${HOME}/.ssh/config"
+  makeln "${PWD}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
 
