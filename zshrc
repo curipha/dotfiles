@@ -424,6 +424,18 @@ function magic_enter() {
 zle -N magic_enter
 bindkey '^M' magic_enter
 
+function magic_ctrlz() {
+  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
+    BUFFER='fg'
+    zle accept-line
+  else
+    zle -M "zsh: Buffer pushed to stack: $BUFFER"
+    zle push-line-or-edit
+  fi
+}
+zle -N magic_ctrlz
+bindkey '^Z' magic_ctrlz
+
 function magic_circumflex() {
   if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
     if isinsiderepo; then
