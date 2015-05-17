@@ -541,6 +541,7 @@ HELP
   } always {
     local RETURN=$?
     REPORTTIME="${REPORTTIME_ORIG}"
+    sudo -K
     return "${RETURN}"
   }
 }
