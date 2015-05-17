@@ -6,7 +6,7 @@
 set -o nounset
 set -o errexit
 
-DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc screenrc vimrc wgetrc zshrc )
+DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc pryrc screenrc vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
 abort() {
