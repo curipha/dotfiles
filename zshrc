@@ -368,11 +368,11 @@ add-zsh-hook chpwd chpwd_ls
 
 function +x() { chmod +x "$@" }
 
-function bak() { [[ $# -gt 0 ]] && cp -fv "$1"{,.bak} }
-function rvt() { [[ $# -gt 0 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
+function bak() { [[ $# == 1 ]] && cp -fv "$1"{,.bak} }
+function rvt() { [[ $# == 1 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
-function mkcd() { [[ $# -gt 0 ]] && mkdir -vp "$1" && builtin cd "$1" }
-function mkmv() { [[ $# -eq 2 ]] && mkdir -vp "${@: -1}" && mv -iv "$@" }
+function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
+function mkmv() { [[ $# == 2 ]] && mkdir -vp "${@: -1}" && mv -iv "$@" }
 
 function whois() {
   local WHOIS
@@ -553,6 +553,7 @@ HELP
   } always {
     local RETURN=$?
     REPORTTIME="${REPORTTIME_ORIG}"
+    sudo -K
     return "${RETURN}"
   }
 }
