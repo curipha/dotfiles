@@ -510,7 +510,7 @@ function! s:plugin_update()
     endif
   else
     echohl ErrorMsg
-    echomsg 'Install Git before run this command.'
+    echomsg 'Install Git before running this command.'
     echohl None
   endif
 endfunction
