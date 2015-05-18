@@ -379,6 +379,10 @@ set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 if has('linebreak')
+  set linebreak
+
+  set breakindent
+  set breakindentopt=min:42,shift:0,sbr
   set showbreak=...\ 
 endif
 
