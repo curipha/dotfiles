@@ -52,8 +52,10 @@
   remote      = red bold
   upstream    = blue bold
 [color "diff"]
+  commit = yellow bold
   meta = bold
   frag = cyan bold
+  func = magenta
   new  = green bold
   old  = red bold
 [color "status"]
