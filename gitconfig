@@ -52,17 +52,17 @@
   remote      = red bold
   upstream    = blue bold
 [color "diff"]
-  commit = yellow bold
-  meta = bold
-  frag = cyan bold
-  func = magenta
-  new  = green bold
-  old  = red bold
+  commit      = yellow bold
+  meta        = bold
+  frag        = cyan bold
+  func        = magenta
+  new         = green bold
+  old         = red bold
 [color "status"]
-  header    = bold
-  added     = yellow bold
-  changed   = green bold
-  untracked = cyan bold
+  header      = bold
+  added       = yellow bold
+  changed     = green bold
+  untracked   = cyan bold
 
 [core]
   quotepath = false
