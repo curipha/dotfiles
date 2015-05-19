@@ -47,6 +47,10 @@
   grep        = auto
   interactive = auto
   status      = auto
+[color "branch"]
+  current     = green bold
+  remote      = red bold
+  upstream    = blue bold
 [color "diff"]
   meta = bold
   frag = cyan bold
