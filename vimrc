@@ -485,8 +485,7 @@ endfor
 command! -bar PluginUpdate call s:plugin_update()
 function! s:plugin_update()
   if executable('git')
-    let l:pwd    = getcwd()
-    let l:update = ''
+    let l:pwd = getcwd()
 
     for l:path in split(&runtimepath, ',')
       if isdirectory(l:path . '/.git')
@@ -497,20 +496,18 @@ function! s:plugin_update()
         execute 'lcd' fnameescape(l:path)
         silent let l:result = system('git stash save && git fetch && git reset --hard FETCH_HEAD && git gc')
         echo l:result
-
-        let l:update = 'up'
       endif
     endfor
 
-    if empty(l:update)
-      echomsg 'Nothing to update.'
-    else
+    if exists('l:result')
       silent! runtime! ftdetect/**/*.vim
       silent! runtime! after/ftdetect/**/*.vim
       silent! runtime! plugin/**/*.vim
       silent! runtime! after/plugin/**/*.vim
 
       execute 'lcd' fnameescape(l:pwd)
+    else
+      echomsg 'Nothing to update.'
     endif
   else
     echohl ErrorMsg
