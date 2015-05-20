@@ -558,6 +558,65 @@ HELP
   }
 }
 
+function checkclock() {
+  if ! exists ntpdate; then
+    echo 'Error: Cannnot find ntpdate command.' 1>&2
+    return 1
+  fi
+
+  local NTP
+  NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
+
+  local UPDATE RTC
+  while getopts hur ARG; do
+    case $ARG in
+      "u" ) UPDATE=1;;
+      "r" ) RTC=1;;
+
+      * )
+        cat <<HELP 1>&2
+Usage: ${0} [-ur]
+
+-u            Update system clock
+-r            Display RTC clock if possible
+HELP
+      return 1;;
+    esac
+  done
+
+  if exists timedatectl; then
+    local LINEOPT="-2"
+    [[ -n "${RTC}" ]] && LINEOPT="-3"
+
+    timedatectl | head ${LINEOPT}
+  else
+    echo -n '      Local time: ' && date
+    echo -n '  Universal time: ' && date -u
+    [[ -n "${RTC}" ]] && echo -n '        RTC time: ' && sudo hwclock --show
+  fi
+
+  echo
+  echo Checking NTP servers...
+  ntpdate -p1 -sq $NTP \
+    | grep -v 'stratum 0' \
+    | sed -e 's/, / /g' \
+    | awk '{ offset += $6; delay += $8; print } END { if (NR > 0) { print "* * * * avg.", offset / NR, "avg.", delay / NR } }' \
+    | column -t
+
+  if [[ -n "${UPDATE}" ]]; then
+    echo
+    read -q 'REPLY?System clock will be updated by step mode. Are you sure? [y/N] '
+
+    if [[ "${REPLY}" == "y" ]]; then
+      sudo ntpdate -b $NTP
+      sudo hwclock --systohc
+    else
+      echo 'Cancel the update of system clock.'
+      return 1
+    fi
+  fi
+}
+
 function getrandomport() {
   float   RAND=$(( $RANDOM * 1.0 / 32767 ))
   integer BASE=$(( $RAND * 16383 ))
