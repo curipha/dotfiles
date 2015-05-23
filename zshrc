@@ -388,7 +388,7 @@ function whois() {
   if [[ -z "${DOMAIN}" ]]; then
     ${WHOIS}
   else
-    ( echo "${WHOIS} ${DOMAIN}" && echo && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+    ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
   fi
 }
 
