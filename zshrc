@@ -451,16 +451,6 @@ function magic_circumflex() {
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
-function verbose_pushline() {
-  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
-
-  zle -M "zsh: Buffer pushed to stack: $BUFFER"
-  zle push-line-or-edit
-}
-zle -N verbose_pushline
-bindkey '^Q'  verbose_pushline
-bindkey '^[q' verbose_pushline
-
 function surround_with_single_quote() {
   modify-current-argument '${(qq)${(Q)ARG}}'
   zle vi-forward-blank-word
