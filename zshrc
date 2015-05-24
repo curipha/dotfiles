@@ -116,6 +116,8 @@ case ${OSTYPE} in
   ;;
 esac
 
+[[ -n "${DISPLAY}" ]] && xset -b
+
 if exists vim; then
   export EDITOR=vim
   export VISUAL=vim
