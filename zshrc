@@ -116,6 +116,8 @@ case ${OSTYPE} in
   ;;
 esac
 
+[[ -n "${DISPLAY}" ]] && xset -b
+
 if exists vim; then
   export EDITOR=vim
   export VISUAL=vim
@@ -384,35 +386,35 @@ function whois() {
     return 1
   fi
 
-  local DOMAIN=`echo "$1" | perl -pe 's!^[^:]+://([^/]+).*$!\1!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
+  local DOMAIN=`echo "${1}" | perl -pe 's!^[^:]+://([^/]+).*$!\1!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
   if [[ -z "${DOMAIN}" ]]; then
     ${WHOIS}
   else
-    ( echo "${WHOIS} ${DOMAIN}" && echo && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+    ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
   fi
 }
 
 function change_command() {
-  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
+  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
 
   zle beginning-of-line
 
-  [[ "$BUFFER" == sudo\ * ]] && zle kill-word
+  [[ "${BUFFER}" == sudo\ * ]] && zle kill-word
   zle kill-word
 }
 zle -N change_command
 bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
-  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
-  [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
+  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
+  [[ "${BUFFER}" != sudo\ * ]] && BUFFER="sudo ${BUFFER}"
   zle end-of-line
 }
 zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
-  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
@@ -425,11 +427,11 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_ctrlz() {
-  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     BUFFER='fg'
     zle accept-line
   else
-    zle -M "zsh: Buffer pushed to stack: $BUFFER"
+    zle -M "zsh: Buffer pushed to stack: ${BUFFER}"
     zle push-line-or-edit
   fi
 }
@@ -437,7 +439,7 @@ zle -N magic_ctrlz
 bindkey '^Z' magic_ctrlz
 
 function magic_circumflex() {
-  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER="cd `git rev-parse --show-toplevel`"
     else
@@ -450,16 +452,6 @@ function magic_circumflex() {
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
-
-function verbose_pushline() {
-  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
-
-  zle -M "zsh: Buffer pushed to stack: $BUFFER"
-  zle push-line-or-edit
-}
-zle -N verbose_pushline
-bindkey '^Q'  verbose_pushline
-bindkey '^[q' verbose_pushline
 
 function surround_with_single_quote() {
   modify-current-argument '${(qq)${(Q)ARG}}'
@@ -487,7 +479,7 @@ function 256color() {
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
-        CODE=$(( 16 + $BASE * 6 + $ITERATION * 72 + $COUNT ))
+        CODE=$(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
         echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
       done
       echo -en "\e[0m  "
@@ -509,7 +501,7 @@ function package-update() {
   {
     local CLEAN YES
     while getopts hcy ARG; do
-      case $ARG in
+      case ${ARG} in
         "c" ) CLEAN=1;;
         "y" ) YES=1;;
 
@@ -569,7 +561,7 @@ function checkclock() {
 
   local UPDATE RTC
   while getopts hur ARG; do
-    case $ARG in
+    case ${ARG} in
       "u" ) UPDATE=1;;
       "r" ) RTC=1;;
 
@@ -618,9 +610,9 @@ HELP
 }
 
 function getrandomport() {
-  float   RAND=$(( $RANDOM * 1.0 / 32767 ))
-  integer BASE=$(( $RAND * 16383 ))
-  echo $(( $BASE + 49152 ))
+  float   RAND=$(( ${RANDOM} * 1.0 / 32767 ))
+  integer BASE=$(( ${RAND} * 16383 ))
+  echo $(( ${BASE} + 49152 ))
 }
 
 function createpasswd() {
@@ -636,11 +628,11 @@ function createpasswd() {
   local P_NUMBER="${NUMBER}"
 
   while getopts hpc:l:n: ARG; do
-    case $ARG in
+    case ${ARG} in
       "c" ) F_CHARACTER=1
-            P_CHARACTER="$OPTARG";;
-      "l" ) P_LENGTH="$OPTARG";;
-      "n" ) P_NUMBER="$OPTARG";;
+            P_CHARACTER="${OPTARG}";;
+      "l" ) P_LENGTH="${OPTARG}";;
+      "n" ) P_NUMBER="${OPTARG}";;
       "p" ) F_PARANOID=1;;
 
       * )
