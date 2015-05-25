@@ -65,6 +65,7 @@
   untracked   = cyan bold
 
 [core]
+  preloadindex = true
   quotepath = false
 
 [diff]
