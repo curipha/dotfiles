@@ -499,17 +499,14 @@ function package-update() {
   REPORTTIME=-1
 
   {
-    local CLEAN YES
+    local YES
     while getopts hcy ARG; do
       case ${ARG} in
-        "c" ) CLEAN=1;;
         "y" ) YES=1;;
-
         * )
           cat <<HELP 1>&2
 Usage: ${0} [-cy]
 
-  -c            Run cleaning functionality if any
   -y            Answer "yes" to any question
 HELP
         return 1;;
@@ -522,22 +519,16 @@ HELP
 
       sudo apt-get ${OPTIONS} update       && \
       sudo apt-get ${OPTIONS} dist-upgrade && \
-      [[ -n "${CLEAN}" ]] && \
-        sudo apt-get ${OPTIONS} autoremove && \
-        sudo apt-get ${OPTIONS} clean
+      sudo apt-get ${OPTIONS} autoremove
     elif exists yum; then
       [[ -n "${YES}" ]] && OPTIONS="-y"
 
       sudo yum ${OPTIONS} upgrade          && \
-      [[ -n "${CLEAN}" ]] && \
-        sudo yum ${OPTIONS} autoremove     && \
-        sudo yum ${OPTIONS} clean all
+      sudo yum ${OPTIONS} autoremove
     elif exists pacman; then
       [[ -n "${YES}" ]] && OPTIONS="--noconfirm"
 
-      sudo pacman -Syu ${OPTIONS}          && \
-      [[ -n "${CLEAN}" ]] && \
-        sudo pacman -Sc ${OPTIONS}
+      sudo pacman -Syu ${OPTIONS}
     else
       echo 'Cannot find a package manager which I know.' 1>&2
       return 1
