@@ -494,7 +494,7 @@ function! s:plugin_update()
         echohl None
 
         execute 'lcd' fnameescape(l:path)
-        silent let l:result = system('git stash save && git fetch && git reset --hard FETCH_HEAD && git gc')
+        silent let l:result = system('git stash save && git fetch && git reset --hard FETCH_HEAD && git gc --quiet')
         echo l:result
       endif
     endfor
