@@ -116,6 +116,8 @@ case ${OSTYPE} in
   ;;
 esac
 
+[[ -n "${DISPLAY}" ]] && xset -b
+
 if exists vim; then
   export EDITOR=vim
   export VISUAL=vim
@@ -384,35 +386,35 @@ function whois() {
     return 1
   fi
 
-  local DOMAIN=`echo "$1" | perl -pe 's!^[^:]+://([^/]+).*$!\1!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
+  local DOMAIN=`echo "${1}" | perl -pe 's!^[^:]+://([^/]+).*$!\1!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
   if [[ -z "${DOMAIN}" ]]; then
     ${WHOIS}
   else
-    ( echo "${WHOIS} ${DOMAIN}" && echo && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+    ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
   fi
 }
 
 function change_command() {
-  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
+  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
 
   zle beginning-of-line
 
-  [[ "$BUFFER" == sudo\ * ]] && zle kill-word
+  [[ "${BUFFER}" == sudo\ * ]] && zle kill-word
   zle kill-word
 }
 zle -N change_command
 bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
-  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
-  [[ "$BUFFER" != sudo\ * ]] && BUFFER="sudo $BUFFER"
+  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
+  [[ "${BUFFER}" != sudo\ * ]] && BUFFER="sudo ${BUFFER}"
   zle end-of-line
 }
 zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
-  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
@@ -425,11 +427,11 @@ zle -N magic_enter
 bindkey '^M' magic_enter
 
 function magic_ctrlz() {
-  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     BUFFER='fg'
     zle accept-line
   else
-    zle -M "zsh: Buffer pushed to stack: $BUFFER"
+    zle -M "zsh: Buffer pushed to stack: ${BUFFER}"
     zle push-line-or-edit
   fi
 }
@@ -437,7 +439,7 @@ zle -N magic_ctrlz
 bindkey '^Z' magic_ctrlz
 
 function magic_circumflex() {
-  if [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]]; then
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if isinsiderepo; then
       BUFFER="cd `git rev-parse --show-toplevel`"
     else
@@ -450,16 +452,6 @@ function magic_circumflex() {
 }
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
-
-function verbose_pushline() {
-  [[ -z "$BUFFER" && "$CONTEXT" == 'start' ]] && zle up-history
-
-  zle -M "zsh: Buffer pushed to stack: $BUFFER"
-  zle push-line-or-edit
-}
-zle -N verbose_pushline
-bindkey '^Q'  verbose_pushline
-bindkey '^[q' verbose_pushline
 
 function surround_with_single_quote() {
   modify-current-argument '${(qq)${(Q)ARG}}'
@@ -487,7 +479,7 @@ function 256color() {
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
-        CODE=$(( 16 + $BASE * 6 + $ITERATION * 72 + $COUNT ))
+        CODE=$(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
         echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
       done
       echo -en "\e[0m  "
@@ -507,17 +499,14 @@ function package-update() {
   REPORTTIME=-1
 
   {
-    local CLEAN YES
+    local YES
     while getopts hcy ARG; do
-      case $ARG in
-        "c" ) CLEAN=1;;
+      case ${ARG} in
         "y" ) YES=1;;
-
         * )
           cat <<HELP 1>&2
-Usage: ${0} [-cy]
+Usage: ${0} [-y]
 
-  -c            Run cleaning functionality if any
   -y            Answer "yes" to any question
 HELP
         return 1;;
@@ -530,22 +519,16 @@ HELP
 
       sudo apt-get ${OPTIONS} update       && \
       sudo apt-get ${OPTIONS} dist-upgrade && \
-      [[ -n "${CLEAN}" ]] && \
-        sudo apt-get ${OPTIONS} autoremove && \
-        sudo apt-get ${OPTIONS} clean
+      sudo apt-get ${OPTIONS} autoremove
     elif exists yum; then
       [[ -n "${YES}" ]] && OPTIONS="-y"
 
       sudo yum ${OPTIONS} upgrade          && \
-      [[ -n "${CLEAN}" ]] && \
-        sudo yum ${OPTIONS} autoremove     && \
-        sudo yum ${OPTIONS} clean all
+      sudo yum ${OPTIONS} autoremove
     elif exists pacman; then
       [[ -n "${YES}" ]] && OPTIONS="--noconfirm"
 
-      sudo pacman -Syu ${OPTIONS}          && \
-      [[ -n "${CLEAN}" ]] && \
-        sudo pacman -Sc ${OPTIONS}
+      sudo pacman -Syu ${OPTIONS}
     else
       echo 'Cannot find a package manager which I know.' 1>&2
       return 1
@@ -558,10 +541,69 @@ HELP
   }
 }
 
+function checkclock() {
+  if ! exists ntpdate; then
+    echo 'Error: Cannnot find ntpdate command.' 1>&2
+    return 1
+  fi
+
+  local NTP
+  NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
+
+  local UPDATE RTC
+  while getopts hur ARG; do
+    case ${ARG} in
+      "u" ) UPDATE=1;;
+      "r" ) RTC=1;;
+
+      * )
+        cat <<HELP 1>&2
+Usage: ${0} [-ur]
+
+-u            Update system clock
+-r            Display RTC clock if possible
+HELP
+      return 1;;
+    esac
+  done
+
+  if exists timedatectl; then
+    local LINEOPT="-2"
+    [[ -n "${RTC}" ]] && LINEOPT="-3"
+
+    timedatectl | head ${LINEOPT}
+  else
+    echo -n '      Local time: ' && date
+    echo -n '  Universal time: ' && date -u
+    [[ -n "${RTC}" ]] && echo -n '        RTC time: ' && sudo hwclock --show
+  fi
+
+  echo
+  echo Checking NTP servers...
+  ntpdate -p1 -sq $NTP \
+    | grep -v 'stratum 0' \
+    | sed -e 's/, / /g' \
+    | awk '{ offset += $6; delay += $8; print } END { if (NR > 0) { print "* * * * avg.", offset / NR, "avg.", delay / NR } }' \
+    | column -t
+
+  if [[ -n "${UPDATE}" ]]; then
+    echo
+    read -q 'REPLY?System clock will be updated by step mode. Are you sure? [y/N] '
+
+    if [[ "${REPLY}" == "y" ]]; then
+      sudo ntpdate -b $NTP
+      sudo hwclock --systohc
+    else
+      echo 'Cancel the update of system clock.'
+      return 1
+    fi
+  fi
+}
+
 function getrandomport() {
-  float   RAND=$(( $RANDOM * 1.0 / 32767 ))
-  integer BASE=$(( $RAND * 16383 ))
-  echo $(( $BASE + 49152 ))
+  float   RAND=$(( ${RANDOM} * 1.0 / 32767 ))
+  integer BASE=$(( ${RAND} * 16383 ))
+  echo $(( ${BASE} + 49152 ))
 }
 
 function createpasswd() {
@@ -577,11 +619,11 @@ function createpasswd() {
   local P_NUMBER="${NUMBER}"
 
   while getopts hpc:l:n: ARG; do
-    case $ARG in
+    case ${ARG} in
       "c" ) F_CHARACTER=1
-            P_CHARACTER="$OPTARG";;
-      "l" ) P_LENGTH="$OPTARG";;
-      "n" ) P_NUMBER="$OPTARG";;
+            P_CHARACTER="${OPTARG}";;
+      "l" ) P_LENGTH="${OPTARG}";;
+      "n" ) P_NUMBER="${OPTARG}";;
       "p" ) F_PARANOID=1;;
 
       * )
@@ -645,11 +687,7 @@ alias ll='ls -l'
 alias lla='ls -AFl'
 alias llh='ls -Flh'
 alias llha='ls -AFlh'
-alias llr='ls -FlhR'
-alias llra='ls -AFlhR'
 alias lls='ls -AFl'
-alias lr='ls -FR'
-alias lra='ls -AFR'
 
 alias rm='rm -i'
 alias cp='cp -iv'

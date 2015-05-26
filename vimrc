@@ -379,6 +379,10 @@ set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 if has('linebreak')
+  set linebreak
+
+  set breakindent
+  set breakindentopt=min:42,shift:0,sbr
   set showbreak=...\ 
 endif
 
@@ -443,7 +447,7 @@ set notimeout
 set ttimeout
 set timeoutlen=100
 
-set shortmess& shortmess+=I
+set shortmess=aoOTI
 set report=0
 set synmaxcol=270
 
@@ -481,8 +485,7 @@ endfor
 command! -bar PluginUpdate call s:plugin_update()
 function! s:plugin_update()
   if executable('git')
-    let l:pwd    = getcwd()
-    let l:update = ''
+    let l:pwd = getcwd()
 
     for l:path in split(&runtimepath, ',')
       if isdirectory(l:path . '/.git')
@@ -491,26 +494,24 @@ function! s:plugin_update()
         echohl None
 
         execute 'lcd' fnameescape(l:path)
-        silent let l:result = system('git fetch && git reset --hard FETCH_HEAD && git gc')
+        silent let l:result = system('git stash save && git fetch && git reset --hard FETCH_HEAD && git gc')
         echo l:result
-
-        let l:update = 'up'
       endif
     endfor
 
-    if empty(l:update)
-      echomsg 'Nothing to update.'
-    else
+    if exists('l:result')
       silent! runtime! ftdetect/**/*.vim
       silent! runtime! after/ftdetect/**/*.vim
       silent! runtime! plugin/**/*.vim
       silent! runtime! after/plugin/**/*.vim
 
       execute 'lcd' fnameescape(l:pwd)
+    else
+      echomsg 'Nothing to update.'
     endif
   else
     echohl ErrorMsg
-    echomsg 'Install Git before run this command.'
+    echomsg 'Install Git before running this command.'
     echohl None
   endif
 endfunction

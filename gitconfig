@@ -7,7 +7,7 @@
   aa    = add --all --verbose
   ap    = add --patch
   au    = add --update --verbose
-  br    = branch --all --color --verbose --verbose
+  br    = branch --all --verbose --verbose
   ci    = commit --verbose
   co    = checkout
   d     = diff --patch-with-stat
@@ -20,7 +20,7 @@
   dw    = diff --patch-with-stat --ignore-all-space
   fe    = fetch --verbose
   fix   = commit --amend --verbose
-  g     = grep --break --color --heading --line-number --show-function
+  g     = grep --break --heading --line-number --show-function
   l     = log --decorate --stat --no-merges
   la    = log --decorate --stat
   ll    = log --decorate --oneline --graph --no-merges
@@ -47,19 +47,26 @@
   grep        = auto
   interactive = auto
   status      = auto
+[color "branch"]
+  current     = green bold
+  remote      = red bold
+  upstream    = blue bold
 [color "diff"]
-  meta = bold
-  frag = cyan bold
-  new  = green bold
-  old  = red bold
+  commit      = yellow bold
+  meta        = bold
+  frag        = cyan bold
+  func        = magenta
+  new         = green bold
+  old         = red bold
 [color "status"]
-  header    = bold
-  added     = yellow bold
-  changed   = green bold
-  untracked = cyan bold
+  header      = bold
+  added       = yellow bold
+  changed     = green bold
+  untracked   = cyan bold
 
 [core]
-  quotepath = false
+  preloadindex = true
+  quotepath    = false
 
 [diff]
   algorithm      = histogram
