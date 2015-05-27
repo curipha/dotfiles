@@ -285,17 +285,18 @@ zstyle ':completion:*' use-cache true
 zstyle -e ':completion:*' completer '
   COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
   if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
-    reply=(_ignored _approximate)
+    reply=(_expand _complete _correct _approximate _match _prefix _list)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
     reply=(_expand _complete _correct _match _prefix _list)
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' menu yes=2 select=long-list
+zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' ignore-line true
 zstyle ':completion:*' ignore-parents parent pwd ..
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
@@ -309,7 +310,7 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
-zstyle ':completion:*:(processes|jobs)' menu select=2
+zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
@@ -329,7 +330,6 @@ zstyle ':completion:*:-subscript-:*' list-separator ':'
 
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
 zstyle ':completion:*:scp:*:files' command command -
 
 setopt auto_cd
