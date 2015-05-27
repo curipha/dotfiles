@@ -505,7 +505,7 @@ function package-update() {
         "y" ) YES=1;;
         * )
           cat <<HELP 1>&2
-Usage: ${0} [-cy]
+Usage: ${0} [-y]
 
   -y            Answer "yes" to any question
 HELP
