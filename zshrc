@@ -285,7 +285,7 @@ zstyle ':completion:*' use-cache true
 zstyle -e ':completion:*' completer '
   COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
   if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
-    reply=(_ignored _approximate)
+    reply=(_approximate)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
     reply=(_expand _complete _correct _match _prefix _list)
