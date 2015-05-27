@@ -292,7 +292,7 @@ zstyle -e ':completion:*' completer '
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' menu yes=2 select=long-list
+zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
