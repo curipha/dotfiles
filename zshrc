@@ -310,7 +310,7 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
-zstyle ':completion:*:(processes|jobs)' menu select=2
+zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
