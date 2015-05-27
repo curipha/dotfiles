@@ -19,7 +19,6 @@
   ddddd = diff --patch-with-stat HEAD~4
   dw    = diff --patch-with-stat --ignore-all-space
   fe    = fetch --verbose
-  fix   = commit --amend --verbose
   g     = grep --break --heading --line-number --show-function
   l     = log --decorate --stat --no-merges
   la    = log --decorate --stat
