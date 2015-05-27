@@ -296,6 +296,7 @@ zstyle ':completion:*' menu yes=2 select=long-list
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' ignore-line true
 zstyle ':completion:*' ignore-parents parent pwd ..
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
@@ -329,7 +330,6 @@ zstyle ':completion:*:-subscript-:*' list-separator ':'
 
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:(diff|kill|rm):*' ignore-line true
 zstyle ':completion:*:scp:*:files' command command -
 
 setopt auto_cd
