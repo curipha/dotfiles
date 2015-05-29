@@ -386,7 +386,7 @@ function whois() {
     return 1
   fi
 
-  local DOMAIN=`echo "${1}" | perl -pe 's!^([^:]+://)?([^/]+).*$!\2!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
+  local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
   if [[ -z "${DOMAIN}" ]]; then
     ${WHOIS}
   else
