@@ -82,7 +82,7 @@ autoload -Uz zmv
 #}}}
 # Functions {{{
 function exists() { [[ -n `whence -p "${1}"` ]] }
-function isinsiderepo() { [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
 case ${OSTYPE} in
@@ -296,7 +296,7 @@ zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' ignore-line true
+zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
@@ -368,6 +368,20 @@ alias wipe='shred --verbose --iterations=3 --zero --remove'
 function chpwd_ls() { ls -AF }
 add-zsh-hook chpwd chpwd_ls
 
+function command_not_found_handler() {
+  if isinsiderepo; then
+    git_alias=( `git config --list | sed -En 's/^alias\.([^=]+).+$/\1/p'` )
+
+    if [[ ${git_alias[(I)${0}]} != "0" ]]; then
+      echo "git ${@}"
+      git "${@}"
+      return $?
+    fi
+  fi
+
+  return 127
+}
+
 function +x() { chmod +x "$@" }
 
 function bak() { [[ $# == 1 ]] && cp -fv "$1"{,.bak} }
@@ -386,7 +400,7 @@ function whois() {
     return 1
   fi
 
-  local DOMAIN=`echo "${1}" | perl -pe 's!^[^:]+://([^/]+).*$!\1!' | perl -pe 's!^www\.(?=[^\.]+\..+)!!'`
+  local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
   if [[ -z "${DOMAIN}" ]]; then
     ${WHOIS}
   else
@@ -723,12 +737,12 @@ alias l="last -a | ${PAGER}"
 #alias o=''
 #alias p=''
 alias q='exit'
-#alias r=''
+#alias r='' # Shell built-in command already exists
 #alias s=''
 #alias t=''
 #alias u=''
 #alias v=''
-#alias w=''
+#alias w='' # Command already exists
 alias x='exit'
 #alias y=''
 #alias z=''
