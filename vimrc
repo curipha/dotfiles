@@ -24,6 +24,8 @@ augroup END
 set t_Co=256
 set background=dark
 
+set guioptions& guioptions+=M
+
 let g:mapleader = ','
 let g:maplocalleader = ','
 
