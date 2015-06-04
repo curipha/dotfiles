@@ -21,6 +21,8 @@ export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`id -un`
+[[ -z "${EUID}" ]]     && export EUID=`id -u`
+[[ -z "${UID}" ]]      && export UID=`id -ru`
 
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
