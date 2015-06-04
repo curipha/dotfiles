@@ -42,7 +42,7 @@ filetype plugin indent on
 
 autocmd MyAutoCmd BufNewFile * setfiletype markdown
 autocmd MyAutoCmd BufEnter *
-\   if empty(expand('<afile>'))
+\   if empty(&buftype) && empty(expand('<afile>'))
 \ |   setfiletype markdown
 \ | endif
 " }}}
