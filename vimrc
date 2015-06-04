@@ -157,6 +157,9 @@ xnoremap <S-Tab> <gv
 xnoremap <Leader>m :sort<CR>
 xnoremap <Leader>u :sort u<CR>
 
+inoremap <C-z> <Esc>ui
+cnoremap <C-z> :<C-u>suspend<CR>
+
 inoremap <C-t> <C-v><Tab>
 
 inoremap <C-v>        <C-r><C-o>*
