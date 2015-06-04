@@ -376,6 +376,7 @@ set statusline+=%=
 set statusline+=[U+%04B]\ %3v\ %4l/%3L\ (%P)
 
 set nowrap
+autocmd MyAutoCmd FileType markdown setlocal wrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 if has('linebreak')
