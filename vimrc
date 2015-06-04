@@ -44,7 +44,7 @@ filetype plugin indent on
 
 autocmd MyAutoCmd BufNewFile * setfiletype markdown
 autocmd MyAutoCmd BufEnter *
-\   if empty(expand('<afile>'))
+\   if empty(&buftype) && empty(expand('<afile>'))
 \ |   setfiletype markdown
 \ | endif
 " }}}
@@ -158,6 +158,9 @@ xnoremap <S-Tab> <gv
 
 xnoremap <Leader>m :sort<CR>
 xnoremap <Leader>u :sort u<CR>
+
+inoremap <C-z> <Esc>ui
+cnoremap <C-z> :<C-u>suspend<CR>
 
 inoremap <C-t> <C-v><Tab>
 
@@ -378,6 +381,7 @@ set statusline+=%=
 set statusline+=[U+%04B]\ %3v\ %4l/%3L\ (%P)
 
 set nowrap
+autocmd MyAutoCmd FileType markdown setlocal wrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 if has('linebreak')
@@ -438,7 +442,7 @@ set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 autocmd MyAutoCmd FileType css                 setlocal foldmethod=marker foldmarker={,}
-autocmd MyAutoCmd FileType diff,gitcommit,xxd  setlocal nofoldenable
+autocmd MyAutoCmd FileType *commit*,diff,xxd   setlocal nofoldenable
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw
