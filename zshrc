@@ -20,7 +20,7 @@ export TZ=Asia/Tokyo
 export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
-[[ -z "${USER}" ]]     && export USER=`whoami`
+[[ -z "${USER}" ]]     && export USER=`id -un`
 
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
