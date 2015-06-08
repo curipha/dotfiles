@@ -315,7 +315,7 @@ zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w 
 zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
-zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*'
+zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
 
 if [[ -r /etc/passwd ]]; then
   [[ -r /etc/login.defs ]] && \
