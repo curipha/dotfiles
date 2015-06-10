@@ -523,7 +523,7 @@ function! s:plugin_update()
 endfunction
 " }}}
 " Abbreviation {{{
-iabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
+inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
 " }}}
 " Syntax {{{
 " autoload/rubycomplete.vim
