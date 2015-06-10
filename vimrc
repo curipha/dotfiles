@@ -524,6 +524,9 @@ endfunction
 " }}}
 " Abbreviation {{{
 inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
+
+cnoreabbrev q1  q!
+cnoreabbrev qa1 qa!
 " }}}
 " Syntax {{{
 " autoload/rubycomplete.vim
