@@ -20,7 +20,9 @@ export TZ=Asia/Tokyo
 export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
-[[ -z "${USER}" ]]     && export USER=`whoami`
+[[ -z "${USER}" ]]     && export USER=`id -un`
+[[ -z "${EUID}" ]]     && export EUID=`id -u`
+[[ -z "${UID}" ]]      && export UID=`id -ru`
 
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
@@ -313,6 +315,7 @@ zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w 
 zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
 
 if [[ -r /etc/passwd ]]; then
   [[ -r /etc/login.defs ]] && \
