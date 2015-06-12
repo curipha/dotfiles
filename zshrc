@@ -368,6 +368,16 @@ bindkey '^]' insert-last-word
 alias rename='noglob zmv -ivW'
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
+alias cls='echo -en "\033c" && tput clear'
+alias rst='
+  if [[ -n `jobs` ]]; then
+    echo "zsh: processing job still exists." 1>&2
+  elif [[ "${0:0:1}" == "-" ]]; then
+    exec -l zsh
+  else
+    exec zsh
+  fi'
+
 function chpwd_ls() { ls -AF }
 add-zsh-hook chpwd chpwd_ls
 
@@ -714,16 +724,6 @@ alias mkdir='mkdir -vp'
 
 alias chmod='chmod -v'
 alias chown='chown -v'
-
-alias cls='echo -en "\033c" && tput clear'
-alias rst='
-  if [[ -n `jobs` ]]; then
-    echo "zsh: processing job still exists." 1>&2
-  elif [[ "${0:0:1}" == "-" ]]; then
-    exec -l zsh
-  else
-    exec zsh
-  fi'
 
 alias .='pwd'
 alias ..='cd ..'
