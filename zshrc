@@ -727,8 +727,6 @@ alias chmod='chmod -v'
 alias chown='chown -v'
 
 alias .='pwd'
-alias ~='cd ~'
-alias /='cd /'
 
 alias a='./a.out'
 #alias b=''
