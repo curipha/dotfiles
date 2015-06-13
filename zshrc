@@ -315,6 +315,7 @@ zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w 
 zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
 
 if [[ -r /etc/passwd ]]; then
   [[ -r /etc/login.defs ]] && \
@@ -366,6 +367,16 @@ bindkey '^]' insert-last-word
 # Utility{{{
 alias rename='noglob zmv -ivW'
 alias wipe='shred --verbose --iterations=3 --zero --remove'
+
+alias cls='echo -en "\033c" && tput clear'
+alias rst='
+  if [[ -n `jobs` ]]; then
+    echo "zsh: processing job still exists." 1>&2
+  elif [[ "${0:0:1}" == "-" ]]; then
+    exec -l zsh
+  else
+    exec zsh
+  fi'
 
 function chpwd_ls() { ls -AF }
 add-zsh-hook chpwd chpwd_ls
@@ -680,6 +691,7 @@ HELP
 #}}}
 
 # Global alias {{{
+alias -g ..='../'
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
@@ -714,13 +726,7 @@ alias mkdir='mkdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias cls='echo -en "\033c" && tput clear'
-alias rst='if [[ -n `jobs` ]]; then echo "zsh: processing job still exists."; else exec zsh; fi'
-
 alias .='pwd'
-alias ..='cd ..'
-alias ~='cd ~'
-alias /='cd /'
 
 alias a='./a.out'
 #alias b=''
