@@ -691,6 +691,7 @@ HELP
 #}}}
 
 # Global alias {{{
+alias -g ..='../'
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
@@ -726,9 +727,6 @@ alias chmod='chmod -v'
 alias chown='chown -v'
 
 alias .='pwd'
-alias ..='cd ..'
-alias ~='cd ~'
-alias /='cd /'
 
 alias a='./a.out'
 #alias b=''
