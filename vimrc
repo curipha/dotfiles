@@ -420,6 +420,11 @@ nnoremap <silent> ]w :<C-u>wincmd w<CR>
 nnoremap <silent> [W :<C-u>wincmd t<CR>
 nnoremap <silent> ]W :<C-u>wincmd b<CR>
 
+nnoremap <silent> <S-Left>  :<C-u>wincmd ><CR>
+nnoremap <silent> <S-Right> :<C-u>wincmd <<CR>
+nnoremap <silent> <S-Up>    :<C-u>wincmd +<CR>
+nnoremap <silent> <S-Down>  :<C-u>wincmd -<CR>
+
 for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
   execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
   execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>'
