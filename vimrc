@@ -350,8 +350,8 @@ nnoremap ? ?\v
 
 vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
-nnoremap * g*zz
-nnoremap # g#zz
+nnoremap * g*
+nnoremap # g#
 
 nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
