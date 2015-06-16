@@ -480,6 +480,13 @@ function magic_circumflex() {
 zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
+function force_reset_screen() {
+  zle clear-screen
+  zle reset-prompt
+}
+zle -N force_reset_screen
+bindkey '^L' force_reset_screen
+
 function surround_with_single_quote() {
   modify-current-argument '${(qq)${(Q)ARG}}'
   zle vi-forward-blank-word
