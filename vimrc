@@ -382,8 +382,7 @@ set tabpagemax=32
 set statusline=%F\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':BOM':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
-set statusline+=%=
-set statusline+=%<
+set statusline+=%=%<
 set statusline+=[U+%04B]\ %3v\ %4l/%3L\ (%P)
 
 set nowrap
