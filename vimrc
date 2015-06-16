@@ -350,8 +350,8 @@ nnoremap ? ?\v
 
 vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
-nnoremap * g*N
-nnoremap # g#N
+nnoremap *  g*N
+nnoremap #  g#N
 nnoremap g* *N
 nnoremap g# #N
 
