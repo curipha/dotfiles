@@ -26,6 +26,7 @@ endif
 colorscheme desert
 
 set guioptions=aei
+set guicursor=a:blinkon0
 set visualbell t_vb=
 
 highlight IdeographicSpace gui=underline guifg=lightblue
