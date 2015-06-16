@@ -415,10 +415,10 @@ autocmd MyAutoCmd WinEnter *
 \ |   diffoff
 \ | endif
 
-nnoremap <silent> [w <C-w>W
-nnoremap <silent> ]w <C-w>w
-nnoremap <silent> [W <C-w>t
-nnoremap <silent> ]W <C-w>b
+nnoremap <silent> [w :<C-u>wincmd W<CR>
+nnoremap <silent> ]w :<C-u>wincmd w<CR>
+nnoremap <silent> [W :<C-u>wincmd t<CR>
+nnoremap <silent> ]W :<C-u>wincmd b<CR>
 
 for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
   execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
