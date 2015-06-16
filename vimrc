@@ -257,8 +257,6 @@ if has('multi_byte_ime') || has('xim')
   augroup END
 endif
 
-"set paste
-"autocmd MyAutoCmd FileType * set nopaste
 set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
