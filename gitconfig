@@ -5,6 +5,7 @@
 [alias]
   a     = add
   aa    = add --all --verbose
+  ae    = add --edit
   ap    = add --patch
   au    = add --update --verbose
   br    = branch --all --verbose --verbose
