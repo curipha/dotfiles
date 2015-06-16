@@ -51,6 +51,10 @@ autocmd MyAutoCmd BufEnter *
 
 " Edit {{{
 set fileencodings=ucs-bom,utf-8
+if has('guess_encode')
+  set fileencodings^=guess
+endif
+
 set fileformat=unix
 set fileformats=unix,dos
 
