@@ -35,7 +35,7 @@
   ss    = stash
   st    = status --branch --short --untracked-files=all
   sync  = !git stash save && git fetch && git reset --hard FETCH_HEAD && git gc --quiet
-  unstg = reset HEAD
+  unstg = reset HEAD --
 
   revert-file-to-head  = checkout HEAD --
   revert-file-to-index = checkout --
