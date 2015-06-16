@@ -51,6 +51,10 @@ autocmd MyAutoCmd BufEnter *
 
 " Edit {{{
 set fileencodings=ucs-bom,utf-8
+if has('guess_encode')
+  set fileencodings^=guess
+endif
+
 set fileformat=unix
 set fileformats=unix,dos
 
@@ -156,8 +160,8 @@ xnoremap <       <gv
 xnoremap <Tab>   >gv
 xnoremap <S-Tab> <gv
 
-xnoremap <Leader>m :sort<CR>
-xnoremap <Leader>u :sort u<CR>
+xnoremap <Leader>m :<C-u>sort<CR>
+xnoremap <Leader>u :<C-u>sort u<CR>
 
 inoremap <C-z> <Esc>ui
 cnoremap <C-z> :<C-u>suspend<CR>
@@ -176,7 +180,7 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
-nnoremap gf :vertical wincmd f<CR>
+nnoremap gf :<C-u>vertical wincmd f<CR>
 
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
@@ -344,8 +348,10 @@ nnoremap ? ?\v
 
 vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
-nnoremap * g*zz
-nnoremap # g#zz
+nnoremap *  g*N
+nnoremap #  g#N
+nnoremap g* *N
+nnoremap g# #N
 
 nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
@@ -371,11 +377,10 @@ set showmode
 set showtabline=2
 set tabpagemax=32
 
-set statusline=%<
-set statusline+=%F\ %m%r%y
+set statusline=%F\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':BOM':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
-set statusline+=%=
+set statusline+=%=%<
 set statusline+=[U+%04B]\ %3v\ %4l/%3L\ (%P)
 
 set nowrap
@@ -407,10 +412,15 @@ autocmd MyAutoCmd WinEnter *
 \ |   diffoff
 \ | endif
 
-nnoremap <silent> [w <C-w>W
-nnoremap <silent> ]w <C-w>w
-nnoremap <silent> [W <C-w>t
-nnoremap <silent> ]W <C-w>b
+nnoremap <silent> [w :<C-u>wincmd W<CR>
+nnoremap <silent> ]w :<C-u>wincmd w<CR>
+nnoremap <silent> [W :<C-u>wincmd t<CR>
+nnoremap <silent> ]W :<C-u>wincmd b<CR>
+
+nnoremap <silent> <S-Left>  :<C-u>wincmd ><CR>
+nnoremap <silent> <S-Right> :<C-u>wincmd <<CR>
+nnoremap <silent> <S-Up>    :<C-u>wincmd +<CR>
+nnoremap <silent> <S-Down>  :<C-u>wincmd -<CR>
 
 for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
   execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
