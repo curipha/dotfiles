@@ -160,8 +160,8 @@ xnoremap <       <gv
 xnoremap <Tab>   >gv
 xnoremap <S-Tab> <gv
 
-xnoremap <Leader>m :sort<CR>
-xnoremap <Leader>u :sort u<CR>
+xnoremap <Leader>m :<C-u>sort<CR>
+xnoremap <Leader>u :<C-u>sort u<CR>
 
 inoremap <C-z> <Esc>ui
 cnoremap <C-z> :<C-u>suspend<CR>
@@ -180,7 +180,7 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
-nnoremap gf :vertical wincmd f<CR>
+nnoremap gf :<C-u>vertical wincmd f<CR>
 
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
