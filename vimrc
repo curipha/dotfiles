@@ -407,6 +407,10 @@ set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
 set diffopt=filler,context:3,vertical
+autocmd MyAutoCmd InsertLeave *
+\   if &diff
+\ |   diffupdate
+\ | endif
 autocmd MyAutoCmd WinEnter *
 \   if winnr('$') == 1 && getbufvar(winbufnr(0), '&diff') == 1
 \ |   diffoff
