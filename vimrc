@@ -150,7 +150,6 @@ vnoremap <Down> gj
 vnoremap <Up>   gk
 
 nnoremap <Tab> %
-vnoremap <Tab> %
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
