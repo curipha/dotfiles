@@ -354,6 +354,7 @@ setopt auto_param_slash
 setopt auto_remove_slash
 #setopt complete_aliases
 setopt complete_in_word
+setopt extended_glob
 setopt glob_dots
 setopt list_packed
 setopt list_types
@@ -367,6 +368,53 @@ setopt path_dirs
 zle -N insert-last-word smart-insert-last-word
 zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
 bindkey '^]' insert-last-word
+
+typeset -A abbrev_expand
+abbrev_expand=(
+  '..'    '../'
+  '...'   '../../'
+  '....'  '../../../'
+  '.....' '../../../../'
+
+  '?'   "--help |& ${PAGER}"
+  'A'   '| awk'
+  'C'   '| sort | uniq -c | sort -nr'
+  'E'   '> /dev/null'
+  'G'   '| grep -iE'
+  'GV'  '| grep -ivE'
+  'H'   '| head -20'
+  'L'   "|& ${PAGER}"
+  'N'   '| wc -l'
+  'S'   '| sort'
+  'T'   '| tail -20'
+  'U'   '| sort | uniq'
+  'X'   '| xargs'
+)
+
+function magic-abbrev-expand() {
+  local MATCH
+  LBUFFER=${LBUFFER%%(#m)[-.?^_a-zA-Z0-9]#}
+  LBUFFER+=${abbrev_expand[$MATCH]:-$MATCH}
+}
+function magic-abbrev-expand-and-insert() {
+  magic-abbrev-expand
+  zle self-insert
+}
+function magic-abbrev-expand-and-accept() {
+  magic-abbrev-expand
+  zle accept-line
+}
+function magic-abbrev-expand-and-complete() {
+  magic-abbrev-expand
+  zle expand-or-complete
+}
+
+zle -N magic-abbrev-expand-and-insert
+zle -N magic-abbrev-expand-and-complete
+zle -N magic-abbrev-expand-and-accept
+bindkey ' '  magic-abbrev-expand-and-insert
+bindkey '^I' magic-abbrev-expand-and-complete
+#bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
 #}}}
 # Utility{{{
 alias rename='noglob zmv -ivW'
@@ -451,7 +499,10 @@ function magic_enter() {
     else
       BUFFER='ls -AF'
     fi
+  else
+    magic-abbrev-expand
   fi
+
   zle accept-line
 }
 zle -N magic_enter
@@ -701,24 +752,6 @@ HELP
 }
 #}}}
 
-# Global alias {{{
-alias -g ..='../'
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
-
-alias -g '?'=" --help |& ${PAGER}"
-alias -g C=' | sort | uniq -c | sort -nr'
-alias -g E=' > /dev/null'
-alias -g G=' | grep -iE'
-alias -g GV=' | grep -ivE'
-alias -g H=' | head -20'
-alias -g L=" |& ${PAGER}"
-alias -g N=' | wc -l'
-alias -g S=' | sort'
-alias -g T=' | tail -20'
-alias -g U=' | sort | uniq'
-#}}}
 # Alias {{{
 alias l.='ls -d .*'
 alias la='ls -AF'
