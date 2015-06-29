@@ -186,8 +186,6 @@ bindkey '^[[4~' end-of-line
 
 bindkey '^[[Z' reverse-menu-complete
 
-bindkey ' ' magic-space
-
 setopt correct
 setopt combining_chars
 setopt no_flow_control
