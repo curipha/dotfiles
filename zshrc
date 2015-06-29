@@ -128,11 +128,12 @@ if exists vim; then
   alias view='vim -R'
 fi
 
-export PAGER=cat
 if exists less; then
   export PAGER=less
 
   alias taill='LESSOPEN= LESSCLOSE= less +F'
+else
+  export PAGER=cat
 fi
 
 exists dircolors && eval `dircolors --bourne-shell`
