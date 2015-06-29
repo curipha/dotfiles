@@ -141,7 +141,7 @@ exists colordiff && alias diff='colordiff --unified'
 
 GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
-  for EXCLUDE_DIR in .git .hg .svn .deps .libs; do
+  for EXCLUDE_DIR in .git .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
 fi
@@ -230,7 +230,7 @@ PROMPT_EOL_MARK='%B%S<EOL>%s%b'
 setopt prompt_subst
 setopt transient_rprompt
 
-zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '(+)'
 zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
