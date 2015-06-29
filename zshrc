@@ -129,7 +129,11 @@ if exists vim; then
 fi
 
 export PAGER=cat
-exists less && export PAGER=less
+if exists less; then
+  export PAGER=less
+
+  alias taill='LESSOPEN= LESSCLOSE= less +F'
+fi
 
 exists dircolors && eval `dircolors --bourne-shell`
 exists colordiff && alias diff='colordiff --unified'
