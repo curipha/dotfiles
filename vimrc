@@ -338,7 +338,7 @@ autocmd MyAutoCmd WinLeave *
 \ | let b:vimrc_hlsearch = &hlsearch
 autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
-\ | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
+\ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
 
 nmap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 
