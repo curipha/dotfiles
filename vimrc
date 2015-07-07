@@ -44,7 +44,7 @@ filetype plugin indent on
 
 autocmd MyAutoCmd BufNewFile * setfiletype markdown
 autocmd MyAutoCmd BufEnter *
-\   if empty(&buftype) && empty(expand('<afile>'))
+\   if empty(&l:buftype) && empty(expand('<afile>'))
 \ |   setfiletype markdown
 \ | endif
 " }}}
@@ -150,7 +150,6 @@ vnoremap <Down> gj
 vnoremap <Up>   gk
 
 nnoremap <Tab> %
-vnoremap <Tab> %
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
@@ -160,8 +159,8 @@ xnoremap <       <gv
 xnoremap <Tab>   >gv
 xnoremap <S-Tab> <gv
 
-xnoremap <Leader>m :<C-u>sort<CR>
-xnoremap <Leader>u :<C-u>sort u<CR>
+xnoremap <Leader>m :sort<CR>
+xnoremap <Leader>u :sort u<CR>
 
 inoremap <C-z> <Esc>ui
 cnoremap <C-z> :<C-u>suspend<CR>
@@ -238,7 +237,7 @@ autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
-\   if empty(&omnifunc)
+\   if empty(&l:omnifunc)
 \ |   setlocal omnifunc=syntaxcomplete#Complete
 \ | endif
 
@@ -261,7 +260,7 @@ set pastetoggle=<F12>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
-\   if empty(&buftype) && isdirectory(expand('%:p:h'))
+\   if empty(&l:buftype) && isdirectory(expand('%:p:h'))
 \ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
 
@@ -269,20 +268,20 @@ autocmd MyAutoCmd FileType ruby compiler ruby
 autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -cw % | redraw!
 
 autocmd MyAutoCmd BufReadPost *
-\   if &binary && executable('xxd')
+\   if &l:binary && executable('xxd')
 \ |   setlocal filetype=xxd
 \ |   setlocal noendofline
 \ | endif
 autocmd MyAutoCmd BufReadPost *
-\   if &binary && &filetype ==# 'xxd'
+\   if &l:binary && &l:filetype ==# 'xxd'
 \ |   execute 'silent %!xxd -g 1'
 \ | endif
 autocmd MyAutoCmd BufWritePre *
-\   if &binary && &filetype ==# 'xxd'
+\   if &l:binary && &l:filetype ==# 'xxd'
 \ |   execute '%!xxd -r'
 \ | endif
 autocmd MyAutoCmd BufWritePost *
-\   if &binary && &filetype ==# 'xxd'
+\   if &l:binary && &l:filetype ==# 'xxd'
 \ |   execute 'silent %!xxd -g 1'
 \ |   setlocal nomodified
 \ | endif
@@ -339,7 +338,7 @@ autocmd MyAutoCmd WinLeave *
 \ | let b:vimrc_hlsearch = &hlsearch
 autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
-\ | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
+\ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
 
 nmap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 
@@ -407,8 +406,12 @@ set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
 set diffopt=filler,context:3,vertical
+autocmd MyAutoCmd InsertLeave *
+\   if &l:diff
+\ |   diffupdate
+\ | endif
 autocmd MyAutoCmd WinEnter *
-\   if winnr('$') == 1 && getbufvar(winbufnr(0), '&diff') == 1
+\   if winnr('$') == 1 && getbufvar(winbufnr(0), '&l:diff') == 1
 \ |   diffoff
 \ | endif
 
@@ -531,7 +534,7 @@ function! s:plugin_update()
 endfunction
 " }}}
 " Abbreviation {{{
-inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&filetype) ? '' : ' ' . &filetype) . "<CR>"
+inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&l:filetype) ? '' : ' ' . &l:filetype) . "<CR>"
 
 cnoreabbrev q1  q!
 cnoreabbrev qa1 qa!
