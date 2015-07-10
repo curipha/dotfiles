@@ -538,6 +538,8 @@ inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&l:filetype) ? '' : ' ' . &l:fil
 
 cnoreabbrev q1  q!
 cnoreabbrev qa1 qa!
+cnoreabbrev wq1  wq!
+cnoreabbrev wqa1 wqa!
 " }}}
 " Syntax {{{
 " autoload/rubycomplete.vim
