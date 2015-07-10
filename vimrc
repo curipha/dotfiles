@@ -536,8 +536,8 @@ endfunction
 " Abbreviation {{{
 inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&l:filetype) ? '' : ' ' . &l:filetype) . "<CR>"
 
-cnoreabbrev q1  q!
-cnoreabbrev qa1 qa!
+cnoreabbrev q1   q!
+cnoreabbrev qa1  qa!
 cnoreabbrev wq1  wq!
 cnoreabbrev wqa1 wqa!
 " }}}
