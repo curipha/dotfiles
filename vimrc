@@ -448,6 +448,8 @@ nnoremap <silent> tt :<C-u>tabe<CR>
 
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
+set fillchars=fold:\ 
+
 set showmatch
 set matchpairs& matchpairs+=<:>
 autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
