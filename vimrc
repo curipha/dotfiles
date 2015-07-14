@@ -382,6 +382,15 @@ set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=%=%<
 set statusline+=[U+%04B]\ %3v\ %4l/%3L\ (%P)
 
+if has('gui_running')
+  set cursorline
+endif
+autocmd MyAutoCmd WinLeave *
+\   let b:vimrc_cursorline = &l:cursorline
+\ | setlocal nocursorline
+autocmd MyAutoCmd WinEnter *
+\   let &l:cursorline = get(b:, 'vimrc_cursorline', &l:cursorline)
+
 set nowrap
 autocmd MyAutoCmd FileType markdown setlocal wrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
