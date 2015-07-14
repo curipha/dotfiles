@@ -66,13 +66,13 @@ set infercase
 set browsedir=buffer
 set isfname& isfname-==
 
-set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class
+set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class,*.dvi
 set wildignore+=*.png,*.jpg,*.gif,*.bmp
 set wildignore+=*.bz2,*.gz,*.tar,*.xz,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
 set wildignore+=*/.git/*,*/.svn/*
 set wildignore+=*/$RECYCLE.BIN/*,*/System\ Volume\ Information/*
-set suffixes=.bak,.tmp,.out,.aux,.dvi,.toc
+set suffixes=.bak,.tmp,.out,.aux,.toc
 
 set history=100
 set undolevels=4000
