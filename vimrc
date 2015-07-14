@@ -557,10 +557,19 @@ cnoreabbrev wqa1 wqa!
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 
+" syntax/c.vim
+let g:c_comment_strings = 1
+
+" syntax/markdown.vim
+let g:markdown_fenced_languages = [ 'bash=sh', 'css', 'html', 'javascript', 'ruby', 'sass', 'xml' ]
+
 " syntax/php.vim
 let g:php_sql_query = 1
 let g:php_htmlInStrings = 1
 let g:php_noShortTags = 1
+
+" syntax/sh.vim
+let g:is_bash = 1
 " }}}
 " Plugin {{{
 " neocomplete {{{
