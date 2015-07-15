@@ -66,13 +66,13 @@ set infercase
 set browsedir=buffer
 set isfname& isfname-==
 
-set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.pyc,*.jar,*.class
-set wildignore+=*.png,*.jpg,*.gif,*.bmp
-set wildignore+=*.bz2,*.gz,*.tar,*.xz,*.zip
+set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.lib*.luac,*.pyc,*.zwc,*.jar,*.class,*.dvi
+set wildignore+=*.bmp,*.gif,*.jpg,*.png
+set wildignore+=*.tar,*.bz2,*.gz,*.xz,*.7z,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
-set wildignore+=*/.git/*,*/.svn/*
+set wildignore+=*/.git/*
 set wildignore+=*/$RECYCLE.BIN/*,*/System\ Volume\ Information/*
-set suffixes=.bak,.tmp,.out,.aux,.dvi,.toc
+set suffixes=.bak,.tmp,.out,.aux,.toc
 
 set history=100
 set undolevels=4000
@@ -382,6 +382,15 @@ set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=%=%<
 set statusline+=[U+%04B]\ %3v\ %4l/%3L\ (%P)
 
+if has('gui_running')
+  set cursorline
+endif
+autocmd MyAutoCmd WinLeave *
+\   let b:vimrc_cursorline = &l:cursorline
+\ | setlocal nocursorline
+autocmd MyAutoCmd WinEnter *
+\   let &l:cursorline = get(b:, 'vimrc_cursorline', &l:cursorline)
+
 set nowrap
 autocmd MyAutoCmd FileType markdown setlocal wrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
@@ -439,6 +448,8 @@ nnoremap <silent> tt :<C-u>tabe<CR>
 
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
+set fillchars=fold:\ 
+
 set showmatch
 set matchpairs& matchpairs+=<:>
 autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
@@ -536,19 +547,29 @@ endfunction
 " Abbreviation {{{
 inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&l:filetype) ? '' : ' ' . &l:filetype) . "<CR>"
 
-cnoreabbrev q1  q!
-cnoreabbrev qa1 qa!
+cnoreabbrev q1   q!
+cnoreabbrev qa1  qa!
+cnoreabbrev wq1  wq!
+cnoreabbrev wqa1 wqa!
 " }}}
 " Syntax {{{
 " autoload/rubycomplete.vim
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
+
+" syntax/c.vim
+let g:c_comment_strings = 1
+
+" syntax/markdown.vim
+let g:markdown_fenced_languages = [ 'bash=sh', 'css', 'html', 'javascript', 'ruby', 'sass', 'xml' ]
 
 " syntax/php.vim
 let g:php_sql_query = 1
 let g:php_htmlInStrings = 1
 let g:php_noShortTags = 1
+
+" syntax/sh.vim
+let g:is_bash = 1
 " }}}
 " Plugin {{{
 " neocomplete {{{
