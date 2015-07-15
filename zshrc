@@ -773,7 +773,7 @@ alias .='pwd'
 
 alias a='./a.out'
 #alias b=''
-alias c='cal -3'
+#alias c=''
 #alias d=''
 #alias e=''
 #alias f=''
