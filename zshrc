@@ -461,7 +461,7 @@ function whois() {
   exists whois  && WHOIS=`whence -p whois`
 
   if [[ -z "${WHOIS}" ]]; then
-    echo 'Error: Cannnot find whois command.' 1>&2
+    echo 'Error: Cannot find whois command.' 1>&2
     return 1
   fi
 
