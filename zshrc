@@ -589,9 +589,10 @@ function package-update() {
 
   {
     local YES
-    while getopts hcy ARG; do
+    while getopts hy ARG; do
       case ${ARG} in
         "y" ) YES=1;;
+
         * )
           cat <<HELP 1>&2
 Usage: ${0} [-y]
