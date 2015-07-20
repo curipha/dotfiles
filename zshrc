@@ -388,6 +388,7 @@ abbrev_expand=(
   'T'   '| tail -20'
   'U'   '| sort | uniq'
   'X'   '| xargs'
+  'XN'  '| xargs -n1'
 )
 
 function magic-abbrev-expand() {
@@ -460,7 +461,7 @@ function whois() {
   exists whois  && WHOIS=`whence -p whois`
 
   if [[ -z "${WHOIS}" ]]; then
-    echo 'Error: Cannnot find whois command.' 1>&2
+    echo 'Error: Cannot find whois command.' 1>&2
     return 1
   fi
 
@@ -588,9 +589,10 @@ function package-update() {
 
   {
     local YES
-    while getopts hcy ARG; do
+    while getopts hy ARG; do
       case ${ARG} in
         "y" ) YES=1;;
+
         * )
           cat <<HELP 1>&2
 Usage: ${0} [-y]
@@ -773,7 +775,7 @@ alias .='pwd'
 
 alias a='./a.out'
 #alias b=''
-alias c='cal -3'
+#alias c=''
 #alias d=''
 #alias e=''
 #alias f=''
