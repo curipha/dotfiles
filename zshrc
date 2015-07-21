@@ -27,8 +27,10 @@ export TERM=xterm-256color
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
-export WINEDEBUG=-all
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
+
+export WINEARCH=win32
+export WINEDEBUG=-all
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
@@ -388,6 +390,7 @@ abbrev_expand=(
   'T'   '| tail -20'
   'U'   '| sort | uniq'
   'X'   '| xargs'
+  'XN'  '| xargs -n1'
 )
 
 function magic-abbrev-expand() {
@@ -460,7 +463,7 @@ function whois() {
   exists whois  && WHOIS=`whence -p whois`
 
   if [[ -z "${WHOIS}" ]]; then
-    echo 'Error: Cannnot find whois command.' 1>&2
+    echo 'Error: Cannot find whois command.' 1>&2
     return 1
   fi
 
@@ -588,9 +591,10 @@ function package-update() {
 
   {
     local YES
-    while getopts hcy ARG; do
+    while getopts hy ARG; do
       case ${ARG} in
         "y" ) YES=1;;
+
         * )
           cat <<HELP 1>&2
 Usage: ${0} [-y]
@@ -773,7 +777,7 @@ alias .='pwd'
 
 alias a='./a.out'
 #alias b=''
-alias c='cal -3'
+#alias c=''
 #alias d=''
 #alias e=''
 #alias f=''
