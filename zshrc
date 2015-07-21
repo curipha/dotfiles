@@ -538,6 +538,9 @@ zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
 function force_reset_screen() {
+  echo -en "\033c"
+  tput clear
+
   zle clear-screen
   zle reset-prompt
 }
