@@ -27,8 +27,10 @@ export TERM=xterm-256color
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
-export WINEDEBUG=-all
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
+
+export WINEARCH=win32
+export WINEDEBUG=-all
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
 export LESSCHARSET=utf-8
@@ -536,6 +538,9 @@ zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
 function force_reset_screen() {
+  echo -en "\033c"
+  tput clear
+
   zle clear-screen
   zle reset-prompt
 }
