@@ -381,6 +381,8 @@ abbrev_expand=(
 
   '?'   "--help |& ${PAGER}"
   'A'   '| awk'
+  'B'   '| base64'
+  'BD'  '| base64 -d'
   'C'   '| sort | uniq -c | sort -nr'
   'E'   '> /dev/null'
   'G'   '| grep -iE'
@@ -391,6 +393,7 @@ abbrev_expand=(
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
+  'V'   '| vim -'
   'X'   '| xargs'
   'XN'  '| xargs -n1'
 )
