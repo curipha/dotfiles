@@ -695,12 +695,6 @@ HELP
   fi
 }
 
-function getrandomport() {
-  float   RAND=$(( ${RANDOM} * 1.0 / 32767 ))
-  integer BASE=$(( ${RAND} * 16383 ))
-  echo $(( ${BASE} + 49152 ))
-}
-
 function createpasswd() {
   # Default
   local CHARACTER="[:graph:]"
