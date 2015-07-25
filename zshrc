@@ -397,7 +397,7 @@ abbrev_expand=(
 
 function magic-abbrev-expand() {
   local MATCH
-  LBUFFER=${LBUFFER%%(#m)[-.?^_a-zA-Z0-9]#}
+  LBUFFER=${LBUFFER%%(#m)[^[:IFS:]]#}
   LBUFFER+=${abbrev_expand[$MATCH]:-$MATCH}
 }
 function magic-abbrev-expand-and-insert() {
