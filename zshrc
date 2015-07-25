@@ -24,6 +24,8 @@ export TERM=xterm-256color
 [[ -z "${EUID}" ]]     && export EUID=`id -u`
 [[ -z "${UID}" ]]      && export UID=`id -ru`
 
+export CYGWIN='nodosfilewarning winsymlinks:native'
+
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
@@ -379,6 +381,8 @@ abbrev_expand=(
 
   '?'   "--help |& ${PAGER}"
   'A'   '| awk'
+  'B'   '| base64'
+  'BD'  '| base64 -d'
   'C'   '| sort | uniq -c | sort -nr'
   'E'   '> /dev/null'
   'G'   '| grep -iE'
@@ -389,13 +393,14 @@ abbrev_expand=(
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
+  'V'   '| vim -'
   'X'   '| xargs'
   'XN'  '| xargs -n1'
 )
 
 function magic-abbrev-expand() {
   local MATCH
-  LBUFFER=${LBUFFER%%(#m)[-.?^_a-zA-Z0-9]#}
+  LBUFFER=${LBUFFER%%(#m)[^[:IFS:]]#}
   LBUFFER+=${abbrev_expand[$MATCH]:-$MATCH}
 }
 function magic-abbrev-expand-and-insert() {
