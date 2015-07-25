@@ -24,6 +24,8 @@ export TERM=xterm-256color
 [[ -z "${EUID}" ]]     && export EUID=`id -u`
 [[ -z "${UID}" ]]      && export UID=`id -ru`
 
+export CYGWIN='nodosfilewarning winsymlinks:native'
+
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
