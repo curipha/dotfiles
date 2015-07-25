@@ -24,6 +24,8 @@ export TERM=xterm-256color
 [[ -z "${EUID}" ]]     && export EUID=`id -u`
 [[ -z "${UID}" ]]      && export UID=`id -ru`
 
+export CYGWIN='nodosfilewarning winsymlinks:native'
+
 export GEM_HOME=~/app/gem
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
@@ -538,6 +540,9 @@ zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
 function force_reset_screen() {
+  echo -en "\033c"
+  tput clear
+
   zle clear-screen
   zle reset-prompt
 }
@@ -690,12 +695,6 @@ HELP
       return 1
     fi
   fi
-}
-
-function getrandomport() {
-  float   RAND=$(( ${RANDOM} * 1.0 / 32767 ))
-  integer BASE=$(( ${RAND} * 16383 ))
-  echo $(( ${BASE} + 49152 ))
 }
 
 function createpasswd() {

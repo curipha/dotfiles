@@ -66,7 +66,7 @@ set infercase
 set browsedir=buffer
 set isfname& isfname-==
 
-set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.lib*.luac,*.pyc,*.zwc,*.jar,*.class,*.dvi
+set wildignore=*.o,*.so,*.obj,*.exe,*.dll,*.lib,*.luac,*.pyc,*.zwc,*.jar,*.class,*.dvi
 set wildignore+=*.bmp,*.gif,*.jpg,*.png
 set wildignore+=*.tar,*.bz2,*.gz,*.xz,*.7z,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
@@ -178,6 +178,9 @@ cnoremap <C-n> <Down>
 nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
+
+nnoremap <expr> 0 col('.') == 1 ? '^' : '0'
+"nnoremap <expr> ^ col('.') == 1 ? '^' : '0'
 
 nnoremap gf :<C-u>vertical wincmd f<CR>
 
@@ -357,8 +360,8 @@ nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'n
 vnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 vnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
 
-cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
+cnoremap <expr> / getcmdtype() ==# '/' ? '\/' : '/'
+cnoremap <expr> ? getcmdtype() ==# '?' ? '\?' : '?'
 
 nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
