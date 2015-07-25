@@ -179,6 +179,9 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
+nnoremap <expr> 0 col('.') == 1 ? '^' : '0'
+"nnoremap <expr> ^ col('.') == 1 ? '^' : '0'
+
 nnoremap gf :<C-u>vertical wincmd f<CR>
 
 nnoremap gc `[v`]
