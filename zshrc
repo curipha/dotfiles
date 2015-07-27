@@ -390,6 +390,7 @@ abbrev_expand=(
   'H'   '| head -20'
   'L'   "|& ${PAGER}"
   'N'   '| wc -l'
+  'R'   '| sed -E'
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
