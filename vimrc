@@ -183,8 +183,8 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
-nnoremap <expr> 0 col('.') == 1 ? '^' : '0'
-"nnoremap <expr> ^ col('.') == 1 ? '^' : '0'
+nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
+"nnoremap <expr> ^ col('.') ==# 1 ? '^' : '0'
 
 nnoremap gf :<C-u>vertical wincmd f<CR>
 
@@ -334,7 +334,7 @@ set smartcase
 set grepprg=internal
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
-\   if len(getqflist()) == 0
+\   if len(getqflist()) ==# 0
 \ |   cclose
 \ | else
 \ |   cwindow
@@ -427,7 +427,7 @@ autocmd MyAutoCmd InsertLeave *
 \ |   diffupdate
 \ | endif
 autocmd MyAutoCmd WinEnter *
-\   if winnr('$') == 1 && getbufvar(winbufnr(0), '&l:diff') == 1
+\   if winnr('$') ==# 1 && getbufvar(winbufnr(0), '&l:diff') ==# 1
 \ |   diffoff
 \ | endif
 
