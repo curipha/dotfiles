@@ -113,7 +113,7 @@ set shiftwidth=2
 set shiftround
 set softtabstop=0
 
-set complete=.,w,b,u,t,i,d,]
+set complete& complete+=d
 set pumheight=18
 
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
