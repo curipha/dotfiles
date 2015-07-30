@@ -381,6 +381,8 @@ abbrev_expand=(
 
   '?'   "--help |& ${PAGER}"
   'A'   '| awk'
+  'B'   '| base64'
+  'BD'  '| base64 -d'
   'C'   '| sort | uniq -c | sort -nr'
   'E'   '> /dev/null'
   'G'   '| grep -iE'
@@ -388,16 +390,18 @@ abbrev_expand=(
   'H'   '| head -20'
   'L'   "|& ${PAGER}"
   'N'   '| wc -l'
+  'R'   '| sed -E'
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
+  'V'   '| vim -'
   'X'   '| xargs'
   'XN'  '| xargs -n1'
 )
 
 function magic-abbrev-expand() {
   local MATCH
-  LBUFFER=${LBUFFER%%(#m)[-.?^_a-zA-Z0-9]#}
+  LBUFFER=${LBUFFER%%(#m)[^[:IFS:]]#}
   LBUFFER+=${abbrev_expand[$MATCH]:-$MATCH}
 }
 function magic-abbrev-expand-and-insert() {

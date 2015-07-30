@@ -47,6 +47,10 @@ autocmd MyAutoCmd BufEnter *
 \   if empty(&l:buftype) && empty(expand('<afile>'))
 \ |   setfiletype markdown
 \ | endif
+autocmd MyAutoCmd BufWritePost *
+\   if &l:filetype ==# 'markdown' && expand('%:e') !=# 'md'
+\ |   filetype detect
+\ | endif
 " }}}
 
 " Edit {{{
