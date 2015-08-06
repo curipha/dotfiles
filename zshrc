@@ -401,9 +401,11 @@ abbrev_expand=(
 )
 
 function magic-abbrev-expand() {
-  local MATCH
-  LBUFFER=${LBUFFER%%(#m)[^[:IFS:]]#}
-  LBUFFER+=${abbrev_expand[$MATCH]:-$MATCH}
+  local MATCH BASE EXPAND
+  BASE="${LBUFFER%%(#m)[^[:IFS:]]#}"
+  EXPAND="${abbrev_expand[${MATCH}]}"
+
+  [[ -n "${EXPAND}" ]] && LBUFFER="${BASE}${EXPAND}"
 }
 function magic-abbrev-expand-and-insert() {
   magic-abbrev-expand
