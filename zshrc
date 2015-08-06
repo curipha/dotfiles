@@ -706,7 +706,7 @@ HELP
 
 function createpasswd() {
   # Default
-  local CHARACTER="[:graph:]"
+  local CHARACTER="[:alnum:]"
   local LENGTH=18
   local NUMBER=10
 
@@ -735,6 +735,7 @@ Usage: ${0} [-p | -c <chars>] [-l <length>] [-n <number>]
   -p            Paranoid mode (Guarantee that the symbol char MUST be included)
 
 Example:
+  ${0}
   ${0} -c "0-9A-Za-z"
   ${0} -c "[:alnum:]"
     Create ${NUMBER} of passwords (${LENGTH} chars) contains letters and digits.
