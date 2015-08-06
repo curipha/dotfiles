@@ -464,7 +464,7 @@ function bak() { [[ $# == 1 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# == 1 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
-function mkmv() { [[ $# == 2 ]] && mkdir -vp "${@: -1}" && mv -iv "$@" }
+function mkmv() { (( $# >= 2 )) && mkdir -vp "${@: -1}" && mv -iv "$@" }
 
 function whois() {
   local WHOIS
