@@ -91,6 +91,9 @@ set nojoinspaces
 set formatoptions& formatoptions+=mMj
 autocmd MyAutoCmd FileType * setlocal formatoptions-=ro
 
+set textwidth=0
+set wrapmargin=0
+
 set nobackup
 set nowritebackup
 set noswapfile
