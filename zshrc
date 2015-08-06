@@ -384,6 +384,7 @@ abbrev_expand=(
   'B'   '| base64'
   'BD'  '| base64 -d'
   'C'   '| sort | uniq -c | sort -nr'
+  'D'   "| hexdump -C | ${PAGER}"
   'E'   '> /dev/null'
   'G'   '| grep -iE'
   'GV'  '| grep -ivE'
