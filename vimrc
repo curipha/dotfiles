@@ -194,6 +194,8 @@ nnoremap gf :<C-u>vertical wincmd f<CR>
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
 
+nnoremap gI `.a
+
 nnoremap vv ggVG
 nnoremap vV ^v$h
 
