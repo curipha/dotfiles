@@ -8,7 +8,9 @@
   ap    = add --patch
   au    = add --update --verbose
   br    = branch --all --verbose --verbose
-  ci    = commit --verbose
+  ca    = commit --all --verbose --verbose
+  ci    = commit --verbose --verbose
+  cp    = commit --patch --verbose --verbose
   co    = checkout
   d     = diff --patch-with-stat
   dc    = diff --patch-with-stat --cached
@@ -96,8 +98,15 @@
 
 [url "git@github.com:"]
   insteadOf     = gh:
+  pushInsteadOf = gh:
   pushInsteadOf = https://github.com/
   pushInsteadOf = git://github.com/
+
+[url "git@gist.github.com:"]
+  insteadOf     = gist:
+  pushInsteadOf = gist:
+  pushInsteadOf = https://gist.github.com/
+  pushInsteadOf = git://gist.github.com/
 
 [user]
   name  = Taichi

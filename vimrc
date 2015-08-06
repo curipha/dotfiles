@@ -47,6 +47,10 @@ autocmd MyAutoCmd BufEnter *
 \   if empty(&l:buftype) && empty(expand('<afile>'))
 \ |   setfiletype markdown
 \ | endif
+autocmd MyAutoCmd BufWritePost *
+\   if &l:filetype ==# 'markdown' && expand('%:e') !=# 'md'
+\ |   filetype detect
+\ | endif
 " }}}
 
 " Edit {{{
@@ -87,6 +91,9 @@ set nojoinspaces
 set formatoptions& formatoptions+=mMj
 autocmd MyAutoCmd FileType * setlocal formatoptions-=ro
 
+set textwidth=0
+set wrapmargin=0
+
 set nobackup
 set nowritebackup
 set noswapfile
@@ -109,7 +116,7 @@ set shiftwidth=2
 set shiftround
 set softtabstop=0
 
-set complete=.,w,b,u,t,i,d,]
+set complete& complete+=d
 set pumheight=18
 
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
@@ -179,13 +186,15 @@ nnoremap <CR> O<Esc>
 nnoremap Y    y$
 nnoremap R    gR
 
-nnoremap <expr> 0 col('.') == 1 ? '^' : '0'
-"nnoremap <expr> ^ col('.') == 1 ? '^' : '0'
+nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
+"nnoremap <expr> ^ col('.') ==# 1 ? '^' : '0'
 
 nnoremap gf :<C-u>vertical wincmd f<CR>
 
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
+
+nnoremap gI `.a
 
 nnoremap vv ggVG
 nnoremap vV ^v$h
@@ -330,7 +339,7 @@ set smartcase
 set grepprg=internal
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
-\   if len(getqflist()) == 0
+\   if len(getqflist()) ==# 0
 \ |   cclose
 \ | else
 \ |   cwindow
@@ -423,7 +432,7 @@ autocmd MyAutoCmd InsertLeave *
 \ |   diffupdate
 \ | endif
 autocmd MyAutoCmd WinEnter *
-\   if winnr('$') == 1 && getbufvar(winbufnr(0), '&l:diff') == 1
+\   if winnr('$') ==# 1 && getbufvar(winbufnr(0), '&l:diff') ==# 1
 \ |   diffoff
 \ | endif
 
@@ -465,6 +474,8 @@ set foldenable
 set foldcolumn=0
 set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
+
+nnoremap zl mzzMzvzz`z
 
 autocmd MyAutoCmd FileType css                 setlocal foldmethod=marker foldmarker={,}
 autocmd MyAutoCmd FileType *commit*,diff,xxd   setlocal nofoldenable
@@ -550,6 +561,7 @@ endfunction
 " Abbreviation {{{
 inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&l:filetype) ? '' : ' ' . &l:filetype) . "<CR>"
 
+cnoreabbrev bd1  bd!
 cnoreabbrev q1   q!
 cnoreabbrev qa1  qa!
 cnoreabbrev wq1  wq!
