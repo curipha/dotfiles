@@ -574,7 +574,7 @@ function 256color() {
   local CODE
   for CODE in {0..15}; do
     echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-    [[ $(( ${CODE} % 8 )) == 7 ]] && echo -e "\e[0m"
+    (( ${CODE} % 8 == 7 )) && echo -e "\e[0m"
   done
   echo
 
