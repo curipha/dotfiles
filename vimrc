@@ -456,7 +456,7 @@ endfor
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>tabe<CR>
+nnoremap <silent> tt :<C-u>tabnew<CR>
 
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
