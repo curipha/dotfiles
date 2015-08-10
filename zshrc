@@ -396,8 +396,8 @@ abbrev_expand=(
   'T'   '| tail -20'
   'U'   '| sort | uniq'
   'V'   '| vim -'
-  'X'   '| xargs'
-  'XN'  '| xargs -n1'
+  'X'   '| xargs -r'
+  'XN'  '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
