@@ -588,6 +588,7 @@ function 256color() {
       echo -en "\e[0m  "
     done
     echo
+    (( ${BASE} == 5 )) && echo
   done
   echo
 
