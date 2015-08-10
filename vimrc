@@ -146,7 +146,7 @@ onoremap jj <Esc>
 inoremap kk <Esc>
 onoremap kk <Esc>
 
-vnoremap . :<C-u>normal .<CR>
+xnoremap . :<C-u>normal .<CR>
 
 nnoremap j gj
 nnoremap k gk
@@ -167,8 +167,8 @@ xnoremap <       <gv
 xnoremap <Tab>   >gv
 xnoremap <S-Tab> <gv
 
-xnoremap <Leader>m :sort<CR>
-xnoremap <Leader>u :sort u<CR>
+vnoremap <Leader>m :sort<CR>
+vnoremap <Leader>u :sort u<CR>
 
 inoremap <C-z> <Esc>ui
 cnoremap <C-z> :<C-u>suspend<CR>
