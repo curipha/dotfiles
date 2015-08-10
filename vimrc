@@ -162,6 +162,10 @@ nnoremap <Tab> %
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
 
+nnoremap p p`]
+vnoremap p p`]
+vnoremap y y`]
+
 xnoremap >       >gv
 xnoremap <       <gv
 xnoremap <Tab>   >gv
