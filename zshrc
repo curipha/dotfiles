@@ -318,7 +318,7 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 
 zstyle ':completion:*:manuals' separate-sections true
 
-zstyle ':completion:*:processes' command "ps -U `whoami` -o pid,user,command -w -w"
+zstyle ':completion:*:processes' command "ps -U ${USER} -o pid,user,command -w -w"
 zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
@@ -384,6 +384,7 @@ abbrev_expand=(
   'B'   '| base64'
   'BD'  '| base64 -d'
   'C'   '| sort | uniq -c | sort -nr'
+  'D'   "| hexdump -C | ${PAGER}"
   'E'   '> /dev/null'
   'G'   '| grep -iE'
   'GV'  '| grep -ivE'
@@ -400,9 +401,11 @@ abbrev_expand=(
 )
 
 function magic-abbrev-expand() {
-  local MATCH
-  LBUFFER=${LBUFFER%%(#m)[^[:IFS:]]#}
-  LBUFFER+=${abbrev_expand[$MATCH]:-$MATCH}
+  local MATCH BASE EXPAND
+  BASE="${LBUFFER%%(#m)[^[:IFS:]]#}"
+  EXPAND="${abbrev_expand[${MATCH}]}"
+
+  [[ -n "${EXPAND}" ]] && LBUFFER="${BASE}${EXPAND}"
 }
 function magic-abbrev-expand-and-insert() {
   magic-abbrev-expand
@@ -461,7 +464,7 @@ function bak() { [[ $# == 1 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# == 1 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
 
 function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
-function mkmv() { [[ $# == 2 ]] && mkdir -vp "${@: -1}" && mv -iv "$@" }
+function mkmv() { (( $# >= 2 )) && mkdir -vp "${@: -1}" && mv -iv "$@" }
 
 function whois() {
   local WHOIS
@@ -571,7 +574,7 @@ function 256color() {
   local CODE
   for CODE in {0..15}; do
     echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-    [[ $(( ${CODE} % 8 )) == 7 ]] && echo -e "\e[0m"
+    (( ${CODE} % 8 == 7 )) && echo -e "\e[0m"
   done
   echo
 
@@ -703,7 +706,7 @@ HELP
 
 function createpasswd() {
   # Default
-  local CHARACTER="[:graph:]"
+  local CHARACTER="[:alnum:]"
   local LENGTH=18
   local NUMBER=10
 
@@ -732,6 +735,7 @@ Usage: ${0} [-p | -c <chars>] [-l <length>] [-n <number>]
   -p            Paranoid mode (Guarantee that the symbol char MUST be included)
 
 Example:
+  ${0}
   ${0} -c "0-9A-Za-z"
   ${0} -c "[:alnum:]"
     Create ${NUMBER} of passwords (${LENGTH} chars) contains letters and digits.

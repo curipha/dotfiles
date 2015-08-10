@@ -91,6 +91,9 @@ set nojoinspaces
 set formatoptions& formatoptions+=mMj
 autocmd MyAutoCmd FileType * setlocal formatoptions-=ro
 
+set textwidth=0
+set wrapmargin=0
+
 set nobackup
 set nowritebackup
 set noswapfile
@@ -190,6 +193,8 @@ nnoremap gf :<C-u>vertical wincmd f<CR>
 
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
+
+nnoremap gI `.a
 
 nnoremap vv ggVG
 nnoremap vV ^v$h
@@ -451,7 +456,7 @@ endfor
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>tabe<CR>
+nnoremap <silent> tt :<C-u>tabnew<CR>
 
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
@@ -469,6 +474,8 @@ set foldenable
 set foldcolumn=0
 set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
+
+nnoremap zl mzzMzvzz`z
 
 autocmd MyAutoCmd FileType css                 setlocal foldmethod=marker foldmarker={,}
 autocmd MyAutoCmd FileType *commit*,diff,xxd   setlocal nofoldenable
@@ -554,6 +561,7 @@ endfunction
 " Abbreviation {{{
 inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&l:filetype) ? '' : ' ' . &l:filetype) . "<CR>"
 
+cnoreabbrev bd1  bd!
 cnoreabbrev q1   q!
 cnoreabbrev qa1  qa!
 cnoreabbrev wq1  wq!
