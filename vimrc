@@ -202,7 +202,6 @@ vnoremap gc :<C-u>normal `[v`]<CR>
 nnoremap gI `.a
 
 nnoremap vv ggVG
-nnoremap vV ^v$h
 
 nnoremap <Leader>o :<C-u>only<CR>
 nnoremap <Leader>r :<C-u>registers<CR>
