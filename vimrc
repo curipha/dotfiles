@@ -274,6 +274,7 @@ if has('multi_byte_ime') || has('xim')
 endif
 
 set pastetoggle=<F12>
+nnoremap <silent> <F12> :<C-u>set paste<CR>i
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
