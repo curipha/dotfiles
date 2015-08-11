@@ -104,7 +104,6 @@ set switchbuf& switchbuf+=useopen
 
 set autoindent smartindent
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt setlocal indentexpr=
-autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 set smarttab
 set expandtab shiftround
@@ -153,7 +152,10 @@ nnoremap <Up>   gk
 vnoremap <Down> gj
 vnoremap <Up>   gk
 
+nnoremap <CR>  O<Esc>
 nnoremap <Tab> %
+nnoremap R     gR
+nnoremap Y     y$
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
@@ -180,22 +182,21 @@ inoremap <RightMouse> <C-r><C-o>*
 cnoremap <RightMouse> <C-r><C-o>*
 nnoremap <RightMouse> "*p
 
+nnoremap <Space>   <C-d>
+nnoremap <S-Space> <C-u>
+
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
-
-nnoremap <CR> O<Esc>
-nnoremap Y    y$
-nnoremap R    gR
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 "nnoremap <expr> ^ col('.') ==# 1 ? '^' : '0'
 
 nnoremap gf :<C-u>vertical wincmd f<CR>
-
-nnoremap gc `[v`]
-vnoremap gc :<C-u>normal `[v`]<CR>
+autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 nnoremap gI `.a
+nnoremap gc `[v`]
+vnoremap gc :<C-u>normal `[v`]<CR>
 
 nnoremap vv ggVG
 vnoremap v  V
@@ -412,8 +413,6 @@ endif
 
 set scrolloff=5 sidescrolloff=20
 set sidescroll=1
-nnoremap <Space>   <C-d>
-nnoremap <S-Space> <C-u>
 
 set splitbelow splitright
 set noequalalways
