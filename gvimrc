@@ -34,8 +34,7 @@ highlight IdeographicSpace gui=underline guifg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 
-set title
-set titlelen=80
+set title titlelen=80
 set titlestring=%t\ %m%r\ \(%<%{expand('%:p:h')}\)\ -\ GVim
 
 if has('vim_starting')

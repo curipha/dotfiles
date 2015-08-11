@@ -81,8 +81,7 @@ set suffixes=.bak,.tmp,.out,.aux,.toc
 set history=100
 set undolevels=4000
 
-set modeline
-set modelines=3
+set modeline modelines=3
 
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
@@ -103,17 +102,14 @@ set viminfo=
 set hidden
 set switchbuf& switchbuf+=useopen
 
-set autoindent
-set smartindent
-
+set autoindent smartindent
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt setlocal indentexpr=
 autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 set smarttab
-set expandtab
+set expandtab shiftround
 set tabstop=2
 set shiftwidth=2
-set shiftround
 set softtabstop=0
 
 set complete& complete+=d
@@ -263,8 +259,7 @@ if has('xim') && has('GUI_GTK')
 endif
 if has('multi_byte_ime') || has('xim')
   set noimcmdline
-  set iminsert=0
-  set imsearch=0
+  set iminsert=0 imsearch=0
 
   augroup MyAutoCmd
     "autocmd InsertEnter,CmdwinEnter * set noimdisable
@@ -335,12 +330,9 @@ else
 endif
 " }}}
 " Search {{{
-set hlsearch
-set incsearch
+set hlsearch incsearch
+set ignorecase smartcase
 set wrapscan
-
-set ignorecase
-set smartcase
 
 set grepprg=internal
 
@@ -382,14 +374,12 @@ nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " }}}
 " Display {{{
-set notitle
-set noruler
-set number
+set notitle noruler
+set number norelativenumber
 nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
 
+set showcmd showmode
 set laststatus=2
-set showcmd
-set showmode
 
 set showtabline=2
 set tabpagemax=32
@@ -416,19 +406,16 @@ nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 if has('linebreak')
   set linebreak
 
-  set breakindent
-  set breakindentopt=min:42,shift:0,sbr
+  set breakindent breakindentopt=min:42,shift:0,sbr
   set showbreak=...\ 
 endif
 
-set scrolloff=5
+set scrolloff=5 sidescrolloff=20
 set sidescroll=1
-set sidescrolloff=20
 nnoremap <Space>   <C-d>
 nnoremap <S-Space> <C-u>
 
-set splitbelow
-set splitright
+set splitbelow splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
