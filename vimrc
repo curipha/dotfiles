@@ -122,6 +122,7 @@ set pumheight=18
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
+nnoremap <silent> <Leader>z 1z=
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
@@ -145,7 +146,7 @@ onoremap jj <Esc>
 inoremap kk <Esc>
 onoremap kk <Esc>
 
-vnoremap . :<C-u>normal .<CR>
+xnoremap . :<C-u>normal .<CR>
 
 nnoremap j gj
 nnoremap k gk
@@ -161,13 +162,17 @@ nnoremap <Tab> %
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
 
+nnoremap p p`]
+vnoremap p p`]
+vnoremap y y`]
+
 xnoremap >       >gv
 xnoremap <       <gv
 xnoremap <Tab>   >gv
 xnoremap <S-Tab> <gv
 
-xnoremap <Leader>m :sort<CR>
-xnoremap <Leader>u :sort u<CR>
+vnoremap <Leader>m :sort<CR>
+vnoremap <Leader>u :sort u<CR>
 
 inoremap <C-z> <Esc>ui
 cnoremap <C-z> :<C-u>suspend<CR>
@@ -197,7 +202,7 @@ vnoremap gc :<C-u>normal `[v`]<CR>
 nnoremap gI `.a
 
 nnoremap vv ggVG
-nnoremap vV ^v$h
+vnoremap v  V
 
 nnoremap <Leader>o :<C-u>only<CR>
 nnoremap <Leader>r :<C-u>registers<CR>
@@ -269,6 +274,7 @@ if has('multi_byte_ime') || has('xim')
 endif
 
 set pastetoggle=<F12>
+nnoremap <silent> <F12> :<C-u>set paste<CR>i
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
@@ -456,7 +462,7 @@ endfor
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>tabe<CR>
+nnoremap <silent> tt :<C-u>tabnew<CR>
 
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
