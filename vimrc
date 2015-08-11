@@ -408,7 +408,7 @@ if has('linebreak')
   set linebreak
 
   set breakindent breakindentopt=min:42,shift:0,sbr
-  set showbreak=...\ 
+  set showbreak=..
 endif
 
 set scrolloff=5 sidescrolloff=20
