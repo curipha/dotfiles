@@ -411,7 +411,7 @@ if has('linebreak')
   set showbreak=..
 endif
 
-set scrolloff=5 sidescrolloff=20
+set scrolloff=4 sidescrolloff=12
 set sidescroll=1
 
 set splitbelow splitright
