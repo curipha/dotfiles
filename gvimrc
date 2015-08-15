@@ -33,7 +33,6 @@ set visualbell t_vb=
 highlight IdeographicSpace gui=underline guifg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
-
 set title titlelen=80
 set titlestring=%t%(\ %m%r%)\ \(%<%{expand('%:p:h')}\)\ -\ GVim
 
