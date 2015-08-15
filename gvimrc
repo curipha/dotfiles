@@ -35,7 +35,7 @@ autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 
 set title titlelen=80
-set titlestring=%t\ %m%r\ \(%<%{expand('%:p:h')}\)\ -\ GVim
+set titlestring=%t%(\ %m%r%)\ \(%<%{expand('%:p:h')}\)\ -\ GVim
 
 if has('vim_starting')
   set columns=128
