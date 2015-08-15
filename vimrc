@@ -189,7 +189,6 @@ cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
-"nnoremap <expr> ^ col('.') ==# 1 ? '^' : '0'
 
 nnoremap gf :<C-u>vertical wincmd f<CR>
 autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
@@ -202,7 +201,6 @@ nnoremap vv ggVG
 vnoremap v  V
 
 nnoremap <Leader>o :<C-u>only<CR>
-nnoremap <Leader>r :<C-u>registers<CR>
 nnoremap <Leader>w :<C-u>update<CR>
 
 inoremap , ,<Space>
