@@ -143,7 +143,7 @@ fi
 exists dircolors && eval `dircolors --bourne-shell`
 exists colordiff && alias diff='colordiff --unified'
 
-GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
+GREP_PARAM='--color=auto --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
   for EXCLUDE_DIR in .git .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
@@ -396,8 +396,8 @@ abbrev_expand=(
   'T'   '| tail -20'
   'U'   '| sort | uniq'
   'V'   '| vim -'
-  'X'   '| xargs'
-  'XN'  '| xargs -n1'
+  'X'   '| xargs -r'
+  'XN'  '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
@@ -588,6 +588,7 @@ function 256color() {
       echo -en "\e[0m  "
     done
     echo
+    (( ${BASE} == 5 )) && echo
   done
   echo
 

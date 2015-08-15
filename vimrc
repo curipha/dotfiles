@@ -44,7 +44,7 @@ filetype plugin indent on
 
 autocmd MyAutoCmd BufNewFile * setfiletype markdown
 autocmd MyAutoCmd BufEnter *
-\   if empty(&l:buftype) && empty(expand('<afile>'))
+\   if empty(&l:filetype) && empty(&l:buftype) && empty(expand('<afile>'))
 \ |   setfiletype markdown
 \ | endif
 autocmd MyAutoCmd BufWritePost *
@@ -81,8 +81,7 @@ set suffixes=.bak,.tmp,.out,.aux,.toc
 set history=100
 set undolevels=4000
 
-set modeline
-set modelines=3
+set modeline modelines=3
 
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
@@ -103,17 +102,13 @@ set viminfo=
 set hidden
 set switchbuf& switchbuf+=useopen
 
-set autoindent
-set smartindent
-
+set autoindent smartindent
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt setlocal indentexpr=
-autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 set smarttab
-set expandtab
+set expandtab shiftround
 set tabstop=2
 set shiftwidth=2
-set shiftround
 set softtabstop=0
 
 set complete& complete+=d
@@ -122,6 +117,7 @@ set pumheight=18
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
+nnoremap <silent> <Leader>z 1z=
 
 set clipboard=unnamed,autoselect
 set nrformats=alpha,hex
@@ -145,7 +141,7 @@ onoremap jj <Esc>
 inoremap kk <Esc>
 onoremap kk <Esc>
 
-vnoremap . :<C-u>normal .<CR>
+xnoremap <silent> . :<C-u>normal .<CR>
 
 nnoremap j gj
 nnoremap k gk
@@ -156,18 +152,25 @@ nnoremap <Up>   gk
 vnoremap <Down> gj
 vnoremap <Up>   gk
 
+nnoremap <CR>  O<Esc>
 nnoremap <Tab> %
+nnoremap R     gR
+nnoremap Y     y$
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
+
+nnoremap p p`]
+vnoremap p p`]
+vnoremap y y`]
 
 xnoremap >       >gv
 xnoremap <       <gv
 xnoremap <Tab>   >gv
 xnoremap <S-Tab> <gv
 
-xnoremap <Leader>m :sort<CR>
-xnoremap <Leader>u :sort u<CR>
+vnoremap <silent> <Leader>m :sort<CR>
+vnoremap <silent> <Leader>u :sort u<CR>
 
 inoremap <C-z> <Esc>ui
 cnoremap <C-z> :<C-u>suspend<CR>
@@ -179,31 +182,26 @@ inoremap <RightMouse> <C-r><C-o>*
 cnoremap <RightMouse> <C-r><C-o>*
 nnoremap <RightMouse> "*p
 
+nnoremap <Space>   <C-d>
+nnoremap <S-Space> <C-u>
+
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
-nnoremap <CR> O<Esc>
-nnoremap Y    y$
-nnoremap R    gR
-
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
-"nnoremap <expr> ^ col('.') ==# 1 ? '^' : '0'
 
 nnoremap gf :<C-u>vertical wincmd f<CR>
+autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
+nnoremap gI `.a
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal `[v`]<CR>
 
-nnoremap gI `.a
-
 nnoremap vv ggVG
-nnoremap vV ^v$h
+vnoremap v  V
 
-nnoremap <Leader>o :<C-u>only<CR>
-nnoremap <Leader>r :<C-u>registers<CR>
-nnoremap <Leader>w :<C-u>update<CR>
-
-inoremap , ,<Space>
+nnoremap <silent> <Leader>o :<C-u>only<CR>
+nnoremap <silent> <Leader>w :<C-u>update<CR>
 
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
@@ -233,7 +231,7 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
+autocmd MyAutoCmd BufNewFile,BufReadPost *.md setfiletype=markdown
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
@@ -258,8 +256,7 @@ if has('xim') && has('GUI_GTK')
 endif
 if has('multi_byte_ime') || has('xim')
   set noimcmdline
-  set iminsert=0
-  set imsearch=0
+  set iminsert=0 imsearch=0
 
   augroup MyAutoCmd
     "autocmd InsertEnter,CmdwinEnter * set noimdisable
@@ -269,6 +266,7 @@ if has('multi_byte_ime') || has('xim')
 endif
 
 set pastetoggle=<F12>
+nnoremap <silent> <F12> :<C-u>set paste<CR>i
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
@@ -317,24 +315,17 @@ autocmd MyAutoCmd BufWriteCmd *[,*]
 if !has('gui_running') && !s:iswin
   autocmd MyAutoCmd BufWritePost $MYVIMRC nested source $MYVIMRC
 else
-  autocmd MyAutoCmd BufWritePost $MYVIMRC
+  autocmd MyAutoCmd BufWritePost $MYVIMRC,$MYGVIMRC
   \   source $MYVIMRC
   \ | if has('gui_running')
-  \ |   source $MYGVIMRC
-  \ | endif
-  autocmd MyAutoCmd BufWritePost $MYGVIMRC
-  \   if has('gui_running')
   \ |   source $MYGVIMRC
   \ | endif
 endif
 " }}}
 " Search {{{
-set hlsearch
-set incsearch
+set hlsearch incsearch
+set ignorecase smartcase
 set wrapscan
-
-set ignorecase
-set smartcase
 
 set grepprg=internal
 
@@ -376,23 +367,20 @@ nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " }}}
 " Display {{{
-set notitle
-set noruler
-set number
+set notitle noruler
+set number norelativenumber
 nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
 
+set showcmd showmode
 set laststatus=2
-set showcmd
-set showmode
 
 set showtabline=2
 set tabpagemax=32
 
-set statusline=%F\ %m%r%y
-set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':BOM':''}]
+set statusline=%t\ %m%r%y
+set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
-set statusline+=%=%<
-set statusline+=[U+%04B]\ %3v\ %4l/%3L\ (%P)
+set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3v\ \ %3l/%3L\ \(%P\)
 
 if has('gui_running')
   set cursorline
@@ -410,19 +398,14 @@ nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 if has('linebreak')
   set linebreak
 
-  set breakindent
-  set breakindentopt=min:42,shift:0,sbr
-  set showbreak=...\ 
+  set breakindent breakindentopt=min:42,shift:0,sbr
+  set showbreak=..
 endif
 
-set scrolloff=5
+set scrolloff=4 sidescrolloff=12
 set sidescroll=1
-set sidescrolloff=20
-nnoremap <Space>   <C-d>
-nnoremap <S-Space> <C-u>
 
-set splitbelow
-set splitright
+set splitbelow splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
@@ -493,7 +476,7 @@ set shortmess=aoOTI
 set report=0
 set synmaxcol=270
 
-autocmd MyAutoCmd FileType help nnoremap <buffer> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help nnoremap <buffer><nowait> q :<C-u>quit<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
