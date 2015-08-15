@@ -172,7 +172,7 @@ xnoremap <S-Tab> <gv
 vnoremap <silent> <Leader>m :sort<CR>
 vnoremap <silent> <Leader>u :sort u<CR>
 
-inoremap <C-z> <Esc>ui
+inoremap <C-z> <C-o>u
 cnoremap <C-z> :<C-u>suspend<CR>
 
 inoremap <C-t> <C-v><Tab>
