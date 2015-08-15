@@ -143,7 +143,7 @@ fi
 exists dircolors && eval `dircolors --bourne-shell`
 exists colordiff && alias diff='colordiff --unified'
 
-GREP_PARAM='--color=auto --extended-regexp --binary-files=without-match'
+GREP_PARAM='--color=auto --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
   for EXCLUDE_DIR in .git .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
