@@ -271,7 +271,7 @@ autocmd MyAutoCmd InsertLeave * set nopaste
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
 \   if empty(&l:buftype) && isdirectory(expand('%:p:h'))
-\ |   execute ':lcd ' . fnameescape(expand('%:p:h'))
+\ |   execute 'lcd ' . fnameescape(expand('%:p:h'))
 \ | endif
 
 autocmd MyAutoCmd FileType ruby compiler ruby
