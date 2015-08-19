@@ -479,7 +479,7 @@ set shortmess=aoOTI
 set report=0
 set synmaxcol=270
 
-autocmd MyAutoCmd FileType help nnoremap <buffer><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
