@@ -115,6 +115,7 @@ set complete& complete+=d
 set pumheight=18
 
 set spelllang=en_us,cjk
+set spellsuggest=best,12
 autocmd MyAutoCmd FileType *commit*,markdown setlocal spell
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
