@@ -172,7 +172,7 @@ xnoremap <S-Tab> <gv
 vnoremap <silent> <Leader>m :sort<CR>
 vnoremap <silent> <Leader>u :sort u<CR>
 
-inoremap <C-z> <Esc>ui
+inoremap <C-z> <C-o>u
 cnoremap <C-z> :<C-u>suspend<CR>
 
 inoremap <C-t> <C-v><Tab>
@@ -439,7 +439,7 @@ endfor
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>tabnew<CR>
+nnoremap <silent> tt :<C-u>$tabnew<CR>
 
 set display=uhex
 set list listchars=tab:>.,trail:_,extends:>,precedes:<
