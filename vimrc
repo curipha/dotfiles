@@ -114,9 +114,10 @@ set softtabstop=0
 set complete& complete+=d
 set pumheight=18
 
-autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
+set spelllang=en_us,cjk
+autocmd MyAutoCmd FileType *commit*,markdown setlocal spell
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
-nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
+nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 nnoremap <silent> <Leader>z 1z=
 
 set clipboard=unnamed,autoselect
