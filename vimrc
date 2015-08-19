@@ -190,7 +190,8 @@ cnoremap <C-n> <Down>
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
-nnoremap gf :<C-u>vertical wincmd f<CR>
+nnoremap gf <C-w>f<C-w>L
+vnoremap gf <C-w>f<C-w>L
 autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 nnoremap gI `.a
