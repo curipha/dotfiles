@@ -192,6 +192,8 @@ nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
 nnoremap gf <C-w>f<C-w>L
 vnoremap gf <C-w>f<C-w>L
+nnoremap gF <C-w>gf
+vnoremap gF <C-w>gf
 autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 nnoremap gI `.a
