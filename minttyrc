@@ -17,6 +17,7 @@ Locale=C
 OpaqueWhenFocused=no
 PgUpDnScroll=yes
 RightClickAction=paste
+RowSpacing=1
 Rows=48
 ScrollMod=off
 ScrollbackLines=100000
