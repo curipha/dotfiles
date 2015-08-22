@@ -114,9 +114,11 @@ set softtabstop=0
 set complete& complete+=d
 set pumheight=18
 
-autocmd MyAutoCmd FileType *commit*,markdown setlocal spell spelllang=en_us,cjk
+set spelllang=en_us,cjk
+set spellsuggest=best,12
+autocmd MyAutoCmd FileType *commit*,markdown setlocal spell
 autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
-nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell? spelllang=en_us,cjk<CR>
+nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 nnoremap <silent> <Leader>z 1z=
 
 set clipboard=unnamed,autoselect
@@ -234,7 +236,7 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-autocmd MyAutoCmd BufNewFile,BufReadPost *.md setfiletype=markdown
+autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
 
@@ -479,7 +481,7 @@ set shortmess=aoOTI
 set report=0
 set synmaxcol=270
 
-autocmd MyAutoCmd FileType help nnoremap <buffer><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
