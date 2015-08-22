@@ -12,6 +12,7 @@ CursorType=block
 Font=MigMix 2M
 FontHeight=10
 FontSmoothing=full
+IMECursorColour=255,0,0
 Locale=C
 OpaqueWhenFocused=no
 PgUpDnScroll=yes
