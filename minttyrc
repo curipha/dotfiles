@@ -26,4 +26,5 @@ SwitchShortcuts=no
 Term=xterm-256color
 Transparency=medium
 WindowShortcuts=no
+ZoomMouse=no
 ZoomShortcuts=no
