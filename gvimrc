@@ -13,7 +13,7 @@ let s:isunix = has('unix') || has('win32unix')
 if s:iswin
   set guifont=MigMix_2M:h10:cSHIFTJIS
   set renderoptions=type:directx,renmode:5,taamode:1
-  set linespace=1
+  set linespace=2
 
   let $PATH .= ';C:\cygwin\bin'
 elseif s:ismac

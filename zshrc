@@ -211,6 +211,7 @@ REPORTTIME=2
 TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
 
 MAILCHECK=0
+KEYTIMEOUT=10
 
 colors
 zle -N self-insert url-quote-magic
