@@ -27,6 +27,7 @@ export TERM=xterm-256color
 export CYGWIN='nodosfilewarning winsymlinks:native'
 
 export GEM_HOME=~/app/gem
+export GIT_MERGE_AUTOEDIT=no
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
