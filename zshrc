@@ -27,6 +27,7 @@ export TERM=xterm-256color
 export CYGWIN='nodosfilewarning winsymlinks:native'
 
 export GEM_HOME=~/app/gem
+export GIT_MERGE_AUTOEDIT=no
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
@@ -234,6 +235,13 @@ PROMPT_EOL_MARK='%B%S<EOL>%s%b'
 
 setopt prompt_subst
 setopt transient_rprompt
+
+function accept-line() {
+  region_highlight=("0 ${#BUFFER} bold")
+  zle .accept-line
+}
+zle -N accept-line
+
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '(+)'
