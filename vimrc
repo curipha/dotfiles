@@ -87,7 +87,9 @@ set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
 set nojoinspaces
-set formatoptions=qlmMj
+set formatoptions=qnlmMj
+set formatlistpat&
+let &formatlistpat .= '\|^\s*[*+-]\s*'
 autocmd MyAutoCmd FileType * setlocal formatoptions-=ro formatoptions-=t formatoptions-=c
 
 set textwidth=0
