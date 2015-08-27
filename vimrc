@@ -563,6 +563,9 @@ cnoreabbrev wq1  wq!
 cnoreabbrev wqa1 wqa!
 " }}}
 " Syntax {{{
+" filetype.vim
+let g:tex_flavor = 'latex'
+
 " autoload/rubycomplete.vim
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
