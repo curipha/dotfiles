@@ -509,12 +509,12 @@ augroup END
 command! -bar SSF syntax sync fromstart
 
 for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
-  execute 'command! -bang -nargs=0'
+  execute 'command! -bang -bar -nargs=?'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
         \ 'edit<bang> ++encoding='.s:e '<args>'
 endfor
 for s:f in ['dos', 'unix', 'mac']
-  execute 'command! -bang -nargs=0'
+  execute 'command! -bang -bar -nargs=?'
         \ substitute(toupper(s:f[0]).tolower(s:f[1:]), '\W', '', 'g')
         \ 'edit<bang> ++fileformat='.s:f '<args>'
 endfor
