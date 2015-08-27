@@ -161,6 +161,8 @@ nnoremap <CR>  O<Esc>
 nnoremap <Tab> %
 nnoremap R     gR
 nnoremap Y     y$
+nnoremap X     "_X
+nnoremap x     "_x
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
