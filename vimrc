@@ -87,11 +87,14 @@ set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
 set nojoinspaces
-set formatoptions& formatoptions+=mMj
-autocmd MyAutoCmd FileType * setlocal formatoptions-=ro
+set formatoptions=qnlmMj
+set formatlistpat&
+let &formatlistpat .= '\|^\s*[*+-]\s*'
+autocmd MyAutoCmd FileType * setlocal formatoptions-=ro formatoptions-=t formatoptions-=c
 
 set textwidth=0
 set wrapmargin=0
+autocmd MyAutoCmd FileType * setlocal textwidth=0
 
 set nobackup
 set nowritebackup
@@ -158,6 +161,8 @@ nnoremap <CR>  O<Esc>
 nnoremap <Tab> %
 nnoremap R     gR
 nnoremap Y     y$
+nnoremap X     "_X
+nnoremap x     "_x
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
@@ -463,7 +468,7 @@ set foldcolumn=0
 set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
-nnoremap zl mzzMzvzz`z
+nnoremap zl zMzv
 
 autocmd MyAutoCmd FileType css                 setlocal foldmethod=marker foldmarker={,}
 autocmd MyAutoCmd FileType *commit*,diff,xxd   setlocal nofoldenable
@@ -482,6 +487,8 @@ set report=0
 set synmaxcol=270
 
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <CR> <C-]>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
