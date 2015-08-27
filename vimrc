@@ -87,11 +87,14 @@ set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
 set nojoinspaces
-set formatoptions& formatoptions+=mMj
-autocmd MyAutoCmd FileType * setlocal formatoptions-=ro
+set formatoptions=qnlmMj
+set formatlistpat&
+let &formatlistpat .= '\|^\s*[*+-]\s*'
+autocmd MyAutoCmd FileType * setlocal formatoptions-=ro formatoptions-=t formatoptions-=c
 
 set textwidth=0
 set wrapmargin=0
+autocmd MyAutoCmd FileType * setlocal textwidth=0
 
 set nobackup
 set nowritebackup
@@ -158,6 +161,8 @@ nnoremap <CR>  O<Esc>
 nnoremap <Tab> %
 nnoremap R     gR
 nnoremap Y     y$
+nnoremap X     "_X
+nnoremap x     "_x
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
@@ -463,7 +468,7 @@ set foldcolumn=0
 set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
-nnoremap zl mzzMzvzz`z
+nnoremap zl zMzv
 
 autocmd MyAutoCmd FileType css                 setlocal foldmethod=marker foldmarker={,}
 autocmd MyAutoCmd FileType *commit*,diff,xxd   setlocal nofoldenable
@@ -482,6 +487,8 @@ set report=0
 set synmaxcol=270
 
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <CR> <C-]>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
@@ -502,12 +509,12 @@ augroup END
 command! -bar SSF syntax sync fromstart
 
 for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
-  execute 'command! -bang -nargs=0'
+  execute 'command! -bang -bar -nargs=? -complete=file'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
         \ 'edit<bang> ++encoding='.s:e '<args>'
 endfor
 for s:f in ['dos', 'unix', 'mac']
-  execute 'command! -bang -nargs=0'
+  execute 'command! -bang -bar -nargs=? -complete=file'
         \ substitute(toupper(s:f[0]).tolower(s:f[1:]), '\W', '', 'g')
         \ 'edit<bang> ++fileformat='.s:f '<args>'
 endfor
@@ -556,6 +563,9 @@ cnoreabbrev wq1  wq!
 cnoreabbrev wqa1 wqa!
 " }}}
 " Syntax {{{
+" filetype.vim
+let g:tex_flavor = 'latex'
+
 " autoload/rubycomplete.vim
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1

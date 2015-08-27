@@ -236,6 +236,13 @@ PROMPT_EOL_MARK='%B%S<EOL>%s%b'
 setopt prompt_subst
 setopt transient_rprompt
 
+function accept-line() {
+  region_highlight=("0 ${#BUFFER} bold")
+  zle .accept-line
+}
+zle -N accept-line
+
+
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '(+)'
 zstyle ':vcs_info:*' unstagedstr '(!)'
