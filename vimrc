@@ -87,11 +87,12 @@ set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
 set nojoinspaces
-set formatoptions& formatoptions+=mMj
-autocmd MyAutoCmd FileType * setlocal formatoptions-=ro
+set formatoptions=qlmMj
+autocmd MyAutoCmd FileType * setlocal formatoptions-=ro formatoptions-=t formatoptions-=c
 
 set textwidth=0
 set wrapmargin=0
+autocmd MyAutoCmd FileType * setlocal textwidth=0
 
 set nobackup
 set nowritebackup
