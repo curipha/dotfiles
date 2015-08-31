@@ -213,7 +213,7 @@ nnoremap vv ggVG
 vnoremap v  V
 
 nnoremap <silent> <Leader>o :<C-u>only<CR>
-nnoremap <silent> <Leader>w :<C-u>update<CR>
+nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
