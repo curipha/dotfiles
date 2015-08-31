@@ -490,6 +490,8 @@ set synmaxcol=270
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <BS> <C-o>
+autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <BS> <C-c><C-o>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
