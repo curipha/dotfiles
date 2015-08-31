@@ -212,7 +212,6 @@ vnoremap gc :<C-u>normal `[v`]<CR>
 nnoremap vv ggVG
 vnoremap v  V
 
-nnoremap <silent> <Leader>o :<C-u>only<CR>
 nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
@@ -419,6 +418,8 @@ set sidescroll=1
 set splitbelow splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
+
+nnoremap <silent> <Leader>o :<C-u>only<CR>
 
 set diffopt=filler,context:3,vertical
 autocmd MyAutoCmd InsertLeave *
