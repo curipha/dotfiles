@@ -352,7 +352,7 @@ autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
 \ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
 
-nmap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
+nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 
 nnoremap / /\v
 nnoremap ? ?\v
