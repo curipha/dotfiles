@@ -194,6 +194,8 @@ nnoremap <S-Space> <C-u>
 
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
+cnoremap <expr> <C-u> empty(getcmdline()) ? "\<C-c>" : "\<C-u>"
+cnoremap <expr> <C-w> empty(getcmdline()) ? "\<C-c>" : "\<C-w>"
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
