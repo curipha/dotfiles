@@ -194,6 +194,8 @@ nnoremap <S-Space> <C-u>
 
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
+cnoremap <expr> <C-u> empty(getcmdline()) ? "\<C-c>" : "\<C-u>"
+cnoremap <expr> <C-w> empty(getcmdline()) ? "\<C-c>" : "\<C-w>"
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
@@ -210,8 +212,7 @@ vnoremap gc :<C-u>normal `[v`]<CR>
 nnoremap vv ggVG
 vnoremap v  V
 
-nnoremap <silent> <Leader>o :<C-u>only<CR>
-nnoremap <silent> <Leader>w :<C-u>update<CR>
+nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
@@ -253,7 +254,6 @@ autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#Compl
 autocmd MyAutoCmd FileType php        setlocal omnifunc=phpcomplete#CompletePHP
 autocmd MyAutoCmd FileType python     setlocal omnifunc=pythoncomplete#Complete
 autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
-"autocmd MyAutoCmd FileType sql        setlocal omnifunc=sqlcomplete#Complete
 autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
 
 autocmd MyAutoCmd FileType *
@@ -353,7 +353,7 @@ autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
 \ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
 
-nmap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
+nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 
 nnoremap / /\v
 nnoremap ? ?\v
@@ -418,6 +418,8 @@ set sidescroll=1
 set splitbelow splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
+
+nnoremap <silent> <Leader>o :<C-u>only<CR>
 
 set diffopt=filler,context:3,vertical
 autocmd MyAutoCmd InsertLeave *
@@ -489,6 +491,8 @@ set synmaxcol=270
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <BS> <C-o>
+autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <BS> <C-c><C-o>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
@@ -509,12 +513,12 @@ augroup END
 command! -bar SSF syntax sync fromstart
 
 for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
-  execute 'command! -bang -nargs=0'
+  execute 'command! -bang -bar -nargs=? -complete=file'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
         \ 'edit<bang> ++encoding='.s:e '<args>'
 endfor
 for s:f in ['dos', 'unix', 'mac']
-  execute 'command! -bang -nargs=0'
+  execute 'command! -bang -bar -nargs=? -complete=file'
         \ substitute(toupper(s:f[0]).tolower(s:f[1:]), '\W', '', 'g')
         \ 'edit<bang> ++fileformat='.s:f '<args>'
 endfor
@@ -563,6 +567,9 @@ cnoreabbrev wq1  wq!
 cnoreabbrev wqa1 wqa!
 " }}}
 " Syntax {{{
+" filetype.vim
+let g:tex_flavor = 'latex'
+
 " autoload/rubycomplete.vim
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
