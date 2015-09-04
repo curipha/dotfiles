@@ -142,7 +142,14 @@ else
 fi
 
 exists dircolors && eval `dircolors --bourne-shell`
-exists colordiff && alias diff='colordiff --unified'
+
+DIFF_PARAM='--unified --report-identical-files --minimal'
+if exists colordiff; then
+  alias diff="colordiff ${DIFF_PARAM}"
+else
+  alias diff="diff ${DIFF_PARAM}"
+fi
+unset DIFF_PARAM
 
 GREP_PARAM='--color=auto --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
