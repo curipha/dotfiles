@@ -141,11 +141,6 @@ nnoremap q: :q
 nnoremap ; :
 vnoremap ; :
 
-inoremap jj <Esc>
-onoremap jj <Esc>
-inoremap kk <Esc>
-onoremap kk <Esc>
-
 xnoremap <silent> . :<C-u>normal .<CR>
 
 nnoremap j gj
@@ -194,6 +189,8 @@ nnoremap <S-Space> <C-u>
 
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
+cnoremap <expr> <C-u> empty(getcmdline()) ? "\<C-c>" : "\<C-u>"
+cnoremap <expr> <C-w> empty(getcmdline()) ? "\<C-c>" : "\<C-w>"
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
@@ -210,8 +207,7 @@ vnoremap gc :<C-u>normal `[v`]<CR>
 nnoremap vv ggVG
 vnoremap v  V
 
-nnoremap <silent> <Leader>o :<C-u>only<CR>
-nnoremap <silent> <Leader>w :<C-u>update<CR>
+nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
@@ -352,7 +348,7 @@ autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
 \ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
 
-nmap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
+nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 
 nnoremap / /\v
 nnoremap ? ?\v
@@ -417,6 +413,8 @@ set sidescroll=1
 set splitbelow splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
+
+nnoremap <silent> <Leader>o :<C-u>only<CR>
 
 set diffopt=filler,context:3,vertical
 autocmd MyAutoCmd InsertLeave *
@@ -488,6 +486,8 @@ set synmaxcol=270
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <BS> <C-o>
+autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <BS> <C-c><C-o>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
