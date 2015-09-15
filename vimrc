@@ -141,11 +141,6 @@ nnoremap q: :q
 nnoremap ; :
 vnoremap ; :
 
-inoremap jj <Esc>
-onoremap jj <Esc>
-inoremap kk <Esc>
-onoremap kk <Esc>
-
 xnoremap <silent> . :<C-u>normal .<CR>
 
 nnoremap j gj
