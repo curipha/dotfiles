@@ -397,7 +397,6 @@ autocmd MyAutoCmd WinEnter *
 \   let &l:cursorline = get(b:, 'vimrc_cursorline', &l:cursorline)
 
 set nowrap
-autocmd MyAutoCmd FileType markdown setlocal wrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 if has('linebreak')
