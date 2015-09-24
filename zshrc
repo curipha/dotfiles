@@ -142,7 +142,14 @@ else
 fi
 
 exists dircolors && eval `dircolors --bourne-shell`
-exists colordiff && alias diff='colordiff --unified'
+
+DIFF_PARAM='--unified --report-identical-files --minimal'
+if exists colordiff; then
+  alias diff="colordiff ${DIFF_PARAM}"
+else
+  alias diff="diff ${DIFF_PARAM}"
+fi
+unset DIFF_PARAM
 
 GREP_PARAM='--color=auto --binary-files=without-match'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
@@ -299,14 +306,14 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 
-#zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+#zstyle ':completion:*' completer _expand _complete _history _correct _approximate _match _prefix _list
 zstyle -e ':completion:*' completer '
   COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
   if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
-    reply=(_expand _complete _correct _approximate _match _prefix _list)
+    reply=(_expand _complete _history _correct _approximate _match _prefix _list)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
-    reply=(_expand _complete _correct _match _prefix _list)
+    reply=(_expand _complete _history _correct _match _prefix _list)
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
