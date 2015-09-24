@@ -7,6 +7,8 @@ Protocol 2
 Host github.com
   User git
 
+  LogLevel INFO
+
 Host *
   IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
@@ -20,6 +22,8 @@ Host *
 
   PreferredAuthentications publickey
   PubkeyAcceptedKeyTypes   ssh-ed25519,ecdsa-sha2-nistp521,ssh-rsa
+
+  LogLevel DEBUG2
 
   PubKeyAuthentication            yes
   ChallengeResponseAuthentication no
