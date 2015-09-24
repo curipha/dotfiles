@@ -13,7 +13,7 @@ Host *
   IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
 
-  IgnoreUnknown PubkeyAcceptedKeyTypes
+  IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash
 
   Ciphers               chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
   KexAlgorithms         curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp521
@@ -35,6 +35,7 @@ Host *
   CheckHostIP           yes
   VerifyHostKeyDNS      ask
   StrictHostKeyChecking ask
+  FingerprintHash       sha512
   HashKnownHosts        yes
 
   Compression           no
