@@ -780,6 +780,8 @@ HELP
 #}}}
 
 # Alias {{{
+alias sudo='sudo '
+
 alias l.='ls -d .*'
 alias la='ls -AF'
 alias ll='ls -l'
