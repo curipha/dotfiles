@@ -24,7 +24,9 @@ augroup END
 set t_Co=256
 set background=dark
 
-set guioptions& guioptions+=M
+if has('vim_starting')
+  set guioptions& guioptions+=M
+endif
 
 let g:mapleader = ','
 let g:maplocalleader = ','
