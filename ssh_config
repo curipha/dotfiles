@@ -7,9 +7,13 @@ Protocol 2
 Host github.com
   User git
 
+  LogLevel INFO
+
 Host *
   IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
+
+  IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash
 
   Ciphers               chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
   KexAlgorithms         curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp521
@@ -17,6 +21,9 @@ Host *
   HostKeyAlgorithms     ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp256,ssh-rsa
 
   PreferredAuthentications publickey
+  PubkeyAcceptedKeyTypes   ssh-ed25519,ecdsa-sha2-nistp521,ssh-rsa
+
+  LogLevel DEBUG2
 
   PubKeyAuthentication            yes
   ChallengeResponseAuthentication no
@@ -28,10 +35,13 @@ Host *
   CheckHostIP           yes
   VerifyHostKeyDNS      ask
   StrictHostKeyChecking ask
+  VisualHostKey         yes
+  FingerprintHash       sha512
   HashKnownHosts        yes
 
   Compression           no
   ForwardAgent          no
+  ForwardX11            no
 
   TCPKeepAlive          yes
   ServerAliveInterval   3

@@ -306,14 +306,14 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
 
-#zstyle ':completion:*' completer _expand _complete _correct _approximate _match _prefix _list
+#zstyle ':completion:*' completer _expand _complete _history _correct _approximate _match _prefix _list
 zstyle -e ':completion:*' completer '
   COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
   if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
-    reply=(_expand _complete _correct _approximate _match _prefix _list)
+    reply=(_expand _complete _history _correct _approximate _match _prefix _list)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
-    reply=(_expand _complete _correct _match _prefix _list)
+    reply=(_expand _complete _history _correct _match _prefix _list)
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
@@ -780,6 +780,8 @@ HELP
 #}}}
 
 # Alias {{{
+alias sudo='sudo '
+
 alias l.='ls -d .*'
 alias la='ls -AF'
 alias ll='ls -l'

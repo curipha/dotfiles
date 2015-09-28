@@ -24,7 +24,9 @@ augroup END
 set t_Co=256
 set background=dark
 
-set guioptions& guioptions+=M
+if has('vim_starting')
+  set guioptions& guioptions+=M
+endif
 
 let g:mapleader = ','
 let g:maplocalleader = ','
@@ -44,7 +46,7 @@ filetype plugin indent on
 
 autocmd MyAutoCmd BufNewFile * setfiletype markdown
 autocmd MyAutoCmd BufEnter *
-\   if empty(&l:filetype) && empty(&l:buftype) && empty(expand('<afile>'))
+\   if empty(&l:filetype) && empty(&l:buftype)
 \ |   setfiletype markdown
 \ | endif
 autocmd MyAutoCmd BufWritePost *
@@ -90,7 +92,7 @@ set nojoinspaces
 set formatoptions=qnlmMj
 set formatlistpat&
 let &formatlistpat .= '\|^\s*[*+-]\s*'
-autocmd MyAutoCmd FileType * setlocal formatoptions-=ro formatoptions-=t formatoptions-=c
+autocmd MyAutoCmd FileType * setlocal formatoptions-=c formatoptions-=o formatoptions-=r formatoptions-=t
 
 set textwidth=0
 set wrapmargin=0
@@ -348,7 +350,7 @@ autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
 \ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
 
-nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
+nnoremap <silent> <Leader>h :<C-u>nohlsearch<CR>
 
 nnoremap / /\v
 nnoremap ? ?\v
@@ -397,7 +399,6 @@ autocmd MyAutoCmd WinEnter *
 \   let &l:cursorline = get(b:, 'vimrc_cursorline', &l:cursorline)
 
 set nowrap
-autocmd MyAutoCmd FileType markdown setlocal wrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
 if has('linebreak')
