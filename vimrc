@@ -90,7 +90,7 @@ set nojoinspaces
 set formatoptions=qnlmMj
 set formatlistpat&
 let &formatlistpat .= '\|^\s*[*+-]\s*'
-autocmd MyAutoCmd FileType * setlocal formatoptions-=ro formatoptions-=t formatoptions-=c
+autocmd MyAutoCmd FileType * setlocal formatoptions-=c formatoptions-=o formatoptions-=r formatoptions-=t
 
 set textwidth=0
 set wrapmargin=0
