@@ -13,7 +13,8 @@ Host *
   IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
 
-  IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash
+  IgnoreUnknown         PubkeyAcceptedKeyTypes,FingerprintHash
+  LogLevel              DEBUG2
 
   Ciphers               chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
   KexAlgorithms         curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp521
@@ -22,8 +23,6 @@ Host *
 
   PreferredAuthentications publickey
   PubkeyAcceptedKeyTypes   ssh-ed25519,ecdsa-sha2-nistp521,ssh-rsa
-
-  LogLevel DEBUG2
 
   PubKeyAuthentication            yes
   ChallengeResponseAuthentication no
