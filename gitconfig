@@ -75,6 +75,7 @@
   mnemonicPrefix = true
   renames        = copy
   statGraphWidth = 48
+  wordRegex      = [[:alnum:]]+|[^[:space:]]
 
 [fetch]
   prune = true
