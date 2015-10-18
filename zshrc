@@ -238,7 +238,7 @@ unset SSH_INDICATOR
 
 setopt prompt_cr
 setopt prompt_sp
-PROMPT_EOL_MARK='%B%S<EOL>%s%b'
+PROMPT_EOL_MARK='%B%S<NOEOL>%s%b'
 
 setopt prompt_subst
 setopt transient_rprompt
