@@ -563,6 +563,7 @@ cnoreabbrev wqa1 wqa!
 " }}}
 " Syntax {{{
 " filetype.vim
+let g:c_syntax_for_h = 1
 let g:tex_flavor = 'latex'
 
 " autoload/rubycomplete.vim
@@ -570,7 +571,10 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 
 " syntax/c.vim
+let g:c_gnu = 1
 let g:c_comment_strings = 1
+let g:c_curly_error = 1
+let g:c_space_errors = 1
 
 " syntax/markdown.vim
 let g:markdown_fenced_languages = [ 'bash=sh', 'css', 'html', 'javascript', 'ruby', 'sass', 'xml' ]
