@@ -238,7 +238,7 @@ unset SSH_INDICATOR
 
 setopt prompt_cr
 setopt prompt_sp
-PROMPT_EOL_MARK='%B%S<EOL>%s%b'
+PROMPT_EOL_MARK='%B%S<NOEOL>%s%b'
 
 setopt prompt_subst
 setopt transient_rprompt
@@ -808,7 +808,7 @@ alias a='./a.out'
 #alias e=''
 #alias f=''
 #alias g=''
-alias h='history'
+alias h='fc -l -t "%b.%d %T"'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
