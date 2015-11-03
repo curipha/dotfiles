@@ -416,6 +416,8 @@ abbrev_expand=(
   'V'   '| vim -'
   'X'   '| xargs -r'
   'XN'  '| xargs -r -n1'
+  'Z'   '| openssl enc -e -aes-256-cbc'
+  'ZD'  '| openssl enc -d -aes-256-cbc'
 )
 
 function magic-abbrev-expand() {
