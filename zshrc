@@ -374,6 +374,7 @@ setopt auto_remove_slash
 #setopt complete_aliases
 setopt complete_in_word
 setopt extended_glob
+setopt glob_complete
 setopt glob_dots
 setopt list_packed
 setopt list_types
