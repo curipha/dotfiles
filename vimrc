@@ -351,8 +351,10 @@ autocmd MyAutoCmd WinEnter *
 
 nnoremap <silent> <Leader>h :<C-u>nohlsearch<CR>
 
-nnoremap / /\v
-nnoremap ? ?\v
+nnoremap /  /\v
+nnoremap ?  ?\v
+nnoremap // /\v^
+nnoremap ?? ?\v^
 
 vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 

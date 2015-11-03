@@ -374,9 +374,11 @@ setopt auto_remove_slash
 #setopt complete_aliases
 setopt complete_in_word
 setopt extended_glob
+setopt glob_complete
 setopt glob_dots
 setopt list_packed
 setopt list_types
+setopt numeric_glob_sort
 
 setopt brace_ccl
 setopt equals
@@ -414,6 +416,8 @@ abbrev_expand=(
   'V'   '| vim -'
   'X'   '| xargs -r'
   'XN'  '| xargs -r -n1'
+  'Z'   '| openssl enc -e -aes-256-cbc'
+  'ZD'  '| openssl enc -d -aes-256-cbc'
 )
 
 function magic-abbrev-expand() {
