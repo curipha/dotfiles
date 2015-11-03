@@ -378,6 +378,7 @@ setopt glob_complete
 setopt glob_dots
 setopt list_packed
 setopt list_types
+setopt numeric_glob_sort
 
 setopt brace_ccl
 setopt equals
