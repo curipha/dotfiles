@@ -117,6 +117,7 @@ set softtabstop=0
 
 set complete& complete+=d
 set pumheight=18
+set showfulltag
 
 set spelllang=en_us,cjk
 set spellsuggest=best,12
