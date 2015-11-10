@@ -483,7 +483,7 @@ set notimeout
 set ttimeout
 set timeoutlen=100
 
-set shortmess=aoOTI
+set shortmess=aTI
 set report=0
 set synmaxcol=270
 
