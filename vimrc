@@ -411,6 +411,9 @@ endif
 set scrolloff=4 sidescrolloff=12
 set sidescroll=1
 
+set helpheight=12
+set previewheight=8
+
 set splitbelow splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
