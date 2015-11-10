@@ -281,11 +281,13 @@ autocmd MyAutoCmd InsertLeave * set nopaste
 if &term =~# '^xterm'
   set t_ti& t_te&
 
-  let &t_ti .= "\e[?7727h"
-  let &t_te .= "\e[?7727l"
+  if has('win32unix')
+    let &t_ti .= "\e[?7727h"
+    let &t_te .= "\e[?7727l"
 
-  noremap  <Esc>O[ <Esc>
-  noremap! <Esc>O[ <Esc>
+    noremap  <Esc>O[ <Esc>
+    noremap! <Esc>O[ <Esc>
+  endif
 
   let &t_ti .= "\e[?2004h"
   let &t_te .= "\e[?2004l"
