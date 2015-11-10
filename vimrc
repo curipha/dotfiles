@@ -274,6 +274,7 @@ endif
 set pastetoggle=<F12>
 nnoremap <silent> <F12> :<C-u>set paste<CR>i
 vnoremap <silent> <F12> c<C-o>:set paste<CR>
+inoremap <silent> <F12> <C-o>:set paste<CR>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 if &term =~# '^xterm'
