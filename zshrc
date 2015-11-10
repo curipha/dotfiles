@@ -489,9 +489,6 @@ function dec() { [[ $# == 1 ]] && openssl enc -d -aes-256-cbc -in "$1" -out "$1"
 function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
 function mkmv() { (( $# >= 2 )) && mkdir -vp "${@: -1}" && mv -iv "$@" }
 
-function vimrc() { ${EDITOR} ~/.vimrc }
-function zshrc() { ${EDITOR} ~/.zshrc }
-
 function whois() {
   local WHOIS
   exists jwhois && WHOIS=`whence -p jwhois`
