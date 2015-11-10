@@ -401,7 +401,7 @@ autocmd MyAutoCmd WinEnter *
 set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
-if has('linebreak')
+if has('linebreak') && exists('+breakindent')
   set linebreak
 
   set breakindent breakindentopt=min:42,shift:0,sbr
