@@ -278,6 +278,8 @@ inoremap <silent> <F12> <C-o>:set paste<CR>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 if &term =~# '^xterm'
+  set t_ti& t_te&
+
   let &t_ti .= "\e[?7727h"
   let &t_te .= "\e[?7727l"
 
