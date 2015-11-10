@@ -374,9 +374,11 @@ setopt auto_remove_slash
 #setopt complete_aliases
 setopt complete_in_word
 setopt extended_glob
+setopt glob_complete
 setopt glob_dots
 setopt list_packed
 setopt list_types
+setopt numeric_glob_sort
 
 setopt brace_ccl
 setopt equals
@@ -414,6 +416,8 @@ abbrev_expand=(
   'V'   '| vim -'
   'X'   '| xargs -r'
   'XN'  '| xargs -r -n1'
+  'Z'   '| openssl enc -e -aes-256-cbc'
+  'ZD'  '| openssl enc -d -aes-256-cbc'
 )
 
 function magic-abbrev-expand() {
@@ -478,6 +482,9 @@ function +x() { chmod +x "$@" }
 
 function bak() { [[ $# == 1 ]] && cp -fv "$1"{,.bak} }
 function rvt() { [[ $# == 1 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
+
+function enc() { [[ $# == 1 ]] && openssl enc -e -aes-256-cbc -in "$1" -out "$1".enc }
+function dec() { [[ $# == 1 ]] && openssl enc -d -aes-256-cbc -in "$1" -out "$1".dec }
 
 function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
 function mkmv() { (( $# >= 2 )) && mkdir -vp "${@: -1}" && mv -iv "$@" }

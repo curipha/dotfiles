@@ -117,6 +117,7 @@ set softtabstop=0
 
 set complete& complete+=d
 set pumheight=18
+set showfulltag
 
 set spelllang=en_us,cjk
 set spellsuggest=best,12
@@ -373,10 +374,8 @@ autocmd MyAutoCmd WinEnter *
 
 nnoremap <silent> <Leader>h :<C-u>nohlsearch<CR>
 
-nnoremap /  /\v
-nnoremap ?  ?\v
-nnoremap // /\v^
-nnoremap ?? ?\v^
+nnoremap / /\v
+nnoremap ? ?\v
 
 vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
@@ -424,7 +423,7 @@ autocmd MyAutoCmd WinEnter *
 set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
-if has('linebreak')
+if has('linebreak') && exists('+breakindent')
   set linebreak
 
   set breakindent breakindentopt=min:42,shift:0,sbr
@@ -433,6 +432,9 @@ endif
 
 set scrolloff=4 sidescrolloff=12
 set sidescroll=1
+
+set helpheight=12
+set previewheight=8
 
 set splitbelow splitright
 set noequalalways
@@ -503,7 +505,7 @@ set notimeout
 set ttimeout
 set timeoutlen=100
 
-set shortmess=aoOTI
+set shortmess=aTI
 set report=0
 set synmaxcol=270
 
