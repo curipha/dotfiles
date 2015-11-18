@@ -556,11 +556,7 @@ bindkey '^Z' magic_ctrlz
 
 function magic_circumflex() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    if isinsiderepo; then
-      BUFFER="cd `git rev-parse --show-toplevel`"
-    else
-      BUFFER='cd ..'
-    fi
+    BUFFER='cd ..'
     zle accept-line
   else
     zle self-insert '^'
