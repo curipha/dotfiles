@@ -274,7 +274,31 @@ endif
 
 set pastetoggle=<F12>
 nnoremap <silent> <F12> :<C-u>set paste<CR>i
+vnoremap <silent> <F12> c<C-o>:set paste<CR>
+inoremap <silent> <F12> <C-o>:set paste<CR>
 autocmd MyAutoCmd InsertLeave * set nopaste
+
+if &term =~# '^xterm'
+  set t_ti& t_te&
+
+  if has('win32unix')
+    let &t_ti .= "\e[?7727h"
+    let &t_te .= "\e[?7727l"
+
+    noremap  <Esc>O[ <Esc>
+    noremap! <Esc>O[ <Esc>
+  endif
+
+  let &t_ti .= "\e[?2004h"
+  let &t_te .= "\e[?2004l"
+  let &pastetoggle = "\e[201~"
+
+  nnoremap <silent> <Esc>[200~ :<C-u>set paste<CR>i
+  vnoremap <silent> <Esc>[200~ c<C-o>:set paste<CR>
+  inoremap <silent> <Esc>[200~ <C-o>:set paste<CR>
+  cnoremap <silent> <Esc>[200~ <Nop>
+  cnoremap <silent> <Esc>[201~ <Nop>
+endif
 
 autocmd MyAutoCmd BufEnter,BufFilePost *
 \   if empty(&l:buftype) && isdirectory(expand('%:p:h'))
@@ -349,8 +373,6 @@ autocmd MyAutoCmd WinLeave *
 autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
 \ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
-
-nnoremap <silent> <Leader>h :<C-u>nohlsearch<CR>
 
 nnoremap / /\v
 nnoremap ? ?\v
