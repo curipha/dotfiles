@@ -132,6 +132,7 @@ set virtualedit=block
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
+inoremap <C-j> <Esc>
 
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
