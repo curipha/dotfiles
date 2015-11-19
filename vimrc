@@ -597,6 +597,9 @@ let g:tex_flavor = 'latex'
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 
+" indent/vim.vim
+let g:vim_indent_cont = 0
+
 " syntax/c.vim
 let g:c_gnu = 1
 let g:c_comment_strings = 1
