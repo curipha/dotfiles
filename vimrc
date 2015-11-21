@@ -132,6 +132,7 @@ set virtualedit=block
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
+inoremap <C-j> <Esc>
 
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
@@ -595,6 +596,9 @@ let g:tex_flavor = 'latex'
 " autoload/rubycomplete.vim
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
+
+" indent/vim.vim
+let g:vim_indent_cont = 0
 
 " syntax/c.vim
 let g:c_gnu = 1
