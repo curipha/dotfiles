@@ -343,11 +343,9 @@ zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdo
 if [[ -r /etc/passwd ]]; then
   [[ -r /etc/login.defs ]] && \
     eval `awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs`
-  [[ -z "${UID_MIN}" ]] && UID_MIN=1000
-  [[ -z "${UID_MAX}" ]] && UID_MAX=60000
 
   zstyle ':completion:*:users' users \
-    $(awk -F: "\$3 >= ${UID_MIN} && \$3 <= ${UID_MAX} { print \$1 }" /etc/passwd)
+    $(awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }" /etc/passwd)
   unset UID_MIN UID_MAX
 fi
 
