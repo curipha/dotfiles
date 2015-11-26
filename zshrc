@@ -642,15 +642,21 @@ HELP
       sudo apt-get ${OPTIONS} update       && \
       sudo apt-get ${OPTIONS} dist-upgrade && \
       sudo apt-get ${OPTIONS} autoremove
+
+      sudo -K
     elif exists yum; then
       [[ -n "${YES}" ]] && OPTIONS="-y"
 
       sudo yum ${OPTIONS} upgrade          && \
       sudo yum ${OPTIONS} autoremove
+
+      sudo -K
     elif exists pacman; then
       [[ -n "${YES}" ]] && OPTIONS="--noconfirm"
 
       sudo pacman -Syu ${OPTIONS}
+
+      sudo -K
     else
       echo 'Cannot find a package manager which I know.' 1>&2
       return 1
@@ -658,7 +664,6 @@ HELP
   } always {
     local RETURN=$?
     REPORTTIME="${REPORTTIME_ORIG}"
-    sudo -K
     return "${RETURN}"
   }
 }
