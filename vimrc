@@ -127,6 +127,10 @@ nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 nnoremap <silent> <Leader>z 1z=
 
 set clipboard=unnamed,autoselect
+if has('unnamedplus')
+  set clipboard+=unnamedplus
+endif
+
 set nrformats=alpha,hex
 set virtualedit=block
 
