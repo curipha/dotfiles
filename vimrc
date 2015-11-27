@@ -173,6 +173,9 @@ nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
 
+vnoremap J zn:move '>+1<CR>gv=zNzvgv
+vnoremap K zn:move '<-2<CR>gv=zNzvgv
+
 xnoremap >       >gv
 xnoremap <       <gv
 xnoremap <Tab>   >gv
