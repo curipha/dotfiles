@@ -668,7 +668,7 @@ List of pre-defined packages:
   multimedia (multi)  Images, videos and musics
   ruby                Ruby and its related packages
   yum                 Yum support packages
-  misc                Miserables
+  misc                Miscellaneous
 
 
 Example:
