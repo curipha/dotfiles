@@ -637,7 +637,7 @@ HELP
 
     local OPTIONS
     if exists apt-get; then
-      [[ -n "${YES}" ]] && OPTIONS="-y"
+      [[ -n "${YES}" ]] && OPTIONS=--assume-yes
 
       sudo apt-get ${OPTIONS} update       && \
       sudo apt-get ${OPTIONS} dist-upgrade && \
@@ -645,14 +645,14 @@ HELP
 
       sudo -K
     elif exists yum; then
-      [[ -n "${YES}" ]] && OPTIONS="-y"
+      [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
       sudo yum ${OPTIONS} upgrade          && \
       sudo yum ${OPTIONS} autoremove
 
       sudo -K
     elif exists pacman; then
-      [[ -n "${YES}" ]] && OPTIONS="--noconfirm"
+      [[ -n "${YES}" ]] && OPTIONS=--noconfirm
 
       sudo pacman -Syu ${OPTIONS}
 
