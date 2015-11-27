@@ -127,11 +127,16 @@ nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 nnoremap <silent> <Leader>z 1z=
 
 set clipboard=unnamed,autoselect
+if has('unnamedplus')
+  set clipboard+=unnamedplus
+endif
+
 set nrformats=alpha,hex
 set virtualedit=block
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
+inoremap <C-j> <Esc>
 
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
@@ -167,6 +172,9 @@ nnoremap gJ mzgJ`z
 nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
+
+vnoremap J zn:move '>+1<CR>gv=zNzvgv
+vnoremap K zn:move '<-2<CR>gv=zNzvgv
 
 xnoremap >       >gv
 xnoremap <       <gv
@@ -441,6 +449,7 @@ set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
 nnoremap <silent> <Leader>o :<C-u>only<CR>
+nnoremap <silent> <Leader>v :<C-u>vsplit<CR>
 
 set diffopt=filler,context:3,vertical
 autocmd MyAutoCmd InsertLeave *
@@ -595,6 +604,9 @@ let g:tex_flavor = 'latex'
 " autoload/rubycomplete.vim
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
+
+" indent/vim.vim
+let g:vim_indent_cont = 0
 
 " syntax/c.vim
 let g:c_gnu = 1
