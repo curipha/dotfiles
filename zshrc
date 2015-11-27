@@ -674,7 +674,7 @@ function checkclock() {
     return 1
   fi
 
-  local NTP
+  local -a NTP
   NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
 
   local UPDATE RTC
