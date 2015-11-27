@@ -615,46 +615,139 @@ function 256color() {
   echo -e "\e[0m"
 }
 
-function package-update() {
-  local REPORTTIME_ORIG="${REPORTTIME}"
-  REPORTTIME=-1
+function package() {
+  local ARG MODE YES
+  local -a PACKAGES
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      base )
+        PACKAGES=( "${PACKAGES[@]}" zsh vim lua git gnupg2 screen tmux );;
+      network | net )
+        PACKAGES=( "${PACKAGES[@]}" nc jwhois traceroute bind-utils nmap openssl curl wget );;
+      develop | dev )
+        PACKAGES=( "${PACKAGES[@]}" gcc gcc-c++ make autoconf automake libtool binutils lsof patch strace kernel-devel libstdc++-devel );;
+      archive )
+        PACKAGES=( "${PACKAGES[@]}" bzip2 unzip xz );;
+      utility | util )
+        PACKAGES=( "${PACKAGES[@]}" binutils diffutils sharutils psmisc lsof patch strace );;
+      ruby )
+        PACKAGES=( "${PACKAGES[@]}" ruby irb );;
+      multimedia | multi )
+        PACKAGES=( "${PACKAGES[@]}" ImageMagick );;
+      yum )
+        PACKAGES=( "${PACKAGES[@]}" yum-plugin-remove-with-leaves );;
+      misc )
+        PACKAGES=( "${PACKAGES[@]}" figlet file jq nkf sqlite );;
 
-  {
-    local YES
-    while getopts hy ARG; do
-      case ${ARG} in
-        "y" ) YES=1;;
+      install | update )
+        if [[ -z "${MODE}" ]];then
+          MODE="${ARG}"
+        else
+          echo 'Warning: Execution mode is already set. Argument is assumed as a package name.' 1>&2
+          PACKAGES=( "${PACKAGES[@]}" "${ARG}" )
+        fi
+      ;;
 
-        * )
-          cat <<HELP 1>&2
-Usage: ${0} [-y]
+      -y | --yes )
+        YES=1;;
+      -* )
+        cat <<HELP 1>&2
+Usage: ${0} [-y] [-h] install [ packages ... ]
+Usage: ${0} [-y] [-h] update
 
-  -y            Answer "yes" to any question
+Options:
+  -y, --yes           Answer "yes" to any question
+  -h, --help          Show this help message and exit
+
+List of pre-defined packages:
+  base                Base packages for usual operation
+  network (net)       Network related packages
+  develop (dev)       Development suite
+  archive             Archivers
+  utility (util)      Utility tools
+  multimedia (multi)  Images, videos and musics
+  ruby                Ruby and its related packages
+  yum                 Yum support packages
+  misc                Miserables
+
+
+Example:
+  ${0} -v install base
+  Install base packages in verbose mode
+
+  ${0} -v install base
+  Install base packages in verbose mode
+
+  ${0} -y update
+  Update all packages in any case
 HELP
         return 1;;
-      esac
-    done
+
+      * )
+        PACKAGES=( "${PACKAGES[@]}" "${ARG}" );;
+    esac
+  done
+
+  if [[ -z "${MODE}" ]]; then
+    echo 'Error: Specify operation mode.' 1>&2
+    return 1
+  fi
+  if [[ "${MODE}" == 'install' && "${#PACKAGES[@]}" == '0' ]]; then
+    echo 'Error: Specify at least one package in install mode.' 1>&2
+    return 1
+  fi
+
+  {
+    local REPORTTIME_ORIG="${REPORTTIME}"
+    REPORTTIME=-1
 
     local OPTIONS
     if exists apt-get; then
       [[ -n "${YES}" ]] && OPTIONS=--assume-yes
 
-      sudo apt-get ${OPTIONS} update       && \
-      sudo apt-get ${OPTIONS} dist-upgrade && \
-      sudo apt-get ${OPTIONS} autoremove
+      case "${MODE}" in
+        install )
+          sudo apt-get ${OPTIONS} update                   && \
+          sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
+          sudo apt-get ${OPTIONS} autoremove
+        ;;
+
+        update )
+          sudo apt-get ${OPTIONS} update       && \
+          sudo apt-get ${OPTIONS} dist-upgrade && \
+          sudo apt-get ${OPTIONS} autoremove
+        ;;
+      esac
 
       sudo -K
     elif exists yum; then
       [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
-      sudo yum ${OPTIONS} upgrade          && \
-      sudo yum ${OPTIONS} autoremove
+      case "${MODE}" in
+        install )
+          sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
+          sudo yum ${OPTIONS} autoremove
+        ;;
+
+        update )
+          sudo yum ${OPTIONS} upgrade    && \
+          sudo yum ${OPTIONS} autoremove
+        ;;
+      esac
 
       sudo -K
     elif exists pacman; then
       [[ -n "${YES}" ]] && OPTIONS=--noconfirm
 
-      sudo pacman -Syu ${OPTIONS}
+      case "${MODE}" in
+        install )
+          sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
+        ;;
+
+        update )
+          sudo pacman -Syu ${OPTIONS}
+        ;;
+      esac
 
       sudo -K
     else
