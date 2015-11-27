@@ -741,7 +741,7 @@ HELP
 
       case "${MODE}" in
         install )
-          sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
+          sudo pacman -Sy ${OPTIONS} "${PACKAGES[@]}"
         ;;
 
         update )
