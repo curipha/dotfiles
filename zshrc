@@ -678,17 +678,17 @@ function checkclock() {
   NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
 
   local UPDATE RTC
-  while getopts hur ARG; do
+  while getopts hru ARG; do
     case ${ARG} in
-      "u" ) UPDATE=1;;
       "r" ) RTC=1;;
+      "u" ) UPDATE=1;;
 
       * )
         cat <<HELP 1>&2
-Usage: ${0} [-ur]
+Usage: ${0} [-ru]
 
--u            Update system clock
--r            Display RTC clock if possible
+  -r            Display RTC clock if possible
+  -u            Update system clock
 HELP
       return 1;;
     esac
