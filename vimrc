@@ -195,7 +195,9 @@ cnoremap <RightMouse> <C-r><C-o>*
 nnoremap <RightMouse> "*p
 
 nnoremap <Space>   <C-d>
+vnoremap <Space>   <C-d>
 nnoremap <S-Space> <C-u>
+vnoremap <S-Space> <C-u>
 
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
