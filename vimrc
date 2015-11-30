@@ -82,7 +82,8 @@ set suffixes=.bak,.tmp,.out,.aux,.toc
 set history=100
 set undolevels=4000
 
-set modeline modelines=3
+set modeline
+set modelines=3
 
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
@@ -106,11 +107,13 @@ set viminfo=
 set hidden
 set switchbuf& switchbuf+=useopen
 
-set autoindent smartindent
+set autoindent
+set smartindent
 autocmd MyAutoCmd FileType html,xhtml,xml,xslt setlocal indentexpr=
 
 set smarttab
-set expandtab shiftround
+set expandtab
+set shiftround
 set tabstop=2
 set shiftwidth=2
 set softtabstop=0
@@ -273,7 +276,8 @@ if has('xim') && has('GUI_GTK')
 endif
 if has('multi_byte_ime') || has('xim')
   set noimcmdline
-  set iminsert=0 imsearch=0
+  set iminsert=0
+  set imsearch=0
 
   augroup MyAutoCmd
     "autocmd InsertEnter,CmdwinEnter * set noimdisable
@@ -289,7 +293,8 @@ inoremap <silent> <F12> <C-o>:set paste<CR>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 if &term =~# '^xterm'
-  set t_ti& t_te&
+  set t_ti&
+  set t_te&
 
   if has('win32unix')
     let &t_ti .= "\e[?7727h"
@@ -364,8 +369,10 @@ else
 endif
 " }}}
 " Search {{{
-set hlsearch incsearch
-set ignorecase smartcase
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
 set wrapscan
 
 set grepprg=internal
@@ -408,11 +415,14 @@ nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " }}}
 " Display {{{
-set notitle noruler
-set number norelativenumber
+set notitle
+set noruler
+set number
+set norelativenumber
 nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
 
-set showcmd showmode
+set showcmd
+set showmode
 set laststatus=2
 
 set showtabline=2
@@ -438,17 +448,20 @@ nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 if has('linebreak') && exists('+breakindent')
   set linebreak
 
-  set breakindent breakindentopt=min:42,shift:0,sbr
+  set breakindent
+  set breakindentopt=min:42,shift:0,sbr
   set showbreak=..
 endif
 
-set scrolloff=4 sidescrolloff=12
+set scrolloff=4
+set sidescrolloff=12
 set sidescroll=1
 
 set helpheight=12
 set previewheight=8
 
-set splitbelow splitright
+set splitbelow
+set splitright
 set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
@@ -489,7 +502,8 @@ nnoremap <silent> <C-n> :tabnext<CR>
 nnoremap <silent> tt :<C-u>$tabnew<CR>
 
 set display=uhex
-set list listchars=tab:>.,trail:_,extends:>,precedes:<
+set list
+set listchars=tab:>.,trail:_,extends:>,precedes:<
 set fillchars=fold:\ 
 
 set showmatch
