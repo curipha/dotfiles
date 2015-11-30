@@ -453,6 +453,7 @@ set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
 nnoremap <silent> <Leader>o :<C-u>only<CR>
+nnoremap <silent> <Leader>h :<C-u>split<CR>
 nnoremap <silent> <Leader>v :<C-u>vsplit<CR>
 
 set diffopt=filler,context:3,vertical
