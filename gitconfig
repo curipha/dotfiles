@@ -44,6 +44,9 @@
   revert-file-to-head  = checkout HEAD --
   revert-file-to-index = checkout --
 
+[blame]
+  date = iso
+
 [color]
   branch      = auto
   diff        = auto
