@@ -484,8 +484,37 @@ function rvt() { [[ "${#}" == "1" ]] && mv -iv "${1}"{,.new} && mv -iv "${1}"{.b
 function enc() { [[ "${#}" == "1" ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
 function dec() { [[ "${#}" == "1" ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
 
-function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
-function mkmv() { (( $# >= 2 )) && mkdir -vp "${@: -1}" && mv -iv "$@" }
+function mkmv() {
+  case "${#}" in
+    0 )
+      cat <<HELP 1>&2
+Usage: ${0} DIRECTORY
+Usage: ${0} FILES... DIRECTORY
+HELP
+      return 1
+    ;;
+
+    1 )
+      if [[ -d "${1}" ]]; then
+        echo 'Warning: Directory already exists. Just change direcotry.' 1>&2
+        builtin cd "${1}"
+      else
+        mkdir -vp "${1}" && builtin cd "${1}"
+      fi
+    ;;
+
+    * )
+      local DIR="${@: -1}"
+      if [[ -d "${DIR}" ]]; then
+        echo 'Warning: Directory already exists. Just move file(s).' 1>&2
+        mv -iv "${@}"
+      else
+        mkdir -vp "${DIR}" && mv -iv "${@}"
+      fi
+    ;;
+  esac
+}
+alias mkcd=mkmv
 
 function whois() {
   local WHOIS
