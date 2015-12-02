@@ -7,6 +7,7 @@
   aa    = add --all --verbose
   ap    = add --patch
   au    = add --update --verbose
+  bl    = blame -w
   br    = branch --all --verbose --verbose
   ca    = commit --all --verbose --verbose
   ci    = commit --verbose --verbose
@@ -42,6 +43,9 @@
 
   revert-file-to-head  = checkout HEAD --
   revert-file-to-index = checkout --
+
+[blame]
+  date = iso
 
 [color]
   branch      = auto
