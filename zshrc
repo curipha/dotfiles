@@ -469,20 +469,20 @@ function command_not_found_handler() {
     if [[ ${git_alias[(I)${0}]} != "0" ]]; then
       echo "git ${@}"
       git "${@}"
-      return $?
+      return "${?}"
     fi
   fi
 
   return 127
 }
 
-function +x() { chmod +x "$@" }
+function +x() { chmod +x "${@}" }
 
-function bak() { [[ $# == 1 ]] && cp -fv "$1"{,.bak} }
-function rvt() { [[ $# == 1 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
+function bak() { [[ "${#}" == "1" ]] && cp -fv "${1}"{,.bak} }
+function rvt() { [[ "${#}" == "1" ]] && mv -iv "${1}"{,.new} && mv -iv "${1}"{.bak,} }
 
-function enc() { [[ $# == 1 ]] && openssl enc -e -aes-256-cbc -in "$1" -out "$1".enc }
-function dec() { [[ $# == 1 ]] && openssl enc -d -aes-256-cbc -in "$1" -out "$1".dec }
+function enc() { [[ "${#}" == "1" ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
+function dec() { [[ "${#}" == "1" ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
 
 function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
 function mkmv() { (( $# >= 2 )) && mkdir -vp "${@: -1}" && mv -iv "$@" }
@@ -755,7 +755,7 @@ HELP
       return 1
     fi
   } always {
-    local RETURN=$?
+    local RETURN="${?}"
     REPORTTIME="${REPORTTIME_ORIG}"
     return "${RETURN}"
   }
