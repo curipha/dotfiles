@@ -869,11 +869,10 @@ function createpasswd() {
         cat <<HELP 1>&2
 Usage: ${0} [-p | -c <chars>] [-l <length>] [-n <number>]
 
-  -c <chars>    Set characters to be used for passwords
-                (It NEVER guarantee that all of specified chars are used)
-  -l <length>   Set the length of password(s) (Default = ${LENGTH})
-  -n <number>   Set the number of password(s) (Default = ${NUMBER})
-  -p            Paranoid mode (Guarantee that the symbol char MUST be included)
+  -c <chars>    Specify candidate characters for passwords
+  -l <length>   Specify the length of password(s) (Default = ${LENGTH})
+  -n <number>   Specify the number of password(s) (Default = ${NUMBER})
+  -p            Paranoid mode (Generated password contains all letter type)
 
 Example:
   ${0}
