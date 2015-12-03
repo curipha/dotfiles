@@ -518,7 +518,7 @@ function whois() {
   exists whois  && WHOIS=`whence -p whois`
 
   if [[ -z "${WHOIS}" ]]; then
-    echo 'Error: Cannot find whois command.' 1>&2
+    echo 'Error: Please install "whois" command first.' 1>&2
     return 1
   fi
 
@@ -788,7 +788,7 @@ HELP
 
 function checkclock() {
   if ! exists ntpdate; then
-    echo 'Error: Cannnot find ntpdate command.' 1>&2
+    echo 'Error: Error: Please install "ntpdate" command first.' 1>&2
     return 1
   fi
 
