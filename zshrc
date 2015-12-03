@@ -151,7 +151,7 @@ else
 fi
 unset DIFF_PARAM
 
-GREP_PARAM='--color=auto --binary-files=without-match'
+GREP_PARAM='--color=auto --binary-files=text'
 if grep --help 2>&1 | grep -q -- --exclude-dir; then
   for EXCLUDE_DIR in .git .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
