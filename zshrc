@@ -396,9 +396,6 @@ abbrev_expand=(
   '.....' '../../../../'
 
   '?'   "--help |& ${PAGER}"
-  'A'   '| awk'
-  'B'   '| base64'
-  'BD'  '| base64 -d'
   'C'   '| sort | uniq -c | sort -nr'
   'D'   "| hexdump -C | ${PAGER}"
   'E'   '> /dev/null'
@@ -407,7 +404,6 @@ abbrev_expand=(
   'H'   '| head -20'
   'L'   "|& ${PAGER}"
   'N'   '| wc -l'
-  'R'   '| sed -E'
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
