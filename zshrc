@@ -129,7 +129,7 @@ if exists vim; then
   export EDITOR=vim
   export VISUAL=vim
 
-  alias vi='vim'
+  alias vi=vim
   alias view='vim -R'
 fi
 
@@ -466,7 +466,7 @@ function command_not_found_handler() {
   if isinsiderepo; then
     git_alias=( `git config --list | sed -En 's/^alias\.([^=]+).+$/\1/p'` )
 
-    if [[ ${git_alias[(I)${0}]} != "0" ]]; then
+    if [[ "${git_alias[(I)${0}]}" != '0' ]]; then
       echo "git ${@}"
       git "${@}"
       return "${?}"
@@ -478,15 +478,15 @@ function command_not_found_handler() {
 
 function +x() { chmod +x "${@}" }
 
-function bak() { [[ "${#}" == "1" ]] && cp -fv "${1}"{,.bak} }
-function rvt() { [[ "${#}" == "1" ]] && mv -iv "${1}"{,.new} && mv -iv "${1}"{.bak,} }
+function bak() { [[ "${#}" == '1' ]] && cp -fv "${1}"{,.bak} }
+function rvt() { [[ "${#}" == '1' ]] && mv -iv "${1}"{,.new} && mv -iv "${1}"{.bak,} }
 
-function enc() { [[ "${#}" == "1" ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
-function dec() { [[ "${#}" == "1" ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
+function enc() { [[ "${#}" == '1' ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
+function dec() { [[ "${#}" == '1' ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
 
 function mkmv() {
   case "${#}" in
-    0 )
+    '0' )
       cat <<HELP 1>&2
 Usage: ${0} DIRECTORY
 Usage: ${0} FILES... DIRECTORY
@@ -494,7 +494,7 @@ HELP
       return 1
     ;;
 
-    1 )
+    '1' )
       if [[ -d "${1}" ]]; then
         echo 'Warning: Directory already exists. Just change direcotry.' 1>&2
         builtin cd "${1}"
@@ -801,9 +801,9 @@ function checkclock() {
 
   local UPDATE RTC
   while getopts hru ARG; do
-    case ${ARG} in
-      "r" ) RTC=1;;
-      "u" ) UPDATE=1;;
+    case "${ARG}" in
+      'r' ) RTC=1;;
+      'u' ) UPDATE=1;;
 
       * )
         cat <<HELP 1>&2
@@ -817,8 +817,8 @@ HELP
   done
 
   if exists timedatectl; then
-    local LINEOPT="-2"
-    [[ -n "${RTC}" ]] && LINEOPT="-3"
+    local LINEOPT=-2
+    [[ -n "${RTC}" ]] && LINEOPT=-3
 
     timedatectl | head ${LINEOPT}
   else
@@ -829,7 +829,7 @@ HELP
 
   echo
   echo Checking NTP servers...
-  ntpdate -p1 -sq $NTP \
+  ntpdate -p1 -sq ${NTP} \
     | grep -v 'stratum 0' \
     | sed -e 's/, / /g' \
     | awk '{ offset += $6; delay += $8; print } END { if (NR > 0) { print "* * * * avg.", offset / NR, "avg.", delay / NR } }' \
@@ -839,8 +839,8 @@ HELP
     echo
     read -q 'REPLY?System clock will be updated by step mode. Are you sure? [y/N] '
 
-    if [[ "${REPLY}" == "y" ]]; then
-      sudo ntpdate -b $NTP
+    if [[ "${REPLY}" == 'y' ]]; then
+      sudo ntpdate -b ${NTP}
       sudo hwclock --systohc
     else
       echo 'Cancel the update of system clock.'
@@ -851,7 +851,7 @@ HELP
 
 function createpasswd() {
   # Default
-  local CHARACTER="[:alnum:]"
+  local CHARACTER='[:alnum:]'
   local LENGTH=18
   local NUMBER=10
 
@@ -862,12 +862,12 @@ function createpasswd() {
   local P_NUMBER="${NUMBER}"
 
   while getopts hpc:l:n: ARG; do
-    case ${ARG} in
-      "c" ) F_CHARACTER=1
+    case "${ARG}" in
+      'c' ) F_CHARACTER=1
             P_CHARACTER="${OPTARG}";;
-      "l" ) P_LENGTH="${OPTARG}";;
-      "n" ) P_NUMBER="${OPTARG}";;
-      "p" ) F_PARANOID=1;;
+      'l' ) P_LENGTH="${OPTARG}";;
+      'n' ) P_NUMBER="${OPTARG}";;
+      'p' ) F_PARANOID=1;;
 
       * )
         cat <<HELP 1>&2
@@ -896,7 +896,7 @@ HELP
   done
 
   if [[ -n "${F_PARANOID}" ]]; then
-    P_CHARACTER="[:graph:]"
+    P_CHARACTER='[:graph:]'
     [[ -n "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
   fi
 
