@@ -898,7 +898,11 @@ HELP
 
   LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
     | fold -w "${P_LENGTH}" \
-    | if [[ -n "${F_PARANOID}" ]]; then grep '[[:punct:]]'; else cat; fi \
+    | if [[ -n "${F_PARANOID}" ]]; then \
+        grep '[[:digit:]]' | grep '[[:punct:]]' | grep '[[:upper:]]' | grep '[[:lower:]]' ; \
+      else \
+        cat ; \
+      fi \
     | head -n "${P_NUMBER}"
 }
 #}}}
