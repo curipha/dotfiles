@@ -607,7 +607,7 @@ function! s:plugin_update()
 endfunction
 " }}}
 " Abbreviation {{{
-inoreabbrev <expr> #! '#!/usr/bin/env' . (empty(&l:filetype) ? '' : ' ' . &l:filetype) . "\<CR>"
+inoreabbrev #! #!/usr/bin/env <C-r>=&l:filetype<CR><CR>
 
 cnoreabbrev bd1  bd!
 cnoreabbrev q1   q!
