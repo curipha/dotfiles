@@ -228,6 +228,9 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
+inoremap [[]] [[  ]]<Left><Left><Left>
+
+inoremap #! #!/usr/bin/env <C-r>=&l:filetype<CR>
 
 autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
 autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
@@ -607,8 +610,6 @@ function! s:plugin_update()
 endfunction
 " }}}
 " Abbreviation {{{
-inoreabbrev #! #!/usr/bin/env <C-r>=&l:filetype<CR><CR>
-
 cnoreabbrev bd1  bd!
 cnoreabbrev q1   q!
 cnoreabbrev qa1  qa!
