@@ -742,6 +742,7 @@ HELP
       case "${MODE}" in
         install )
           sudo apt-get ${OPTIONS} update                   && \
+          sudo apt-get ${OPTIONS} dist-upgrade             && \
           sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
           sudo apt-get ${OPTIONS} autoremove
         ;;
@@ -759,11 +760,14 @@ HELP
 
       case "${MODE}" in
         install )
+          sudo yum ${OPTIONS} clean all                && \
+          sudo yum ${OPTIONS} upgrade                  && \
           sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
           sudo yum ${OPTIONS} autoremove
         ;;
 
         update )
+          sudo yum ${OPTIONS} clean all  && \
           sudo yum ${OPTIONS} upgrade    && \
           sudo yum ${OPTIONS} autoremove
         ;;
@@ -775,7 +779,7 @@ HELP
 
       case "${MODE}" in
         install )
-          sudo pacman -Sy ${OPTIONS} "${PACKAGES[@]}"
+          sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
         ;;
 
         update )
