@@ -152,7 +152,7 @@ fi
 unset DIFF_PARAM
 
 GREP_PARAM='--color=auto --binary-files=text'
-if grep --help 2>&1 | grep -q -- --exclude-dir; then
+if [[ `grep --help 2>&1` =~ '--exclude-dir' ]]; then
   for EXCLUDE_DIR in .git .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
@@ -164,9 +164,9 @@ if exists gcc; then
   GCC_HELP=`gcc -v --help 2> /dev/null`
 
   CFLAGS='-march=native -mtune=native -O2 -pipe'
-  if   echo ${GCC_HELP} | grep -q -- -fstack-protector-strong; then
+  if   [[ "${GCC_HELP}" =~ '-fstack-protector-strong' ]]; then
     CFLAGS+=' -fstack-protector-strong --param=ssp-buffer-size=4'
-  elif echo ${GCC_HELP} | grep -q -- -fstack-protector; then
+  elif [[ "${GCC_HELP}" =~ '-fstack-protector' ]]; then
     CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
   fi
 
