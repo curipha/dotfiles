@@ -88,7 +88,7 @@ autoload -Uz vcs_info
 autoload -Uz zmv
 #}}}
 # Functions {{{
-function exists() { whence -p "${1}" &> /dev/null }
+function exists() { whence -p -- "${1}" &> /dev/null }
 function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
@@ -472,10 +472,10 @@ function command_not_found_handler() {
   return 127
 }
 
-function +x() { chmod +x "${@}" }
+function +x() { chmod +x -- "${@}" }
 
-function bak() { [[ "${#}" == '1' ]] && cp -fv "${1}"{,.bak} }
-function rvt() { [[ "${#}" == '1' ]] && mv -iv "${1}"{,.new} && mv -iv "${1}"{.bak,} }
+function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
+function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
 
 function enc() { [[ "${#}" == '1' ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
 function dec() { [[ "${#}" == '1' ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
@@ -493,9 +493,9 @@ HELP
     '1' )
       if [[ -d "${1}" ]]; then
         echo 'Warning: Directory already exists. Just change direcotry.' 1>&2
-        builtin cd "${1}"
+        builtin cd -- "${1}"
       else
-        mkdir -vp "${1}" && builtin cd "${1}"
+        mkdir -vp -- "${1}" && builtin cd -- "${1}"
       fi
     ;;
 
@@ -503,9 +503,9 @@ HELP
       local DIR="${@: -1}"
       if [[ -d "${DIR}" ]]; then
         echo 'Warning: Directory already exists. Just move file(s).' 1>&2
-        mv -iv "${@}"
+        mv -iv -- "${@}"
       else
-        mkdir -vp "${DIR}" && mv -iv "${@}"
+        mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
       fi
     ;;
   esac
