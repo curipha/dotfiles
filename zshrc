@@ -136,7 +136,7 @@ fi
 if exists less; then
   export PAGER=less
 
-  alias taill='LESSOPEN= LESSCLOSE= less +F'
+  alias lessf='LESSOPEN= LESSCLOSE= less +F'
 else
   export PAGER=cat
 fi
