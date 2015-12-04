@@ -513,21 +513,30 @@ HELP
 alias mkcd=mkmv
 
 function whois() {
-  local WHOIS
-  exists jwhois && WHOIS=`whence -p jwhois`
-  exists whois  && WHOIS=`whence -p whois`
+  {
+    local REPORTTIME_ORIG="${REPORTTIME}"
+    REPORTTIME=-1
 
-  if [[ -z "${WHOIS}" ]]; then
-    echo 'Error: Please install "whois" command first.' 1>&2
-    return 1
-  fi
+    local WHOIS
+    exists jwhois && WHOIS=`whence -p jwhois`
+    exists whois  && WHOIS=`whence -p whois`
 
-  local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
-  if [[ -z "${DOMAIN}" ]]; then
-    ${WHOIS}
-  else
-    ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
-  fi
+    if [[ -z "${WHOIS}" ]]; then
+      echo 'Error: Please install "whois" command first.' 1>&2
+      return 1
+    fi
+
+    local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
+    if [[ -z "${DOMAIN}" ]]; then
+      ${WHOIS}
+    else
+      ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+    fi
+  } always {
+    local RETURN="${?}"
+    REPORTTIME="${REPORTTIME_ORIG}"
+    return "${RETURN}"
+  }
 }
 
 function change_command() {
