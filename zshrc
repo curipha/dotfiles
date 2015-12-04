@@ -92,7 +92,7 @@ function exists() { whence -p -- "${1}" &> /dev/null }
 function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
-case ${OSTYPE} in
+case "${OSTYPE}" in
   linux*)
     limit coredumpsize 0
 
