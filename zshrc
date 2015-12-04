@@ -88,7 +88,7 @@ autoload -Uz vcs_info
 autoload -Uz zmv
 #}}}
 # Functions {{{
-function exists() { [[ -n `whence -p "${1}"` ]] }
+function exists() { whence -p -- "${1}" &> /dev/null }
 function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
@@ -129,7 +129,7 @@ if exists vim; then
   export EDITOR=vim
   export VISUAL=vim
 
-  alias vi='vim'
+  alias vi=vim
   alias view='vim -R'
 fi
 
@@ -151,8 +151,8 @@ else
 fi
 unset DIFF_PARAM
 
-GREP_PARAM='--color=auto --binary-files=without-match'
-if grep --help 2>&1 | grep -q -- --exclude-dir; then
+GREP_PARAM='--color=auto --binary-files=text'
+if [[ `grep --help 2>&1` =~ '--exclude-dir' ]]; then
   for EXCLUDE_DIR in .git .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
@@ -164,9 +164,9 @@ if exists gcc; then
   GCC_HELP=`gcc -v --help 2> /dev/null`
 
   CFLAGS='-march=native -mtune=native -O2 -pipe'
-  if   echo ${GCC_HELP} | grep -q -- -fstack-protector-strong; then
+  if   [[ "${GCC_HELP}" =~ '-fstack-protector-strong' ]]; then
     CFLAGS+=' -fstack-protector-strong --param=ssp-buffer-size=4'
-  elif echo ${GCC_HELP} | grep -q -- -fstack-protector; then
+  elif [[ "${GCC_HELP}" =~ '-fstack-protector' ]]; then
     CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
   fi
 
@@ -396,9 +396,6 @@ abbrev_expand=(
   '.....' '../../../../'
 
   '?'   "--help |& ${PAGER}"
-  'A'   '| awk'
-  'B'   '| base64'
-  'BD'  '| base64 -d'
   'C'   '| sort | uniq -c | sort -nr'
   'D'   "| hexdump -C | ${PAGER}"
   'E'   '> /dev/null'
@@ -407,7 +404,6 @@ abbrev_expand=(
   'H'   '| head -20'
   'L'   "|& ${PAGER}"
   'N'   '| wc -l'
-  'R'   '| sed -E'
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
@@ -466,43 +462,81 @@ function command_not_found_handler() {
   if isinsiderepo; then
     git_alias=( `git config --list | sed -En 's/^alias\.([^=]+).+$/\1/p'` )
 
-    if [[ ${git_alias[(I)${0}]} != "0" ]]; then
+    if [[ "${git_alias[(I)${0}]}" != '0' ]]; then
       echo "git ${@}"
       git "${@}"
-      return $?
+      return "${?}"
     fi
   fi
 
   return 127
 }
 
-function +x() { chmod +x "$@" }
+function +x() { chmod +x -- "${@}" }
 
-function bak() { [[ $# == 1 ]] && cp -fv "$1"{,.bak} }
-function rvt() { [[ $# == 1 ]] && mv -iv "$1"{,.new} && mv -iv "$1"{.bak,} }
+function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
+function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
 
-function enc() { [[ $# == 1 ]] && openssl enc -e -aes-256-cbc -in "$1" -out "$1".enc }
-function dec() { [[ $# == 1 ]] && openssl enc -d -aes-256-cbc -in "$1" -out "$1".dec }
+function enc() { [[ "${#}" == '1' ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
+function dec() { [[ "${#}" == '1' ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
 
-function mkcd() { [[ $# == 1 ]] && mkdir -vp "$1" && builtin cd "$1" }
-function mkmv() { (( $# >= 2 )) && mkdir -vp "${@: -1}" && mv -iv "$@" }
+function mkmv() {
+  case "${#}" in
+    '0' )
+      cat <<HELP 1>&2
+Usage: ${0} DIRECTORY
+Usage: ${0} FILES... DIRECTORY
+HELP
+      return 1
+    ;;
+
+    '1' )
+      if [[ -d "${1}" ]]; then
+        echo 'Warning: Directory already exists. Just change direcotry.' 1>&2
+        builtin cd -- "${1}"
+      else
+        mkdir -vp -- "${1}" && builtin cd -- "${1}"
+      fi
+    ;;
+
+    * )
+      local DIR="${@: -1}"
+      if [[ -d "${DIR}" ]]; then
+        echo 'Warning: Directory already exists. Just move file(s).' 1>&2
+        mv -iv -- "${@}"
+      else
+        mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
+      fi
+    ;;
+  esac
+}
+alias mkcd=mkmv
 
 function whois() {
-  local WHOIS
-  exists jwhois && WHOIS=`whence -p jwhois`
-  exists whois  && WHOIS=`whence -p whois`
+  {
+    local REPORTTIME_ORIG="${REPORTTIME}"
+    REPORTTIME=-1
 
-  if [[ -z "${WHOIS}" ]]; then
-    echo 'Error: Cannot find whois command.' 1>&2
-    return 1
-  fi
+    local WHOIS
+    exists jwhois && WHOIS=`whence -p jwhois`
+    exists whois  && WHOIS=`whence -p whois`
 
-  local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
-  if [[ -z "${DOMAIN}" ]]; then
-    ${WHOIS}
-  else
-    ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
-  fi
+    if [[ -z "${WHOIS}" ]]; then
+      echo 'Error: Please install "whois" command first.' 1>&2
+      return 1
+    fi
+
+    local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
+    if [[ -z "${DOMAIN}" ]]; then
+      ${WHOIS}
+    else
+      ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+    fi
+  } always {
+    local RETURN="${?}"
+    REPORTTIME="${REPORTTIME_ORIG}"
+    return "${RETURN}"
+  }
 }
 
 function change_command() {
@@ -708,6 +742,7 @@ HELP
       case "${MODE}" in
         install )
           sudo apt-get ${OPTIONS} update                   && \
+          sudo apt-get ${OPTIONS} dist-upgrade             && \
           sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
           sudo apt-get ${OPTIONS} autoremove
         ;;
@@ -720,16 +755,38 @@ HELP
       esac
 
       sudo -K
+    elif exists dnf; then
+      [[ -n "${YES}" ]] && OPTIONS=--assumeyes
+
+      case "${MODE}" in
+        install )
+          sudo dnf ${OPTIONS} clean all                && \
+          sudo dnf ${OPTIONS} upgrade                  && \
+          sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
+          sudo dnf ${OPTIONS} autoremove
+        ;;
+
+        update )
+          sudo dnf ${OPTIONS} clean all  && \
+          sudo dnf ${OPTIONS} upgrade    && \
+          sudo dnf ${OPTIONS} autoremove
+        ;;
+      esac
+
+      sudo -K
     elif exists yum; then
       [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
       case "${MODE}" in
         install )
+          sudo yum ${OPTIONS} clean all                && \
+          sudo yum ${OPTIONS} upgrade                  && \
           sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
           sudo yum ${OPTIONS} autoremove
         ;;
 
         update )
+          sudo yum ${OPTIONS} clean all  && \
           sudo yum ${OPTIONS} upgrade    && \
           sudo yum ${OPTIONS} autoremove
         ;;
@@ -741,7 +798,7 @@ HELP
 
       case "${MODE}" in
         install )
-          sudo pacman -Sy ${OPTIONS} "${PACKAGES[@]}"
+          sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
         ;;
 
         update )
@@ -755,7 +812,7 @@ HELP
       return 1
     fi
   } always {
-    local RETURN=$?
+    local RETURN="${?}"
     REPORTTIME="${REPORTTIME_ORIG}"
     return "${RETURN}"
   }
@@ -763,7 +820,7 @@ HELP
 
 function checkclock() {
   if ! exists ntpdate; then
-    echo 'Error: Cannnot find ntpdate command.' 1>&2
+    echo 'Error: Error: Please install "ntpdate" command first.' 1>&2
     return 1
   fi
 
@@ -772,9 +829,9 @@ function checkclock() {
 
   local UPDATE RTC
   while getopts hru ARG; do
-    case ${ARG} in
-      "r" ) RTC=1;;
-      "u" ) UPDATE=1;;
+    case "${ARG}" in
+      'r' ) RTC=1;;
+      'u' ) UPDATE=1;;
 
       * )
         cat <<HELP 1>&2
@@ -788,8 +845,8 @@ HELP
   done
 
   if exists timedatectl; then
-    local LINEOPT="-2"
-    [[ -n "${RTC}" ]] && LINEOPT="-3"
+    local LINEOPT=-2
+    [[ -n "${RTC}" ]] && LINEOPT=-3
 
     timedatectl | head ${LINEOPT}
   else
@@ -800,7 +857,7 @@ HELP
 
   echo
   echo Checking NTP servers...
-  ntpdate -p1 -sq $NTP \
+  ntpdate -p1 -sq ${NTP} \
     | grep -v 'stratum 0' \
     | sed -e 's/, / /g' \
     | awk '{ offset += $6; delay += $8; print } END { if (NR > 0) { print "* * * * avg.", offset / NR, "avg.", delay / NR } }' \
@@ -810,8 +867,8 @@ HELP
     echo
     read -q 'REPLY?System clock will be updated by step mode. Are you sure? [y/N] '
 
-    if [[ "${REPLY}" == "y" ]]; then
-      sudo ntpdate -b $NTP
+    if [[ "${REPLY}" == 'y' ]]; then
+      sudo ntpdate -b ${NTP}
       sudo hwclock --systohc
     else
       echo 'Cancel the update of system clock.'
@@ -822,7 +879,7 @@ HELP
 
 function createpasswd() {
   # Default
-  local CHARACTER="[:alnum:]"
+  local CHARACTER='[:alnum:]'
   local LENGTH=18
   local NUMBER=10
 
@@ -833,22 +890,21 @@ function createpasswd() {
   local P_NUMBER="${NUMBER}"
 
   while getopts hpc:l:n: ARG; do
-    case ${ARG} in
-      "c" ) F_CHARACTER=1
+    case "${ARG}" in
+      'c' ) F_CHARACTER=1
             P_CHARACTER="${OPTARG}";;
-      "l" ) P_LENGTH="${OPTARG}";;
-      "n" ) P_NUMBER="${OPTARG}";;
-      "p" ) F_PARANOID=1;;
+      'l' ) P_LENGTH="${OPTARG}";;
+      'n' ) P_NUMBER="${OPTARG}";;
+      'p' ) F_PARANOID=1;;
 
       * )
         cat <<HELP 1>&2
 Usage: ${0} [-p | -c <chars>] [-l <length>] [-n <number>]
 
-  -c <chars>    Set characters to be used for passwords
-                (It NEVER guarantee that all of specified chars are used)
-  -l <length>   Set the length of password(s) (Default = ${LENGTH})
-  -n <number>   Set the number of password(s) (Default = ${NUMBER})
-  -p            Paranoid mode (Guarantee that the symbol char MUST be included)
+  -c <chars>    Specify candidate characters for passwords
+  -l <length>   Specify the length of password(s) (Default = ${LENGTH})
+  -n <number>   Specify the number of password(s) (Default = ${NUMBER})
+  -p            Paranoid mode (Generated password contains all letter type)
 
 Example:
   ${0}
@@ -867,13 +923,17 @@ HELP
   done
 
   if [[ -n "${F_PARANOID}" ]]; then
-    P_CHARACTER="[:graph:]"
+    P_CHARACTER='[:graph:]'
     [[ -n "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
   fi
 
   LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
     | fold -w "${P_LENGTH}" \
-    | if [[ -n "${F_PARANOID}" ]]; then grep '[[:punct:]]'; else cat; fi \
+    | if [[ -n "${F_PARANOID}" ]]; then \
+        grep '[[:digit:]]' | grep '[[:punct:]]' | grep '[[:upper:]]' | grep '[[:lower:]]' ; \
+      else \
+        cat ; \
+      fi \
     | head -n "${P_NUMBER}"
 }
 #}}}
