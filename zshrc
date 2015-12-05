@@ -669,7 +669,7 @@ function package() {
       ruby )
         PACKAGES=( "${PACKAGES[@]}" ruby irb );;
       multimedia | multi )
-        PACKAGES=( "${PACKAGES[@]}" ImageMagick );;
+        PACKAGES=( "${PACKAGES[@]}" ImageMagick mpg123 );;
       yum )
         PACKAGES=( "${PACKAGES[@]}" yum-plugin-remove-with-leaves );;
       misc )
