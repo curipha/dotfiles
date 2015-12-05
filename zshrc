@@ -92,7 +92,7 @@ function exists() { whence -p -- "${1}" &> /dev/null }
 function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
-case ${OSTYPE} in
+case "${OSTYPE}" in
   linux*)
     limit coredumpsize 0
 
@@ -136,7 +136,7 @@ fi
 if exists less; then
   export PAGER=less
 
-  alias taill='LESSOPEN= LESSCLOSE= less +F'
+  alias lessf='LESSOPEN= LESSCLOSE= less +F'
 else
   export PAGER=cat
 fi
@@ -292,10 +292,12 @@ setopt hist_no_store
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
-bindkey '^P' history-beginning-search-backward-end
-bindkey '^N' history-beginning-search-forward-end
-bindkey '^R' history-incremental-pattern-search-backward
-bindkey '^S' history-incremental-pattern-search-forward
+bindkey '^P'  history-beginning-search-backward-end
+bindkey '^N'  history-beginning-search-forward-end
+bindkey '^[p' history-incremental-pattern-search-backward
+bindkey '^[n' history-incremental-pattern-search-forward
+
+bindkey -r '^R' '^S'
 #}}}
 # Complement {{{
 compinit
@@ -513,21 +515,30 @@ HELP
 alias mkcd=mkmv
 
 function whois() {
-  local WHOIS
-  exists jwhois && WHOIS=`whence -p jwhois`
-  exists whois  && WHOIS=`whence -p whois`
+  {
+    local REPORTTIME_ORIG="${REPORTTIME}"
+    REPORTTIME=-1
 
-  if [[ -z "${WHOIS}" ]]; then
-    echo 'Error: Please install "whois" command first.' 1>&2
-    return 1
-  fi
+    local WHOIS
+    exists jwhois && WHOIS=`whence -p jwhois`
+    exists whois  && WHOIS=`whence -p whois`
 
-  local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
-  if [[ -z "${DOMAIN}" ]]; then
-    ${WHOIS}
-  else
-    ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
-  fi
+    if [[ -z "${WHOIS}" ]]; then
+      echo 'Error: Please install "whois" command first.' 1>&2
+      return 1
+    fi
+
+    local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
+    if [[ -z "${DOMAIN}" ]]; then
+      ${WHOIS}
+    else
+      ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+    fi
+  } always {
+    local RETURN="${?}"
+    REPORTTIME="${REPORTTIME_ORIG}"
+    return "${RETURN}"
+  }
 }
 
 function change_command() {
@@ -733,6 +744,7 @@ HELP
       case "${MODE}" in
         install )
           sudo apt-get ${OPTIONS} update                   && \
+          sudo apt-get ${OPTIONS} dist-upgrade             && \
           sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
           sudo apt-get ${OPTIONS} autoremove
         ;;
@@ -745,16 +757,38 @@ HELP
       esac
 
       sudo -K
+    elif exists dnf; then
+      [[ -n "${YES}" ]] && OPTIONS=--assumeyes
+
+      case "${MODE}" in
+        install )
+          sudo dnf ${OPTIONS} clean all                && \
+          sudo dnf ${OPTIONS} upgrade                  && \
+          sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
+          sudo dnf ${OPTIONS} autoremove
+        ;;
+
+        update )
+          sudo dnf ${OPTIONS} clean all  && \
+          sudo dnf ${OPTIONS} upgrade    && \
+          sudo dnf ${OPTIONS} autoremove
+        ;;
+      esac
+
+      sudo -K
     elif exists yum; then
       [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
       case "${MODE}" in
         install )
+          sudo yum ${OPTIONS} clean all                && \
+          sudo yum ${OPTIONS} upgrade                  && \
           sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
           sudo yum ${OPTIONS} autoremove
         ;;
 
         update )
+          sudo yum ${OPTIONS} clean all  && \
           sudo yum ${OPTIONS} upgrade    && \
           sudo yum ${OPTIONS} autoremove
         ;;
@@ -766,7 +800,7 @@ HELP
 
       case "${MODE}" in
         install )
-          sudo pacman -Sy ${OPTIONS} "${PACKAGES[@]}"
+          sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
         ;;
 
         update )
