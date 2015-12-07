@@ -823,7 +823,7 @@ HELP
 
       sudo -K
     else
-      echo 'Cannot find a package manager which I know.' 1>&2
+      echo 'Error: Cannot find a package manager which I know.' 1>&2
       return 1
     fi
   } always {
@@ -835,7 +835,7 @@ HELP
 
 function checkclock() {
   if ! exists ntpdate; then
-    echo 'Error: Error: Please install "ntpdate" command first.' 1>&2
+    echo 'Error: Please install "ntpdate" command first.' 1>&2
     return 1
   fi
 
