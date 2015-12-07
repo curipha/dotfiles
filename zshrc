@@ -80,6 +80,7 @@ autoload -Uz add-zsh-hook
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
+autoload -Uz is-at-least
 autoload -Uz modify-current-argument
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
@@ -200,17 +201,18 @@ bindkey '^[[4~' end-of-line
 bindkey '^[[Z' reverse-menu-complete
 
 setopt correct
-setopt combining_chars
+
+is-at-least '5.1' && setopt append_create
+setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
-setopt print_exit_value
-setopt print_eightbit
-
 setopt multios
-#setopt xtrace
+setopt path_dirs
+setopt print_eight_bit
+setopt print_exit_value
 
 setopt no_beep
-setopt no_clobber
+setopt combining_chars
 
 setopt c_bases
 setopt octal_zeroes
@@ -269,9 +271,14 @@ add-zsh-hook precmd precmd_vcs_info
 #}}}
 
 # Jobs {{{
+setopt auto_continue
 setopt auto_resume
 setopt bg_nice
 setopt long_list_jobs
+setopt monitor
+
+setopt check_jobs
+setopt no_hup
 #}}}
 # History {{{
 HISTFILE=~/.zsh_history
@@ -280,14 +287,19 @@ SAVEHIST=100000
 
 setopt append_history
 setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_no_store
 setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
-setopt hist_ignore_space
-setopt hist_no_store
+setopt hist_fcntl_lock
 
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -371,20 +383,21 @@ setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_param_slash
 setopt auto_remove_slash
-#setopt complete_aliases
+setopt no_complete_aliases
 setopt complete_in_word
+setopt list_packed
+setopt list_types
+
+setopt brace_ccl
+setopt case_glob
+setopt equals
 setopt extended_glob
 setopt glob_complete
 setopt glob_dots
-setopt list_packed
-setopt list_types
-setopt numeric_glob_sort
-
-setopt brace_ccl
-setopt equals
 setopt magic_equal_subst
 setopt mark_dirs
-setopt path_dirs
+setopt numeric_glob_sort
+setopt rc_expand_param
 
 zle -N insert-last-word smart-insert-last-word
 zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
