@@ -271,9 +271,13 @@ add-zsh-hook precmd precmd_vcs_info
 #}}}
 
 # Jobs {{{
+setopt auto_continue
 setopt auto_resume
 setopt bg_nice
 setopt long_list_jobs
+setopt monitor
+
+setopt check_jobs
 #}}}
 # History {{{
 HISTFILE=~/.zsh_history
