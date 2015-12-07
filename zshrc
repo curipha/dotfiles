@@ -80,6 +80,7 @@ autoload -Uz add-zsh-hook
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
+autoload -Uz is-at-least
 autoload -Uz modify-current-argument
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
@@ -201,7 +202,7 @@ bindkey '^[[Z' reverse-menu-complete
 
 setopt correct
 
-setopt append_create
+is-at-least '5.1' && setopt append_create
 setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
