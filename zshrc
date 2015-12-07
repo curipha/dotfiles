@@ -389,6 +389,7 @@ setopt list_packed
 setopt list_types
 
 setopt brace_ccl
+setopt case_glob
 setopt equals
 setopt extended_glob
 setopt glob_complete
