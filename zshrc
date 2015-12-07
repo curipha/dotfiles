@@ -397,6 +397,7 @@ setopt glob_dots
 setopt magic_equal_subst
 setopt mark_dirs
 setopt numeric_glob_sort
+setopt rc_expand_param
 
 zle -N insert-last-word smart-insert-last-word
 zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
