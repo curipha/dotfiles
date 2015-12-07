@@ -92,7 +92,7 @@ function exists() { whence -p -- "${1}" &> /dev/null }
 function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
-case ${OSTYPE} in
+case "${OSTYPE}" in
   linux*)
     limit coredumpsize 0
 
@@ -136,7 +136,7 @@ fi
 if exists less; then
   export PAGER=less
 
-  alias taill='LESSOPEN= LESSCLOSE= less +F'
+  alias lessf='LESSOPEN= LESSCLOSE= less +F'
 else
   export PAGER=cat
 fi
@@ -292,10 +292,12 @@ setopt hist_no_store
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
-bindkey '^P' history-beginning-search-backward-end
-bindkey '^N' history-beginning-search-forward-end
-bindkey '^R' history-incremental-pattern-search-backward
-bindkey '^S' history-incremental-pattern-search-forward
+bindkey '^P'  history-beginning-search-backward-end
+bindkey '^N'  history-beginning-search-forward-end
+bindkey '^[p' history-incremental-pattern-search-backward
+bindkey '^[n' history-incremental-pattern-search-forward
+
+bindkey -r '^R' '^S'
 #}}}
 # Complement {{{
 compinit
@@ -667,7 +669,7 @@ function package() {
       ruby )
         PACKAGES=( "${PACKAGES[@]}" ruby irb );;
       multimedia | multi )
-        PACKAGES=( "${PACKAGES[@]}" ImageMagick );;
+        PACKAGES=( "${PACKAGES[@]}" ImageMagick mpg123 );;
       yum )
         PACKAGES=( "${PACKAGES[@]}" yum-plugin-remove-with-leaves );;
       misc )
