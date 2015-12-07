@@ -201,6 +201,7 @@ bindkey '^[[Z' reverse-menu-complete
 
 setopt correct
 
+setopt append_create
 setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
