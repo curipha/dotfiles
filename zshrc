@@ -278,6 +278,7 @@ setopt long_list_jobs
 setopt monitor
 
 setopt check_jobs
+setopt no_hup
 #}}}
 # History {{{
 HISTFILE=~/.zsh_history
