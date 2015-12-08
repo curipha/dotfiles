@@ -1,4 +1,6 @@
 AltFnShortcuts=no
+BellFlash=no
+BellSound=no
 BellTaskbar=no
 BoldAsColour=yes
 BoldAsFont=yes
