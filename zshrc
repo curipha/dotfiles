@@ -207,6 +207,7 @@ is-at-least '5.1' && setopt append_create
 setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
+setopt interactive_comments
 setopt multios
 setopt path_dirs
 setopt print_eight_bit
