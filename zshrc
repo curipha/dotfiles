@@ -201,6 +201,7 @@ bindkey '^[[4~' end-of-line
 bindkey '^[[Z' reverse-menu-complete
 
 setopt correct
+setopt hash_list_all
 
 is-at-least '5.1' && setopt append_create
 setopt no_clobber
