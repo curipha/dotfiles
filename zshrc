@@ -475,20 +475,6 @@ alias rst='
 function chpwd_ls() { ls -AF }
 add-zsh-hook chpwd chpwd_ls
 
-function command_not_found_handler() {
-  if isinsiderepo; then
-    git_alias=( `git config --list | sed -En 's/^alias\.([^=]+).+$/\1/p'` )
-
-    if [[ "${git_alias[(I)${0}]}" != '0' ]]; then
-      echo "git ${@}"
-      git "${@}"
-      return "${?}"
-    fi
-  fi
-
-  return 127
-}
-
 function +x() { chmod +x -- "${@}" }
 
 function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
