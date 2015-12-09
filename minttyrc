@@ -1,9 +1,12 @@
 AltFnShortcuts=no
+BellFlash=no
+BellSound=no
 BellTaskbar=no
 BoldAsColour=yes
 BoldAsFont=yes
 Charset=UTF-8
 ClickTargetMod=off
+ClicksTargetApp=no
 ClipShortcuts=no
 Columns=132
 CopyAsRTF=no
