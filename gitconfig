@@ -37,6 +37,8 @@
   sp    = stash show --patch
   ss    = stash
   st    = status --branch --short --untracked-files=all
+
+  git   = !git
   sync  = !git stash save && git fetch && git reset --hard FETCH_HEAD && git gc --quiet
 
   unstage = reset HEAD --

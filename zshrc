@@ -201,11 +201,13 @@ bindkey '^[[4~' end-of-line
 bindkey '^[[Z' reverse-menu-complete
 
 setopt correct
+setopt hash_list_all
 
 is-at-least '5.1' && setopt append_create
 setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
+setopt interactive_comments
 setopt multios
 setopt path_dirs
 setopt print_eight_bit
@@ -472,20 +474,6 @@ alias rst='
 
 function chpwd_ls() { ls -AF }
 add-zsh-hook chpwd chpwd_ls
-
-function command_not_found_handler() {
-  if isinsiderepo; then
-    git_alias=( `git config --list | sed -En 's/^alias\.([^=]+).+$/\1/p'` )
-
-    if [[ "${git_alias[(I)${0}]}" != '0' ]]; then
-      echo "git ${@}"
-      git "${@}"
-      return "${?}"
-    fi
-  fi
-
-  return 127
-}
 
 function +x() { chmod +x -- "${@}" }
 
