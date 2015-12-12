@@ -77,6 +77,7 @@ stty -ixon -ixoff
 #}}}
 # Autoloads {{{
 autoload -Uz add-zsh-hook
+autoload -Uz bracketed-paste-magic
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
@@ -226,6 +227,7 @@ MAILCHECK=0
 KEYTIMEOUT=10
 
 colors
+zle -N bracketed-paste bracketed-paste-magic
 zle -N self-insert url-quote-magic
 
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
