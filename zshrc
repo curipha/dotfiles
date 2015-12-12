@@ -308,6 +308,11 @@ setopt share_history
 
 setopt hist_fcntl_lock
 
+bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-search
+bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
+bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
+bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-search
+
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
