@@ -308,6 +308,9 @@ setopt share_history
 
 setopt hist_fcntl_lock
 
+bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
+bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
+
 bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-search
 bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
 bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
