@@ -197,11 +197,12 @@ bindkey -e
 
 bindkey '^?'    backward-delete-char
 bindkey '^H'    backward-delete-char
-bindkey '^[[1~' beginning-of-line
-bindkey '^[[3~' delete-char
-bindkey '^[[4~' end-of-line
 
-bindkey '^[[Z' reverse-menu-complete
+bindkey "${terminfo[khome]:-^[[1~}" beginning-of-line
+bindkey "${terminfo[kend]:-^[[4~}"  end-of-line
+bindkey "${terminfo[kdch1]:-^[[3~}" delete-char
+
+bindkey "${terminfo[kcbt]:-^[[Z}" reverse-menu-complete
 
 setopt correct
 setopt hash_list_all
