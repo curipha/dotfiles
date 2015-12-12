@@ -12,6 +12,8 @@ irb/completion
 pathname
 pp
 prime
+securerandom
+shellwords
 thread
 time
 ).each do |lib|
