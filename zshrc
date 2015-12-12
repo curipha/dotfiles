@@ -195,8 +195,8 @@ fi
 # Core {{{
 bindkey -e
 
-bindkey '^?'    backward-delete-char
-bindkey '^H'    backward-delete-char
+bindkey '^?' backward-delete-char
+bindkey '^H' backward-delete-char
 
 bindkey "${terminfo[khome]:-^[[1~}" beginning-of-line
 bindkey "${terminfo[kend]:-^[[4~}"  end-of-line
