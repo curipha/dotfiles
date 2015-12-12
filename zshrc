@@ -80,7 +80,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz colors
 autoload -Uz compinit
-autoload -Uz history-search-end
 autoload -Uz is-at-least
 autoload -Uz modify-current-argument
 autoload -Uz run-help
@@ -316,11 +315,6 @@ bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
 bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
 bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-search
 
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-
-bindkey '^P'  history-beginning-search-backward-end
-bindkey '^N'  history-beginning-search-forward-end
 bindkey '^[p' history-incremental-pattern-search-backward
 bindkey '^[n' history-incremental-pattern-search-forward
 
