@@ -77,6 +77,7 @@ stty -ixon -ixoff
 #}}}
 # Autoloads {{{
 autoload -Uz add-zsh-hook
+autoload -Uz bracketed-paste-magic
 autoload -Uz colors
 autoload -Uz compinit
 autoload -Uz history-search-end
@@ -98,6 +99,8 @@ case "${OSTYPE}" in
     limit coredumpsize 0
 
     alias ls='ls --color=auto'
+    alias open=xdg-open
+    alias start=xdg-open
   ;;
 
   darwin*)
@@ -192,13 +195,14 @@ fi
 # Core {{{
 bindkey -e
 
-bindkey '^?'    backward-delete-char
-bindkey '^H'    backward-delete-char
-bindkey '^[[1~' beginning-of-line
-bindkey '^[[3~' delete-char
-bindkey '^[[4~' end-of-line
+bindkey '^?' backward-delete-char
+bindkey '^H' backward-delete-char
 
-bindkey '^[[Z' reverse-menu-complete
+bindkey "${terminfo[khome]:-^[[1~}" beginning-of-line
+bindkey "${terminfo[kend]:-^[[4~}"  end-of-line
+bindkey "${terminfo[kdch1]:-^[[3~}" delete-char
+
+bindkey "${terminfo[kcbt]:-^[[Z}" reverse-menu-complete
 
 setopt correct
 setopt hash_list_all
@@ -226,6 +230,7 @@ MAILCHECK=0
 KEYTIMEOUT=10
 
 colors
+zle -N bracketed-paste bracketed-paste-magic
 zle -N self-insert url-quote-magic
 
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
@@ -303,6 +308,14 @@ setopt share_history
 
 setopt hist_fcntl_lock
 
+bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
+bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
+
+bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-search
+bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
+bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
+bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-search
+
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
@@ -332,7 +345,7 @@ zstyle -e ':completion:*' completer '
     reply=(_expand _complete _history _correct _match _prefix _list)
   fi'
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
@@ -670,7 +683,7 @@ function package() {
       ruby )
         PACKAGES=( "${PACKAGES[@]}" ruby irb );;
       multimedia | multi )
-        PACKAGES=( "${PACKAGES[@]}" ImageMagick mpg123 );;
+        PACKAGES=( "${PACKAGES[@]}" ImageMagick mpg123 ffmpeg );;
       yum )
         PACKAGES=( "${PACKAGES[@]}" yum-plugin-remove-with-leaves );;
       misc )
