@@ -99,6 +99,8 @@ case "${OSTYPE}" in
     limit coredumpsize 0
 
     alias ls='ls --color=auto'
+    alias open=xdg-open
+    alias start=xdg-open
   ;;
 
   darwin*)
