@@ -418,6 +418,8 @@ zle -N insert-last-word smart-insert-last-word
 zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
 bindkey '^]' insert-last-word
 
+bindkey "^[m" copy-prev-shell-word
+
 typeset -A abbrev_expand
 abbrev_expand=(
   '..'    '../'
