@@ -336,7 +336,7 @@ zstyle -e ':completion:*' completer '
     reply=(_expand _complete _history _correct _match _prefix _list)
   fi'
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
