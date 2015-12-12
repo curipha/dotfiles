@@ -187,7 +187,6 @@ xnoremap <S-Tab> <gv
 vnoremap <silent> <Leader>m :sort<CR>
 vnoremap <silent> <Leader>u :sort u<CR>
 
-inoremap <C-z> <C-o>u
 cnoremap <C-z> :<C-u>suspend<CR>
 
 inoremap <C-t> <C-v><Tab>
@@ -646,6 +645,15 @@ let g:php_noShortTags = 1
 let g:is_bash = 1
 " }}}
 " Plugin {{{
+" Standard plugin {{{
+let g:loaded_gzip          = 1
+let g:loaded_tar           = 1
+let g:loaded_tarPlugin     = 1
+let g:loaded_vimball       = 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_zip           = 1
+let g:loaded_zipPlugin     = 1
+" }}}
 " neocomplete {{{
 "  - https://github.com/Shougo/neocomplete.vim
 let g:neocomplete#enable_at_startup = has('lua')
