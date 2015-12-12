@@ -315,8 +315,8 @@ bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
 bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
 bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-search
 
-bindkey '^[p' history-incremental-pattern-search-backward
-bindkey '^[n' history-incremental-pattern-search-forward
+bindkey '^P' history-incremental-pattern-search-backward
+bindkey '^N' history-incremental-pattern-search-forward
 
 bindkey -r '^R' '^S'
 #}}}
