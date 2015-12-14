@@ -347,6 +347,7 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' squeeze-slashes true
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
