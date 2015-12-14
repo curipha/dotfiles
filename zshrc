@@ -1006,5 +1006,5 @@ alias x='exit'
 #alias z=''
 #}}}
 
-[[ -r ~/.zshrc.include ]] && source ~/.zshrc.include
+[[ -s ~/.zshrc.include ]] && source ~/.zshrc.include
 
