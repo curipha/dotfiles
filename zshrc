@@ -391,6 +391,7 @@ setopt pushd_ignore_dups
 setopt pushd_to_home
 
 setopt always_last_prompt
+setopt always_to_end
 setopt auto_list
 setopt auto_menu
 setopt auto_name_dirs
