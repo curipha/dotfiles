@@ -211,6 +211,7 @@ setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
 setopt interactive_comments
+setopt no_mail_warning
 setopt multios
 setopt path_dirs
 setopt print_eight_bit
