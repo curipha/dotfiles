@@ -381,6 +381,7 @@ zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories 
 
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:scp:*:files' command command -
 
 setopt auto_cd
