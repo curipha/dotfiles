@@ -1008,3 +1008,7 @@ alias x='exit'
 
 [[ -s ~/.zshrc.include ]] && source ~/.zshrc.include
 
+for ZFILE in ~/.zshrc ~/.zcompdump; do
+  [[ -s "${ZFILE}" && ( ! -s "${ZFILE}.zwc" || "${ZFILE}" -nt "${ZFILE}.zwc" ) ]] && zcompile "${ZFILE}" &!
+done
+
