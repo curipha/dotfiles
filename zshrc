@@ -60,7 +60,7 @@ path=(
   /bin(N-/)
   $path
 )
-typeset -U path
+typeset -gU path
 export PATH
 
 cdpath=(
@@ -68,7 +68,7 @@ cdpath=(
   ..
   ../..
 )
-typeset -U cdpath
+typeset -gU cdpath
 
 umask 022
 ulimit -c 0
@@ -186,7 +186,7 @@ if exists manpath; then
     ~/app/*/share/man(N-/)
     ${(s.:.)MANPATH}
   )
-  typeset -U manpath
+  typeset -gU manpath
   export MANPATH
 fi
 #}}}
