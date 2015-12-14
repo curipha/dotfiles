@@ -377,6 +377,8 @@ fi
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:-subscript-:*' list-separator ':'
 
+zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
+
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:scp:*:files' command command -
