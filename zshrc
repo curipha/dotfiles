@@ -60,7 +60,7 @@ path=(
   /bin(N-/)
   $path
 )
-typeset -U path
+typeset -gU path
 export PATH
 
 cdpath=(
@@ -68,7 +68,7 @@ cdpath=(
   ..
   ../..
 )
-typeset -U cdpath
+typeset -gU cdpath
 
 umask 022
 ulimit -c 0
@@ -186,7 +186,7 @@ if exists manpath; then
     ~/app/*/share/man(N-/)
     ${(s.:.)MANPATH}
   )
-  typeset -U manpath
+  typeset -gU manpath
   export MANPATH
 fi
 #}}}
@@ -211,6 +211,7 @@ setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
 setopt interactive_comments
+setopt no_mail_warning
 setopt multios
 setopt path_dirs
 setopt print_eight_bit
@@ -346,6 +347,7 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' squeeze-slashes true
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
@@ -375,8 +377,11 @@ fi
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:-subscript-:*' list-separator ':'
 
+zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
+
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:scp:*:files' command command -
 
 setopt auto_cd
@@ -386,6 +391,7 @@ setopt pushd_ignore_dups
 setopt pushd_to_home
 
 setopt always_last_prompt
+setopt always_to_end
 setopt auto_list
 setopt auto_menu
 setopt auto_name_dirs
@@ -556,7 +562,7 @@ function change_command() {
 
   zle beginning-of-line
 
-  [[ "${BUFFER}" == sudo\ * ]] && zle kill-word
+  [[ "${BUFFER}" == su(do|)\ * ]] && zle kill-word
   zle kill-word
 }
 zle -N change_command
@@ -564,7 +570,7 @@ bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
   [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
-  [[ "${BUFFER}" != sudo\ * ]] && BUFFER="sudo ${BUFFER}"
+  [[ "${BUFFER}" != su(do|)\ * ]] && BUFFER="sudo ${BUFFER}"
   zle end-of-line
 }
 zle -N prefix_with_sudo
@@ -1000,5 +1006,9 @@ alias x='exit'
 #alias z=''
 #}}}
 
-[[ -r ~/.zshrc.include ]] && source ~/.zshrc.include
+[[ -s ~/.zshrc.include ]] && source ~/.zshrc.include
+
+for ZFILE in ~/.zshrc ~/.zcompdump; do
+  [[ -s "${ZFILE}" && ( ! -s "${ZFILE}.zwc" || "${ZFILE}" -nt "${ZFILE}.zwc" ) ]] && zcompile "${ZFILE}" &!
+done
 
