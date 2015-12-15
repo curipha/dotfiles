@@ -471,6 +471,8 @@ nnoremap <silent> <Leader>o :<C-u>only<CR>
 nnoremap <silent> <Leader>h :<C-u>split<CR>
 nnoremap <silent> <Leader>v :<C-u>vsplit<CR>
 
+nnoremap <silent> <Leader>d :<C-u>windo diffthis<CR>
+
 set diffopt=filler,context:3,vertical
 autocmd MyAutoCmd InsertLeave *
 \   if &l:diff
