@@ -359,7 +359,7 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 
 zstyle ':completion:*:manuals' separate-sections true
 
-zstyle ':completion:*:processes' command "ps -U ${USER} -o pid,user,command -w -w"
+zstyle ':completion:*:processes' command 'ps -U ${USER} -o pid,user,stat,tty,command -w -w'
 zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
