@@ -60,7 +60,7 @@ path=(
   /bin(N-/)
   $path
 )
-typeset -U path
+typeset -gU path
 export PATH
 
 cdpath=(
@@ -68,7 +68,7 @@ cdpath=(
   ..
   ../..
 )
-typeset -U cdpath
+typeset -gU cdpath
 
 umask 022
 ulimit -c 0
@@ -80,7 +80,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz colors
 autoload -Uz compinit
-autoload -Uz history-search-end
 autoload -Uz is-at-least
 autoload -Uz modify-current-argument
 autoload -Uz run-help
@@ -187,7 +186,7 @@ if exists manpath; then
     ~/app/*/share/man(N-/)
     ${(s.:.)MANPATH}
   )
-  typeset -U manpath
+  typeset -gU manpath
   export MANPATH
 fi
 #}}}
@@ -195,13 +194,14 @@ fi
 # Core {{{
 bindkey -e
 
-bindkey '^?'    backward-delete-char
-bindkey '^H'    backward-delete-char
-bindkey '^[[1~' beginning-of-line
-bindkey '^[[3~' delete-char
-bindkey '^[[4~' end-of-line
+bindkey '^?' backward-delete-char
+bindkey '^H' backward-delete-char
 
-bindkey '^[[Z' reverse-menu-complete
+bindkey "${terminfo[khome]:-^[[1~}" beginning-of-line
+bindkey "${terminfo[kend]:-^[[4~}"  end-of-line
+bindkey "${terminfo[kdch1]:-^[[3~}" delete-char
+
+bindkey "${terminfo[kcbt]:-^[[Z}" reverse-menu-complete
 
 setopt correct
 setopt hash_list_all
@@ -211,6 +211,7 @@ setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
 setopt interactive_comments
+setopt no_mail_warning
 setopt multios
 setopt path_dirs
 setopt print_eight_bit
@@ -307,13 +308,16 @@ setopt share_history
 
 setopt hist_fcntl_lock
 
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
+bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
+bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
 
-bindkey '^P'  history-beginning-search-backward-end
-bindkey '^N'  history-beginning-search-forward-end
-bindkey '^[p' history-incremental-pattern-search-backward
-bindkey '^[n' history-incremental-pattern-search-forward
+bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-search
+bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
+bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
+bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-search
+
+bindkey '^P' history-incremental-pattern-search-backward
+bindkey '^N' history-incremental-pattern-search-forward
 
 bindkey -r '^R' '^S'
 #}}}
@@ -336,13 +340,14 @@ zstyle -e ':completion:*' completer '
     reply=(_expand _complete _history _correct _match _prefix _list)
   fi'
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' squeeze-slashes true
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
@@ -354,7 +359,7 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 
 zstyle ':completion:*:manuals' separate-sections true
 
-zstyle ':completion:*:processes' command "ps -U ${USER} -o pid,user,command -w -w"
+zstyle ':completion:*:processes' command 'ps x -o pid,user,stat,tty,command -w -w'
 zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
@@ -372,8 +377,11 @@ fi
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:-subscript-:*' list-separator ':'
 
+zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
+
 zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:scp:*:files' command command -
 
 setopt auto_cd
@@ -383,6 +391,7 @@ setopt pushd_ignore_dups
 setopt pushd_to_home
 
 setopt always_last_prompt
+setopt always_to_end
 setopt auto_list
 setopt auto_menu
 setopt auto_name_dirs
@@ -408,6 +417,8 @@ setopt rc_expand_param
 zle -N insert-last-word smart-insert-last-word
 zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
 bindkey '^]' insert-last-word
+
+bindkey '^[m' copy-prev-shell-word
 
 typeset -A abbrev_expand
 abbrev_expand=(
@@ -551,7 +562,7 @@ function change_command() {
 
   zle beginning-of-line
 
-  [[ "${BUFFER}" == sudo\ * ]] && zle kill-word
+  [[ "${BUFFER}" == su(do|)\ * ]] && zle kill-word
   zle kill-word
 }
 zle -N change_command
@@ -559,7 +570,7 @@ bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
   [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
-  [[ "${BUFFER}" != sudo\ * ]] && BUFFER="sudo ${BUFFER}"
+  [[ "${BUFFER}" != su(do|)\ * ]] && BUFFER="sudo ${BUFFER}"
   zle end-of-line
 }
 zle -N prefix_with_sudo
@@ -995,5 +1006,9 @@ alias x='exit'
 #alias z=''
 #}}}
 
-[[ -r ~/.zshrc.include ]] && source ~/.zshrc.include
+[[ -s ~/.zshrc.include ]] && source ~/.zshrc.include
+
+for ZFILE in ~/.zshrc ~/.zcompdump; do
+  [[ -s "${ZFILE}" && ( ! -s "${ZFILE}.zwc" || "${ZFILE}" -nt "${ZFILE}.zwc" ) ]] && zcompile "${ZFILE}" &!
+done
 
