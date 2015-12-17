@@ -315,9 +315,11 @@ bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-search
 bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
 bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
 bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-search
+bindkey '^P' up-line-or-search
+bindkey '^N' down-line-or-search
 
-bindkey '^P' history-incremental-pattern-search-backward
-bindkey '^N' history-incremental-pattern-search-forward
+bindkey '^[p' history-incremental-pattern-search-backward
+bindkey '^[n' history-incremental-pattern-search-forward
 
 bindkey -r '^R' '^S'
 #}}}
@@ -359,7 +361,7 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 
 zstyle ':completion:*:manuals' separate-sections true
 
-zstyle ':completion:*:processes' command "ps -U ${USER} -o pid,user,command -w -w"
+zstyle ':completion:*:processes' command 'ps x -o pid,user,stat,tty,command -w -w'
 zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
