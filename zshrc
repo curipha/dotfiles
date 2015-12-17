@@ -677,21 +677,19 @@ function package() {
       base )
         PACKAGES=( "${PACKAGES[@]}" zsh vim lua git gnupg2 screen tmux );;
       network | net )
-        PACKAGES=( "${PACKAGES[@]}" nc jwhois traceroute bind-utils nmap openssl curl wget );;
+        PACKAGES=( "${PACKAGES[@]}" nc jwhois traceroute bind-utils nmap openssl curl wget tcpdump );;
       develop | dev )
-        PACKAGES=( "${PACKAGES[@]}" gcc gcc-c++ make autoconf automake libtool binutils lsof patch strace kernel-devel libstdc++-devel );;
-      archive )
-        PACKAGES=( "${PACKAGES[@]}" bzip2 unzip xz );;
+        PACKAGES=( "${PACKAGES[@]}" gcc gcc-c++ make autoconf automake libtool binutils lsof patch diffutils colordiff strace kernel-devel libstdc++-devel );;
       utility | util )
-        PACKAGES=( "${PACKAGES[@]}" binutils diffutils sharutils psmisc lsof patch strace );;
+        PACKAGES=( "${PACKAGES[@]}" binutils diffutils colordiff sharutils psmisc lsof patch strace smartmontools );;
       ruby )
         PACKAGES=( "${PACKAGES[@]}" ruby irb );;
       multimedia | multi )
-        PACKAGES=( "${PACKAGES[@]}" ImageMagick mpg123 ffmpeg );;
-      yum )
-        PACKAGES=( "${PACKAGES[@]}" yum-plugin-remove-with-leaves );;
+        PACKAGES=( "${PACKAGES[@]}" ImageMagick mplayer mpg123 ffmpeg );;
       misc )
         PACKAGES=( "${PACKAGES[@]}" figlet file jq nkf sqlite );;
+      windows | win )
+        PACKAGES=( "${PACKAGES[@]}" wine smbclient );;
 
       install | update )
         if [[ -z "${MODE}" ]];then
