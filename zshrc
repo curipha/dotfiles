@@ -958,6 +958,7 @@ HELP
 
 # Alias {{{
 alias sudo='sudo '
+alias sort='LC_ALL=C sort'
 
 alias l.='ls -d .*'
 alias la='ls -AF'
