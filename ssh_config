@@ -41,6 +41,7 @@ Host *
   Compression           no
   ForwardAgent          no
   ForwardX11            no
+  UseRoaming            no
 
   TCPKeepAlive          yes
   ServerAliveInterval   3
