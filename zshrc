@@ -674,25 +674,6 @@ function package() {
   local -a PACKAGES
   for ARG in "${@}"; do
     case "${ARG}" in
-      base )
-        PACKAGES=( "${PACKAGES[@]}" zsh vim lua git gnupg2 screen tmux );;
-      network | net )
-        PACKAGES=( "${PACKAGES[@]}" nc jwhois traceroute bind-utils nmap openssl curl wget );;
-      develop | dev )
-        PACKAGES=( "${PACKAGES[@]}" gcc gcc-c++ make autoconf automake libtool binutils lsof patch strace kernel-devel libstdc++-devel );;
-      archive )
-        PACKAGES=( "${PACKAGES[@]}" bzip2 unzip xz );;
-      utility | util )
-        PACKAGES=( "${PACKAGES[@]}" binutils diffutils sharutils psmisc lsof patch strace );;
-      ruby )
-        PACKAGES=( "${PACKAGES[@]}" ruby irb );;
-      multimedia | multi )
-        PACKAGES=( "${PACKAGES[@]}" ImageMagick mpg123 ffmpeg );;
-      yum )
-        PACKAGES=( "${PACKAGES[@]}" yum-plugin-remove-with-leaves );;
-      misc )
-        PACKAGES=( "${PACKAGES[@]}" figlet file jq nkf sqlite );;
-
       install | update )
         if [[ -z "${MODE}" ]];then
           MODE="${ARG}"
@@ -706,31 +687,18 @@ function package() {
         YES=1;;
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [-y] [-h] install [ packages ... ]
-Usage: ${0} [-y] [-h] update
+Usage: ${0} [-y] install [ packages ... ]
+Usage: ${0} [-y] update
+Usage: ${0} -h
 
 Options:
   -y, --yes           Answer "yes" to any question
   -h, --help          Show this help message and exit
 
-List of pre-defined packages:
-  base                Base packages for usual operation
-  network (net)       Network related packages
-  develop (dev)       Development suite
-  archive             Archivers
-  utility (util)      Utility tools
-  multimedia (multi)  Images, videos and musics
-  ruby                Ruby and its related packages
-  yum                 Yum support packages
-  misc                Miscellaneous
-
 
 Example:
-  ${0} -v install base
-  Install base packages in verbose mode
-
-  ${0} -v install base
-  Install base packages in verbose mode
+  ${0} install vim gcc
+  Install 'vim' and 'gcc' package
 
   ${0} -y update
   Update all packages in any case
@@ -761,6 +729,7 @@ HELP
 
       case "${MODE}" in
         install )
+          sudo apt-get ${OPTIONS} clean                    && \
           sudo apt-get ${OPTIONS} update                   && \
           sudo apt-get ${OPTIONS} dist-upgrade             && \
           sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
@@ -768,6 +737,7 @@ HELP
         ;;
 
         update )
+          sudo apt-get ${OPTIONS} clean        && \
           sudo apt-get ${OPTIONS} update       && \
           sudo apt-get ${OPTIONS} dist-upgrade && \
           sudo apt-get ${OPTIONS} autoremove
@@ -960,6 +930,7 @@ HELP
 
 # Alias {{{
 alias sudo='sudo '
+alias sort='LC_ALL=C sort'
 
 alias l.='ls -d .*'
 alias la='ls -AF'
