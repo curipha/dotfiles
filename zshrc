@@ -674,23 +674,6 @@ function package() {
   local -a PACKAGES
   for ARG in "${@}"; do
     case "${ARG}" in
-      base )
-        PACKAGES=( "${PACKAGES[@]}" zsh vim lua git gnupg2 screen tmux );;
-      network | net )
-        PACKAGES=( "${PACKAGES[@]}" nc jwhois traceroute bind-utils nmap openssl curl wget tcpdump );;
-      develop | dev )
-        PACKAGES=( "${PACKAGES[@]}" gcc gcc-c++ make autoconf automake libtool binutils lsof patch diffutils colordiff strace kernel-devel libstdc++-devel );;
-      utility | util )
-        PACKAGES=( "${PACKAGES[@]}" binutils diffutils colordiff sharutils psmisc lsof patch strace smartmontools );;
-      ruby )
-        PACKAGES=( "${PACKAGES[@]}" ruby irb );;
-      multimedia | multi )
-        PACKAGES=( "${PACKAGES[@]}" ImageMagick mplayer mpg123 ffmpeg );;
-      misc )
-        PACKAGES=( "${PACKAGES[@]}" figlet file jq nkf sqlite );;
-      windows | win )
-        PACKAGES=( "${PACKAGES[@]}" wine smbclient );;
-
       install | update )
         if [[ -z "${MODE}" ]];then
           MODE="${ARG}"
@@ -710,17 +693,6 @@ Usage: ${0} [-y] [-h] update
 Options:
   -y, --yes           Answer "yes" to any question
   -h, --help          Show this help message and exit
-
-List of pre-defined packages:
-  base                Base packages for usual operation
-  network (net)       Network related packages
-  develop (dev)       Development suite
-  archive             Archivers
-  utility (util)      Utility tools
-  multimedia (multi)  Images, videos and musics
-  ruby                Ruby and its related packages
-  yum                 Yum support packages
-  misc                Miscellaneous
 
 
 Example:
