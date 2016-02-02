@@ -687,8 +687,9 @@ function package() {
         YES=1;;
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [-y] [-h] install [ packages ... ]
-Usage: ${0} [-y] [-h] update
+Usage: ${0} [-y] install [ packages ... ]
+Usage: ${0} [-y] update
+Usage: ${0} -h
 
 Options:
   -y, --yes           Answer "yes" to any question
@@ -696,11 +697,8 @@ Options:
 
 
 Example:
-  ${0} -v install base
-  Install base packages in verbose mode
-
-  ${0} -v install base
-  Install base packages in verbose mode
+  ${0} install vim gcc
+  Install 'vim' and 'gcc' package
 
   ${0} -y update
   Update all packages in any case
