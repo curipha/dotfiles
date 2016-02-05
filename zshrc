@@ -90,10 +90,11 @@ autoload -Uz zmv
 #}}}
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
-function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 
 function is_ssh() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()   { [[ -n "${DISPLAY}" ]] }
+
+function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
@@ -582,7 +583,7 @@ bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    if isinsiderepo; then
+    if isinrepo; then
       BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
       BUFFER='ls -AF'
