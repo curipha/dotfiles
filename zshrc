@@ -188,6 +188,9 @@ if exists manpath; then
   manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
+    /usr/local/man(N-/)
+    /usr/local/share/man(N-/)
+    /usr/share/man(N-/)
     ${(s.:.)MANPATH}
   )
   typeset -gU manpath
