@@ -91,6 +91,9 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
 function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+
+function is_ssh() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function is_x()   { [[ -n "${DISPLAY}" ]] }
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
@@ -126,7 +129,7 @@ case "${OSTYPE}" in
   ;;
 esac
 
-[[ -n "${DISPLAY}" ]] && xset -b
+is_x && xset -b
 
 if exists vim; then
   export EDITOR=vim
@@ -236,8 +239,7 @@ zle -N self-insert url-quote-magic
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-[[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] \
-  && SSH_INDICATOR='@ssh'
+is_ssh && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
