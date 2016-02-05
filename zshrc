@@ -788,10 +788,12 @@ HELP
 
       case "${MODE}" in
         install )
+          sudo pacman -Sc ${OPTIONS}                   && \
           sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
         ;;
 
         update )
+          sudo pacman -Sc ${OPTIONS}  && \
           sudo pacman -Syu ${OPTIONS}
         ;;
       esac
