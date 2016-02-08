@@ -149,6 +149,7 @@ nnoremap Q  <Nop>
 nnoremap qq <Nop>
 
 nnoremap q: :q
+nnoremap !  :!
 
 nnoremap ; :
 vnoremap ; :
