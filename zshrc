@@ -17,7 +17,6 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`id -un`
@@ -90,9 +89,15 @@ autoload -Uz zmv
 #}}}
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
-function isinsiderepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+
+function is_ssh() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function is_x()   { [[ -n "${DISPLAY}" ]] }
+
+function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
+is_ssh || is_x && export TERM=xterm-256color
+
 case "${OSTYPE}" in
   linux*)
     limit coredumpsize 0
@@ -126,7 +131,7 @@ case "${OSTYPE}" in
   ;;
 esac
 
-[[ -n "${DISPLAY}" ]] && xset -b
+is_x && xset -b
 
 if exists vim; then
   export EDITOR=vim
@@ -184,6 +189,9 @@ if exists manpath; then
   manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
+    /usr/local/man(N-/)
+    /usr/local/share/man(N-/)
+    /usr/share/man(N-/)
     ${(s.:.)MANPATH}
   )
   typeset -gU manpath
@@ -236,8 +244,7 @@ zle -N self-insert url-quote-magic
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-[[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] \
-  && SSH_INDICATOR='@ssh'
+is_ssh && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
@@ -580,7 +587,7 @@ bindkey '^S^S' prefix_with_sudo
 
 function magic_enter() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    if isinsiderepo; then
+    if isinrepo; then
       BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
       BUFFER='ls -AF'
@@ -674,23 +681,6 @@ function package() {
   local -a PACKAGES
   for ARG in "${@}"; do
     case "${ARG}" in
-      base )
-        PACKAGES=( "${PACKAGES[@]}" zsh vim lua git gnupg2 screen tmux );;
-      network | net )
-        PACKAGES=( "${PACKAGES[@]}" nc jwhois traceroute bind-utils nmap openssl curl wget tcpdump );;
-      develop | dev )
-        PACKAGES=( "${PACKAGES[@]}" gcc gcc-c++ make autoconf automake libtool binutils lsof patch diffutils colordiff strace kernel-devel libstdc++-devel );;
-      utility | util )
-        PACKAGES=( "${PACKAGES[@]}" binutils diffutils colordiff sharutils psmisc lsof patch strace smartmontools );;
-      ruby )
-        PACKAGES=( "${PACKAGES[@]}" ruby irb );;
-      multimedia | multi )
-        PACKAGES=( "${PACKAGES[@]}" ImageMagick mplayer mpg123 ffmpeg );;
-      misc )
-        PACKAGES=( "${PACKAGES[@]}" figlet file jq nkf sqlite );;
-      windows | win )
-        PACKAGES=( "${PACKAGES[@]}" wine smbclient );;
-
       install | update )
         if [[ -z "${MODE}" ]];then
           MODE="${ARG}"
@@ -704,31 +694,18 @@ function package() {
         YES=1;;
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [-y] [-h] install [ packages ... ]
-Usage: ${0} [-y] [-h] update
+Usage: ${0} [-y] install [ packages ... ]
+Usage: ${0} [-y] update
+Usage: ${0} -h
 
 Options:
   -y, --yes           Answer "yes" to any question
   -h, --help          Show this help message and exit
 
-List of pre-defined packages:
-  base                Base packages for usual operation
-  network (net)       Network related packages
-  develop (dev)       Development suite
-  archive             Archivers
-  utility (util)      Utility tools
-  multimedia (multi)  Images, videos and musics
-  ruby                Ruby and its related packages
-  yum                 Yum support packages
-  misc                Miscellaneous
-
 
 Example:
-  ${0} -v install base
-  Install base packages in verbose mode
-
-  ${0} -v install base
-  Install base packages in verbose mode
+  ${0} install vim gcc
+  Install 'vim' and 'gcc' package
 
   ${0} -y update
   Update all packages in any case
@@ -759,6 +736,7 @@ HELP
 
       case "${MODE}" in
         install )
+          sudo apt-get ${OPTIONS} clean                    && \
           sudo apt-get ${OPTIONS} update                   && \
           sudo apt-get ${OPTIONS} dist-upgrade             && \
           sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
@@ -766,6 +744,7 @@ HELP
         ;;
 
         update )
+          sudo apt-get ${OPTIONS} clean        && \
           sudo apt-get ${OPTIONS} update       && \
           sudo apt-get ${OPTIONS} dist-upgrade && \
           sudo apt-get ${OPTIONS} autoremove
@@ -816,10 +795,12 @@ HELP
 
       case "${MODE}" in
         install )
+          sudo pacman -Sc ${OPTIONS}                   && \
           sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
         ;;
 
         update )
+          sudo pacman -Sc ${OPTIONS}  && \
           sudo pacman -Syu ${OPTIONS}
         ;;
       esac
