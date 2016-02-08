@@ -90,7 +90,7 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
 
-function is_ssh() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()   { [[ -n "${DISPLAY}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
