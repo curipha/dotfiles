@@ -21,7 +21,9 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-set t_Co=256
+if &term =~# '\-256color$'
+  set t_Co=256
+endif
 set background=dark
 
 if has('vim_starting')
@@ -147,6 +149,7 @@ nnoremap Q  <Nop>
 nnoremap qq <Nop>
 
 nnoremap q: :q
+nnoremap !  :!
 
 nnoremap ; :
 vnoremap ; :

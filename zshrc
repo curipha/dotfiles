@@ -17,7 +17,6 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-export TERM=xterm-256color
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME=`hostname`
 [[ -z "${SHELL}" ]]    && export SHELL=`whence -p zsh`
 [[ -z "${USER}" ]]     && export USER=`id -un`
@@ -91,12 +90,14 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
 
-function is_ssh() { [[ -n "${SSH_CLIENT}${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()   { [[ -n "${DISPLAY}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 #}}}
 # Macros {{{
+is_ssh || is_x && export TERM=xterm-256color
+
 case "${OSTYPE}" in
   linux*)
     limit coredumpsize 0
