@@ -149,6 +149,7 @@ nnoremap Q  <Nop>
 nnoremap qq <Nop>
 
 nnoremap q: :q
+nnoremap !  :!
 
 nnoremap ; :
 vnoremap ; :
@@ -177,6 +178,9 @@ nnoremap gJ mzgJ`z
 nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
+
+inoremap <C-u> <C-g>u<C-u>
+inoremap <C-w> <C-g>u<C-w>
 
 vnoremap J zn:move '>+1<CR>gv=zNzvgv
 vnoremap K zn:move '<-2<CR>gv=zNzvgv
