@@ -37,3 +37,6 @@ if [[ -n ${SSH_CONFIG} ]]; then
   makeln "${PWD}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
 
+
+[[ ! "${SHELL}" =~ /zsh$ ]] && chsh -s /bin/zsh
+
