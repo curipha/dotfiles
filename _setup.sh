@@ -38,5 +38,8 @@ if [[ -n ${SSH_CONFIG} ]]; then
 fi
 
 
-[[ ! "${SHELL}" =~ /zsh$ ]] && chsh -s /bin/zsh
+if [[ ! "${SHELL}" =~ /zsh$ ]]; then
+  echo Change login shell to Zsh...
+  chsh -s /bin/zsh
+fi
 
