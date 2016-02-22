@@ -374,14 +374,23 @@ zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
 
-if [[ -r /etc/passwd ]]; then
+exists getent && ETC_PASSWD=`getent passwd 2> /dev/null`
+if [[ "${?}" != '0' ]]; then
+  if [[ -r /etc/passwd ]]; then
+    ETC_PASSWD=`cat /etc/passwd`
+  else
+    unset ETC_PASSWD
+  fi
+fi
+if [[ -n "${ETC_PASSWD}" ]]; then
   [[ -r /etc/login.defs ]] && \
     eval `awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs`
 
   zstyle ':completion:*:users' users \
-    $(awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }" /etc/passwd)
+    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
   unset UID_MIN UID_MAX
 fi
+unset ETC_PASSWD
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:-subscript-:*' list-separator ':'
