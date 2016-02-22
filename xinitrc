@@ -17,5 +17,6 @@ setxkbmap -option ctrl:nocaps
 # Application
 xcompmgr &
 
+
 exec startlxde
 
