@@ -232,6 +232,9 @@ vnoremap v  V
 
 nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 
+nnoremap <silent> <C-s> :<C-u>update<CR>
+inoremap <silent> <C-s> <C-o>:update<CR>
+
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
@@ -297,10 +300,6 @@ if has('multi_byte_ime') || has('xim')
   augroup END
 endif
 
-set pastetoggle=<F12>
-nnoremap <silent> <F12> :<C-u>set paste<CR>i
-vnoremap <silent> <F12> c<C-o>:set paste<CR>
-inoremap <silent> <F12> <C-o>:set paste<CR>
 autocmd MyAutoCmd InsertLeave * set nopaste
 
 if &term =~# '^xterm'
