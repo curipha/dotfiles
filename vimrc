@@ -266,6 +266,13 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
+nnoremap <Leader>tcss  :<C-u>setlocal filetype=css<CR>
+nnoremap <Leader>thtml :<C-u>setlocal filetype=html<CR>
+nnoremap <Leader>tmd   :<C-u>setlocal filetype=markdown<CR>
+nnoremap <Leader>tsh   :<C-u>setlocal filetype=sh<CR>
+nnoremap <Leader>tvb   :<C-u>setlocal filetype=vb<CR>
+nnoremap <Leader>tvim  :<C-u>setlocal filetype=vim<CR>
+
 autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
