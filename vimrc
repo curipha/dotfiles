@@ -519,7 +519,7 @@ set listchars=tab:>.,trail:_,extends:>,precedes:<
 set fillchars=fold:\ 
 
 set showmatch
-set matchpairs& matchpairs+=<:>
+set matchpairs=(:),<:>,[:],{:},«:»,‹:›,≪:≫,〈:〉,《:》,「:」,『:』,【:】,〔:〕,（:）,＜:＞,［:］,｛:｝,｢:｣,‘:’,“:”
 autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
 
 if exists('&ambiwidth')
