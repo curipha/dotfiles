@@ -393,6 +393,8 @@ set smartcase
 set wrapscan
 
 set grepprg=internal
+nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/ %<CR>
+nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/ %<CR>
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
