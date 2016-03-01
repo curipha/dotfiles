@@ -275,8 +275,6 @@ nnoremap <Leader>tvim  :<C-u>setlocal filetype=vim<CR>
 
 autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
-autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
-
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
 autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
 autocmd MyAutoCmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -395,6 +393,8 @@ set wrapscan
 set grepprg=internal
 nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/ %<CR>
 nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/ %<CR>
+autocmd MyAutoCmd FileType vim nnoremap <silent> K  :<C-u>help <C-r><C-w><CR>
+autocmd MyAutoCmd FileType vim nnoremap <silent> gK :<C-u>help <C-r><C-w><CR>
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
