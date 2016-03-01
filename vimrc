@@ -393,8 +393,8 @@ set wrapscan
 set grepprg=internal
 nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/ %<CR>
 nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/ %<CR>
-autocmd MyAutoCmd FileType vim nnoremap <silent> K  :<C-u>help <C-r><C-w><CR>
-autocmd MyAutoCmd FileType vim nnoremap <silent> gK :<C-u>help <C-r><C-w><CR>
+autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
+autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
