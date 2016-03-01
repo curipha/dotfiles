@@ -566,6 +566,8 @@ autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
+
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
