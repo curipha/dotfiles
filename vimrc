@@ -393,8 +393,10 @@ set wrapscan
 set grepprg=internal
 nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/ %<CR>
 nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/ %<CR>
-autocmd MyAutoCmd FileType vim nnoremap <silent> K  :<C-u>help <C-r><C-w><CR>
-autocmd MyAutoCmd FileType vim nnoremap <silent> gK :<C-u>help <C-r><C-w><CR>
+vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/ %<CR>
+vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/ %<CR>
+autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
+autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
@@ -559,10 +561,12 @@ set report=0
 set synmaxcol=270
 
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <CR> <C-]>
-autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <CR> <C-]>
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <BS> <C-o>
-autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <BS> <C-c><C-o>
+autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
+autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
+
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
