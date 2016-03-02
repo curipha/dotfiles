@@ -399,6 +399,9 @@ vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/ %<C
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
 
+nnoremap <silent> <C-Up>   :cprevious<CR>
+nnoremap <silent> <C-Down> :cnext<CR>
+
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
 \ |   cclose
