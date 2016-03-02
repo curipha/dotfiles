@@ -179,6 +179,7 @@ nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
 
+inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
 
