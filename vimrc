@@ -534,7 +534,11 @@ set matchpairs=(:),<:>,[:],{:},«:»,‹:›,≪:≫,〈:〉,《:》,「:」,『
 autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
 
 if exists('&ambiwidth')
-  set ambiwidth=double
+  if has('kaoriya')
+    set ambiwidth=auto
+  else
+    set ambiwidth=double
+  endif
 endif
 
 set foldenable
