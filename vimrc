@@ -408,6 +408,10 @@ autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \ | else
 \ |   cwindow
 \ | endif
+autocmd MyAutoCmd WinEnter *
+\   if winnr('$') ==# 1 && getbufvar(winbufnr(0), '&l:buftype') ==# 'quickfix'
+\ |   quit
+\ | endif
 
 autocmd MyAutoCmd WinLeave *
 \   let b:vimrc_pattern  = @/
