@@ -532,7 +532,7 @@ nnoremap <silent> <C-n>     :tabnext<CR>
 nnoremap <silent> <C-Left>  :tabprevious<CR>
 nnoremap <silent> <C-Right> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>$tabnew<CR>
+nnoremap <silent> tt :<C-u>tab split<CR>
 
 set display=uhex
 set list
