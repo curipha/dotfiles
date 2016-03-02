@@ -527,8 +527,8 @@ for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
   execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
 endfor
 
-nnoremap <silent> <C-p> :tabprevious<CR>
-nnoremap <silent> <C-n> :tabnext<CR>
+nnoremap <silent> <C-p>     :tabprevious<CR>
+nnoremap <silent> <C-n>     :tabnext<CR>
 nnoremap <silent> <C-Left>  :tabprevious<CR>
 nnoremap <silent> <C-Right> :tabnext<CR>
 
