@@ -179,6 +179,7 @@ nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
 
+inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
 
@@ -398,11 +399,18 @@ vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/ %<C
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
 
+nnoremap <silent> <C-Up>   :cprevious<CR>
+nnoremap <silent> <C-Down> :cnext<CR>
+
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
 \ |   cclose
 \ | else
 \ |   cwindow
+\ | endif
+autocmd MyAutoCmd WinEnter *
+\   if winnr('$') ==# 1 && getbufvar(winbufnr(0), '&l:buftype') ==# 'quickfix'
+\ |   quit
 \ | endif
 
 autocmd MyAutoCmd WinLeave *
@@ -519,10 +527,12 @@ for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
   execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
 endfor
 
-nnoremap <silent> <C-p> :tabprevious<CR>
-nnoremap <silent> <C-n> :tabnext<CR>
+nnoremap <silent> <C-p>     :tabprevious<CR>
+nnoremap <silent> <C-n>     :tabnext<CR>
+nnoremap <silent> <C-Left>  :tabprevious<CR>
+nnoremap <silent> <C-Right> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>$tabnew<CR>
+nnoremap <silent> tt :<C-u>tab split<CR>
 
 set display=uhex
 set list
@@ -534,7 +544,11 @@ set matchpairs=(:),<:>,[:],{:},«:»,‹:›,≪:≫,〈:〉,《:》,「:」,『
 autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
 
 if exists('&ambiwidth')
-  set ambiwidth=double
+  if has('kaoriya')
+    set ambiwidth=auto
+  else
+    set ambiwidth=double
+  endif
 endif
 
 set foldenable
