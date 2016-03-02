@@ -26,7 +26,7 @@ endif
 " GUI {{{
 colorscheme desert
 
-set guioptions=aciM
+set guioptions=ciM
 set guicursor=a:blinkon0
 set visualbell t_vb=
 
