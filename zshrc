@@ -79,10 +79,12 @@ autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz colors
 autoload -Uz compinit
+autoload -Uz down-line-or-beginning-search
 autoload -Uz is-at-least
 autoload -Uz modify-current-argument
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
+autoload -Uz up-line-or-beginning-search
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
 autoload -Uz zmv
@@ -318,12 +320,15 @@ setopt hist_fcntl_lock
 bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
 bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
 
-bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-search
-bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-search
-bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-search
-bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-search
-bindkey '^P' up-line-or-search
-bindkey '^N' down-line-or-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-beginning-search
+bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-beginning-search
+bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-beginning-search
+bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-beginning-search
+bindkey '^P' up-line-or-beginning-search
+bindkey '^N' down-line-or-beginning-search
 
 bindkey '^[p' history-incremental-pattern-search-backward
 bindkey '^[n' history-incremental-pattern-search-forward
