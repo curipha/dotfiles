@@ -529,6 +529,8 @@ endfor
 
 nnoremap <silent> <C-p> :tabprevious<CR>
 nnoremap <silent> <C-n> :tabnext<CR>
+nnoremap <silent> <C-Left>  :tabprevious<CR>
+nnoremap <silent> <C-Right> :tabnext<CR>
 
 nnoremap <silent> tt :<C-u>$tabnew<CR>
 
