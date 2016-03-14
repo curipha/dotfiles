@@ -107,12 +107,16 @@ case "${OSTYPE}" in
     alias ls='ls --color=auto'
     alias open=xdg-open
     alias start=xdg-open
+
+    setopt hist_fcntl_lock
   ;;
 
   darwin*)
     limit coredumpsize 0
 
     alias ls='ls -G'
+
+    setopt hist_fcntl_lock
   ;;
 
   freebsd*)
@@ -124,6 +128,8 @@ case "${OSTYPE}" in
     exists gmake && export MAKE=`whence -p gmake`
 
     exists jot   && alias seq=jot
+
+    setopt hist_fcntl_lock
   ;;
 
   cygwin)
@@ -314,8 +320,6 @@ setopt hist_save_no_dups
 setopt hist_verify
 setopt inc_append_history
 setopt share_history
-
-setopt hist_fcntl_lock
 
 bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
 bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
