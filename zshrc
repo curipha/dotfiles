@@ -431,7 +431,6 @@ setopt brace_ccl
 setopt case_glob
 setopt equals
 setopt extended_glob
-setopt glob_complete
 setopt glob_dots
 setopt magic_equal_subst
 setopt mark_dirs
