@@ -692,7 +692,7 @@ function 256color() {
 
 function package() {
   local ARG MODE YES
-  local -a PACKAGES
+  local -aU PACKAGES
   for ARG in "${@}"; do
     case "${ARG}" in
       install | update )
