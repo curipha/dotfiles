@@ -705,7 +705,7 @@ function package() {
           MODE="${ARG}"
         else
           echo 'Warning: Execution mode is already set. Argument is assumed as a package name.' 1>&2
-          PACKAGES=( "${PACKAGES[@]}" "${ARG}" )
+          PACKAGES+=( "${ARG}" )
         fi
       ;;
 
@@ -732,7 +732,7 @@ HELP
         return 1;;
 
       * )
-        PACKAGES=( "${PACKAGES[@]}" "${ARG}" );;
+        PACKAGES+=( "${ARG}" );;
     esac
   done
 
