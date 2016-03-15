@@ -46,7 +46,7 @@ export LESS_TERMCAP_so=$'\e[30;47m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[4;36m'
 
-path=(
+typeset -gaU path=(
   ~/sbin(N-/)
   ~/bin(N-/)
   ~/app/*/sbin(N-/)
@@ -59,15 +59,13 @@ path=(
   /bin(N-/)
   $path
 )
-typeset -gU path
 export PATH
 
-cdpath=(
+typeset -gaU cdpath=(
   $HOME
   ..
   ../..
 )
-typeset -gU cdpath
 
 umask 022
 ulimit -c 0
@@ -194,7 +192,7 @@ fi
 if exists manpath; then
   MANPATH=`MANPATH= manpath`
 
-  manpath=(
+  typeset -gaU manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
     /usr/local/man(N-/)
@@ -202,7 +200,6 @@ if exists manpath; then
     /usr/share/man(N-/)
     ${(s.:.)MANPATH}
   )
-  typeset -gU manpath
   export MANPATH
 fi
 #}}}
@@ -446,8 +443,7 @@ bindkey '^]' insert-last-word
 
 bindkey '^[m' copy-prev-shell-word
 
-typeset -A abbrev_expand
-abbrev_expand=(
+typeset -A abbrev_expand=(
   '..'    '../'
   '...'   '../../'
   '....'  '../../../'
@@ -483,24 +479,30 @@ function magic-abbrev-expand-and-insert() {
   magic-abbrev-expand
   zle self-insert
 }
+function magic-abbrev-expand-and-space() {
+  magic-abbrev-expand
+  zle magic-space
+}
 function magic-abbrev-expand-and-accept() {
   magic-abbrev-expand
   zle accept-line
 }
 function magic-abbrev-expand-and-complete() {
+  echo -n "\e[32m....\e[0m"
   magic-abbrev-expand
   zle expand-or-complete
+  zle redisplay
 }
 
 zle -N magic-abbrev-expand-and-insert
+zle -N magic-abbrev-expand-and-space
 zle -N magic-abbrev-expand-and-complete
 zle -N magic-abbrev-expand-and-accept
-bindkey ' '  magic-abbrev-expand-and-insert
+bindkey ' '  magic-abbrev-expand-and-space
 bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
 #}}}
 # Utility{{{
-alias rename='noglob zmv -ivW'
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 alias cls='echo -en "\033c" && tput clear'
@@ -695,7 +697,7 @@ function 256color() {
 
 function package() {
   local ARG MODE YES
-  local -a PACKAGES
+  local -aU PACKAGES
   for ARG in "${@}"; do
     case "${ARG}" in
       install | update )
@@ -840,8 +842,7 @@ function checkclock() {
     return 1
   fi
 
-  local -a NTP
-  NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
+  local -a NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
 
   local UPDATE RTC
   while getopts hru ARG; do
@@ -957,6 +958,10 @@ HELP
 # Alias {{{
 alias sudo='sudo '
 alias sort='LC_ALL=C sort'
+
+alias zmv='noglob zmv -vW'
+alias zcp='noglob zmv -vWC'
+alias zln='noglob zmv -vWL'
 
 alias l.='ls -d .*'
 alias la='ls -AF'
