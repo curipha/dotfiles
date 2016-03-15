@@ -489,8 +489,10 @@ function magic-abbrev-expand-and-accept() {
   zle accept-line
 }
 function magic-abbrev-expand-and-complete() {
+  echo -n "\e[32m....\e[0m"
   magic-abbrev-expand
   zle expand-or-complete
+  zle redisplay
 }
 
 zle -N magic-abbrev-expand-and-insert
