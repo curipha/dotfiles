@@ -497,7 +497,6 @@ bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
 #}}}
 # Utility{{{
-alias rename='noglob zmv -ivW'
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 alias cls='echo -en "\033c" && tput clear'
@@ -953,6 +952,10 @@ HELP
 # Alias {{{
 alias sudo='sudo '
 alias sort='LC_ALL=C sort'
+
+alias zmv='noglob zmv -vW'
+alias zcp='noglob zmv -vWC'
+alias zln='noglob zmv -vWL'
 
 alias l.='ls -d .*'
 alias la='ls -AF'
