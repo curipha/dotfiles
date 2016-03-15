@@ -46,7 +46,7 @@ export LESS_TERMCAP_so=$'\e[30;47m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[4;36m'
 
-path=(
+typeset -gaU path=(
   ~/sbin(N-/)
   ~/bin(N-/)
   ~/app/*/sbin(N-/)
@@ -59,15 +59,13 @@ path=(
   /bin(N-/)
   $path
 )
-typeset -gU path
 export PATH
 
-cdpath=(
+typeset -gaU cdpath=(
   $HOME
   ..
   ../..
 )
-typeset -gU cdpath
 
 umask 022
 ulimit -c 0
@@ -194,7 +192,7 @@ fi
 if exists manpath; then
   MANPATH=`MANPATH= manpath`
 
-  manpath=(
+  typeset -gaU manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
     /usr/local/man(N-/)
@@ -202,7 +200,6 @@ if exists manpath; then
     /usr/share/man(N-/)
     ${(s.:.)MANPATH}
   )
-  typeset -gU manpath
   export MANPATH
 fi
 #}}}
@@ -447,8 +444,7 @@ bindkey '^]' insert-last-word
 
 bindkey '^[m' copy-prev-shell-word
 
-typeset -A abbrev_expand
-abbrev_expand=(
+typeset -A abbrev_expand=(
   '..'    '../'
   '...'   '../../'
   '....'  '../../../'
@@ -841,8 +837,7 @@ function checkclock() {
     return 1
   fi
 
-  local -a NTP
-  NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
+  local -a NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
 
   local UPDATE RTC
   while getopts hru ARG; do
