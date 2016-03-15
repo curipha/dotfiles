@@ -179,6 +179,7 @@ nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
 
+inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
 
@@ -266,9 +267,13 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
+for s:p in ['css', 'html', ['md', 'markdown'], 'sh', 'vb', 'vim']
+  let [s:k, s:t] = (type(s:p) ==# type([])) ? s:p : [s:p, s:p]
+  execute 'nnoremap <Leader>t' . s:k . ' :<C-u>setlocal filetype=' . s:t . '<CR>'
+  unlet s:p
+endfor
 
-autocmd MyAutoCmd FileType vim setlocal keywordprg=:help
+autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
 autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
@@ -386,12 +391,25 @@ set smartcase
 set wrapscan
 
 set grepprg=internal
+nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/ %<CR>
+nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/ %<CR>
+vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/ %<CR>
+vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/ %<CR>
+autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
+autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
+
+nnoremap <silent> <C-Up>   :cprevious<CR>
+nnoremap <silent> <C-Down> :cnext<CR>
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
 \ |   cclose
 \ | else
 \ |   cwindow
+\ | endif
+autocmd MyAutoCmd WinEnter *
+\   if winnr('$') ==# 1 && getbufvar(winbufnr(0), '&l:buftype') ==# 'quickfix'
+\ |   quit
 \ | endif
 
 autocmd MyAutoCmd WinLeave *
@@ -508,10 +526,12 @@ for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
   execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
 endfor
 
-nnoremap <silent> <C-p> :tabprevious<CR>
-nnoremap <silent> <C-n> :tabnext<CR>
+nnoremap <silent> <C-p>     :tabprevious<CR>
+nnoremap <silent> <C-n>     :tabnext<CR>
+nnoremap <silent> <C-Left>  :tabprevious<CR>
+nnoremap <silent> <C-Right> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>$tabnew<CR>
+nnoremap <silent> tt :<C-u>tab split<CR>
 
 set display=uhex
 set list
@@ -519,11 +539,15 @@ set listchars=tab:>.,trail:_,extends:>,precedes:<
 set fillchars=fold:\ 
 
 set showmatch
-set matchpairs& matchpairs+=<:>
+set matchpairs=(:),<:>,[:],{:},«:»,‹:›,≪:≫,〈:〉,《:》,「:」,『:』,【:】,〔:〕,（:）,＜:＞,［:］,｛:｝,｢:｣,‘:’,“:”
 autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
 
 if exists('&ambiwidth')
-  set ambiwidth=double
+  if has('kaoriya')
+    set ambiwidth=auto
+  else
+    set ambiwidth=double
+  endif
 endif
 
 set foldenable
@@ -550,10 +574,12 @@ set report=0
 set synmaxcol=270
 
 autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <CR> <C-]>
-autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <CR> <C-]>
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer> <BS> <C-o>
-autocmd MyAutoCmd FileType help,qf vnoremap <buffer> <BS> <C-c><C-o>
+autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
+autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
+autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
+
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
