@@ -337,7 +337,9 @@ bindkey '^N' down-line-or-beginning-search
 bindkey '^[p' history-incremental-pattern-search-backward
 bindkey '^[n' history-incremental-pattern-search-forward
 
-bindkey -r '^R' '^S'
+bindkey '^R' end-of-history
+
+bindkey -r '^S'
 #}}}
 # Complement {{{
 compinit
