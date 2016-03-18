@@ -641,7 +641,7 @@ function magic_circumflex() {
     BUFFER='cd ..'
     zle accept-line
   else
-    zle self-insert '^'
+    zle self-insert
   fi
 }
 zle -N magic_circumflex
