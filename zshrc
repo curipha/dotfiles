@@ -321,8 +321,8 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
-bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
-bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
+bindkey "${terminfo[kpp]:-^[[5~}" up-history
+bindkey "${terminfo[knp]:-^[[6~}" down-history
 
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
