@@ -273,6 +273,12 @@ function accept-line() {
 }
 zle -N accept-line
 
+function kill-whole-line() {
+  zle end-of-history
+  zle .kill-whole-line
+}
+zle -N kill-whole-line
+
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '(+)'
