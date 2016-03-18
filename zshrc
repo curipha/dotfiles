@@ -46,7 +46,7 @@ export LESS_TERMCAP_so=$'\e[30;47m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[4;36m'
 
-typeset -gaU path=(
+path=(
   ~/sbin(N-/)
   ~/bin(N-/)
   ~/app/*/sbin(N-/)
@@ -59,13 +59,15 @@ typeset -gaU path=(
   /bin(N-/)
   $path
 )
+typeset -gU path
 export PATH
 
-typeset -gaU cdpath=(
+cdpath=(
   $HOME
   ..
   ../..
 )
+typeset -gU cdpath
 
 umask 022
 ulimit -c 0
@@ -192,7 +194,7 @@ fi
 if exists manpath; then
   MANPATH=`MANPATH= manpath`
 
-  typeset -gaU manpath=(
+  manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
     /usr/local/man(N-/)
@@ -200,6 +202,7 @@ if exists manpath; then
     /usr/share/man(N-/)
     ${(s.:.)MANPATH}
   )
+  typeset -gU manpath
   export MANPATH
 fi
 #}}}
@@ -318,8 +321,8 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
-bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
-bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
+bindkey "${terminfo[kpp]:-^[[5~}" up-history
+bindkey "${terminfo[knp]:-^[[6~}" down-history
 
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
@@ -443,7 +446,8 @@ bindkey '^]' insert-last-word
 
 bindkey '^[m' copy-prev-shell-word
 
-typeset -A abbrev_expand=(
+typeset -A abbrev_expand
+abbrev_expand=(
   '..'    '../'
   '...'   '../../'
   '....'  '../../../'
@@ -637,7 +641,7 @@ function magic_circumflex() {
     BUFFER='cd ..'
     zle accept-line
   else
-    zle self-insert '^'
+    zle self-insert
   fi
 }
 zle -N magic_circumflex
@@ -705,7 +709,7 @@ function package() {
           MODE="${ARG}"
         else
           echo 'Warning: Execution mode is already set. Argument is assumed as a package name.' 1>&2
-          PACKAGES=( "${PACKAGES[@]}" "${ARG}" )
+          PACKAGES+=( "${ARG}" )
         fi
       ;;
 
@@ -732,7 +736,7 @@ HELP
         return 1;;
 
       * )
-        PACKAGES=( "${PACKAGES[@]}" "${ARG}" );;
+        PACKAGES+=( "${ARG}" );;
     esac
   done
 
@@ -842,7 +846,8 @@ function checkclock() {
     return 1
   fi
 
-  local -a NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
+  local -a NTP
+  NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
 
   local UPDATE RTC
   while getopts hru ARG; do
