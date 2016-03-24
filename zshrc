@@ -273,6 +273,12 @@ function accept-line() {
 }
 zle -N accept-line
 
+function kill-whole-line() {
+  zle end-of-history
+  zle .kill-whole-line
+}
+zle -N kill-whole-line
+
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '(+)'
@@ -337,7 +343,9 @@ bindkey '^N' down-line-or-beginning-search
 bindkey '^[p' history-incremental-pattern-search-backward
 bindkey '^[n' history-incremental-pattern-search-forward
 
-bindkey -r '^R' '^S'
+bindkey '^R' end-of-history
+
+bindkey -r '^S'
 #}}}
 # Complement {{{
 compinit

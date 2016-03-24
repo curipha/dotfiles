@@ -573,7 +573,7 @@ set shortmess=aTI
 set report=0
 set synmaxcol=270
 
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help,qf nnoremap <buffer><silent><nowait> q :<C-u>quit<CR>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
