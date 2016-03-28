@@ -419,6 +419,9 @@ zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-dir
 zstyle ':completion:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:scp:*:files' command command -
 
+
+DIRSTACKSIZE=20
+
 setopt auto_cd
 setopt auto_pushd
 setopt cdable_vars
