@@ -419,7 +419,7 @@ autocmd MyAutoCmd WinEnter *
 \   let @/ = get(b:, 'vimrc_pattern', @/)
 \ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
 
-nnoremap <silent> <Leader><Space> :<C-u>nohlsearch<CR>
+nnoremap <silent> <Leader><Space> :<C-u>nohlsearch<CR>:<C-u>diffupdate<CR>:<C-u>syntax sync fromstart<CR><C-l>
 
 nnoremap / /\v
 nnoremap ? ?\v
@@ -460,6 +460,8 @@ set statusline=%t\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3v\ \ %3l/%3L\ \(%P\)
+
+autocmd Filetype qf let &l:statusline='%t %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y  %3l/%3L (%P)'
 
 if has('gui_running')
   set cursorline
@@ -597,8 +599,6 @@ augroup END
 " }}}
 
 " Command {{{
-command! -bar SSF syntax sync fromstart
-
 for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
   execute 'command! -bang -bar -nargs=? -complete=file'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
@@ -679,18 +679,28 @@ let g:php_noShortTags = 1
 
 " syntax/sh.vim
 let g:is_bash = 1
+
+" syntax/vim.vim
+let g:vimsyn_embed = 0
+let g:vimsyn_folding = 0
 " }}}
 " Plugin {{{
 " Standard plugin {{{
 let g:loaded_2html_plugin    = 1
 let g:loaded_getscriptPlugin = 1
 let g:loaded_gzip            = 1
+let g:loaded_logipat         = 1
 let g:loaded_tar             = 1
 let g:loaded_tarPlugin       = 1
 let g:loaded_vimball         = 1
 let g:loaded_vimballPlugin   = 1
 let g:loaded_zip             = 1
 let g:loaded_zipPlugin       = 1
+" }}}
+" matchit.vim {{{
+runtime macros/matchit.vim
+
+nmap <Tab> %
 " }}}
 " neocomplete {{{
 "  - https://github.com/Shougo/neocomplete.vim
