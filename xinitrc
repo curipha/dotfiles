@@ -11,6 +11,10 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
 
+
+# X resources
+[[ -s ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
 # Keyboard
 setxkbmap -option ctrl:nocaps
 
