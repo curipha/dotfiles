@@ -679,6 +679,10 @@ let g:php_noShortTags = 1
 
 " syntax/sh.vim
 let g:is_bash = 1
+
+" syntax/vim.vim
+let g:vimsyn_embed = 0
+let g:vimsyn_folding = 0
 " }}}
 " Plugin {{{
 " Standard plugin {{{
