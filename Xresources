@@ -1,6 +1,6 @@
-# ===============
-#  .Xresources
-# ===============
+! ===============
+!  .Xresources
+! ===============
 
 ! Xft
 Xft.antialias:  true
