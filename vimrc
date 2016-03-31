@@ -693,6 +693,11 @@ let g:loaded_vimballPlugin   = 1
 let g:loaded_zip             = 1
 let g:loaded_zipPlugin       = 1
 " }}}
+" matchit.vim {{{
+runtime macros/matchit.vim
+
+nmap <Tab> %
+" }}}
 " neocomplete {{{
 "  - https://github.com/Shougo/neocomplete.vim
 let g:neocomplete#enable_at_startup = has('lua')
