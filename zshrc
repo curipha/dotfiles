@@ -273,6 +273,12 @@ function accept-line() {
 }
 zle -N accept-line
 
+function kill-whole-line() {
+  zle end-of-history
+  zle .kill-whole-line
+}
+zle -N kill-whole-line
+
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '(+)'
@@ -321,8 +327,8 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
-bindkey "${terminfo[kpp]:-^[[5~}" up-line-or-history
-bindkey "${terminfo[knp]:-^[[6~}" down-line-or-history
+bindkey "${terminfo[kpp]:-^[[5~}" up-history
+bindkey "${terminfo[knp]:-^[[6~}" down-history
 
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
@@ -337,7 +343,9 @@ bindkey '^N' down-line-or-beginning-search
 bindkey '^[p' history-incremental-pattern-search-backward
 bindkey '^[n' history-incremental-pattern-search-forward
 
-bindkey -r '^R' '^S'
+bindkey '^R' end-of-history
+
+bindkey -r '^S'
 #}}}
 # Complement {{{
 compinit
@@ -410,6 +418,9 @@ zstyle ':completion:*:sudo:*' command-path
 zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:scp:*:files' command command -
+
+
+DIRSTACKSIZE=20
 
 setopt auto_cd
 setopt auto_pushd
@@ -576,11 +587,21 @@ function whois() {
       return 1
     fi
 
-    local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
+    local ARG DOMAIN OPTION
+    local -a OPTION
+    for ARG in "${@}"; do
+      case "${ARG}" in
+        -* )
+          OPTION+=( "${ARG}" );;
+        * )
+          DOMAIN=`echo "${ARG}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`;;
+      esac
+    done
+
     if [[ -z "${DOMAIN}" ]]; then
-      ${WHOIS}
+      "${WHOIS}" "${OPTION[@]}"
     else
-      ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+      ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
     fi
   } always {
     local RETURN="${?}"
