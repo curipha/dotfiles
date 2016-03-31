@@ -26,6 +26,9 @@ URxvt*scrollBar:  false
 URxvt*scrollTtyKeypress:  true
 URxvt*scrollTtyOutput:    false
 
+URxvt*urgentOnBell: false
+URxvt*visualBell:   false
+
 URxvt*letterSpace:  -1
 URxvt*lineSpace:    0
 
