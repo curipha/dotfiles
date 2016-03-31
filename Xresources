@@ -17,7 +17,7 @@ URxvt*geometry:   110x40
 URxvt*font:       xft:Fira Mono:size=9
 
 URxvt*depth:      32
-URxvt*background: rgba:0000/0000/0000/efef
+URxvt*background: rgba:0000/0000/0000/cc00
 URxvt*foreground: #ffffff
 
 URxvt*saveLines:  10000
