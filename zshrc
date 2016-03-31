@@ -419,6 +419,9 @@ zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-dir
 zstyle ':completion:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:scp:*:files' command command -
 
+
+DIRSTACKSIZE=20
+
 setopt auto_cd
 setopt auto_pushd
 setopt cdable_vars
@@ -584,11 +587,21 @@ function whois() {
       return 1
     fi
 
-    local DOMAIN=`echo "${1}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`
+    local ARG DOMAIN OPTION
+    local -a OPTION
+    for ARG in "${@}"; do
+      case "${ARG}" in
+        -* )
+          OPTION+=( "${ARG}" );;
+        * )
+          DOMAIN=`echo "${ARG}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`;;
+      esac
+    done
+
     if [[ -z "${DOMAIN}" ]]; then
-      ${WHOIS}
+      "${WHOIS}" "${OPTION[@]}"
     else
-      ( echo "${WHOIS} ${DOMAIN}" && ${WHOIS} ${DOMAIN} ) |& ${PAGER}
+      ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
     fi
   } always {
     local RETURN="${?}"
