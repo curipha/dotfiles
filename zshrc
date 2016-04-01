@@ -177,10 +177,9 @@ alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM EXCLUDE_DIR
 
 if exists gcc; then
-  GCC_HELP=`gcc -v --help 2> /dev/null`
 
   CFLAGS='-march=native -mtune=native -O2 -pipe'
-  if   [[ "${GCC_HELP}" =~ '-fstack-protector-strong' ]]; then
+  if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
     CFLAGS+=' -fstack-protector-strong'
   else
     CFLAGS+=' -fstack-protector-all'
@@ -188,7 +187,6 @@ if exists gcc; then
 
   export CFLAGS
   export CXXFLAGS="${CFLAGS}"
-  unset GCC_HELP
 fi
 
 if exists manpath; then
