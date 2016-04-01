@@ -183,7 +183,7 @@ if exists gcc; then
   if   [[ "${GCC_HELP}" =~ '-fstack-protector-strong' ]]; then
     CFLAGS+=' -fstack-protector-strong'
   elif [[ "${GCC_HELP}" =~ '-fstack-protector' ]]; then
-    CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
+    CFLAGS+=' -fstack-protector-all'
   fi
 
   export CFLAGS
