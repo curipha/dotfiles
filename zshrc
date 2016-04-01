@@ -176,7 +176,15 @@ fi
 alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM EXCLUDE_DIR
 
-if exists gcc; then
+if [[ "${OSTYPE}" == (darwin|freebsd)* ]] && exists clang; then
+  export CC=clang
+  export CXX=clang++
+
+  export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
+  export CXXFLAGS="${CFLAGS}"
+elif exists gcc; then
+  export CC=gcc
+  export CXX=g++
 
   CFLAGS='-march=native -mtune=native -O2 -pipe'
   if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
