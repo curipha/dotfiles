@@ -182,7 +182,7 @@ if exists gcc; then
   CFLAGS='-march=native -mtune=native -O2 -pipe'
   if   [[ "${GCC_HELP}" =~ '-fstack-protector-strong' ]]; then
     CFLAGS+=' -fstack-protector-strong'
-  elif [[ "${GCC_HELP}" =~ '-fstack-protector' ]]; then
+  else
     CFLAGS+=' -fstack-protector-all'
   fi
 
