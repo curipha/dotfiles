@@ -181,7 +181,7 @@ if exists gcc; then
 
   CFLAGS='-march=native -mtune=native -O2 -pipe'
   if   [[ "${GCC_HELP}" =~ '-fstack-protector-strong' ]]; then
-    CFLAGS+=' -fstack-protector-strong --param=ssp-buffer-size=4'
+    CFLAGS+=' -fstack-protector-strong'
   elif [[ "${GCC_HELP}" =~ '-fstack-protector' ]]; then
     CFLAGS+=' -fstack-protector --param=ssp-buffer-size=4'
   fi
