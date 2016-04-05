@@ -29,6 +29,7 @@
   lla   = log --decorate --oneline --graph
   lp    = log --decorate --patch-with-stat --no-merges
   lpa   = log --decorate --patch-with-stat
+  pf    = push --force-with-lease
   pl    = pull
   pu    = push
   r     = remote --verbose
