@@ -11,8 +11,8 @@
   br    = branch --all --verbose --verbose
   ca    = commit --all --verbose --verbose
   ci    = commit --verbose --verbose
-  cp    = commit --patch --verbose --verbose
   co    = checkout
+  cp    = commit --patch --verbose --verbose
   d     = diff --patch-with-stat
   dc    = diff --patch-with-stat --cached
   dcw   = diff --patch-with-stat --cached --ignore-all-space
