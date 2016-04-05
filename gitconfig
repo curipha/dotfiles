@@ -44,8 +44,8 @@
 
   unstage = reset HEAD --
 
-  revert-file-to-head  = checkout HEAD --
-  revert-file-to-index = checkout --
+  revert-to-head  = checkout HEAD --
+  revert-to-index = checkout --
 
 [blame]
   date = iso
