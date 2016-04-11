@@ -79,7 +79,7 @@ set wildignore+=*.tar,*.bz2,*.gz,*.xz,*.7z,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
 set wildignore+=*/.git/*
 set wildignore+=*/$RECYCLE.BIN/*,*/System\ Volume\ Information/*
-set suffixes=.bak,.tmp,.out,.aux,.toc
+set suffixes=.bak,.tmp,.log,.out,.aux,.toc,.pdf
 
 set history=100
 set undolevels=4000
