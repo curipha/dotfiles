@@ -106,6 +106,7 @@ set noswapfile
 set noundofile
 set viminfo=
 
+set autoread
 set hidden
 set switchbuf& switchbuf+=useopen
 
