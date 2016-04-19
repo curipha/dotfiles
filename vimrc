@@ -392,6 +392,7 @@ set smartcase
 set wrapscan
 
 set grepprg=internal
+nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
 nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/ %<CR>
 nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/ %<CR>
 vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/ %<CR>
