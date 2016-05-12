@@ -369,7 +369,7 @@ zstyle -e ':completion:*' completer '
     reply=(_expand _complete _history _correct _approximate _match _prefix _list)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
-    reply=(_expand _complete _history _correct _match _prefix _list)
+    reply=(_expand _complete _correct _match _prefix _list)
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
