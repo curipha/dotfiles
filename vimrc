@@ -79,7 +79,7 @@ set wildignore+=*.tar,*.bz2,*.gz,*.xz,*.7z,*.zip
 set wildignore+=*.sw?,*.?~,*.??~,*.???~,*.~
 set wildignore+=*/.git/*
 set wildignore+=*/$RECYCLE.BIN/*,*/System\ Volume\ Information/*
-set suffixes=.bak,.tmp,.out,.aux,.toc
+set suffixes=.bak,.tmp,.log,.out,.aux,.toc,.pdf
 
 set history=100
 set undolevels=4000
@@ -106,6 +106,7 @@ set noswapfile
 set noundofile
 set viminfo=
 
+set autoread
 set hidden
 set switchbuf& switchbuf+=useopen
 
@@ -391,10 +392,11 @@ set smartcase
 set wrapscan
 
 set grepprg=internal
-nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/ %<CR>
-nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/ %<CR>
-vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/ %<CR>
-vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/ %<CR>
+nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
+nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/j %<CR>
+nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
+vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
+vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
 
