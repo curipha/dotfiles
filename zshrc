@@ -96,6 +96,37 @@ function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /d
 function is_x()   { [[ -n "${DISPLAY}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+
+function set_cc() {
+  case "${1}" in
+    'clang' )
+      export CC=clang
+      export CXX=clang++
+
+      export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
+      export CXXFLAGS="${CFLAGS}"
+    ;;
+
+    'gcc' )
+      export CC=gcc
+      export CXX=g++
+
+      CFLAGS='-march=native -mtune=native -O2 -pipe'
+      if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
+        CFLAGS+=' -fstack-protector-strong'
+      else
+        CFLAGS+=' -fstack-protector-all'
+      fi
+
+      export CFLAGS
+      export CXXFLAGS="${CFLAGS}"
+    ;;
+
+    * )
+      unset CC CXX CFLAGS CXXFLAGS
+    ;;
+  esac
+}
 #}}}
 # Macros {{{
 is_ssh || is_x && export TERM=xterm-256color
@@ -177,24 +208,9 @@ alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM EXCLUDE_DIR
 
 if [[ "${OSTYPE}" == (darwin|freebsd)* ]] && exists clang; then
-  export CC=clang
-  export CXX=clang++
-
-  export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
-  export CXXFLAGS="${CFLAGS}"
+  set_cc clang
 elif exists gcc; then
-  export CC=gcc
-  export CXX=g++
-
-  CFLAGS='-march=native -mtune=native -O2 -pipe'
-  if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
-    CFLAGS+=' -fstack-protector-strong'
-  else
-    CFLAGS+=' -fstack-protector-all'
-  fi
-
-  export CFLAGS
-  export CXXFLAGS="${CFLAGS}"
+  set_cc gcc
 fi
 
 if exists manpath; then
@@ -369,7 +385,7 @@ zstyle -e ':completion:*' completer '
     reply=(_expand _complete _history _correct _approximate _match _prefix _list)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
-    reply=(_expand _complete _history _correct _match _prefix _list)
+    reply=(_expand _complete _correct _match _prefix _list)
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
@@ -1017,7 +1033,7 @@ alias .='pwd'
 alias a='./a.out'
 #alias b=''
 #alias c=''
-#alias d=''
+alias d='dirs -v'
 #alias e=''
 #alias f=''
 #alias g=''
