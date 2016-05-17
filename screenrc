@@ -56,8 +56,8 @@ bind x  remove
 bind ^x remove
 bind o  only
 bind ^o only
-bind q  only
-bind ^q only
+bind q  remove
+bind ^q remove
 bind n  focus
 bind ^n focus
 
