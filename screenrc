@@ -36,9 +36,9 @@ bind b
 bind ^b
 bind ^g
 
+bind p  paste .
+bind ^p paste .
 
-bind f  fit
-bind ^f fit
 bind r  redisplay
 bind ^r redisplay
 
@@ -50,24 +50,25 @@ bind ^j next
 bind l  windowlist -b
 bind ^l windowlist -b
 
-bind s  split
-bind ^s split
-bind x  remove
-bind ^x remove
-bind o  only
-bind ^o only
-bind q  remove
-bind ^q remove
 bind n  focus
 bind ^n focus
+
+bind s  split
+bind ^s split
+
+bind o  only
+bind ^o only
+bind x  remove
+bind ^x remove
+bind q  remove
+bind ^q remove
+bind f  fit
+bind ^f fit
 
 bind r  eval 'echo "Resize window"' 'command -c resize'
 bind ^r eval 'echo "Resize window"' 'command -c resize'
 bind -c resize ^] command
 bind -c resize j eval 'resize +1' 'command -c resize'
 bind -c resize k eval 'resize -1' 'command -c resize'
-
-bind p  paste .
-bind ^p paste .
 #}}}
 
