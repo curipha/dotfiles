@@ -28,7 +28,7 @@ bell_msg "Bell in window %^G"
 vbell off
 
 caption always '%?%F%{= wk}%:%{= Kk}%?%3n %t'
-hardstatus alwayslastline "%{=b Wk}[%H] %-w%{=b kr} %n %t %{-}%+w %= %{=b Wb}%Y/%m/%d (%D) %{+ m}%c %{+ k}[%l]"
+hardstatus alwayslastline "%{= wk}%H%{= Kd} %-w%{=b kW} %n %t %{= Kd}%+w %=| %l | %M.%d (%D) %c"
 #}}}
 
 # Key bind {{{
