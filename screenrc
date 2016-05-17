@@ -35,18 +35,13 @@ hardstatus alwayslastline "%{+r} %H %{=} %-w%{+b}[%n %t]%{=}%+w %=| %l | %M.%d (
 bind b
 bind ^b
 bind ^g
-bind ^G
 
-bind a  title
-bind ^a title
 
 bind f  fit
 bind ^f fit
 bind z  redisplay
 bind ^z redisplay
 
-bind h  prev
-bind ^h prev
 bind k  prev
 bind ^k prev
 bind j  next
