@@ -94,11 +94,43 @@ function exists() { whence -p -- "${1}" &> /dev/null }
 
 function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()   { [[ -n "${DISPLAY}" ]] }
+function is_tm()  { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+
+function set_cc() {
+  case "${1}" in
+    'clang' )
+      export CC=clang
+      export CXX=clang++
+
+      export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
+      export CXXFLAGS="${CFLAGS}"
+    ;;
+
+    'gcc' )
+      export CC=gcc
+      export CXX=g++
+
+      CFLAGS='-march=native -mtune=native -O2 -pipe'
+      if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
+        CFLAGS+=' -fstack-protector-strong'
+      else
+        CFLAGS+=' -fstack-protector-all'
+      fi
+
+      export CFLAGS
+      export CXXFLAGS="${CFLAGS}"
+    ;;
+
+    * )
+      unset CC CXX CFLAGS CXXFLAGS
+    ;;
+  esac
+}
 #}}}
 # Macros {{{
-is_ssh || is_x && export TERM=xterm-256color
+is_tm || ( is_ssh || is_x && export TERM=xterm-256color )
 
 case "${OSTYPE}" in
   linux*)
@@ -177,24 +209,9 @@ alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM EXCLUDE_DIR
 
 if [[ "${OSTYPE}" == (darwin|freebsd)* ]] && exists clang; then
-  export CC=clang
-  export CXX=clang++
-
-  export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
-  export CXXFLAGS="${CFLAGS}"
+  set_cc clang
 elif exists gcc; then
-  export CC=gcc
-  export CXX=g++
-
-  CFLAGS='-march=native -mtune=native -O2 -pipe'
-  if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
-    CFLAGS+=' -fstack-protector-strong'
-  else
-    CFLAGS+=' -fstack-protector-all'
-  fi
-
-  export CFLAGS
-  export CXXFLAGS="${CFLAGS}"
+  set_cc gcc
 fi
 
 if exists manpath; then
@@ -259,12 +276,13 @@ zle -N self-insert url-quote-magic
 #}}}
 # Prompt {{{
 is_ssh && SSH_INDICATOR='@ssh'
+is_tm  || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
+RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
-unset SSH_INDICATOR
+unset SSH_INDICATOR DATE_INDICATOR
 
 setopt prompt_cr
 setopt prompt_sp
