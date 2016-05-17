@@ -130,7 +130,7 @@ function set_cc() {
 }
 #}}}
 # Macros {{{
-is_ssh || is_x && export TERM=xterm-256color
+is_tm || ( is_ssh || is_x && export TERM=xterm-256color )
 
 case "${OSTYPE}" in
   linux*)

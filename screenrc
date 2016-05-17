@@ -18,7 +18,6 @@ idle off
 ignorecase on
 
 shell -$SHELL
-term xterm-256color
 #}}}
 # Display {{{
 defbce on
