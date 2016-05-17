@@ -27,8 +27,8 @@ startup_message off
 bell_msg "Bell in window %^G"
 vbell off
 
-caption always '%?%F%{= wk}%:%{= Kk}%?%3n %t'
-hardstatus alwayslastline "%{= wk}%H%{= Kd} %-w%{=b kW} %n %t %{= Kd}%+w %=| %l | %M.%d (%D) %c"
+caption always '%?%F%{+r}%:%{= Kk}%?%3n %t'
+hardstatus alwayslastline "%{+r} %H %{=} %-w%{+b}[%n %t]%{=}%+w %=| %l | %M.%d (%D) %c"
 #}}}
 
 # Key bind {{{
