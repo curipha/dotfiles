@@ -276,12 +276,13 @@ zle -N self-insert url-quote-magic
 #}}}
 # Prompt {{{
 is_ssh && SSH_INDICATOR='@ssh'
+is_tm  || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
+RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
-unset SSH_INDICATOR
+unset SSH_INDICATOR DATE_INDICATOR
 
 setopt prompt_cr
 setopt prompt_sp
