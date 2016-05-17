@@ -39,8 +39,8 @@ bind ^g
 
 bind f  fit
 bind ^f fit
-bind z  redisplay
-bind ^z redisplay
+bind r  redisplay
+bind ^r redisplay
 
 bind k  prev
 bind ^k prev
