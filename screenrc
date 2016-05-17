@@ -55,6 +55,8 @@ bind ^n focus
 
 bind s  split
 bind ^s split
+bind v  split -v
+bind ^v split -v
 
 bind o  only
 bind ^o only
