@@ -6,7 +6,7 @@
 set -o nounset
 set -o errexit
 
-DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc pryrc screenrc vimrc wgetrc zshrc )
+DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc pryrc screenrc tmux.conf vimrc wgetrc zshrc )
 SSH_CONFIG=ssh_config
 
 abort() {
@@ -28,7 +28,7 @@ for file in ${DOTFILES[@]}; do
   makeln "${PWD}/${file}" "${HOME}/.${file}"
 done
 
-if [[ -n ${SSH_CONFIG} ]]; then
+if [[ -n "${SSH_CONFIG}" ]]; then
   if [[ ! -d "${HOME}/.ssh" ]]; then
     mkdir -vp "${HOME}/.ssh"
     chmod -v 0700 "${HOME}/.ssh"
@@ -37,9 +37,10 @@ if [[ -n ${SSH_CONFIG} ]]; then
   makeln "${PWD}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
 
-
 if [[ ! "${SHELL}" =~ /zsh$ ]]; then
+  ZSH=`grep zsh /etc/shells | head -1`
+
   echo Change login shell to Zsh...
-  chsh -s /bin/zsh
+  chsh -s "${ZSH}"
 fi
 
