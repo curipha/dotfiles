@@ -92,8 +92,8 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
 
-function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
-function is_x()   { [[ -n "${DISPLAY}" ]] }
+function is_ssh()  { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function is_x()    { [[ -n "${DISPLAY}" ]] }
 function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
@@ -277,7 +277,7 @@ zle -N self-insert url-quote-magic
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-is_ssh && SSH_INDICATOR='@ssh'
+is_ssh  && SSH_INDICATOR='@ssh'
 is_tmux || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
