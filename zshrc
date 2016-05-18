@@ -94,6 +94,7 @@ function exists() { whence -p -- "${1}" &> /dev/null }
 
 function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()   { [[ -n "${DISPLAY}" ]] }
+function is_tm()  { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 
@@ -129,7 +130,7 @@ function set_cc() {
 }
 #}}}
 # Macros {{{
-is_ssh || is_x && export TERM=xterm-256color
+is_tm || ( is_ssh || is_x && export TERM=xterm-256color )
 
 case "${OSTYPE}" in
   linux*)
@@ -275,12 +276,13 @@ zle -N self-insert url-quote-magic
 #}}}
 # Prompt {{{
 is_ssh && SSH_INDICATOR='@ssh'
+is_tm  || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT='  %1v  %D{%b.%f (%a) %K:%M}'
+RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
-unset SSH_INDICATOR
+unset SSH_INDICATOR DATE_INDICATOR
 
 setopt prompt_cr
 setopt prompt_sp

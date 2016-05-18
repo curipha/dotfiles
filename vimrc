@@ -700,7 +700,7 @@ let g:loaded_zip             = 1
 let g:loaded_zipPlugin       = 1
 " }}}
 " matchit.vim {{{
-runtime macros/matchit.vim
+packadd! matchit
 
 nmap <Tab> %
 " }}}
