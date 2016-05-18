@@ -26,6 +26,8 @@ export TZ=Asia/Tokyo
 export CYGWIN='nodosfilewarning winsymlinks:native'
 
 export GEM_HOME=~/app/gem
+export GOPATH=~/app/go
+
 export GIT_MERGE_AUTOEDIT=no
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
@@ -92,9 +94,9 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
 
-function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
-function is_x()   { [[ -n "${DISPLAY}" ]] }
-function is_tm()  { [[ -n "${STY}${TMUX}" ]] }
+function is_ssh()  { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function is_x()    { [[ -n "${DISPLAY}" ]] }
+function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 
@@ -130,7 +132,9 @@ function set_cc() {
 }
 #}}}
 # Macros {{{
-is_tm || ( is_ssh || is_x && export TERM=xterm-256color )
+if ! is_tmux; then
+  is_ssh || is_x && export TERM=xterm-256color
+fi
 
 case "${OSTYPE}" in
   linux*)
@@ -275,8 +279,8 @@ zle -N self-insert url-quote-magic
 [[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-is_ssh && SSH_INDICATOR='@ssh'
-is_tm  || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
+is_ssh  && SSH_INDICATOR='@ssh'
+is_tmux || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
@@ -561,9 +565,6 @@ function +x() { chmod +x -- "${@}" }
 
 function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
 function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
-
-function enc() { [[ "${#}" == '1' ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
-function dec() { [[ "${#}" == '1' ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
 
 function mkmv() {
   case "${#}" in
