@@ -187,8 +187,6 @@ fi
 
 if exists less; then
   export PAGER=less
-
-  alias lessf='LESSOPEN= LESSCLOSE= less +F'
 else
   export PAGER=cat
 fi
@@ -548,7 +546,6 @@ bindkey '^I' magic-abbrev-expand-and-complete
 # Utility{{{
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
-alias cls='echo -en "\033c" && tput clear'
 alias rst='
   if [[ -n `jobs` ]]; then
     echo "zsh: processing job still exists." 1>&2
