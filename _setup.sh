@@ -28,7 +28,7 @@ for file in ${DOTFILES[@]}; do
   makeln "${PWD}/${file}" "${HOME}/.${file}"
 done
 
-if [[ -n ${SSH_CONFIG} ]]; then
+if [[ -n "${SSH_CONFIG}" ]]; then
   if [[ ! -d "${HOME}/.ssh" ]]; then
     mkdir -vp "${HOME}/.ssh"
     chmod -v 0700 "${HOME}/.ssh"
