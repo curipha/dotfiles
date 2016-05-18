@@ -26,6 +26,8 @@ export TZ=Asia/Tokyo
 export CYGWIN='nodosfilewarning winsymlinks:native'
 
 export GEM_HOME=~/app/gem
+export GOPATH=~/app/go
+
 export GIT_MERGE_AUTOEDIT=no
 export MAKEFLAGS='--jobs=4 --silent'
 export RUBYOPT=-EUTF-8
