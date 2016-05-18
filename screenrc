@@ -27,26 +27,21 @@ startup_message off
 bell_msg "Bell in window %^G"
 vbell off
 
-caption always '%?%F%{= wk}%:%{= Kk}%?%3n %t'
-hardstatus alwayslastline "%{= wk}%H%{= Kd} %-w%{=b kW} %n %t %{= Kd}%+w %=| %l | %M.%d (%D) %c"
+caption always '%?%F%{+r}%:%{= Kk}%?%3n %t'
+hardstatus alwayslastline "%{+r} %H %{=} %-w%{+b}[%n %t]%{=}%+w %=| %l | %M.%d (%D) %c"
 #}}}
 
 # Key bind {{{
 bind b
 bind ^b
 bind ^g
-bind ^G
 
-bind a  title
-bind ^a title
+bind p  paste .
+bind ^p paste .
 
-bind f  fit
-bind ^f fit
-bind z  redisplay
-bind ^z redisplay
+bind r  redisplay
+bind ^r redisplay
 
-bind h  prev
-bind ^h prev
 bind k  prev
 bind ^k prev
 bind j  next
@@ -55,24 +50,27 @@ bind ^j next
 bind l  windowlist -b
 bind ^l windowlist -b
 
-bind s  split
-bind ^s split
-bind x  remove
-bind ^x remove
-bind o  only
-bind ^o only
-bind q  only
-bind ^q only
 bind n  focus
 bind ^n focus
 
-bind r  eval 'echo "Resize window"' 'command -c resize'
-bind ^r eval 'echo "Resize window"' 'command -c resize'
+bind s  split
+bind ^s split
+bind v  split -v
+bind ^v split -v
+
+bind o  only
+bind ^o only
+bind x  remove
+bind ^x remove
+bind q  remove
+bind ^q remove
+bind f  fit
+bind ^f fit
+
+bind w  eval 'echo "Resize window"' 'command -c resize'
+bind ^w eval 'echo "Resize window"' 'command -c resize'
 bind -c resize ^] command
 bind -c resize j eval 'resize +1' 'command -c resize'
 bind -c resize k eval 'resize -1' 'command -c resize'
-
-bind p  paste .
-bind ^p paste .
 #}}}
 
