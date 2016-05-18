@@ -37,9 +37,10 @@ if [[ -n "${SSH_CONFIG}" ]]; then
   makeln "${PWD}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
 
-
 if [[ ! "${SHELL}" =~ /zsh$ ]]; then
+  ZSH=`grep zsh /etc/shells | head -1`
+
   echo Change login shell to Zsh...
-  chsh -s /bin/zsh
+  chsh -s "${ZSH}"
 fi
 
