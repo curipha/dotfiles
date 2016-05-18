@@ -566,9 +566,6 @@ function +x() { chmod +x -- "${@}" }
 function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
 function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
 
-function enc() { [[ "${#}" == '1' ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
-function dec() { [[ "${#}" == '1' ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
-
 function mkmv() {
   case "${#}" in
     '0' )
