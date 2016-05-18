@@ -94,7 +94,7 @@ function exists() { whence -p -- "${1}" &> /dev/null }
 
 function is_ssh() { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()   { [[ -n "${DISPLAY}" ]] }
-function is_tm()  { [[ -n "${STY}${TMUX}" ]] }
+function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
 
@@ -130,7 +130,7 @@ function set_cc() {
 }
 #}}}
 # Macros {{{
-is_tm || ( is_ssh || is_x && export TERM=xterm-256color )
+is_tmux || ( is_ssh || is_x && export TERM=xterm-256color )
 
 case "${OSTYPE}" in
   linux*)
@@ -276,7 +276,7 @@ zle -N self-insert url-quote-magic
 #}}}
 # Prompt {{{
 is_ssh && SSH_INDICATOR='@ssh'
-is_tm  || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
+is_tmux || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
