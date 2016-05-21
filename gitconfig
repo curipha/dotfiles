@@ -33,7 +33,6 @@
   pl    = pull
   pu    = push
   r     = remote --verbose
-  sh    = show
   sl    = stash list
   sp    = stash show --patch
   ss    = stash
