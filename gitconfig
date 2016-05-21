@@ -49,7 +49,7 @@
   revert-to-index = checkout --
 
 [blame]
-  date = iso
+  date = relative
 
 [color]
   branch      = auto
