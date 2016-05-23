@@ -187,8 +187,6 @@ fi
 
 if exists less; then
   export PAGER=less
-
-  alias lessf='LESSOPEN= LESSCLOSE= less +F'
 else
   export PAGER=cat
 fi
@@ -548,7 +546,6 @@ bindkey '^I' magic-abbrev-expand-and-complete
 # Utility{{{
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
-alias cls='echo -en "\033c" && tput clear'
 alias rst='
   if [[ -n `jobs` ]]; then
     echo "zsh: processing job still exists." 1>&2
@@ -565,9 +562,6 @@ function +x() { chmod +x -- "${@}" }
 
 function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
 function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
-
-function enc() { [[ "${#}" == '1' ]] && openssl enc -e -aes-256-cbc -in "${1}" -out "${1}".enc }
-function dec() { [[ "${#}" == '1' ]] && openssl enc -d -aes-256-cbc -in "${1}" -out "${1}".dec }
 
 function mkmv() {
   case "${#}" in
