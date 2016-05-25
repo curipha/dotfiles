@@ -570,9 +570,9 @@ set lazyredraw
 set ttyfast
 set visualbell t_vb=
 
-set notimeout
-set ttimeout
-set timeoutlen=100
+set timeout
+set timeoutlen=800
+set ttimeoutlen=100
 
 set shortmess=aTI
 set report=0
