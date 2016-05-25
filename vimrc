@@ -299,11 +299,9 @@ if has('multi_byte_ime') || has('xim')
   set iminsert=0
   set imsearch=0
 
-  augroup MyAutoCmd
-    "autocmd InsertEnter,CmdwinEnter * set noimdisable
-    "autocmd InsertLeave,CmdwinLeave * set imdisable
-    autocmd InsertLeave,CmdwinLeave * set iminsert=0
-  augroup END
+  "autocmd MyAutoCmd InsertEnter,CmdwinEnter * set noimdisable
+  "autocmd MyAutoCmd InsertLeave,CmdwinLeave * set imdisable
+  autocmd MyAutoCmd InsertLeave,CmdwinLeave * set iminsert=0
 endif
 
 autocmd MyAutoCmd InsertLeave * set nopaste
@@ -597,10 +595,8 @@ highlight PmenuSbar ctermbg=black ctermfg=lightblue
 
 highlight StatusLine ctermfg=red ctermbg=white
 
-augroup MyAutoCmd
-  autocmd InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
-  autocmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
-augroup END
+autocmd MyAutoCmd InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
+autocmd MyAutoCmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
 " }}}
 
 " Command {{{
