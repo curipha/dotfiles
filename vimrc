@@ -299,11 +299,9 @@ if has('multi_byte_ime') || has('xim')
   set iminsert=0
   set imsearch=0
 
-  augroup MyAutoCmd
-    "autocmd InsertEnter,CmdwinEnter * set noimdisable
-    "autocmd InsertLeave,CmdwinLeave * set imdisable
-    autocmd InsertLeave,CmdwinLeave * set iminsert=0
-  augroup END
+  "autocmd MyAutoCmd InsertEnter,CmdwinEnter * set noimdisable
+  "autocmd MyAutoCmd InsertLeave,CmdwinLeave * set imdisable
+  autocmd MyAutoCmd InsertLeave,CmdwinLeave * set iminsert=0
 endif
 
 autocmd MyAutoCmd InsertLeave * set nopaste
@@ -447,9 +445,12 @@ vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " Display {{{
 set notitle
 set noruler
+
 set number
 set norelativenumber
 nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
+autocmd MyAutoCmd InsertEnter * setlocal norelativenumber
+autocmd MyAutoCmd InsertLeave * setlocal relativenumber
 
 set showcmd
 set showmode
@@ -463,7 +464,7 @@ set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':'
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3v\ \ %3l/%3L\ \(%P\)
 
-autocmd Filetype qf let &l:statusline='%t %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y  %3l/%3L (%P)'
+autocmd MyAutoCmd Filetype qf let &l:statusline='%t %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y  %3l/%3L (%P)'
 
 if has('gui_running')
   set cursorline
@@ -569,9 +570,9 @@ set lazyredraw
 set ttyfast
 set visualbell t_vb=
 
-set notimeout
-set ttimeout
-set timeoutlen=100
+set timeout
+set timeoutlen=800
+set ttimeoutlen=100
 
 set shortmess=aTI
 set report=0
@@ -594,10 +595,8 @@ highlight PmenuSbar ctermbg=black ctermfg=lightblue
 
 highlight StatusLine ctermfg=red ctermbg=white
 
-augroup MyAutoCmd
-  autocmd InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
-  autocmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
-augroup END
+autocmd MyAutoCmd InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
+autocmd MyAutoCmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
 " }}}
 
 " Command {{{
