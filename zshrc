@@ -53,6 +53,8 @@ path=(
   ~/bin(N-/)
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
+  /opt/*/bin(N-/)
+  /opt/bin(N-/)
   /usr/local/sbin(N-/)
   /usr/sbin(N-/)
   /sbin(N-/)
@@ -222,6 +224,9 @@ if exists manpath; then
   manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
+    /opt/*/man(N-/)
+    /opt/*/share/man(N-/)
+    /opt/man(N-/)
     /usr/local/man(N-/)
     /usr/local/share/man(N-/)
     /usr/share/man(N-/)
