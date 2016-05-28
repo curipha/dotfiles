@@ -242,6 +242,7 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
 inoremap [[]] [[  ]]<Left><Left><Left>
+inoremap (()) ((  ))<Left><Left><Left>
 
 inoremap #! #!/usr/bin/env <C-r>=&l:filetype<CR>
 
