@@ -487,6 +487,7 @@ set previewheight=8
 autocmd MyAutoCmd FileType help
 \   wincmd L
 \ | vertical resize 80
+\ | setlocal winfixwidth
 
 set splitbelow
 set splitright
