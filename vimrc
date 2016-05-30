@@ -443,12 +443,7 @@ vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " Display {{{
 set notitle
 set noruler
-
-set number
-set norelativenumber
-nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
-autocmd MyAutoCmd InsertEnter * setlocal norelativenumber
-autocmd MyAutoCmd InsertLeave * setlocal relativenumber
+set nonumber
 
 set showcmd
 set showmode
