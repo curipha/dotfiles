@@ -329,7 +329,7 @@ function precmd_vcs_info() {
 add-zsh-hook precmd precmd_vcs_info
 #}}}
 
-# Jobs {{{
+# Job {{{
 setopt auto_continue
 setopt auto_resume
 setopt bg_nice
@@ -548,7 +548,7 @@ bindkey ' '  magic-abbrev-expand-and-space
 bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
 #}}}
-# Utility{{{
+# Utility {{{
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 alias rst='
