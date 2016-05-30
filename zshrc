@@ -600,6 +600,20 @@ HELP
 }
 alias mkcd=mkmv
 
+function wol() {
+  (( ${#} < 1 )) && return 1
+
+  MAC="${1//[^0-9A-Fa-f]/}"
+
+  if (( ${#MAC} != 12 )); then
+    echo 'Error: MAC address is malformed. It must be a length of 12-characters.' 1>&2
+    return 1
+  fi
+
+  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC//[^0-9A-Fa-f]/}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
+    | nc -w0 -u 255.255.255.255 4000
+}
+
 function whois() {
   {
     local REPORTTIME_ORIG="${REPORTTIME}"
