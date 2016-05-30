@@ -483,8 +483,10 @@ set scrolloff=4
 set sidescrolloff=12
 set sidescroll=1
 
-set helpheight=12
 set previewheight=8
+autocmd MyAutoCmd FileType help
+\   wincmd L
+\ | vertical resize 80
 
 set splitbelow
 set splitright
