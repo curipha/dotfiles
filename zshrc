@@ -329,7 +329,7 @@ function precmd_vcs_info() {
 add-zsh-hook precmd precmd_vcs_info
 #}}}
 
-# Jobs {{{
+# Job {{{
 setopt auto_continue
 setopt auto_resume
 setopt bg_nice
@@ -459,6 +459,9 @@ setopt cdable_vars
 setopt pushd_ignore_dups
 setopt pushd_to_home
 
+function chpwd_ls() { ls -AF }
+add-zsh-hook chpwd chpwd_ls
+
 setopt always_last_prompt
 setopt always_to_end
 setopt auto_list
@@ -482,11 +485,6 @@ setopt mark_dirs
 setopt numeric_glob_sort
 setopt rc_expand_param
 
-zle -N insert-last-word smart-insert-last-word
-zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
-bindkey '^]' insert-last-word
-
-bindkey '^[m' copy-prev-shell-word
 
 typeset -A abbrev_expand
 abbrev_expand=(
@@ -547,8 +545,98 @@ zle -N magic-abbrev-expand-and-accept
 bindkey ' '  magic-abbrev-expand-and-space
 bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
+
+function magic_enter() {
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
+    if isinrepo; then
+      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
+    else
+      BUFFER='ls -AF'
+    fi
+  else
+    magic-abbrev-expand
+  fi
+
+  zle accept-line
+}
+zle -N magic_enter
+bindkey '^M' magic_enter
+
+
+function change_command() {
+  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
+
+  zle beginning-of-line
+
+  [[ "${BUFFER}" == su(do|)\ * ]] && zle kill-word
+  zle kill-word
+}
+zle -N change_command
+bindkey '^X^X' change_command
+
+function prefix_with_sudo() {
+  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
+  [[ "${BUFFER}" != su(do|)\ * ]] && BUFFER="sudo ${BUFFER}"
+  zle end-of-line
+}
+zle -N prefix_with_sudo
+bindkey '^S^S' prefix_with_sudo
+
+function magic_ctrlz() {
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
+    BUFFER='fg'
+    zle accept-line
+  else
+    zle -M "zsh: Buffer pushed to stack: ${BUFFER}"
+    zle push-line-or-edit
+  fi
+}
+zle -N magic_ctrlz
+bindkey '^Z' magic_ctrlz
+
+function magic_circumflex() {
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
+    BUFFER='cd ..'
+    zle accept-line
+  else
+    zle self-insert
+  fi
+}
+zle -N magic_circumflex
+bindkey '\^' magic_circumflex
+
+function force_reset_screen() {
+  echo -en "\033c"
+  tput clear
+
+  zle clear-screen
+  zle reset-prompt
+}
+zle -N force_reset_screen
+bindkey '^L' force_reset_screen
+
+function surround_with_single_quote() {
+  modify-current-argument '${(qq)${(Q)ARG}}'
+  zle vi-forward-blank-word
+}
+zle -N surround_with_single_quote
+bindkey '^[s' surround_with_single_quote
+
+function surround_with_double_quote() {
+  modify-current-argument '${(qqq)${(Q)ARG}}'
+  zle vi-forward-blank-word
+}
+zle -N surround_with_double_quote
+bindkey '^[d' surround_with_double_quote
+
+
+zle -N insert-last-word smart-insert-last-word
+zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
+bindkey '^]' insert-last-word
+
+bindkey '^[m' copy-prev-shell-word
 #}}}
-# Utility{{{
+# Utility {{{
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 alias rst='
@@ -559,9 +647,6 @@ alias rst='
   else
     exec zsh
   fi'
-
-function chpwd_ls() { ls -AF }
-add-zsh-hook chpwd chpwd_ls
 
 function +x() { chmod +x -- "${@}" }
 
@@ -650,88 +735,6 @@ function whois() {
     return "${RETURN}"
   }
 }
-
-function change_command() {
-  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
-
-  zle beginning-of-line
-
-  [[ "${BUFFER}" == su(do|)\ * ]] && zle kill-word
-  zle kill-word
-}
-zle -N change_command
-bindkey '^X^X' change_command
-
-function prefix_with_sudo() {
-  [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
-  [[ "${BUFFER}" != su(do|)\ * ]] && BUFFER="sudo ${BUFFER}"
-  zle end-of-line
-}
-zle -N prefix_with_sudo
-bindkey '^S^S' prefix_with_sudo
-
-function magic_enter() {
-  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    if isinrepo; then
-      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
-    else
-      BUFFER='ls -AF'
-    fi
-  else
-    magic-abbrev-expand
-  fi
-
-  zle accept-line
-}
-zle -N magic_enter
-bindkey '^M' magic_enter
-
-function magic_ctrlz() {
-  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    BUFFER='fg'
-    zle accept-line
-  else
-    zle -M "zsh: Buffer pushed to stack: ${BUFFER}"
-    zle push-line-or-edit
-  fi
-}
-zle -N magic_ctrlz
-bindkey '^Z' magic_ctrlz
-
-function magic_circumflex() {
-  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    BUFFER='cd ..'
-    zle accept-line
-  else
-    zle self-insert
-  fi
-}
-zle -N magic_circumflex
-bindkey '\^' magic_circumflex
-
-function force_reset_screen() {
-  echo -en "\033c"
-  tput clear
-
-  zle clear-screen
-  zle reset-prompt
-}
-zle -N force_reset_screen
-bindkey '^L' force_reset_screen
-
-function surround_with_single_quote() {
-  modify-current-argument '${(qq)${(Q)ARG}}'
-  zle vi-forward-blank-word
-}
-zle -N surround_with_single_quote
-bindkey '^[s' surround_with_single_quote
-
-function surround_with_double_quote() {
-  modify-current-argument '${(qqq)${(Q)ARG}}'
-  zle vi-forward-blank-word
-}
-zle -N surround_with_double_quote
-bindkey '^[d' surround_with_double_quote
 
 function 256color() {
   local CODE

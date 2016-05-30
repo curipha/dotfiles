@@ -84,9 +84,6 @@ set suffixes=.bak,.tmp,.log,.out,.aux,.toc,.pdf
 set history=100
 set undolevels=4000
 
-set modeline
-set modelines=3
-
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
@@ -446,12 +443,7 @@ vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " Display {{{
 set notitle
 set noruler
-
-set number
-set norelativenumber
-nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
-autocmd MyAutoCmd InsertEnter * setlocal norelativenumber
-autocmd MyAutoCmd InsertLeave * setlocal relativenumber
+set nonumber
 
 set showcmd
 set showmode
@@ -491,8 +483,10 @@ set scrolloff=4
 set sidescrolloff=12
 set sidescroll=1
 
-set helpheight=12
 set previewheight=8
+autocmd MyAutoCmd FileType help
+\   wincmd L
+\ | vertical resize 80
 
 set splitbelow
 set splitright
