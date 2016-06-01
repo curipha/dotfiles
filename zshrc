@@ -112,30 +112,30 @@ function set_cc() {
     'clang' )
       export CC=clang
       export CXX=clang++
-
-      export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
-      export CXXFLAGS="${CFLAGS}"
     ;;
 
     'gcc' )
       export CC=gcc
       export CXX=g++
-
-      CFLAGS='-march=native -mtune=native -O2 -pipe'
-      if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
-        CFLAGS+=' -fstack-protector-strong'
-      else
-        CFLAGS+=' -fstack-protector-all'
-      fi
-
-      export CFLAGS
-      export CXXFLAGS="${CFLAGS}"
     ;;
 
     * )
       unset CC CXX CFLAGS CXXFLAGS
+      warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
     ;;
   esac
+
+  if [[ -n "${CC}" ]]; then
+    CFLAGS='-march=native -mtune=native -O2 -pipe'
+    if [[ `${CC} -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
+      CFLAGS+=' -fstack-protector-strong'
+    else
+      CFLAGS+=' -fstack-protector-all'
+    fi
+
+    export CFLAGS
+    export CXXFLAGS="${CFLAGS}"
+  fi
 }
 #}}}
 # Macros {{{
