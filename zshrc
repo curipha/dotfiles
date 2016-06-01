@@ -96,6 +96,11 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
 
+function warning() {
+  (( ${#} > 0 )) && echo "${funcstack[2]:-zsh}:" "${@}" 1>&2
+  return 1
+}
+
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
 function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
@@ -107,30 +112,30 @@ function set_cc() {
     'clang' )
       export CC=clang
       export CXX=clang++
-
-      export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
-      export CXXFLAGS="${CFLAGS}"
     ;;
 
     'gcc' )
       export CC=gcc
       export CXX=g++
-
-      CFLAGS='-march=native -mtune=native -O2 -pipe'
-      if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
-        CFLAGS+=' -fstack-protector-strong'
-      else
-        CFLAGS+=' -fstack-protector-all'
-      fi
-
-      export CFLAGS
-      export CXXFLAGS="${CFLAGS}"
     ;;
 
     * )
       unset CC CXX CFLAGS CXXFLAGS
+      warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
     ;;
   esac
+
+  if [[ -n "${CC}" ]]; then
+    CFLAGS='-march=native -mtune=native -O2 -pipe'
+    if [[ `${CC} -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
+      CFLAGS+=' -fstack-protector-strong'
+    else
+      CFLAGS+=' -fstack-protector-all'
+    fi
+
+    export CFLAGS
+    export CXXFLAGS="${CFLAGS}"
+  fi
 }
 #}}}
 # Macros {{{
@@ -212,7 +217,7 @@ fi
 alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM EXCLUDE_DIR
 
-if [[ "${OSTYPE}" == (darwin|freebsd)* ]] && exists clang; then
+if exists clang; then
   set_cc clang
 elif exists gcc; then
   set_cc gcc
@@ -351,7 +356,6 @@ setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
 setopt hist_ignore_space
-setopt hist_no_store
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
@@ -532,7 +536,7 @@ function magic-abbrev-expand-and-accept() {
   zle accept-line
 }
 function magic-abbrev-expand-and-complete() {
-  echo -n "\e[32m....\e[0m"
+  echo -en "\e[32m....\e[0m"
   magic-abbrev-expand
   zle expand-or-complete
   zle redisplay
@@ -641,7 +645,7 @@ alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 alias rst='
   if [[ -n `jobs` ]]; then
-    echo "zsh: processing job still exists." 1>&2
+    warning "processing job still exists"
   elif [[ "${0:0:1}" == "-" ]]; then
     exec -l zsh
   else
@@ -665,7 +669,7 @@ HELP
 
     '1' )
       if [[ -d "${1}" ]]; then
-        echo 'Warning: Directory already exists. Just change direcotry.' 1>&2
+        warning 'directory already exists'
         builtin cd -- "${1}"
       else
         mkdir -vp -- "${1}" && builtin cd -- "${1}"
@@ -675,7 +679,7 @@ HELP
     * )
       local DIR="${@: -1}"
       if [[ -d "${DIR}" ]]; then
-        echo 'Warning: Directory already exists. Just move file(s).' 1>&2
+        warning 'directory already exists'
         mv -iv -- "${@}"
       else
         mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
@@ -686,16 +690,14 @@ HELP
 alias mkcd=mkmv
 
 function wol() {
-  (( ${#} < 1 )) && return 1
-
   MAC="${1//[^0-9A-Fa-f]/}"
 
   if (( ${#MAC} != 12 )); then
-    echo 'Error: MAC address is malformed. It must be a length of 12-characters.' 1>&2
+    warning 'MAC address must be 12 hexdigits'
     return 1
   fi
 
-  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC//[^0-9A-Fa-f]/}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
+  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
     | nc -w0 -u 255.255.255.255 4000
 }
 
@@ -709,7 +711,7 @@ function whois() {
     exists whois  && WHOIS=`whence -p whois`
 
     if [[ -z "${WHOIS}" ]]; then
-      echo 'Error: Please install "whois" command first.' 1>&2
+      warning 'install "whois" command'
       return 1
     fi
 
@@ -773,7 +775,7 @@ function package() {
         if [[ -z "${MODE}" ]];then
           MODE="${ARG}"
         else
-          echo 'Warning: Execution mode is already set. Argument is assumed as a package name.' 1>&2
+          warning 'a parameter is assumed as a package name'
           PACKAGES+=( "${ARG}" )
         fi
       ;;
@@ -806,11 +808,11 @@ HELP
   done
 
   if [[ -z "${MODE}" ]]; then
-    echo 'Error: Specify operation mode.' 1>&2
+    warning 'operation mode is required'
     return 1
   fi
   if [[ "${MODE}" == 'install' && "${#PACKAGES[@]}" == '0' ]]; then
-    echo 'Error: Specify at least one package in install mode.' 1>&2
+    warning 'no packages are specified in install mode'
     return 1
   fi
 
@@ -895,7 +897,7 @@ HELP
 
       sudo -K
     else
-      echo 'Error: Cannot find a package manager which I know.' 1>&2
+      warning 'no package manager can be found'
       return 1
     fi
   } always {
@@ -907,7 +909,7 @@ HELP
 
 function checkclock() {
   if ! exists ntpdate; then
-    echo 'Error: Please install "ntpdate" command first.' 1>&2
+    warning 'install "ntpdate" command'
     return 1
   fi
 
@@ -1011,7 +1013,7 @@ HELP
 
   if [[ -n "${F_PARANOID}" ]]; then
     P_CHARACTER='[:graph:]'
-    [[ -n "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
+    [[ -n "${F_CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
   fi
 
   LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \

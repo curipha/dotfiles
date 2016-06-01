@@ -4,17 +4,7 @@
 
 # Requires
 %w(
-cgi/util
-date
-digest
-fileutils
-pathname
 pp
-prime
-securerandom
-shellwords
-thread
-time
 ).each do |lib|
   begin
     require lib
