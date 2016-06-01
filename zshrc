@@ -212,7 +212,7 @@ fi
 alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM EXCLUDE_DIR
 
-if [[ "${OSTYPE}" == (darwin|freebsd)* ]] && exists clang; then
+if exists clang; then
   set_cc clang
 elif exists gcc; then
   set_cc gcc
