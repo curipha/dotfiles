@@ -685,8 +685,6 @@ HELP
 alias mkcd=mkmv
 
 function wol() {
-  (( ${#} < 1 )) && return 1
-
   MAC="${1//[^0-9A-Fa-f]/}"
 
   if (( ${#MAC} != 12 )); then
