@@ -692,7 +692,7 @@ function wol() {
     return 1
   fi
 
-  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC//[^0-9A-Fa-f]/}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
+  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
     | nc -w0 -u 255.255.255.255 4000
 }
 
