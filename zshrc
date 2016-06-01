@@ -645,7 +645,7 @@ alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 alias rst='
   if [[ -n `jobs` ]]; then
-    echo "zsh: processing job still exists." 1>&2
+    warning "processing job still exists"
   elif [[ "${0:0:1}" == "-" ]]; then
     exec -l zsh
   else
@@ -669,7 +669,7 @@ HELP
 
     '1' )
       if [[ -d "${1}" ]]; then
-        echo 'Warning: Directory already exists. Just change direcotry.' 1>&2
+        warning 'directory already exists'
         builtin cd -- "${1}"
       else
         mkdir -vp -- "${1}" && builtin cd -- "${1}"
@@ -679,7 +679,7 @@ HELP
     * )
       local DIR="${@: -1}"
       if [[ -d "${DIR}" ]]; then
-        echo 'Warning: Directory already exists. Just move file(s).' 1>&2
+        warning 'directory already exists'
         mv -iv -- "${@}"
       else
         mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
@@ -693,7 +693,7 @@ function wol() {
   MAC="${1//[^0-9A-Fa-f]/}"
 
   if (( ${#MAC} != 12 )); then
-    echo 'Error: MAC address is malformed. It must be a length of 12-characters.' 1>&2
+    warning 'MAC address must be 12 hexdigits'
     return 1
   fi
 
@@ -711,7 +711,7 @@ function whois() {
     exists whois  && WHOIS=`whence -p whois`
 
     if [[ -z "${WHOIS}" ]]; then
-      echo 'Error: Please install "whois" command first.' 1>&2
+      warning 'install "whois" command'
       return 1
     fi
 
@@ -775,7 +775,7 @@ function package() {
         if [[ -z "${MODE}" ]];then
           MODE="${ARG}"
         else
-          echo 'Warning: Execution mode is already set. Argument is assumed as a package name.' 1>&2
+          warning 'a parameter is assumed as a package name'
           PACKAGES+=( "${ARG}" )
         fi
       ;;
@@ -808,11 +808,11 @@ HELP
   done
 
   if [[ -z "${MODE}" ]]; then
-    echo 'Error: Specify operation mode.' 1>&2
+    warning 'operation mode is required'
     return 1
   fi
   if [[ "${MODE}" == 'install' && "${#PACKAGES[@]}" == '0' ]]; then
-    echo 'Error: Specify at least one package in install mode.' 1>&2
+    warning 'no packages are specified in install mode'
     return 1
   fi
 
@@ -897,7 +897,7 @@ HELP
 
       sudo -K
     else
-      echo 'Error: Cannot find a package manager which I know.' 1>&2
+      warning 'no package manager can be found'
       return 1
     fi
   } always {
@@ -909,7 +909,7 @@ HELP
 
 function checkclock() {
   if ! exists ntpdate; then
-    echo 'Error: Please install "ntpdate" command first.' 1>&2
+    warning 'install "ntpdate" command'
     return 1
   fi
 
@@ -1013,7 +1013,7 @@ HELP
 
   if [[ -n "${F_PARANOID}" ]]; then
     P_CHARACTER='[:graph:]'
-    [[ -n "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
+    [[ -n "${F_CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
   fi
 
   LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
