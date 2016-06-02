@@ -266,12 +266,6 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-for s:p in ['css', 'html', ['md', 'markdown'], 'sh', 'vb', 'vim']
-  let [s:k, s:t] = (type(s:p) ==# type([])) ? s:p : [s:p, s:p]
-  execute 'nnoremap <Leader>t' . s:k . ' :<C-u>setlocal filetype=' . s:t . '<CR>'
-  unlet s:p
-endfor
-
 autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
