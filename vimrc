@@ -46,14 +46,6 @@ endif
 syntax enable
 filetype plugin indent on
 
-autocmd MyAutoCmd BufEnter *
-\   if empty(&l:filetype) && empty(&l:buftype)
-\ |   setfiletype markdown
-\ | endif
-autocmd MyAutoCmd BufWritePost *
-\   if &l:filetype ==# 'markdown' && expand('%:e') !=# 'md'
-\ |   filetype detect
-\ | endif
 " }}}
 
 " Edit {{{
