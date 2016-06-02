@@ -84,9 +84,6 @@ set suffixes=.bak,.tmp,.log,.out,.aux,.toc,.pdf
 set history=100
 set undolevels=4000
 
-set modeline
-set modelines=3
-
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
 
@@ -242,6 +239,7 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
 inoremap [[]] [[  ]]<Left><Left><Left>
+inoremap (()) ((  ))<Left><Left><Left>
 
 inoremap #! #!/usr/bin/env <C-r>=&l:filetype<CR>
 
@@ -336,6 +334,8 @@ autocmd MyAutoCmd BufEnter,BufFilePost *
 
 autocmd MyAutoCmd FileType ruby compiler ruby
 autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -cw % | redraw!
+
+autocmd MyAutoCmd FileType gitcommit startinsert
 
 autocmd MyAutoCmd BufReadPost *
 \   if &l:binary && executable('xxd')
@@ -445,12 +445,7 @@ vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 " Display {{{
 set notitle
 set noruler
-
-set number
-set norelativenumber
-nnoremap <silent> <Leader>n :<C-u>setlocal relativenumber! relativenumber?<CR>
-autocmd MyAutoCmd InsertEnter * setlocal norelativenumber
-autocmd MyAutoCmd InsertLeave * setlocal relativenumber
+set nonumber
 
 set showcmd
 set showmode
@@ -490,8 +485,11 @@ set scrolloff=4
 set sidescrolloff=12
 set sidescroll=1
 
-set helpheight=12
 set previewheight=8
+autocmd MyAutoCmd FileType help
+\   wincmd L
+\ | vertical resize 80
+\ | setlocal winfixwidth
 
 set splitbelow
 set splitright
@@ -547,12 +545,10 @@ set showmatch
 set matchpairs=(:),<:>,[:],{:},«:»,‹:›,≪:≫,〈:〉,《:》,「:」,『:』,【:】,〔:〕,（:）,＜:＞,［:］,｛:｝,｢:｣,‘:’,“:”
 autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
 
-if exists('&ambiwidth')
-  if has('kaoriya')
-    set ambiwidth=auto
-  else
-    set ambiwidth=double
-  endif
+if has('kaoriya')
+  set ambiwidth=auto
+else
+  set ambiwidth=double
 endif
 
 set foldenable

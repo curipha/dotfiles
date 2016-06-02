@@ -96,6 +96,11 @@ autoload -Uz zmv
 # Functions {{{
 function exists() { whence -p -- "${1}" &> /dev/null }
 
+function warning() {
+  (( ${#} > 0 )) && echo "${funcstack[2]:-zsh}:" "${@}" 1>&2
+  return 1
+}
+
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
 function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
@@ -107,30 +112,30 @@ function set_cc() {
     'clang' )
       export CC=clang
       export CXX=clang++
-
-      export CFLAGS='-march=native -mtune=native -O2 -pipe -fstack-protector-all'
-      export CXXFLAGS="${CFLAGS}"
     ;;
 
     'gcc' )
       export CC=gcc
       export CXX=g++
-
-      CFLAGS='-march=native -mtune=native -O2 -pipe'
-      if [[ `gcc -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
-        CFLAGS+=' -fstack-protector-strong'
-      else
-        CFLAGS+=' -fstack-protector-all'
-      fi
-
-      export CFLAGS
-      export CXXFLAGS="${CFLAGS}"
     ;;
 
     * )
       unset CC CXX CFLAGS CXXFLAGS
+      warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
     ;;
   esac
+
+  if [[ -n "${CC}" ]]; then
+    CFLAGS='-march=native -mtune=native -O2 -pipe'
+    if [[ `${CC} -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
+      CFLAGS+=' -fstack-protector-strong'
+    else
+      CFLAGS+=' -fstack-protector-all'
+    fi
+
+    export CFLAGS
+    export CXXFLAGS="${CFLAGS}"
+  fi
 }
 #}}}
 # Macros {{{
@@ -212,7 +217,7 @@ fi
 alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM EXCLUDE_DIR
 
-if [[ "${OSTYPE}" == (darwin|freebsd)* ]] && exists clang; then
+if exists clang; then
   set_cc clang
 elif exists gcc; then
   set_cc gcc
@@ -329,7 +334,7 @@ function precmd_vcs_info() {
 add-zsh-hook precmd precmd_vcs_info
 #}}}
 
-# Jobs {{{
+# Job {{{
 setopt auto_continue
 setopt auto_resume
 setopt bg_nice
@@ -351,7 +356,6 @@ setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
 setopt hist_ignore_space
-setopt hist_no_store
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
@@ -459,6 +463,9 @@ setopt cdable_vars
 setopt pushd_ignore_dups
 setopt pushd_to_home
 
+function chpwd_ls() { ls -AF }
+add-zsh-hook chpwd chpwd_ls
+
 setopt always_last_prompt
 setopt always_to_end
 setopt auto_list
@@ -482,11 +489,6 @@ setopt mark_dirs
 setopt numeric_glob_sort
 setopt rc_expand_param
 
-zle -N insert-last-word smart-insert-last-word
-zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
-bindkey '^]' insert-last-word
-
-bindkey '^[m' copy-prev-shell-word
 
 typeset -A abbrev_expand
 abbrev_expand=(
@@ -534,7 +536,7 @@ function magic-abbrev-expand-and-accept() {
   zle accept-line
 }
 function magic-abbrev-expand-and-complete() {
-  echo -n "\e[32m....\e[0m"
+  echo -en "\e[32m....\e[0m"
   magic-abbrev-expand
   zle expand-or-complete
   zle redisplay
@@ -547,95 +549,23 @@ zle -N magic-abbrev-expand-and-accept
 bindkey ' '  magic-abbrev-expand-and-space
 bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
-#}}}
-# Utility{{{
-alias wipe='shred --verbose --iterations=3 --zero --remove'
 
-alias rst='
-  if [[ -n `jobs` ]]; then
-    echo "zsh: processing job still exists." 1>&2
-  elif [[ "${0:0:1}" == "-" ]]; then
-    exec -l zsh
-  else
-    exec zsh
-  fi'
-
-function chpwd_ls() { ls -AF }
-add-zsh-hook chpwd chpwd_ls
-
-function +x() { chmod +x -- "${@}" }
-
-function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
-function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
-
-function mkmv() {
-  case "${#}" in
-    '0' )
-      cat <<HELP 1>&2
-Usage: ${0} DIRECTORY
-Usage: ${0} FILES... DIRECTORY
-HELP
-      return 1
-    ;;
-
-    '1' )
-      if [[ -d "${1}" ]]; then
-        echo 'Warning: Directory already exists. Just change direcotry.' 1>&2
-        builtin cd -- "${1}"
-      else
-        mkdir -vp -- "${1}" && builtin cd -- "${1}"
-      fi
-    ;;
-
-    * )
-      local DIR="${@: -1}"
-      if [[ -d "${DIR}" ]]; then
-        echo 'Warning: Directory already exists. Just move file(s).' 1>&2
-        mv -iv -- "${@}"
-      else
-        mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
-      fi
-    ;;
-  esac
-}
-alias mkcd=mkmv
-
-function whois() {
-  {
-    local REPORTTIME_ORIG="${REPORTTIME}"
-    REPORTTIME=-1
-
-    local WHOIS
-    exists jwhois && WHOIS=`whence -p jwhois`
-    exists whois  && WHOIS=`whence -p whois`
-
-    if [[ -z "${WHOIS}" ]]; then
-      echo 'Error: Please install "whois" command first.' 1>&2
-      return 1
-    fi
-
-    local ARG DOMAIN OPTION
-    local -a OPTION
-    for ARG in "${@}"; do
-      case "${ARG}" in
-        -* )
-          OPTION+=( "${ARG}" );;
-        * )
-          DOMAIN=`echo "${ARG}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`;;
-      esac
-    done
-
-    if [[ -z "${DOMAIN}" ]]; then
-      "${WHOIS}" "${OPTION[@]}"
+function magic_enter() {
+  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
+    if isinrepo; then
+      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
-      ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
+      BUFFER='ls -AF'
     fi
-  } always {
-    local RETURN="${?}"
-    REPORTTIME="${REPORTTIME_ORIG}"
-    return "${RETURN}"
-  }
+  else
+    magic-abbrev-expand
+  fi
+
+  zle accept-line
 }
+zle -N magic_enter
+bindkey '^M' magic_enter
+
 
 function change_command() {
   [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
@@ -655,22 +585,6 @@ function prefix_with_sudo() {
 }
 zle -N prefix_with_sudo
 bindkey '^S^S' prefix_with_sudo
-
-function magic_enter() {
-  if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    if isinrepo; then
-      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
-    else
-      BUFFER='ls -AF'
-    fi
-  else
-    magic-abbrev-expand
-  fi
-
-  zle accept-line
-}
-zle -N magic_enter
-bindkey '^M' magic_enter
 
 function magic_ctrlz() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
@@ -719,6 +633,111 @@ function surround_with_double_quote() {
 zle -N surround_with_double_quote
 bindkey '^[d' surround_with_double_quote
 
+
+zle -N insert-last-word smart-insert-last-word
+zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
+bindkey '^]' insert-last-word
+
+bindkey '^[m' copy-prev-shell-word
+#}}}
+# Utility {{{
+alias wipe='shred --verbose --iterations=3 --zero --remove'
+
+alias rst='
+  if [[ -n `jobs` ]]; then
+    warning "processing job still exists"
+  elif [[ "${0:0:1}" == "-" ]]; then
+    exec -l zsh
+  else
+    exec zsh
+  fi'
+
+function +x() { chmod +x -- "${@}" }
+
+function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
+function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
+
+function mkmv() {
+  case "${#}" in
+    '0' )
+      cat <<HELP 1>&2
+Usage: ${0} DIRECTORY
+Usage: ${0} FILES... DIRECTORY
+HELP
+      return 1
+    ;;
+
+    '1' )
+      if [[ -d "${1}" ]]; then
+        warning 'directory already exists'
+        builtin cd -- "${1}"
+      else
+        mkdir -vp -- "${1}" && builtin cd -- "${1}"
+      fi
+    ;;
+
+    * )
+      local DIR="${@: -1}"
+      if [[ -d "${DIR}" ]]; then
+        warning 'directory already exists'
+        mv -iv -- "${@}"
+      else
+        mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
+      fi
+    ;;
+  esac
+}
+alias mkcd=mkmv
+
+function wol() {
+  MAC="${1//[^0-9A-Fa-f]/}"
+
+  if (( ${#MAC} != 12 )); then
+    warning 'MAC address must be 12 hexdigits'
+    return 1
+  fi
+
+  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
+    | nc -w0 -u 255.255.255.255 4000
+}
+
+function whois() {
+  {
+    local REPORTTIME_ORIG="${REPORTTIME}"
+    REPORTTIME=-1
+
+    local WHOIS
+    exists jwhois && WHOIS=`whence -p jwhois`
+    exists whois  && WHOIS=`whence -p whois`
+
+    if [[ -z "${WHOIS}" ]]; then
+      warning 'install "whois" command'
+      return 1
+    fi
+
+    local ARG DOMAIN OPTION
+    local -a OPTION
+    for ARG in "${@}"; do
+      case "${ARG}" in
+        -* )
+          OPTION+=( "${ARG}" );;
+        * )
+          DOMAIN=`echo "${ARG}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`;;
+      esac
+    done
+
+    if [[ -z "${DOMAIN}" ]]; then
+      "${WHOIS}" "${OPTION[@]}"
+    else
+      ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
+    fi
+  } always {
+    local RETURN="${?}"
+    REPORTTIME="${REPORTTIME_ORIG}"
+    return "${RETURN}"
+  }
+}
+
 function 256color() {
   local CODE
   for CODE in {0..15}; do
@@ -756,7 +775,7 @@ function package() {
         if [[ -z "${MODE}" ]];then
           MODE="${ARG}"
         else
-          echo 'Warning: Execution mode is already set. Argument is assumed as a package name.' 1>&2
+          warning 'a parameter is assumed as a package name'
           PACKAGES+=( "${ARG}" )
         fi
       ;;
@@ -789,11 +808,11 @@ HELP
   done
 
   if [[ -z "${MODE}" ]]; then
-    echo 'Error: Specify operation mode.' 1>&2
+    warning 'operation mode is required'
     return 1
   fi
   if [[ "${MODE}" == 'install' && "${#PACKAGES[@]}" == '0' ]]; then
-    echo 'Error: Specify at least one package in install mode.' 1>&2
+    warning 'no packages are specified in install mode'
     return 1
   fi
 
@@ -878,7 +897,7 @@ HELP
 
       sudo -K
     else
-      echo 'Error: Cannot find a package manager which I know.' 1>&2
+      warning 'no package manager can be found'
       return 1
     fi
   } always {
@@ -886,65 +905,6 @@ HELP
     REPORTTIME="${REPORTTIME_ORIG}"
     return "${RETURN}"
   }
-}
-
-function checkclock() {
-  if ! exists ntpdate; then
-    echo 'Error: Please install "ntpdate" command first.' 1>&2
-    return 1
-  fi
-
-  local -a NTP
-  NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
-
-  local UPDATE RTC
-  while getopts hru ARG; do
-    case "${ARG}" in
-      'r' ) RTC=1;;
-      'u' ) UPDATE=1;;
-
-      * )
-        cat <<HELP 1>&2
-Usage: ${0} [-ru]
-
-  -r            Display RTC clock if possible
-  -u            Update system clock
-HELP
-      return 1;;
-    esac
-  done
-
-  if exists timedatectl; then
-    local LINEOPT=-2
-    [[ -n "${RTC}" ]] && LINEOPT=-3
-
-    timedatectl | head ${LINEOPT}
-  else
-    echo -n '      Local time: ' && date
-    echo -n '  Universal time: ' && date -u
-    [[ -n "${RTC}" ]] && echo -n '        RTC time: ' && sudo hwclock --show
-  fi
-
-  echo
-  echo Checking NTP servers...
-  ntpdate -p1 -sq ${NTP} \
-    | grep -v 'stratum 0' \
-    | sed -e 's/, / /g' \
-    | awk '{ offset += $6; delay += $8; print } END { if (NR > 0) { print "* * * * avg.", offset / NR, "avg.", delay / NR } }' \
-    | column -t
-
-  if [[ -n "${UPDATE}" ]]; then
-    echo
-    read -q 'REPLY?System clock will be updated by step mode. Are you sure? [y/N] '
-
-    if [[ "${REPLY}" == 'y' ]]; then
-      sudo ntpdate -b ${NTP}
-      sudo hwclock --systohc
-    else
-      echo 'Cancel the update of system clock.'
-      return 1
-    fi
-  fi
 }
 
 function createpasswd() {
@@ -994,7 +954,7 @@ HELP
 
   if [[ -n "${F_PARANOID}" ]]; then
     P_CHARACTER='[:graph:]'
-    [[ -n "${F_CHARACTER}" ]] && echo 'Warning: -c option is ignored in paranoid mode.' 1>&2
+    [[ -n "${F_CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
   fi
 
   LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
