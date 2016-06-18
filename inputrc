@@ -32,19 +32,24 @@ set skip-completed-text on
 #}}}
 
 # Key bindings {{{
-"\C-p": history-search-backward
-"\C-n": history-search-forward
+"\C-p":  history-search-backward
+"\C-n":  history-search-forward
 "\e[5~": history-search-backward
 "\e[6~": history-search-forward
 
 "\e[1~": beginning-of-line
-"\eOH": beginning-of-line
-"\e[H": beginning-of-line
+"\eOH":  beginning-of-line
+"\e[H":  beginning-of-line
 "\e[4~": end-of-line
-"\eOF": end-of-line
-"\e[F": end-of-line
+"\eOF":  end-of-line
+"\e[F":  end-of-line
 
 "\e[3~": delete-char
 "\e[2~": quoted-insert
+
+$if ruby
+  "\C-l": " => "
+  "\C-r": "\C-urequire ''\C-b"
+$endif
 #}}}
 
