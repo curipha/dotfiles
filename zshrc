@@ -253,6 +253,8 @@ bindkey '^H' backward-delete-char
 [[ -n "${terminfo[kdch1]}" ]] && bindkey "${terminfo[kdch1]}" delete-char
 bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
+bindkey '^[OH'  beginning-of-line
+bindkey '^[OF'  end-of-line
 bindkey '^[[3~' delete-char
 
 [[ -n "${terminfo[kcbt]}" ]] && bindkey "${terminfo[kcbt]}" reverse-menu-complete
