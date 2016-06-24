@@ -248,11 +248,18 @@ bindkey -e
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
 
-bindkey "${terminfo[khome]:-^[[1~}" beginning-of-line
-bindkey "${terminfo[kend]:-^[[4~}"  end-of-line
-bindkey "${terminfo[kdch1]:-^[[3~}" delete-char
+[[ -n "${terminfo[khome]}" ]] && bindkey "${terminfo[khome]}" beginning-of-line
+[[ -n "${terminfo[kend]}"  ]] && bindkey "${terminfo[kend]}"  end-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[4~' end-of-line
+bindkey '^[OH'  beginning-of-line
+bindkey '^[OF'  end-of-line
 
-bindkey "${terminfo[kcbt]:-^[[Z}" reverse-menu-complete
+[[ -n "${terminfo[kdch1]}" ]] && bindkey "${terminfo[kdch1]}" delete-char
+bindkey '^[[3~' delete-char
+
+[[ -n "${terminfo[kcbt]}" ]] && bindkey "${terminfo[kcbt]}" reverse-menu-complete
+bindkey '^[[Z' reverse-menu-complete
 
 setopt correct
 setopt hash_list_all
@@ -362,18 +369,24 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
-bindkey "${terminfo[kpp]:-^[[5~}" up-history
-bindkey "${terminfo[knp]:-^[[6~}" down-history
+[[ -n "${terminfo[kpp]}" ]] && bindkey "${terminfo[kpp]}" up-history
+[[ -n "${terminfo[knp]}" ]] && bindkey "${terminfo[knp]}" down-history
+bindkey '^[[5~' up-history
+bindkey '^[[6~' down-history
 
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
-bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-beginning-search
-bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-beginning-search
-bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-beginning-search
-bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-beginning-search
-bindkey '^P' up-line-or-beginning-search
-bindkey '^N' down-line-or-beginning-search
+[[ -n "${terminfo[cuu1]}"  ]] && bindkey "${terminfo[cuu1]}"  up-line-or-beginning-search
+[[ -n "${terminfo[cud1]}"  ]] && bindkey "${terminfo[cud1]}"  down-line-or-beginning-search
+[[ -n "${terminfo[kcuu1]}" ]] && bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+[[ -n "${terminfo[kcud1]}" ]] && bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
+bindkey '^P'   up-line-or-beginning-search
+bindkey '^N'   down-line-or-beginning-search
 
 bindkey '^[p' history-incremental-pattern-search-backward
 bindkey '^[n' history-incremental-pattern-search-forward
@@ -905,65 +918,6 @@ HELP
     REPORTTIME="${REPORTTIME_ORIG}"
     return "${RETURN}"
   }
-}
-
-function checkclock() {
-  if ! exists ntpdate; then
-    warning 'install "ntpdate" command'
-    return 1
-  fi
-
-  local -a NTP
-  NTP=( ntp.nict.jp ntp.jst.mfeed.ad.jp jp.pool.ntp.org )
-
-  local UPDATE RTC
-  while getopts hru ARG; do
-    case "${ARG}" in
-      'r' ) RTC=1;;
-      'u' ) UPDATE=1;;
-
-      * )
-        cat <<HELP 1>&2
-Usage: ${0} [-ru]
-
-  -r            Display RTC clock if possible
-  -u            Update system clock
-HELP
-      return 1;;
-    esac
-  done
-
-  if exists timedatectl; then
-    local LINEOPT=-2
-    [[ -n "${RTC}" ]] && LINEOPT=-3
-
-    timedatectl | head ${LINEOPT}
-  else
-    echo -n '      Local time: ' && date
-    echo -n '  Universal time: ' && date -u
-    [[ -n "${RTC}" ]] && echo -n '        RTC time: ' && sudo hwclock --show
-  fi
-
-  echo
-  echo Checking NTP servers...
-  ntpdate -p1 -sq ${NTP} \
-    | grep -v 'stratum 0' \
-    | sed -e 's/, / /g' \
-    | awk '{ offset += $6; delay += $8; print } END { if (NR > 0) { print "* * * * avg.", offset / NR, "avg.", delay / NR } }' \
-    | column -t
-
-  if [[ -n "${UPDATE}" ]]; then
-    echo
-    read -q 'REPLY?System clock will be updated by step mode. Are you sure? [y/N] '
-
-    if [[ "${REPLY}" == 'y' ]]; then
-      sudo ntpdate -b ${NTP}
-      sudo hwclock --systohc
-    else
-      echo 'Cancel the update of system clock.'
-      return 1
-    fi
-  fi
 }
 
 function createpasswd() {

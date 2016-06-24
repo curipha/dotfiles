@@ -46,14 +46,6 @@ endif
 syntax enable
 filetype plugin indent on
 
-autocmd MyAutoCmd BufEnter *
-\   if empty(&l:filetype) && empty(&l:buftype)
-\ |   setfiletype markdown
-\ | endif
-autocmd MyAutoCmd BufWritePost *
-\   if &l:filetype ==# 'markdown' && expand('%:e') !=# 'md'
-\ |   filetype detect
-\ | endif
 " }}}
 
 " Edit {{{
@@ -266,12 +258,6 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-for s:p in ['css', 'html', ['md', 'markdown'], 'sh', 'vb', 'vim']
-  let [s:k, s:t] = (type(s:p) ==# type([])) ? s:p : [s:p, s:p]
-  execute 'nnoremap <Leader>t' . s:k . ' :<C-u>setlocal filetype=' . s:t . '<CR>'
-  unlet s:p
-endfor
-
 autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
@@ -334,8 +320,6 @@ autocmd MyAutoCmd BufEnter,BufFilePost *
 
 autocmd MyAutoCmd FileType ruby compiler ruby
 autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -cw % | redraw!
-
-autocmd MyAutoCmd FileType gitcommit startinsert
 
 autocmd MyAutoCmd BufReadPost *
 \   if &l:binary && executable('xxd')
