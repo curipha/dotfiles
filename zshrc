@@ -252,6 +252,8 @@ bindkey '^H' backward-delete-char
 [[ -n "${terminfo[kend]}"  ]] && bindkey "${terminfo[kend]}"  end-of-line
 bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
+bindkey '^[[H'  beginning-of-line
+bindkey '^[[F'  end-of-line
 bindkey '^[OH'  beginning-of-line
 bindkey '^[OF'  end-of-line
 
