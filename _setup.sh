@@ -22,7 +22,7 @@ makeln() {
   ln -fsv "${1}" "${2}"
 }
 
-cd `dirname "${0}"`
+cd "$(dirname "${0}")"
 
 for file in "${DOTFILES[@]}"; do
   makeln "${PWD}/${file}" "${HOME}/.${file}"
@@ -38,7 +38,7 @@ if [[ -n "${SSH_CONFIG}" ]]; then
 fi
 
 if [[ ! "${SHELL}" =~ /zsh$ ]]; then
-  ZSH=`grep zsh /etc/shells | head -1`
+  ZSH=$(grep zsh /etc/shells | head -1)
 
   echo Change login shell to Zsh...
   chsh -s "${ZSH}"
