@@ -10,7 +10,7 @@ DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc pryrc screenrc tmux.conf vimrc w
 SSH_CONFIG=ssh_config
 
 abort() {
-  echo $@
+  echo "$@"
   exit 1
 }
 
@@ -24,7 +24,7 @@ makeln() {
 
 cd `dirname "${0}"`
 
-for file in ${DOTFILES[@]}; do
+for file in "${DOTFILES[@]}"; do
   makeln "${PWD}/${file}" "${HOME}/.${file}"
 done
 
