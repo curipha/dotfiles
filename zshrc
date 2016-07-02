@@ -150,7 +150,7 @@ function set_cc() {
   esac
 
   if [[ -n "${CC}" ]]; then
-    CFLAGS='-march=native -mtune=native -O2 -pipe'
+    CFLAGS='-march=native -mtune=native -O2 -pipe -w'
     if [[ `${CC} -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
       CFLAGS+=' -fstack-protector-strong'
     else
