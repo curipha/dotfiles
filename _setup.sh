@@ -10,7 +10,7 @@ DOTFILES=( gemrc gitconfig gvimrc inputrc irbrc pryrc screenrc tmux.conf vimrc w
 SSH_CONFIG=ssh_config
 
 abort() {
-  echo $@
+  echo "$@"
   exit 1
 }
 
@@ -22,9 +22,9 @@ makeln() {
   ln -fsv "${1}" "${2}"
 }
 
-cd `dirname "${0}"`
+cd "$(dirname "${0}")"
 
-for file in ${DOTFILES[@]}; do
+for file in "${DOTFILES[@]}"; do
   makeln "${PWD}/${file}" "${HOME}/.${file}"
 done
 
@@ -38,7 +38,7 @@ if [[ -n "${SSH_CONFIG}" ]]; then
 fi
 
 if [[ ! "${SHELL}" =~ /zsh$ ]]; then
-  ZSH=`grep zsh /etc/shells | head -1`
+  ZSH=$(grep zsh /etc/shells | head -1)
 
   echo Change login shell to Zsh...
   chsh -s "${ZSH}"
