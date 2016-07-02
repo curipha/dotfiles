@@ -235,7 +235,7 @@ if exists manpath; then
     /usr/local/man(N-/)
     /usr/local/share/man(N-/)
     /usr/share/man(N-/)
-    ${(s.:.)MANPATH}
+    $manpath
   )
   typeset -gU manpath
   export MANPATH
