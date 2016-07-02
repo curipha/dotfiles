@@ -38,7 +38,7 @@ if [[ -n "${SSH_CONFIG}" ]]; then
 fi
 
 if [[ ! "${SHELL}" =~ /zsh$ ]]; then
-  ZSH=$(grep zsh /etc/shells | head -1)
+  ZSH=$(grep -m1 zsh /etc/shells)
 
   echo Change login shell to Zsh...
   chsh -s "${ZSH}"
