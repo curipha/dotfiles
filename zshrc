@@ -66,6 +66,30 @@ path=(
 typeset -gU path
 export PATH
 
+typeset -T LD_LIBRARY_PATH ld_library_path
+ld_library_path=(
+  ~/lib(N-/)
+  ~/app/*/lib(N-/)
+  /opt/*/lib(N-/)
+  /opt/lib(N-/)
+  /usr/local/lib(N-/)
+  $ld_library_path
+)
+typeset -gU ld_library_path
+export LD_LIBRARY_PATH
+
+typeset -T PKG_CONFIG_PATH pkg_config_path
+pkg_config_path=(
+  ~/lib/pkgconfig(N-/)
+  ~/app/*/lib/pkgconfig(N-/)
+  /opt/*/lib/pkgconfig(N-/)
+  /opt/lib/pkgconfig(N-/)
+  /usr/local/lib/pkgconfig(N-/)
+  $pkg_config_path
+)
+typeset -gU pkg_config_path
+export PKG_CONFIG_PATH
+
 cdpath=(
   $HOME
   ..
@@ -126,7 +150,7 @@ function set_cc() {
   esac
 
   if [[ -n "${CC}" ]]; then
-    CFLAGS='-march=native -mtune=native -O2 -pipe'
+    CFLAGS='-march=native -mtune=native -O2 -pipe -w'
     if [[ `${CC} -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
       CFLAGS+=' -fstack-protector-strong'
     else
@@ -235,7 +259,7 @@ if exists manpath; then
     /usr/local/man(N-/)
     /usr/local/share/man(N-/)
     /usr/share/man(N-/)
-    ${(s.:.)MANPATH}
+    $manpath
   )
   typeset -gU manpath
   export MANPATH
@@ -248,11 +272,20 @@ bindkey -e
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
 
-bindkey "${terminfo[khome]:-^[[1~}" beginning-of-line
-bindkey "${terminfo[kend]:-^[[4~}"  end-of-line
-bindkey "${terminfo[kdch1]:-^[[3~}" delete-char
+[[ -n "${terminfo[khome]}" ]] && bindkey "${terminfo[khome]}" beginning-of-line
+[[ -n "${terminfo[kend]}"  ]] && bindkey "${terminfo[kend]}"  end-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[4~' end-of-line
+bindkey '^[[H'  beginning-of-line
+bindkey '^[[F'  end-of-line
+bindkey '^[OH'  beginning-of-line
+bindkey '^[OF'  end-of-line
 
-bindkey "${terminfo[kcbt]:-^[[Z}" reverse-menu-complete
+[[ -n "${terminfo[kdch1]}" ]] && bindkey "${terminfo[kdch1]}" delete-char
+bindkey '^[[3~' delete-char
+
+[[ -n "${terminfo[kcbt]}" ]] && bindkey "${terminfo[kcbt]}" reverse-menu-complete
+bindkey '^[[Z' reverse-menu-complete
 
 setopt correct
 setopt hash_list_all
@@ -362,18 +395,24 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
-bindkey "${terminfo[kpp]:-^[[5~}" up-history
-bindkey "${terminfo[knp]:-^[[6~}" down-history
+[[ -n "${terminfo[kpp]}" ]] && bindkey "${terminfo[kpp]}" up-history
+[[ -n "${terminfo[knp]}" ]] && bindkey "${terminfo[knp]}" down-history
+bindkey '^[[5~' up-history
+bindkey '^[[6~' down-history
 
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
-bindkey "${terminfo[cuu1]:-^[[A}"  up-line-or-beginning-search
-bindkey "${terminfo[cud1]:-^[[B}"  down-line-or-beginning-search
-bindkey "${terminfo[kcuu1]:-^[OA}" up-line-or-beginning-search
-bindkey "${terminfo[kcud1]:-^[OB}" down-line-or-beginning-search
-bindkey '^P' up-line-or-beginning-search
-bindkey '^N' down-line-or-beginning-search
+[[ -n "${terminfo[cuu1]}"  ]] && bindkey "${terminfo[cuu1]}"  up-line-or-beginning-search
+[[ -n "${terminfo[cud1]}"  ]] && bindkey "${terminfo[cud1]}"  down-line-or-beginning-search
+[[ -n "${terminfo[kcuu1]}" ]] && bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+[[ -n "${terminfo[kcud1]}" ]] && bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
+bindkey '^P'   up-line-or-beginning-search
+bindkey '^N'   down-line-or-beginning-search
 
 bindkey '^[p' history-incremental-pattern-search-backward
 bindkey '^[n' history-incremental-pattern-search-forward

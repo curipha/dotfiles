@@ -321,8 +321,6 @@ autocmd MyAutoCmd BufEnter,BufFilePost *
 autocmd MyAutoCmd FileType ruby compiler ruby
 autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -cw % | redraw!
 
-autocmd MyAutoCmd FileType gitcommit startinsert
-
 autocmd MyAutoCmd BufReadPost *
 \   if &l:binary && executable('xxd')
 \ |   setlocal filetype=xxd
