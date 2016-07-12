@@ -17,9 +17,9 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-[[ -z "${HOSTNAME}" ]] && export HOSTNAME=$(hostname)
 [[ -z "${SHELL}" ]]    && export SHELL=$(whence -p zsh)
-[[ -z "${USER}" ]]     && export USER=$(id -un)
+[[ -z "${HOSTNAME}" ]] && export HOSTNAME="${HOST}"
+[[ -z "${USER}" ]]     && export USER="${USERNAME}"
 
 export CYGWIN='nodosfilewarning winsymlinks:native'
 
