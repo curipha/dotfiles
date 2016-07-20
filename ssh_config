@@ -3,6 +3,7 @@
 # ===============
 
 Protocol 2
+IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash
 
 Host github.com
   User git
@@ -13,7 +14,6 @@ Host *
   IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
 
-  IgnoreUnknown         PubkeyAcceptedKeyTypes,FingerprintHash
   LogLevel              DEBUG2
 
   Ciphers               chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
