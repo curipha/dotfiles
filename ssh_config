@@ -3,7 +3,9 @@
 # ===============
 
 Protocol 2
-IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash
+IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash,Include
+
+Include ~/.ssh/config.include
 
 Host github.com
   User git
