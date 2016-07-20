@@ -8,13 +8,9 @@ IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash
 Host github.com
   User git
 
-  LogLevel INFO
-
 Host *
   IdentityFile          ~/.ssh/id_ed25519
   IdentitiesOnly        yes
-
-  LogLevel              DEBUG2
 
   Ciphers               chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
   KexAlgorithms         curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp521
