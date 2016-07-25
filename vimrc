@@ -375,10 +375,10 @@ set wrapscan
 
 set grepprg=internal
 nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
-nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/j %<CR>
-nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
-vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
-vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
+nnoremap <silent> K  :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
+nnoremap <silent> gK :<C-u>vimgrep /<C-r><C-w>/j %<CR>
+vnoremap <silent> K  y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
+vnoremap <silent> gK y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
 autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
 
@@ -410,10 +410,10 @@ nnoremap ? ?\v
 
 vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
-nnoremap *  g*N
-nnoremap #  g#N
-nnoremap g* *N
-nnoremap g# #N
+nnoremap *  *N
+nnoremap #  #N
+nnoremap g* g*N
+nnoremap g# g#N
 
 nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'

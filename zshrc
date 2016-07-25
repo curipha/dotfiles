@@ -103,8 +103,8 @@ stty -ixon -ixoff
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
-autoload -Uz colors
-autoload -Uz compinit
+autoload -Uz colors   && colors
+autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
 autoload -Uz is-at-least
 autoload -Uz modify-current-argument
@@ -311,7 +311,6 @@ TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
 MAILCHECK=0
 KEYTIMEOUT=10
 
-colors
 zle -N bracketed-paste bracketed-paste-magic
 zle -N self-insert url-quote-magic
 
@@ -420,8 +419,6 @@ bindkey '^R' end-of-history
 bindkey -r '^S'
 #}}}
 # Complement {{{
-compinit
-
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
