@@ -3,28 +3,29 @@
 # ===============
 
 Protocol 2
+IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash,Include
+
+Include ~/.ssh/config.include
 
 Host github.com
   User git
 
-  LogLevel INFO
+  RequestTTY    no
+  VisualHostKey no
 
 Host *
-  IdentityFile          ~/.ssh/id_ed25519
-  IdentitiesOnly        yes
+  IdentityFile   ~/.ssh/id_ed25519
+  IdentitiesOnly yes
 
-  IgnoreUnknown         PubkeyAcceptedKeyTypes,FingerprintHash
-  LogLevel              DEBUG2
+  Ciphers       chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
+  KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp521
+  MACs          hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512
 
-  Ciphers               chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
-  KexAlgorithms         curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp521
-  MACs                  hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512
-  HostKeyAlgorithms     ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp256,ssh-rsa
-
+  PubKeyAuthentication     yes
   PreferredAuthentications publickey
   PubkeyAcceptedKeyTypes   ssh-ed25519,ecdsa-sha2-nistp521,ssh-rsa
+  HostKeyAlgorithms        ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp256,ssh-rsa
 
-  PubKeyAuthentication            yes
   ChallengeResponseAuthentication no
   GSSAPIAuthentication            no
   HostbasedAuthentication         no
@@ -38,17 +39,17 @@ Host *
   FingerprintHash       sha512
   HashKnownHosts        yes
 
-  Compression           no
-  ForwardAgent          no
-  ForwardX11            no
-  UseRoaming            no
+  Compression  no
+  ForwardAgent no
+  ForwardX11   no
+  UseRoaming   no
 
-  TCPKeepAlive          yes
-  ServerAliveInterval   3
-  ServerAliveCountMax   5
+  TCPKeepAlive        yes
+  ServerAliveInterval 3
+  ServerAliveCountMax 5
 
-  RekeyLimit            100M 1h
+  RekeyLimit 100M 1h
 
-# ControlMaster         auto
-# ControlPath           ~/.ssh/control-%r@%h:%p
+# ControlMaster auto
+# ControlPath   ~/.ssh/control-%r@%h:%p
 
