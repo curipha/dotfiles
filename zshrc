@@ -945,7 +945,7 @@ function createpasswd() {
   # Default
   local CHARACTER='[:alnum:]'
   local LENGTH=18
-  local NUMBER=10
+  local NUMBER=1
 
   # Arguments
   local F_CHARACTER F_PARANOID
