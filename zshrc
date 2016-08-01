@@ -945,7 +945,7 @@ function createpasswd() {
   # Default
   local CHARACTER='[:alnum:]'
   local LENGTH=18
-  local NUMBER=10
+  local NUMBER=1
 
   # Arguments
   local F_CHARACTER F_PARANOID
@@ -974,10 +974,10 @@ Example:
   ${0}
   ${0} -c "0-9A-Za-z"
   ${0} -c "[:alnum:]"
-    Create ${NUMBER} of passwords (${LENGTH} chars) contains letters and digits.
+    Create a password (${LENGTH} chars) contains letters and digits.
 
-  ${0} -l 24 -n 1
-    Create a password (24 chars) contains printable chars, not including space.
+  ${0} -p -l 24 -n 2
+    Create two passwords (24 chars) contains printable chars, not including space.
 
   ${0} -c ACGT -n 20
     Get a piece of DNA sequence.
