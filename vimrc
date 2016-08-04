@@ -313,7 +313,7 @@ if &term =~# '^xterm'
   cnoremap <silent> <Esc>[201~ <Nop>
 endif
 
-autocmd MyAutoCmd BufEnter,BufFilePost *
+autocmd MyAutoCmd BufEnter,BufFilePost,BufWritePost *
 \   if empty(&l:buftype) && isdirectory(expand('%:p:h'))
 \ |   execute 'lcd ' fnameescape(expand('%:p:h'))
 \ | endif
