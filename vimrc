@@ -313,7 +313,7 @@ if &term =~# '^xterm'
   cnoremap <silent> <Esc>[201~ <Nop>
 endif
 
-autocmd MyAutoCmd BufEnter,BufFilePost *
+autocmd MyAutoCmd BufEnter,BufFilePost,BufWritePost *
 \   if empty(&l:buftype) && isdirectory(expand('%:p:h'))
 \ |   execute 'lcd ' fnameescape(expand('%:p:h'))
 \ | endif
@@ -441,7 +441,7 @@ set tabpagemax=32
 set statusline=%t\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
-set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3v\ \ %3l/%3L\ \(%P\)
+set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 
 autocmd MyAutoCmd Filetype qf let &l:statusline='%t %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y  %3l/%3L (%P)'
 
