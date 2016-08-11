@@ -456,7 +456,8 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:processes' command 'ps x -o pid,user,stat,tty,command -w -w'
-zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
+zstyle ':completion:*:(processes|jobs)' menu yes select
+zstyle ':completion:*:(processes|jobs)' force-list always
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
