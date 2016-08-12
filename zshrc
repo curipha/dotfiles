@@ -161,10 +161,6 @@ function set_cc() {
 }
 #}}}
 # Macros {{{
-if ! is_tmux; then
-  is_ssh || is_x && export TERM=xterm-256color
-fi
-
 case "${OSTYPE}" in
   linux*)
     limit coredumpsize 0
