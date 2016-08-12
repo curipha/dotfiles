@@ -442,6 +442,7 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' single-ignored show
 zstyle ':completion:*' squeeze-slashes true
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
@@ -455,7 +456,8 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:processes' command 'ps x -o pid,user,stat,tty,command -w -w'
-zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
+zstyle ':completion:*:(processes|jobs)' menu yes select
+zstyle ':completion:*:(processes|jobs)' force-list always
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
