@@ -554,12 +554,13 @@ set shortmess=aTI
 set report=0
 set synmaxcol=270
 
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer><silent><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help nnoremap <buffer><silent><nowait> q :<C-u>helpclose<CR>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
