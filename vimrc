@@ -136,9 +136,7 @@ inoremap <C-j> <Esc>
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q  <Nop>
-nnoremap qq <Nop>
 
-nnoremap q: :q
 nnoremap !  :!
 
 nnoremap ; :
