@@ -137,7 +137,7 @@ nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q  <Nop>
 
-nnoremap !  :!
+nnoremap ! :!
 
 nnoremap ; :
 vnoremap ; :
