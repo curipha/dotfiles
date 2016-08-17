@@ -362,7 +362,7 @@ function +vi-git-hook() {
   (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":@{upstream}+${COUNT}"
   COUNT=$(git rev-list --count 'master..HEAD' 2> /dev/null)
   (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":master+${COUNT}"
-  COUNT=$(git stash list 2>/dev/null | wc -l)
+  COUNT=$(git stash list 2> /dev/null | wc -l)
   (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT}"
 }
 
