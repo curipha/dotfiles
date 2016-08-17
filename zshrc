@@ -347,10 +347,24 @@ zstyle ':vcs_info:*' stagedstr '(+)'
 zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
-zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
-zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
-
+zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
+zstyle ':vcs_info:*' actionformats '[%s:%b%c%u%m]'
 zstyle ':vcs_info:*' max-exports 1
+
+zstyle ':vcs_info:git+set-message:*' hooks git-hook
+function +vi-git-hook() {
+  isinrepo || return
+
+  git status --porcelain --untracked-files=all | grep -Esq '^\?\? ' && hook_com[unstaged]+='(?)'
+
+  local COUNT
+  COUNT=$(git rev-list --count '@{upstream}..HEAD' 2> /dev/null)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":@{upstream}+${COUNT}"
+  COUNT=$(git rev-list --count 'master..HEAD' 2> /dev/null)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":master+${COUNT}"
+  COUNT=$(git stash list 2>/dev/null | wc -l)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT}"
+}
 
 function precmd_vcs_info() {
   psvar=()
