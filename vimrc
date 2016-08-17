@@ -136,10 +136,8 @@ inoremap <C-j> <Esc>
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q  <Nop>
-nnoremap qq <Nop>
 
-nnoremap q: :q
-nnoremap !  :!
+nnoremap ! :!
 
 nnoremap ; :
 vnoremap ; :
@@ -379,8 +377,6 @@ nnoremap <silent> K  :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
 nnoremap <silent> gK :<C-u>vimgrep /<C-r><C-w>/j %<CR>
 vnoremap <silent> K  y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
 vnoremap <silent> gK y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
-autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
-autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
 
 nnoremap <silent> <C-Up>   :cprevious<CR>
 nnoremap <silent> <C-Down> :cnext<CR>
@@ -558,12 +554,13 @@ set shortmess=aTI
 set report=0
 set synmaxcol=270
 
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer><silent><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help nnoremap <buffer><silent><nowait> q :<C-u>helpclose<CR>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
