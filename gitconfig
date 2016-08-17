@@ -8,7 +8,8 @@
   ap    = add --patch
   au    = add --update --verbose
   bl    = blame -w
-  br    = branch --all --verbose --verbose
+  br    = branch --verbose --verbose
+  brr   = branch --all --verbose --verbose
   ca    = commit --all --verbose --verbose
   ci    = commit --verbose --verbose
   co    = checkout
