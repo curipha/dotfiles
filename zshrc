@@ -371,7 +371,7 @@ function precmd_vcs_info() {
   LANG=en_US.UTF-8 vcs_info
   [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
-add-zsh-hook precmd precmd_vcs_info
+add-zsh-hook -Uz precmd precmd_vcs_info
 #}}}
 
 # Job {{{
@@ -510,7 +510,7 @@ setopt pushd_ignore_dups
 setopt pushd_to_home
 
 function chpwd_ls() { ls -AF }
-add-zsh-hook chpwd chpwd_ls
+add-zsh-hook -Uz chpwd chpwd_ls
 
 setopt always_last_prompt
 setopt always_to_end
