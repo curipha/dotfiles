@@ -322,6 +322,12 @@ RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR DATE_INDICATOR
 
+function precmd_title() {
+  print -Pn "\e]0;%n@%m: %~\a"
+}
+add-zsh-hook -Uz precmd precmd_title
+
+
 setopt prompt_cr
 setopt prompt_sp
 PROMPT_EOL_MARK='%B%S<NOEOL>%s%b'
