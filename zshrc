@@ -369,7 +369,7 @@ function +vi-git-hook() {
   COUNT=$(git rev-list --count 'master..HEAD' 2> /dev/null)
   (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":master+${COUNT}"
   COUNT=$(git stash list 2> /dev/null | wc -l)
-  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT}"
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT//[^0-9]/}"
 }
 
 function precmd_vcs_info() {
