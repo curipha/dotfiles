@@ -29,6 +29,7 @@ Scrollbar=none
 SwitchShortcuts=no
 Term=xterm-256color
 Transparency=medium
+WideExtra=true
 WindowShortcuts=no
 ZoomMouse=no
 ZoomShortcuts=no

@@ -322,6 +322,12 @@ RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR DATE_INDICATOR
 
+function precmd_title() {
+  print -Pn "\e]0;%n@%m: %~\a"
+}
+add-zsh-hook -Uz precmd precmd_title
+
+
 setopt prompt_cr
 setopt prompt_sp
 PROMPT_EOL_MARK='%B%S<NOEOL>%s%b'
@@ -347,17 +353,31 @@ zstyle ':vcs_info:*' stagedstr '(+)'
 zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
-zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
-zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
-
+zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
+zstyle ':vcs_info:*' actionformats '*%a* [%s:%b%c%u%m]'
 zstyle ':vcs_info:*' max-exports 1
+
+zstyle ':vcs_info:git+set-message:*' hooks git-hook
+function +vi-git-hook() {
+  isinrepo || return
+
+  git status --porcelain --untracked-files=all | grep -Esq '^\?\? ' && hook_com[unstaged]+='(?)'
+
+  local COUNT
+  COUNT=$(git rev-list --count '@{upstream}..HEAD' 2> /dev/null)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":@{upstream}+${COUNT}"
+  COUNT=$(git rev-list --count 'master..HEAD' 2> /dev/null)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":master+${COUNT}"
+  COUNT=$(git stash list 2> /dev/null | wc -l)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT}"
+}
 
 function precmd_vcs_info() {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
   [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
-add-zsh-hook precmd precmd_vcs_info
+add-zsh-hook -Uz precmd precmd_vcs_info
 #}}}
 
 # Job {{{
@@ -496,7 +516,7 @@ setopt pushd_ignore_dups
 setopt pushd_to_home
 
 function chpwd_ls() { ls -AF }
-add-zsh-hook chpwd chpwd_ls
+add-zsh-hook -Uz chpwd chpwd_ls
 
 setopt always_last_prompt
 setopt always_to_end
