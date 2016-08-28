@@ -455,7 +455,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*
 zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
 zstyle ':completion:*' single-ignored show
@@ -491,7 +491,7 @@ if [[ -n "${ETC_PASSWD}" ]]; then
     eval "$(awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs)"
 
   zstyle ':completion:*:users' users \
-    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
+    "$(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")"
   unset UID_MIN UID_MAX
 fi
 unset ETC_PASSWD
@@ -749,7 +749,7 @@ function wol() {
     return 1
   fi
 
-  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
+  echo -en "$( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' )" \
     | nc -w0 -u 255.255.255.255 4000
 }
 
