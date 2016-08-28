@@ -123,11 +123,11 @@ function warning() {
   return 1
 }
 
-function is_ssh()  { [[ -n "${SSH_CONNECTION}" || `ps -o comm= -p "${PPID}" 2> /dev/null` == 'sshd' ]] }
+function is_ssh()  { [[ -n "${SSH_CONNECTION}" || $(ps -o comm= -p "${PPID}" 2> /dev/null) == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
 function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 
-function isinrepo() { exists git && [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == 'true' ]] }
+function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] }
 
 function set_cc() {
   case "${1}" in
@@ -149,7 +149,7 @@ function set_cc() {
 
   if [[ -n "${CC}" ]]; then
     CFLAGS='-march=native -mtune=native -O2 -pipe -w'
-    if [[ `${CC} -v --help 2> /dev/null` =~ '-fstack-protector-strong' ]]; then
+    if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
       CFLAGS+=' -fstack-protector-strong'
     else
       CFLAGS+=' -fstack-protector-all'
@@ -186,7 +186,7 @@ case "${OSTYPE}" in
     alias ls='ls -G'
 
     exists gmake && alias make=gmake
-    exists gmake && export MAKE=`whence -p gmake`
+    exists gmake && export MAKE=$(whence -p gmake)
 
     exists jot   && alias seq=jot
 
@@ -216,7 +216,7 @@ else
   export PAGER=cat
 fi
 
-exists dircolors && eval `dircolors --bourne-shell`
+exists dircolors && eval "$(dircolors --bourne-shell)"
 
 DIFF_PARAM='--unified --report-identical-files --minimal'
 if exists colordiff; then
@@ -227,7 +227,7 @@ fi
 unset DIFF_PARAM
 
 GREP_PARAM='--color=auto --binary-files=text'
-if [[ `grep --help 2>&1` =~ '--exclude-dir' ]]; then
+if [[ $(grep --help 2>&1) =~ '--exclude-dir' ]]; then
   for EXCLUDE_DIR in .git .deps .libs; do
     GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
   done
@@ -242,7 +242,7 @@ elif exists gcc; then
 fi
 
 if exists manpath; then
-  MANPATH=`MANPATH= manpath`
+  MANPATH=$(MANPATH= manpath)
 
   manpath=(
     ~/app/*/man(N-/)
@@ -310,7 +310,7 @@ KEYTIMEOUT=10
 zle -N bracketed-paste bracketed-paste-magic
 zle -N self-insert url-quote-magic
 
-[[ `whence -w run-help` == 'run-help: alias' ]] && unalias run-help
+[[ $(whence -w run-help) == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
 is_ssh  && SSH_INDICATOR='@ssh'
@@ -369,7 +369,7 @@ function +vi-git-hook() {
   COUNT=$(git rev-list --count 'master..HEAD' 2> /dev/null)
   (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":master+${COUNT}"
   COUNT=$(git stash list 2> /dev/null | wc -l)
-  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT}"
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT//[^0-9]/}"
 }
 
 function precmd_vcs_info() {
@@ -455,7 +455,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*
 zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
 zstyle ':completion:*' single-ignored show
@@ -478,20 +478,20 @@ zstyle ':completion:*:(processes|jobs)' force-list always
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
 
-exists getent && ETC_PASSWD=`getent passwd 2> /dev/null`
+exists getent && ETC_PASSWD=$(getent passwd 2> /dev/null)
 if [[ "${?}" != '0' ]]; then
   if [[ -r /etc/passwd ]]; then
-    ETC_PASSWD=`cat /etc/passwd`
+    ETC_PASSWD=$(cat /etc/passwd)
   else
     unset ETC_PASSWD
   fi
 fi
 if [[ -n "${ETC_PASSWD}" ]]; then
   [[ -r /etc/login.defs ]] && \
-    eval `awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs`
+    eval "$(awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs)"
 
   zstyle ':completion:*:users' users \
-    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
+    "$(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")"
   unset UID_MIN UID_MAX
 fi
 unset ETC_PASSWD
@@ -749,7 +749,7 @@ function wol() {
     return 1
   fi
 
-  echo -en $( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' ) \
+  echo -en "$( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' )" \
     | nc -w0 -u 255.255.255.255 4000
 }
 
@@ -759,8 +759,8 @@ function whois() {
     REPORTTIME=-1
 
     local WHOIS
-    exists jwhois && WHOIS=`whence -p jwhois`
-    exists whois  && WHOIS=`whence -p whois`
+    exists jwhois && WHOIS=$(whence -p jwhois)
+    exists whois  && WHOIS=$(whence -p whois)
 
     if [[ -z "${WHOIS}" ]]; then
       warning 'install "whois" command'
@@ -774,7 +774,7 @@ function whois() {
         -* )
           OPTION+=( "${ARG}" );;
         * )
-          DOMAIN=`echo "${ARG}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!'`;;
+          DOMAIN=$(echo "${ARG}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!');;
       esac
     done
 
