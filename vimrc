@@ -136,10 +136,8 @@ inoremap <C-j> <Esc>
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap Q  <Nop>
-nnoremap qq <Nop>
 
-nnoremap q: :q
-nnoremap !  :!
+nnoremap ! :!
 
 nnoremap ; :
 vnoremap ; :
@@ -313,7 +311,7 @@ if &term =~# '^xterm'
   cnoremap <silent> <Esc>[201~ <Nop>
 endif
 
-autocmd MyAutoCmd BufEnter,BufFilePost *
+autocmd MyAutoCmd BufEnter,BufFilePost,BufWritePost *
 \   if empty(&l:buftype) && isdirectory(expand('%:p:h'))
 \ |   execute 'lcd ' fnameescape(expand('%:p:h'))
 \ | endif
@@ -375,12 +373,10 @@ set wrapscan
 
 set grepprg=internal
 nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
-nnoremap <silent> K  :<C-u>vimgrep /<C-r><C-w>/j %<CR>
-nnoremap <silent> gK :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
-vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
-vnoremap <silent> gK y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
-autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> K  :<C-u>help <C-r><C-w><CR>
-autocmd MyAutoCmd FileType vim nnoremap <buffer><silent> gK :<C-u>help <C-r><C-w><CR>
+nnoremap <silent> K  :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
+nnoremap <silent> gK :<C-u>vimgrep /<C-r><C-w>/j %<CR>
+vnoremap <silent> K  y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
+vnoremap <silent> gK y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
 
 nnoremap <silent> <C-Up>   :cprevious<CR>
 nnoremap <silent> <C-Down> :cnext<CR>
@@ -410,10 +406,10 @@ nnoremap ? ?\v
 
 vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
-nnoremap *  g*N
-nnoremap #  g#N
-nnoremap g* *N
-nnoremap g# #N
+nnoremap *  *N
+nnoremap #  #N
+nnoremap g* g*N
+nnoremap g# g#N
 
 nnoremap <expr> n (exists('v:searchforward') ? v:searchforward : 1) ? 'nzv' : 'Nzv'
 nnoremap <expr> N (exists('v:searchforward') ? v:searchforward : 1) ? 'Nzv' : 'nzv'
@@ -441,7 +437,7 @@ set tabpagemax=32
 set statusline=%t\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
-set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3v\ \ %3l/%3L\ \(%P\)
+set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 
 autocmd MyAutoCmd Filetype qf let &l:statusline='%t %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y  %3l/%3L (%P)'
 
@@ -558,12 +554,13 @@ set shortmess=aTI
 set report=0
 set synmaxcol=270
 
-autocmd MyAutoCmd FileType help,qf nnoremap <buffer><silent><nowait> q :<C-u>quit<CR>
+autocmd MyAutoCmd FileType help nnoremap <buffer><silent><nowait> q :<C-u>helpclose<CR>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue

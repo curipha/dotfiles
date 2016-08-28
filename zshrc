@@ -17,11 +17,9 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-[[ -z "${HOSTNAME}" ]] && export HOSTNAME=$(hostname)
 [[ -z "${SHELL}" ]]    && export SHELL=$(whence -p zsh)
-[[ -z "${USER}" ]]     && export USER=$(id -un)
-[[ -z "${EUID}" ]]     && export EUID=$(id -u)
-[[ -z "${UID}" ]]      && export UID=$(id -ru)
+[[ -z "${HOSTNAME}" ]] && export HOSTNAME="${HOST}"
+[[ -z "${USER}" ]]     && export USER="${USERNAME}"
 
 export CYGWIN='nodosfilewarning winsymlinks:native'
 
@@ -105,8 +103,8 @@ stty -ixon -ixoff
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
-autoload -Uz colors
-autoload -Uz compinit
+autoload -Uz colors   && colors
+autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
 autoload -Uz is-at-least
 autoload -Uz modify-current-argument
@@ -163,10 +161,6 @@ function set_cc() {
 }
 #}}}
 # Macros {{{
-if ! is_tmux; then
-  is_ssh || is_x && export TERM=xterm-256color
-fi
-
 case "${OSTYPE}" in
   linux*)
     limit coredumpsize 0
@@ -313,7 +307,6 @@ TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
 MAILCHECK=0
 KEYTIMEOUT=10
 
-colors
 zle -N bracketed-paste bracketed-paste-magic
 zle -N self-insert url-quote-magic
 
@@ -328,6 +321,12 @@ PROMPT2='%_ %# '
 RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR DATE_INDICATOR
+
+function precmd_title() {
+  print -Pn "\e]0;%n@%m: %~\a"
+}
+add-zsh-hook -Uz precmd precmd_title
+
 
 setopt prompt_cr
 setopt prompt_sp
@@ -354,17 +353,31 @@ zstyle ':vcs_info:*' stagedstr '(+)'
 zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
-zstyle ':vcs_info:*' formats '[%s:%b%c%u]'
-zstyle ':vcs_info:*' actionformats '[%s:%b%c%u]'
-
+zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
+zstyle ':vcs_info:*' actionformats '*%a* [%s:%b%c%u%m]'
 zstyle ':vcs_info:*' max-exports 1
+
+zstyle ':vcs_info:git+set-message:*' hooks git-hook
+function +vi-git-hook() {
+  isinrepo || return
+
+  git status --porcelain --untracked-files=all | grep -Esq '^\?\? ' && hook_com[unstaged]+='(?)'
+
+  local COUNT
+  COUNT=$(git rev-list --count '@{upstream}..HEAD' 2> /dev/null)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":@{upstream}+${COUNT}"
+  COUNT=$(git rev-list --count 'master..HEAD' 2> /dev/null)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":master+${COUNT}"
+  COUNT=$(git stash list 2> /dev/null | wc -l)
+  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":stash@${COUNT//[^0-9]/}"
+}
 
 function precmd_vcs_info() {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
   [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
-add-zsh-hook precmd precmd_vcs_info
+add-zsh-hook -Uz precmd precmd_vcs_info
 #}}}
 
 # Job {{{
@@ -422,8 +435,6 @@ bindkey '^R' end-of-history
 bindkey -r '^S'
 #}}}
 # Complement {{{
-compinit
-
 LISTMAX=0
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
@@ -447,6 +458,7 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' single-ignored show
 zstyle ':completion:*' squeeze-slashes true
 
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
@@ -460,7 +472,8 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*:manuals' separate-sections true
 
 zstyle ':completion:*:processes' command 'ps x -o pid,user,stat,tty,command -w -w'
-zstyle ':completion:*:(processes|jobs)' menu yes=2 select=2
+zstyle ':completion:*:(processes|jobs)' menu yes select
+zstyle ':completion:*:(processes|jobs)' force-list always
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
@@ -503,7 +516,7 @@ setopt pushd_ignore_dups
 setopt pushd_to_home
 
 function chpwd_ls() { ls -AF }
-add-zsh-hook chpwd chpwd_ls
+add-zsh-hook -Uz chpwd chpwd_ls
 
 setopt always_last_prompt
 setopt always_to_end
@@ -950,7 +963,7 @@ function createpasswd() {
   # Default
   local CHARACTER='[:alnum:]'
   local LENGTH=18
-  local NUMBER=10
+  local NUMBER=1
 
   # Arguments
   local F_CHARACTER F_PARANOID
@@ -979,10 +992,10 @@ Example:
   ${0}
   ${0} -c "0-9A-Za-z"
   ${0} -c "[:alnum:]"
-    Create ${NUMBER} of passwords (${LENGTH} chars) contains letters and digits.
+    Create a password (${LENGTH} chars) contains letters and digits.
 
-  ${0} -l 24 -n 1
-    Create a password (24 chars) contains printable chars, not including space.
+  ${0} -p -l 24 -n 2
+    Create two passwords (24 chars) contains printable chars, not including space.
 
   ${0} -c ACGT -n 20
     Get a piece of DNA sequence.
