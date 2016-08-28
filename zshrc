@@ -624,7 +624,7 @@ function change_command() {
 
   zle beginning-of-line
 
-  [[ "${BUFFER}" == su(do|)\ * ]] && zle kill-word
+  [[ "${BUFFER}" =~ '^su(do)? .*' ]] && zle kill-word
   zle kill-word
 }
 zle -N change_command
@@ -632,7 +632,7 @@ bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
   [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
-  [[ "${BUFFER}" != su(do|)\ * ]] && BUFFER="sudo ${BUFFER}"
+  [[ "${BUFFER}" =~ '^su(do)? .*' ]] || BUFFER="sudo ${BUFFER}"
   zle end-of-line
 }
 zle -N prefix_with_sudo
