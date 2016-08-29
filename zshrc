@@ -322,9 +322,7 @@ RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR DATE_INDICATOR
 
-function precmd_title() {
-  print -Pn "\e]0;%n@%m: %~\a"
-}
+function precmd_title() { print -Pn "\e]0;%n@%m: %~\a" }
 add-zsh-hook -Uz precmd precmd_title
 
 
@@ -491,7 +489,7 @@ if [[ -n "${ETC_PASSWD}" ]]; then
     eval "$(awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs)"
 
   zstyle ':completion:*:users' users \
-    "$(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")"
+    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
   unset UID_MIN UID_MAX
 fi
 unset ETC_PASSWD
