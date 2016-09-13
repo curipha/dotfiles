@@ -224,6 +224,9 @@ nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 nnoremap <silent> <C-s> :<C-u>update<CR>
 inoremap <silent> <C-s> <C-o>:update<CR>
 
+inoremap <Left>  <C-g>U<Left>
+inoremap <Right> <C-g>U<Right>
+
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
   execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
