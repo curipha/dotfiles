@@ -781,6 +781,40 @@ function whois() {
   }
 }
 
+function mailsend() {
+  if ! exists openssl; then
+    warning 'install "openssl" command'
+    return 1
+  fi
+
+  local HOST PORT FROM TO SUBJECT
+  HOST=${1:-localhost}
+  PORT=${2:-25}
+
+  read -r 'FROM?From: '
+  read -r 'TO?To: '
+  read -r 'SUBJECT?Subject: '
+
+  echo 'Body (end with Ctrl-D):'
+
+  nc -C "${HOST}" "${PORT}" <<EOC
+HELO ${HOST}
+MAIL FROM: <${FROM}>
+RCPT TO: <${TO}>
+DATA
+From: <${FROM}>
+To: <${TO}>
+Subject: =?UTF-8?B?$(echo -n "${SUBJECT}" | openssl base64)?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+$(< /dev/stdin)
+
+.
+QUIT
+EOC
+}
+
 function 256color() {
   local CODE
   for CODE in {0..15}; do
