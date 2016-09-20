@@ -141,6 +141,8 @@ nnoremap ! :!
 
 nnoremap ; :
 vnoremap ; :
+nnoremap <Leader>; ;
+vnoremap <Leader>; ;
 
 xnoremap <silent> . :<C-u>normal .<CR>
 
