@@ -173,9 +173,6 @@ inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
 
-vnoremap J zn:move '>+1<CR>gv=zNzvgv
-vnoremap K zn:move '<-2<CR>gv=zNzvgv
-
 xnoremap >       >gv
 xnoremap <       <gv
 xnoremap <Tab>   >gv
