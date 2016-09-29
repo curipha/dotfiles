@@ -141,6 +141,8 @@ nnoremap ! :!
 
 nnoremap ; :
 vnoremap ; :
+nnoremap <Leader>; ;
+vnoremap <Leader>; ;
 
 xnoremap <silent> . :<C-u>normal .<CR>
 
@@ -170,9 +172,6 @@ vnoremap y y`]
 inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
-
-vnoremap J zn:move '>+1<CR>gv=zNzvgv
-vnoremap K zn:move '<-2<CR>gv=zNzvgv
 
 xnoremap >       >gv
 xnoremap <       <gv
@@ -517,7 +516,7 @@ nnoremap <silent> <C-n>     :tabnext<CR>
 nnoremap <silent> <C-Left>  :tabprevious<CR>
 nnoremap <silent> <C-Right> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>tab split<CR>
+nnoremap <silent> tt :<C-u>$tabnew<CR>
 
 set display=uhex
 set list

@@ -804,7 +804,7 @@ RCPT TO: <${TO}>
 DATA
 From: <${FROM}>
 To: <${TO}>
-Subject: =?UTF-8?B?$(echo -n "${SUBJECT}" | openssl base64)?=
+Subject: =?UTF-8?B?$(echo -n "${SUBJECT}" | openssl base64 | tr -d '\r\n')?=
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
