@@ -141,6 +141,8 @@ nnoremap ! :!
 
 nnoremap ; :
 vnoremap ; :
+nnoremap <Leader>; ;
+vnoremap <Leader>; ;
 
 xnoremap <silent> . :<C-u>normal .<CR>
 
@@ -170,9 +172,6 @@ vnoremap y y`]
 inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
-
-vnoremap J zn:move '>+1<CR>gv=zNzvgv
-vnoremap K zn:move '<-2<CR>gv=zNzvgv
 
 xnoremap >       >gv
 xnoremap <       <gv
@@ -224,21 +223,24 @@ nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 nnoremap <silent> <C-s> :<C-u>update<CR>
 inoremap <silent> <C-s> <C-o>:update<CR>
 
+inoremap <Left>  <C-g>U<Left>
+inoremap <Right> <C-g>U<Right>
+
 for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
-  execute 'inoremap ' . s:p . ' ' . s:p . '<Left>'
+  execute 'inoremap ' . s:p . ' ' . s:p . '<C-g>U<Left>'
   execute 'cnoremap ' . s:p . ' ' . s:p . '<Left>'
 endfor
-inoremap [[]] [[  ]]<Left><Left><Left>
-inoremap (()) ((  ))<Left><Left><Left>
+inoremap [[]] [[  ]]<C-g>U<Left><C-g>U<Left><C-g>U<Left>
+inoremap (()) ((  ))<C-g>U<Left><C-g>U<Left><C-g>U<Left>
 
 inoremap #! #!/usr/bin/env <C-r>=&l:filetype<CR>
 
-autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<Left>
-autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<Left>
-autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> {\|\| {\|\|<C-g>U<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %q %q!!<C-g>U<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %r %r!!<C-g>U<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> %w %w()<C-g>U<Left>
+autocmd MyAutoCmd FileType ruby inoremap <buffer> // //<C-g>U<Left>
+autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<C-g>U<Left>
 
 autocmd MyAutoCmd FileType ruby     inoremap <buffer> :// ://
 autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
@@ -514,7 +516,7 @@ nnoremap <silent> <C-n>     :tabnext<CR>
 nnoremap <silent> <C-Left>  :tabprevious<CR>
 nnoremap <silent> <C-Right> :tabnext<CR>
 
-nnoremap <silent> tt :<C-u>tab split<CR>
+nnoremap <silent> tt :<C-u>$tabnew<CR>
 
 set display=uhex
 set list

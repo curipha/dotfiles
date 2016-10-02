@@ -322,9 +322,7 @@ RPROMPT="  %1v${DATE_INDICATOR}"
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR DATE_INDICATOR
 
-function precmd_title() {
-  print -Pn "\e]0;%n@%m: %~\a"
-}
+function precmd_title() { print -Pn "\e]0;%n@%m: %~\a" }
 add-zsh-hook -Uz precmd precmd_title
 
 
@@ -455,7 +453,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*
 zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
 zstyle ':completion:*' single-ignored show
@@ -479,22 +477,15 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
 
 exists getent && ETC_PASSWD=$(getent passwd 2> /dev/null)
-if [[ "${?}" != '0' ]]; then
-  if [[ -r /etc/passwd ]]; then
-    ETC_PASSWD=$(cat /etc/passwd)
-  else
-    unset ETC_PASSWD
-  fi
-fi
+[[ ( "${?}" != '0' || -z "${ETC_PASSWD}" ) && -r /etc/passwd ]] && ETC_PASSWD=$(cat /etc/passwd)
 if [[ -n "${ETC_PASSWD}" ]]; then
   [[ -r /etc/login.defs ]] && \
     eval "$(awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs)"
 
   zstyle ':completion:*:users' users \
-    "$(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")"
-  unset UID_MIN UID_MAX
+    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
+  unset ETC_PASSWD UID_MIN UID_MAX
 fi
-unset ETC_PASSWD
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:-subscript-:*' list-separator ':'
@@ -624,7 +615,7 @@ function change_command() {
 
   zle beginning-of-line
 
-  [[ "${BUFFER}" == su(do|)\ * ]] && zle kill-word
+  [[ "${BUFFER}" =~ '^sudo .*' ]] && zle kill-word
   zle kill-word
 }
 zle -N change_command
@@ -632,7 +623,7 @@ bindkey '^X^X' change_command
 
 function prefix_with_sudo() {
   [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
-  [[ "${BUFFER}" != su(do|)\ * ]] && BUFFER="sudo ${BUFFER}"
+  [[ "${BUFFER}" =~ '^sudo .*' ]] || BUFFER="sudo ${BUFFER}"
   zle end-of-line
 }
 zle -N prefix_with_sudo
@@ -774,7 +765,7 @@ function whois() {
         -* )
           OPTION+=( "${ARG}" );;
         * )
-          DOMAIN=$(echo "${ARG}" | sed -E 's!^([^:]+://)?([^/]+).*$!\2!' | sed -E 's!^www\.([^\.]+\.[^\.]+)$!\1!');;
+          DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
       esac
     done
 
@@ -788,6 +779,40 @@ function whois() {
     REPORTTIME="${REPORTTIME_ORIG}"
     return "${RETURN}"
   }
+}
+
+function mailsend() {
+  if ! exists openssl; then
+    warning 'install "openssl" command'
+    return 1
+  fi
+
+  local HOST PORT FROM TO SUBJECT
+  HOST=${1:-localhost}
+  PORT=${2:-25}
+
+  read -r 'FROM?From: '
+  read -r 'TO?To: '
+  read -r 'SUBJECT?Subject: '
+
+  echo 'Body (end with Ctrl-D):'
+
+  nc -C "${HOST}" "${PORT}" <<EOC
+HELO ${HOST}
+MAIL FROM: <${FROM}>
+RCPT TO: <${TO}>
+DATA
+From: <${FROM}>
+To: <${TO}>
+Subject: =?UTF-8?B?$(echo -n "${SUBJECT}" | openssl base64 | tr -d '\r\n')?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+$(< /dev/stdin)
+
+.
+QUIT
+EOC
 }
 
 function 256color() {
@@ -1054,7 +1079,7 @@ alias d='dirs -v'
 #alias e=''
 #alias f=''
 #alias g=''
-alias h='fc -l -t "%b.%d %T"'
+alias h='fc -l -t "%b.%e %k:%M:%S"'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
