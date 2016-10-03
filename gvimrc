@@ -5,7 +5,7 @@
 scriptencoding utf-8
 
 " Variables {{{
-let s:iswin  = has('win32') || has('win64')
+let s:iswin  = has('win32')
 let s:ismac  = has('mac')
 let s:isunix = has('unix') || has('win32unix')
 "}}}

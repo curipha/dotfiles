@@ -6,7 +6,7 @@
 set encoding=utf-8
 scriptencoding utf-8
 
-let s:iswin = has('win32') || has('win64')
+let s:iswin = has('win32')
 
 if s:iswin
   language message en
