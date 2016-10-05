@@ -3,7 +3,7 @@
 # ===============
 
 Protocol 2
-IgnoreUnknown PubkeyAcceptedKeyTypes,FingerprintHash,Include
+IgnoreUnknown PubkeyAcceptedKeyTypes,Include
 
 Include ~/.ssh/config.include
 
@@ -36,7 +36,6 @@ Host *
   VerifyHostKeyDNS      ask
   StrictHostKeyChecking ask
   VisualHostKey         yes
-  FingerprintHash       sha512
   HashKnownHosts        yes
 
   Compression  no
