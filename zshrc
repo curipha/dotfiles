@@ -266,6 +266,11 @@ bindkey -e
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
 
+bindkey '^[OC'    forward-word
+bindkey '^[OD'    backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
 [[ -n "${terminfo[khome]}" ]] && bindkey "${terminfo[khome]}" beginning-of-line
 [[ -n "${terminfo[kend]}"  ]] && bindkey "${terminfo[kend]}"  end-of-line
 bindkey '^[[1~' beginning-of-line
