@@ -1110,6 +1110,7 @@ alias x='exit'
 for ZFILE in ~/.zshrc ~/.zcompdump; do
   [[ -s "${ZFILE}" && ( ! -s "${ZFILE}.zwc" || "${ZFILE}" -nt "${ZFILE}.zwc" ) ]] && zcompile "${ZFILE}" &!
 done
+unset ZFILE
 
 if [[ "${OSTYPE}" != 'cygwin' && "${SHLVL}" == '1' ]] && exists tmux; then
   tmux attach || tmux
