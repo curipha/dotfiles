@@ -290,7 +290,7 @@ endif
 
 autocmd MyAutoCmd InsertLeave * set nopaste
 
-if &term =~# '^xterm'
+if &term =~# '^xterm' || &term =~# '^screen'
   set t_ti&
   set t_te&
 
