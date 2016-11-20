@@ -534,6 +534,7 @@ setopt extended_glob
 setopt glob_dots
 setopt magic_equal_subst
 setopt mark_dirs
+setopt no_nomatch
 setopt numeric_glob_sort
 setopt rc_expand_param
 
