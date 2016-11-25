@@ -378,8 +378,8 @@ nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
 nnoremap <silent> K  *N:<C-u>vimgrep /<C-r>//j %<CR>
 nnoremap <silent> gK g*N:<C-u>vimgrep /<C-r>//j %<CR>
 
-vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>N
-vnoremap <silent> K y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>N:<C-u>vimgrep /<C-r>//j %<CR>
+vnoremap <silent> * y/\V<C-r>=escape(@", '/\')<CR><CR>N
+vnoremap <silent> K y/\V<C-r>=escape(@", '/\')<CR><CR>N:<C-u>vimgrep /<C-r>//j %<CR>
 
 nnoremap <silent> <C-Up>   :cprevious<CR>zv
 nnoremap <silent> <C-Down> :cnext<CR>zv
