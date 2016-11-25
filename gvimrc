@@ -24,7 +24,11 @@ elseif s:isunix
 endif
 "}}}
 " GUI {{{
-colorscheme desert
+try
+  colorscheme gruvbox
+catch
+  colorscheme desert
+endtry
 
 set guioptions=ciM
 set guicursor=a:blinkon0
