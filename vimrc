@@ -380,8 +380,8 @@ nnoremap <silent> gK :<C-u>vimgrep /<C-r><C-w>/j %<CR>
 vnoremap <silent> K  y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
 vnoremap <silent> gK y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
 
-nnoremap <silent> <C-Up>   :cprevious<CR>
-nnoremap <silent> <C-Down> :cnext<CR>
+nnoremap <silent> <C-Up>   :cprevious<CR>zv
+nnoremap <silent> <C-Down> :cnext<CR>zv
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
@@ -505,11 +505,11 @@ nnoremap <silent> <S-Right> :<C-u>wincmd <<CR>
 nnoremap <silent> <S-Up>    :<C-u>wincmd +<CR>
 nnoremap <silent> <S-Down>  :<C-u>wincmd -<CR>
 
-for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
-  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
-  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>'
-  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>'
-  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
+for [s:k, s:p, s:a] in [['b', 'b', ''], ['t', 'tab', ''], ['q', 'c', 'zv']]
+  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>' . s:a
+  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>' . s:a
+  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>' . s:a
+  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>' . s:a
 endfor
 
 nnoremap <silent> <C-p>     :tabprevious<CR>
@@ -564,7 +564,7 @@ autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
-autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
