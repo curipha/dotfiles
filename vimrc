@@ -406,7 +406,7 @@ nnoremap <silent> <Leader><Space> :<C-u>nohlsearch<CR>:<C-u>diffupdate<CR>:<C-u>
 nnoremap / /\v
 nnoremap ? ?\v
 
-vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
+vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>N
 
 nnoremap *  *N
 nnoremap #  #N
