@@ -377,8 +377,7 @@ set grepprg=internal
 nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
 nnoremap <silent> K  :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
 nnoremap <silent> gK :<C-u>vimgrep /<C-r><C-w>/j %<CR>
-vnoremap <silent> K  y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
-vnoremap <silent> gK y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
+vnoremap <silent> K  y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
 
 nnoremap <silent> <C-Up>   :cprevious<CR>zv
 nnoremap <silent> <C-Down> :cnext<CR>zv
