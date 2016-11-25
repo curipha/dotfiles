@@ -394,12 +394,12 @@ autocmd MyAutoCmd WinEnter *
 \ |   quit
 \ | endif
 
-autocmd MyAutoCmd WinLeave *
-\   let b:vimrc_pattern  = @/
-\ | let b:vimrc_hlsearch = &hlsearch
-autocmd MyAutoCmd WinEnter *
-\   let @/ = get(b:, 'vimrc_pattern', @/)
-\ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
+autocmd MyAutoCmd TabLeave *
+\   let t:vimrc_pattern  = @/
+\ | let t:vimrc_hlsearch = &hlsearch
+autocmd MyAutoCmd TabEnter *
+\   let @/ = get(t:, 'vimrc_pattern', @/)
+\ | let &hlsearch = get(t:, 'vimrc_hlsearch', &hlsearch)
 
 nnoremap <silent> <Leader><Space> :<C-u>nohlsearch<CR>:<C-u>diffupdate<CR>:<C-u>syntax sync fromstart<CR><C-l>
 
