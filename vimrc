@@ -11,7 +11,6 @@ let s:iswin = has('win32')
 if s:iswin
   language message en
 
-  set shellslash
   set termencoding=cp932
 else
   language message C
