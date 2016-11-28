@@ -257,8 +257,6 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
-
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
 autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
 autocmd MyAutoCmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
