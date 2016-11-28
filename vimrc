@@ -685,7 +685,7 @@ nmap <Tab> %
 "  - https://github.com/Shougo/neocomplete.vim
 let g:neocomplete#enable_at_startup = has('lua')
 
-if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
+if g:neocomplete#enable_at_startup && &runtimepath =~# '\<neocomplete\>'
   let g:neocomplete#enable_auto_select = 1
 
   let g:neocomplete#enable_smart_case = 1
@@ -697,8 +697,6 @@ if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
   let g:neocomplete#auto_completion_start_length = 2
   let g:neocomplete#manual_completion_start_length = 0
   let g:neocomplete#min_keyword_length = 4
-
-  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
   if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
@@ -720,11 +718,6 @@ if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
 
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  inoremap <expr> <C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <BS>  neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <C-y> neocomplete#close_popup()
-  inoremap <expr> <C-e> neocomplete#cancel_popup()
 
   inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup()."\<Up>" : "\<Up>"
   inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup()."\<Down>" : "\<Down>"
