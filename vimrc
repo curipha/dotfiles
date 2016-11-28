@@ -547,7 +547,7 @@ autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw
 set ttyfast
-set visualbell t_vb=
+set belloff=all
 
 set timeout
 set timeoutlen=800

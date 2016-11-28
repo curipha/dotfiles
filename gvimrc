@@ -32,7 +32,6 @@ endtry
 
 set guioptions=ciM
 set guicursor=a:blinkon0
-set visualbell t_vb=
 
 highlight IdeographicSpace gui=underline guifg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
