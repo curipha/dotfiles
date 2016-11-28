@@ -20,7 +20,7 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-if &term =~# '\-256color$'
+if &term =~# '\<256color\>'
   set t_Co=256
 endif
 set background=dark
