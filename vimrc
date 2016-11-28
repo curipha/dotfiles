@@ -375,13 +375,14 @@ set wrapscan
 
 set grepprg=internal
 nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
-nnoremap <silent> K  :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
-nnoremap <silent> gK :<C-u>vimgrep /<C-r><C-w>/j %<CR>
-vnoremap <silent> K  y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
-vnoremap <silent> gK y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
+nnoremap <silent> K  *N:<C-u>vimgrep /<C-r>//j %<CR>
+nnoremap <silent> gK g*N:<C-u>vimgrep /<C-r>//j %<CR>
 
-nnoremap <silent> <C-Up>   :cprevious<CR>
-nnoremap <silent> <C-Down> :cnext<CR>
+vnoremap <silent> * y/\V<C-r>=escape(@", '/\')<CR><CR>N
+vnoremap <silent> K y/\V<C-r>=escape(@", '/\')<CR><CR>N:<C-u>vimgrep /<C-r>//j %<CR>
+
+nnoremap <silent> <C-Up>   :cprevious<CR>zv
+nnoremap <silent> <C-Down> :cnext<CR>zv
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
@@ -394,19 +395,17 @@ autocmd MyAutoCmd WinEnter *
 \ |   quit
 \ | endif
 
-autocmd MyAutoCmd WinLeave *
-\   let b:vimrc_pattern  = @/
-\ | let b:vimrc_hlsearch = &hlsearch
-autocmd MyAutoCmd WinEnter *
-\   let @/ = get(b:, 'vimrc_pattern', @/)
-\ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
+autocmd MyAutoCmd TabLeave *
+\   let t:vimrc_pattern  = @/
+\ | let t:vimrc_hlsearch = &hlsearch
+autocmd MyAutoCmd TabEnter *
+\   let @/ = get(t:, 'vimrc_pattern', @/)
+\ | let &hlsearch = get(t:, 'vimrc_hlsearch', &hlsearch)
 
 nnoremap <silent> <Leader><Space> :<C-u>nohlsearch<CR>:<C-u>diffupdate<CR>:<C-u>syntax sync fromstart<CR><C-l>
 
 nnoremap / /\v
 nnoremap ? ?\v
-
-vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
 nnoremap *  *N
 nnoremap #  #N
@@ -423,6 +422,8 @@ cnoremap <expr> ? getcmdtype() ==# '?' ? '\?' : '?'
 
 nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
+
+autocmd MyAutoCmd FileType ruby setlocal iskeyword+=?,!
 " }}}
 " Display {{{
 set notitle
@@ -441,8 +442,8 @@ set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':'
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 
-autocmd MyAutoCmd Filetype help let &l:statusline='%t %=%m%y  %3l/%3L (%P)'
-autocmd MyAutoCmd Filetype qf   let &l:statusline='%q %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y  %3l/%3L (%P)'
+autocmd MyAutoCmd Filetype help let &l:statusline = '%t %=%m%y  %3l/%3L (%P)'
+autocmd MyAutoCmd Filetype qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y'
 
 if has('gui_running')
   set cursorline
@@ -505,11 +506,11 @@ nnoremap <silent> <S-Right> :<C-u>wincmd <<CR>
 nnoremap <silent> <S-Up>    :<C-u>wincmd +<CR>
 nnoremap <silent> <S-Down>  :<C-u>wincmd -<CR>
 
-for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
-  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
-  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>'
-  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>'
-  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
+for [s:k, s:p, s:a] in [['b', 'b', ''], ['t', 'tab', ''], ['q', 'c', 'zv']]
+  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>' . s:a
+  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>' . s:a
+  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>' . s:a
+  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>' . s:a
 endfor
 
 nnoremap <silent> <C-p>     :tabprevious<CR>
@@ -564,7 +565,7 @@ autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
-autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
