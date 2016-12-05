@@ -143,7 +143,7 @@ vnoremap ; :
 nnoremap <Leader>; ;
 vnoremap <Leader>; ;
 
-xnoremap <silent> . :<C-u>normal .<CR>
+xnoremap <silent> . :<C-u>normal! .<CR>
 
 nnoremap j gj
 nnoremap k gk
@@ -212,7 +212,7 @@ autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 nnoremap gI `.a
 nnoremap gc `[v`]
-vnoremap gc :<C-u>normal `[v`]<CR>
+vnoremap gc :<C-u>normal! `[v`]<CR>
 
 nnoremap vv ggVG
 vnoremap v  V
