@@ -11,7 +11,6 @@ let s:iswin = has('win32')
 if s:iswin
   language message en
 
-  set shellslash
   set termencoding=cp932
 else
   language message C
@@ -21,7 +20,7 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-if &term =~# '\-256color$'
+if &term =~# '\<256color\>'
   set t_Co=256
 endif
 set background=dark
@@ -257,8 +256,6 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'onoremap i' . s:k . ' i' . s:p
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
-
-autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
 
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
 autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
@@ -548,7 +545,7 @@ autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw
 set ttyfast
-set visualbell t_vb=
+set belloff=all
 
 set timeout
 set timeoutlen=800
@@ -688,7 +685,7 @@ nmap <Tab> %
 "  - https://github.com/Shougo/neocomplete.vim
 let g:neocomplete#enable_at_startup = has('lua')
 
-if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
+if g:neocomplete#enable_at_startup && &runtimepath =~# '\<neocomplete\>'
   let g:neocomplete#enable_auto_select = 1
 
   let g:neocomplete#enable_smart_case = 1
@@ -700,8 +697,6 @@ if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
   let g:neocomplete#auto_completion_start_length = 2
   let g:neocomplete#manual_completion_start_length = 0
   let g:neocomplete#min_keyword_length = 4
-
-  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
   if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
@@ -723,11 +718,6 @@ if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
 
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  inoremap <expr> <C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <BS>  neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <C-y> neocomplete#close_popup()
-  inoremap <expr> <C-e> neocomplete#cancel_popup()
 
   inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup()."\<Up>" : "\<Up>"
   inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup()."\<Down>" : "\<Down>"
