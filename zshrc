@@ -299,6 +299,7 @@ setopt multios
 setopt path_dirs
 setopt print_eight_bit
 setopt print_exit_value
+setopt warn_create_global
 
 setopt no_beep
 setopt combining_chars
