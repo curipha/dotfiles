@@ -589,6 +589,7 @@ function magic-abbrev-expand-and-complete() {
   echo -en "\e[32m....\e[0m"
   magic-abbrev-expand
   zle expand-or-complete
+  echo -en "\e[4D    "
   zle redisplay
 }
 
