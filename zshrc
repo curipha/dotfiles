@@ -835,9 +835,8 @@ HELP
   fi
 
   for PANE in {2.."${PANE}"}; do
-    COMMAND+=( split-window -d \; )
+    COMMAND+=( split-window -d \; select-layout tiled \; )
   done
-  COMMAND+=( select-layout tiled \; )
 
   [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
   is_tmux || COMMAND+=( attach \; )
