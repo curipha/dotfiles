@@ -299,7 +299,7 @@ setopt multios
 setopt path_dirs
 setopt print_eight_bit
 setopt print_exit_value
-setopt warn_create_global
+is-at-least '5.2' && setopt warn_create_global
 
 setopt no_beep
 setopt combining_chars
@@ -1172,6 +1172,6 @@ done
 unset ZFILE
 
 if [[ "${OSTYPE}" != 'cygwin' && "${SHLVL}" == '1' ]] && exists tmux; then
-  tmux attach || tmux
+  tmux attach 2> /dev/null || tmux
 fi
 
