@@ -1116,6 +1116,6 @@ done
 unset ZFILE
 
 if [[ "${OSTYPE}" != 'cygwin' && "${SHLVL}" == '1' ]] && exists tmux; then
-  tmux attach || tmux
+  tmux attach 2> /dev/null || tmux
 fi
 
