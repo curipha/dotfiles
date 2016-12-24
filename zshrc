@@ -299,6 +299,7 @@ setopt multios
 setopt path_dirs
 setopt print_eight_bit
 setopt print_exit_value
+setopt warn_create_global
 
 setopt no_beep
 setopt combining_chars
@@ -588,6 +589,7 @@ function magic-abbrev-expand-and-complete() {
   echo -en "\e[32m....\e[0m"
   magic-abbrev-expand
   zle expand-or-complete
+  echo -en "\e[4D    "
   zle redisplay
 }
 
