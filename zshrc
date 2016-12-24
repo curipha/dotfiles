@@ -789,6 +789,62 @@ function whois() {
   }
 }
 
+function pane() {
+  if ! exists tmux; then
+    warning 'install "tmux" command'
+    return 1
+  fi
+
+  local ARG SYNC PANE
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      -s | --sync )
+        SYNC=1;;
+      -* )
+        cat <<HELP 1>&2
+Usage: ${0} [-s] [count]
+Usage: ${0} -h
+
+Options:
+  -s, --sync          Set 'synchronize-panes on'
+  -h, --help          Show this help message and exit
+
+
+Example:
+  ${0} 3
+  Open tmux with 3 pane
+
+  ${0} -s
+  Open tmux with 2 pane and set synchronize-panes on
+HELP
+        return 1;;
+
+      <-> )
+        PANE="${ARG}";;
+    esac
+  done
+
+  [[ -z "${PANE}" ]] && PANE=2
+  (( ${PANE} < 2 ))  && PANE=2
+
+  local -a COMMAND
+  if is_tmux; then
+    COMMAND+=( new-window \; )
+  else
+    COMMAND+=( new-session -d \; )
+  fi
+
+  for PANE in {2.."${PANE}"}; do
+    COMMAND+=( split-window -d \; )
+  done
+  COMMAND+=( select-layout tiled \; )
+
+  [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
+  is_tmux || COMMAND+=( attach \; )
+
+  tmux "${COMMAND[@]}"
+}
+
 function mailsend() {
   if ! exists openssl; then
     warning 'install "openssl" command'
