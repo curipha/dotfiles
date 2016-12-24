@@ -829,7 +829,7 @@ HELP
 
   local -a COMMAND
   if is_tmux; then
-    COMMAND+=( new-window \; )
+    COMMAND+=( new-window -a \; )
   else
     COMMAND+=( new-session -d \; )
   fi
