@@ -695,7 +695,7 @@ bindkey '^[m' copy-prev-shell-word
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
 alias rst='
-  if [[ -n `jobs` ]]; then
+  if [[ -n $(jobs) ]]; then
     warning "processing job still exists"
   elif [[ "${0:0:1}" == "-" ]]; then
     exec -l zsh
