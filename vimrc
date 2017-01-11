@@ -578,7 +578,7 @@ autocmd MyAutoCmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
 " }}}
 
 " Command {{{
-for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
+for s:e in ['utf-8', 'cp932', 'euc-jp', 'iso-2022-jp', 'utf-16le', 'utf-16be']
   execute 'command! -bang -bar -nargs=? -complete=file'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
         \ 'edit<bang> ++encoding='.s:e '<args>'
