@@ -27,7 +27,7 @@ export GEM_HOME=~/app/gem
 export GOPATH=~/app/go
 
 export GIT_MERGE_AUTOEDIT=no
-export MAKEFLAGS='--jobs=4 --silent'
+export MAKEFLAGS='--jobs=2 --silent'
 export RUBYOPT=-EUTF-8
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
