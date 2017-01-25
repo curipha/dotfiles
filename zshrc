@@ -412,6 +412,13 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
+function add_history() {
+  (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+  [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
+  return 0
+}
+add-zsh-hook -Uz zshaddhistory add_history
+
 [[ -n "${terminfo[kpp]}" ]] && bindkey "${terminfo[kpp]}" up-history
 [[ -n "${terminfo[knp]}" ]] && bindkey "${terminfo[knp]}" down-history
 bindkey '^[[5~' up-history
