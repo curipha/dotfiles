@@ -784,7 +784,7 @@ function whois() {
       return 1
     fi
 
-    local ARG DOMAIN OPTION
+    local ARG DOMAIN
     local -a OPTION
     for ARG in "${@}"; do
       case "${ARG}" in
