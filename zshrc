@@ -1188,7 +1188,7 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
 done
 unset ZFILE
 
-if [[ "${OSTYPE}" != 'cygwin' && "${SHLVL}" == '1' ]] && exists tmux; then
-  tmux attach 2> /dev/null || tmux
+if [[ -n "${TTY}" && "${SHLVL}" == '1' && "${OSTYPE}" != 'cygwin' ]] && exists tmux; then
+  tmux new-session -AD -s "${TTY:-/dev/null}"
 fi
 
