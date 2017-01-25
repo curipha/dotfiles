@@ -80,11 +80,12 @@
   quotepath    = false
 
 [diff]
-  algorithm      = histogram
-  mnemonicPrefix = true
-  renames        = copy
-  statGraphWidth = 48
-  wordRegex      = [[:alnum:]]+|[^[:space:]]
+  algorithm       = histogram
+  indentHeuristic = true
+  mnemonicPrefix  = true
+  renames         = copy
+  statGraphWidth  = 48
+  wordRegex       = [[:alnum:]]+|[^[:space:]]
 
 [fetch]
   prune = true
