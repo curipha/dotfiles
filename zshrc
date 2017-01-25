@@ -701,6 +701,9 @@ bindkey '^[m' copy-prev-shell-word
 # Utility {{{
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
+alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'
+#alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
+
 alias rst='
   if [[ -n $(jobs) ]]; then
     warning "processing job still exists"
