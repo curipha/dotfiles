@@ -713,6 +713,14 @@ alias rst='
     exec zsh
   fi'
 
+function zman() {
+  if (( ${#} > 0 )); then
+    PAGER="less --squeeze-blank-lines '+/\\b${1}\\b'" man zshall
+  else
+    man zshall
+  fi
+}
+
 function +x() { chmod +x -- "${@}" }
 
 function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
