@@ -412,6 +412,13 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history
 
+function add_history() {
+  (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+  [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
+  return 0
+}
+add-zsh-hook -Uz zshaddhistory add_history
+
 [[ -n "${terminfo[kpp]}" ]] && bindkey "${terminfo[kpp]}" up-history
 [[ -n "${terminfo[knp]}" ]] && bindkey "${terminfo[knp]}" down-history
 bindkey '^[[5~' up-history
@@ -694,6 +701,9 @@ bindkey '^[m' copy-prev-shell-word
 # Utility {{{
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
+alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'
+#alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
+
 alias rst='
   if [[ -n $(jobs) ]]; then
     warning "processing job still exists"
@@ -702,6 +712,14 @@ alias rst='
   else
     exec zsh
   fi'
+
+function zman() {
+  if (( ${#} > 0 )); then
+    PAGER="less --squeeze-blank-lines '+/\\b${1}\\b'" man zshall
+  else
+    man zshall
+  fi
+}
 
 function +x() { chmod +x -- "${@}" }
 
@@ -766,7 +784,7 @@ function whois() {
       return 1
     fi
 
-    local ARG DOMAIN OPTION
+    local ARG DOMAIN
     local -a OPTION
     for ARG in "${@}"; do
       case "${ARG}" in
@@ -1170,7 +1188,7 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
 done
 unset ZFILE
 
-if [[ "${OSTYPE}" != 'cygwin' && "${SHLVL}" == '1' ]] && exists tmux; then
-  tmux attach 2> /dev/null || tmux
+if [[ -n "${TTY}" && "${SHLVL}" == '1' && "${OSTYPE}" != 'cygwin' ]] && exists tmux; then
+  tmux new-session -AD -s "${TTY:-/dev/null}"
 fi
 
