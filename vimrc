@@ -125,7 +125,7 @@ if has('unnamedplus')
   set clipboard+=unnamedplus
 endif
 
-set nrformats=alpha,hex
+set nrformats=alpha,bin,hex
 set virtualedit=block
 
 nnoremap <F1>  <Esc>
