@@ -1147,6 +1147,7 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
 alias mkdir='mkdir -vp'
+alias rmdir='rmdir -vp'
 
 alias chmod='chmod -v'
 alias chown='chown -v'
