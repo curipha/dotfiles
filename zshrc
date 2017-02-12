@@ -414,6 +414,8 @@ setopt share_history
 
 function add_history() {
   (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+
+  local -a match mbegin mend
   [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
   return 0
 }
@@ -715,7 +717,7 @@ alias rst='
 
 function zman() {
   if (( ${#} > 0 )); then
-    PAGER="less --squeeze-blank-lines '+/\\b${1}\\b'" man zshall
+    PAGER="less --squeeze-blank-lines -p '${1//(#b)(?)/\\${match[1]}}'" man zshall
   else
     man zshall
   fi
@@ -730,8 +732,8 @@ function mkmv() {
   case "${#}" in
     '0' )
       cat <<HELP 1>&2
-Usage: ${0} DIRECTORY
-Usage: ${0} FILES... DIRECTORY
+Usage: ${0} directory
+Usage: ${0} files... directory
 HELP
       return 1
     ;;
@@ -821,19 +823,18 @@ function pane() {
       -* )
         cat <<HELP 1>&2
 Usage: ${0} [-s] [count]
-Usage: ${0} -h
 
 Options:
   -s, --sync          Set 'synchronize-panes on'
   -h, --help          Show this help message and exit
 
 
-Example:
+Examples:
   ${0} 3
-  Open tmux with 3 pane
+    Open tmux with 3 pane
 
   ${0} -s
-  Open tmux with 2 pane and set synchronize-panes on
+    Open tmux with 2 pane and set synchronize-panes on
 HELP
         return 1;;
 
@@ -944,19 +945,18 @@ function package() {
         cat <<HELP 1>&2
 Usage: ${0} [-y] install [ packages ... ]
 Usage: ${0} [-y] update
-Usage: ${0} -h
 
 Options:
   -y, --yes           Answer "yes" to any question
   -h, --help          Show this help message and exit
 
 
-Example:
+Examples:
   ${0} install vim gcc
-  Install 'vim' and 'gcc' package
+    Install 'vim' and 'gcc' package
 
   ${0} -y update
-  Update all packages in any case
+    Update all packages in any case
 HELP
         return 1;;
 
@@ -1077,6 +1077,7 @@ function createpasswd() {
   local P_LENGTH="${LENGTH}"
   local P_NUMBER="${NUMBER}"
 
+  local ARG
   while getopts hpc:l:n: ARG; do
     case "${ARG}" in
       'c' ) F_CHARACTER=1
@@ -1089,12 +1090,14 @@ function createpasswd() {
         cat <<HELP 1>&2
 Usage: ${0} [-p | -c <chars>] [-l <length>] [-n <number>]
 
-  -c <chars>    Specify candidate characters for passwords
-  -l <length>   Specify the length of password(s) (Default = ${LENGTH})
-  -n <number>   Specify the number of password(s) (Default = ${NUMBER})
-  -p            Paranoid mode (Generated password contains all letter type)
+Options:
+  -c <chars>          Specify candidate characters for passwords
+  -l <length>         Specify the length of password(s) (Default = ${LENGTH})
+  -n <number>         Specify the number of password(s) (Default = ${NUMBER})
+  -p                  Paranoid mode (Generated password contains all letter type)
 
-Example:
+
+Examples:
   ${0}
   ${0} -c "0-9A-Za-z"
   ${0} -c "[:alnum:]"
@@ -1147,6 +1150,7 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
 alias mkdir='mkdir -vp'
+alias rmdir='rmdir -vp'
 
 alias chmod='chmod -v'
 alias chown='chown -v'
