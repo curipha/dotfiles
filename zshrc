@@ -414,6 +414,8 @@ setopt share_history
 
 function add_history() {
   (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+
+  local -a match mbegin mend
   [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
   return 0
 }
