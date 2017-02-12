@@ -1075,6 +1075,7 @@ function createpasswd() {
   local P_LENGTH="${LENGTH}"
   local P_NUMBER="${NUMBER}"
 
+  local ARG
   while getopts hpc:l:n: ARG; do
     case "${ARG}" in
       'c' ) F_CHARACTER=1
