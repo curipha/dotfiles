@@ -498,7 +498,7 @@ if [[ -n "${ETC_PASSWD}" ]]; then
     eval "$(awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs)"
 
   zstyle ':completion:*:users' users \
-    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
+    $(awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }" <<< "${ETC_PASSWD}")
   unset ETC_PASSWD UID_MIN UID_MAX
 fi
 
