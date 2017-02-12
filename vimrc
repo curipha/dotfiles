@@ -11,7 +11,6 @@ let s:iswin = has('win32')
 if s:iswin
   language message en
 
-  set shellslash
   set termencoding=cp932
 else
   language message C
@@ -21,7 +20,7 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-if &term =~# '\-256color$'
+if &term =~# '\<256color\>'
   set t_Co=256
 endif
 set background=dark
@@ -126,7 +125,7 @@ if has('unnamedplus')
   set clipboard+=unnamedplus
 endif
 
-set nrformats=alpha,hex
+set nrformats=alpha,bin,hex
 set virtualedit=block
 
 nnoremap <F1>  <Esc>
@@ -144,7 +143,7 @@ vnoremap ; :
 nnoremap <Leader>; ;
 vnoremap <Leader>; ;
 
-xnoremap <silent> . :<C-u>normal .<CR>
+xnoremap <silent> . :<C-u>normal! .<CR>
 
 nnoremap j gj
 nnoremap k gk
@@ -213,7 +212,7 @@ autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 nnoremap gI `.a
 nnoremap gc `[v`]
-vnoremap gc :<C-u>normal `[v`]<CR>
+vnoremap gc :<C-u>normal! `[v`]<CR>
 
 nnoremap vv ggVG
 vnoremap v  V
@@ -258,8 +257,6 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-autocmd MyAutoCmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
-
 autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
 autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
 autocmd MyAutoCmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -290,7 +287,7 @@ endif
 
 autocmd MyAutoCmd InsertLeave * set nopaste
 
-if &term =~# '^xterm'
+if &term =~# '^xterm' || &term =~# '^screen'
   set t_ti&
   set t_te&
 
@@ -375,13 +372,14 @@ set wrapscan
 
 set grepprg=internal
 nnoremap <silent> g/ :<C-u>vimgrep /<C-r>//j %<CR>
-nnoremap <silent> K  :<C-u>vimgrep /\<<C-r><C-w>\>/j %<CR>
-nnoremap <silent> gK :<C-u>vimgrep /<C-r><C-w>/j %<CR>
-vnoremap <silent> K  y:<C-u>vimgrep /\<<C-r>=escape(@", '\\/.*$^~[]')<CR>\>/j %<CR>
-vnoremap <silent> gK y:<C-u>vimgrep /<C-r>=escape(@", '\\/.*$^~[]')<CR>/j %<CR>
+nnoremap <silent> K  *N:<C-u>vimgrep /<C-r>//j %<CR>
+nnoremap <silent> gK g*N:<C-u>vimgrep /<C-r>//j %<CR>
 
-nnoremap <silent> <C-Up>   :cprevious<CR>
-nnoremap <silent> <C-Down> :cnext<CR>
+vnoremap <silent> * y/\V<C-r>=escape(@", '/\')<CR><CR>N
+vnoremap <silent> K y/\V<C-r>=escape(@", '/\')<CR><CR>N:<C-u>vimgrep /<C-r>//j %<CR>
+
+nnoremap <silent> <C-Up>   :cprevious<CR>zv
+nnoremap <silent> <C-Down> :cnext<CR>zv
 
 autocmd MyAutoCmd QuickFixCmdPost make,*grep*
 \   if len(getqflist()) ==# 0
@@ -394,19 +392,17 @@ autocmd MyAutoCmd WinEnter *
 \ |   quit
 \ | endif
 
-autocmd MyAutoCmd WinLeave *
-\   let b:vimrc_pattern  = @/
-\ | let b:vimrc_hlsearch = &hlsearch
-autocmd MyAutoCmd WinEnter *
-\   let @/ = get(b:, 'vimrc_pattern', @/)
-\ | let &hlsearch = get(b:, 'vimrc_hlsearch', &hlsearch)
+autocmd MyAutoCmd TabLeave *
+\   let t:vimrc_pattern  = @/
+\ | let t:vimrc_hlsearch = &hlsearch
+autocmd MyAutoCmd TabEnter *
+\   let @/ = get(t:, 'vimrc_pattern', @/)
+\ | let &hlsearch = get(t:, 'vimrc_hlsearch', &hlsearch)
 
 nnoremap <silent> <Leader><Space> :<C-u>nohlsearch<CR>:<C-u>diffupdate<CR>:<C-u>syntax sync fromstart<CR><C-l>
 
 nnoremap / /\v
 nnoremap ? ?\v
-
-vnoremap <silent> * y/<C-r>=escape(@", '\\/.*$^~[]')<CR><CR>
 
 nnoremap *  *N
 nnoremap #  #N
@@ -423,6 +419,8 @@ cnoremap <expr> ? getcmdtype() ==# '?' ? '\?' : '?'
 
 nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
+
+autocmd MyAutoCmd FileType ruby setlocal iskeyword+=?,!
 " }}}
 " Display {{{
 set notitle
@@ -441,8 +439,8 @@ set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':'
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 
-autocmd MyAutoCmd Filetype help let &l:statusline='%t %=%m%y  %3l/%3L (%P)'
-autocmd MyAutoCmd Filetype qf   let &l:statusline='%q %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y  %3l/%3L (%P)'
+autocmd MyAutoCmd Filetype help let &l:statusline = '%t %=%m%y  %3l/%3L (%P)'
+autocmd MyAutoCmd Filetype qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y'
 
 if has('gui_running')
   set cursorline
@@ -505,11 +503,11 @@ nnoremap <silent> <S-Right> :<C-u>wincmd <<CR>
 nnoremap <silent> <S-Up>    :<C-u>wincmd +<CR>
 nnoremap <silent> <S-Down>  :<C-u>wincmd -<CR>
 
-for [s:k, s:p] in [['b', 'b'], ['t', 'tab'], ['q', 'c']]
-  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>'
-  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>'
-  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>'
-  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>'
+for [s:k, s:p, s:a] in [['b', 'b', ''], ['t', 'tab', ''], ['q', 'c', 'zv']]
+  execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>' . s:a
+  execute 'nnoremap <silent> ]' . s:k . ' :' . s:p . 'next<CR>' . s:a
+  execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>' . s:a
+  execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>' . s:a
 endfor
 
 nnoremap <silent> <C-p>     :tabprevious<CR>
@@ -547,7 +545,7 @@ autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw
 set ttyfast
-set visualbell t_vb=
+set belloff=all
 
 set timeout
 set timeoutlen=800
@@ -564,7 +562,7 @@ autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
 autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
-autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>
+autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 
 highlight IdeographicSpace cterm=underline ctermfg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
@@ -580,7 +578,7 @@ autocmd MyAutoCmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
 " }}}
 
 " Command {{{
-for s:e in ['utf-8', 'cp932', 'euc-jp', 'euc-jisx0213', 'iso-2022-jp', 'utf-16le', 'utf-16be']
+for s:e in ['utf-8', 'cp932', 'euc-jp', 'iso-2022-jp', 'utf-16le', 'utf-16be']
   execute 'command! -bang -bar -nargs=? -complete=file'
         \ substitute(toupper(s:e[0]).tolower(s:e[1:]), '\W', '', 'g')
         \ 'edit<bang> ++encoding='.s:e '<args>'
@@ -687,7 +685,7 @@ nmap <Tab> %
 "  - https://github.com/Shougo/neocomplete.vim
 let g:neocomplete#enable_at_startup = has('lua')
 
-if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
+if g:neocomplete#enable_at_startup && &runtimepath =~# '\<neocomplete\>'
   let g:neocomplete#enable_auto_select = 1
 
   let g:neocomplete#enable_smart_case = 1
@@ -699,8 +697,6 @@ if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
   let g:neocomplete#auto_completion_start_length = 2
   let g:neocomplete#manual_completion_start_length = 0
   let g:neocomplete#min_keyword_length = 4
-
-  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
   if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
@@ -722,11 +718,6 @@ if exists('g:neocomplete#enable_at_startup') && g:neocomplete#enable_at_startup
 
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
   inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-  inoremap <expr> <C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <BS>  neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <C-y> neocomplete#close_popup()
-  inoremap <expr> <C-e> neocomplete#cancel_popup()
 
   inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup()."\<Up>" : "\<Up>"
   inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup()."\<Down>" : "\<Down>"

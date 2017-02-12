@@ -27,7 +27,7 @@ export GEM_HOME=~/app/gem
 export GOPATH=~/app/go
 
 export GIT_MERGE_AUTOEDIT=no
-export MAKEFLAGS='--jobs=4 --silent'
+export MAKEFLAGS='--jobs=2 --silent'
 export RUBYOPT=-EUTF-8
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
@@ -299,6 +299,7 @@ setopt multios
 setopt path_dirs
 setopt print_eight_bit
 setopt print_exit_value
+is-at-least '5.2' && setopt warn_create_global
 
 setopt no_beep
 setopt combining_chars
@@ -410,6 +411,13 @@ setopt hist_save_no_dups
 setopt hist_verify
 setopt inc_append_history
 setopt share_history
+
+function add_history() {
+  (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+  [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
+  return 0
+}
+add-zsh-hook -Uz zshaddhistory add_history
 
 [[ -n "${terminfo[kpp]}" ]] && bindkey "${terminfo[kpp]}" up-history
 [[ -n "${terminfo[knp]}" ]] && bindkey "${terminfo[knp]}" down-history
@@ -534,6 +542,7 @@ setopt extended_glob
 setopt glob_dots
 setopt magic_equal_subst
 setopt mark_dirs
+setopt no_nomatch
 setopt numeric_glob_sort
 setopt rc_expand_param
 
@@ -587,6 +596,7 @@ function magic-abbrev-expand-and-complete() {
   echo -en "\e[32m....\e[0m"
   magic-abbrev-expand
   zle expand-or-complete
+  echo -en "\e[4D    "
   zle redisplay
 }
 
@@ -691,14 +701,25 @@ bindkey '^[m' copy-prev-shell-word
 # Utility {{{
 alias wipe='shred --verbose --iterations=3 --zero --remove'
 
+alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'
+#alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
+
 alias rst='
-  if [[ -n `jobs` ]]; then
+  if [[ -n $(jobs) ]]; then
     warning "processing job still exists"
   elif [[ "${0:0:1}" == "-" ]]; then
     exec -l zsh
   else
     exec zsh
   fi'
+
+function zman() {
+  if (( ${#} > 0 )); then
+    PAGER="less --squeeze-blank-lines -p '${1//(#b)(?)/\\${match[1]}}'" man zshall
+  else
+    man zshall
+  fi
+}
 
 function +x() { chmod +x -- "${@}" }
 
@@ -763,7 +784,7 @@ function whois() {
       return 1
     fi
 
-    local ARG DOMAIN OPTION
+    local ARG DOMAIN
     local -a OPTION
     for ARG in "${@}"; do
       case "${ARG}" in
@@ -784,6 +805,61 @@ function whois() {
     REPORTTIME="${REPORTTIME_ORIG}"
     return "${RETURN}"
   }
+}
+
+function pane() {
+  if ! exists tmux; then
+    warning 'install "tmux" command'
+    return 1
+  fi
+
+  local ARG SYNC PANE
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      -s | --sync )
+        SYNC=1;;
+      -* )
+        cat <<HELP 1>&2
+Usage: ${0} [-s] [count]
+Usage: ${0} -h
+
+Options:
+  -s, --sync          Set 'synchronize-panes on'
+  -h, --help          Show this help message and exit
+
+
+Example:
+  ${0} 3
+  Open tmux with 3 pane
+
+  ${0} -s
+  Open tmux with 2 pane and set synchronize-panes on
+HELP
+        return 1;;
+
+      <-> )
+        PANE="${ARG}";;
+    esac
+  done
+
+  [[ -z "${PANE}" ]] && PANE=2
+  (( ${PANE} < 2 ))  && PANE=2
+
+  local -a COMMAND
+  if is_tmux; then
+    COMMAND+=( new-window -a \; )
+  else
+    COMMAND+=( new-session -d \; )
+  fi
+
+  for PANE in {2.."${PANE}"}; do
+    COMMAND+=( split-window -d \; select-layout tiled \; )
+  done
+
+  [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
+  is_tmux || COMMAND+=( attach \; )
+
+  tmux "${COMMAND[@]}"
 }
 
 function mailsend() {
@@ -1071,6 +1147,7 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
 alias mkdir='mkdir -vp'
+alias rmdir='rmdir -vp'
 
 alias chmod='chmod -v'
 alias chown='chown -v'
@@ -1112,7 +1189,7 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
 done
 unset ZFILE
 
-if [[ "${OSTYPE}" != 'cygwin' && "${SHLVL}" == '1' ]] && exists tmux; then
-  tmux attach || tmux
+if [[ -n "${TTY}" && "${SHLVL}" == '1' && "${OSTYPE}" != 'cygwin' ]] && exists tmux; then
+  tmux new-session -AD -s "${TTY:-/dev/null}"
 fi
 
