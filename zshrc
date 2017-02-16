@@ -414,6 +414,8 @@ setopt share_history
 
 function add_history() {
   (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+
+  local -a match mbegin mend
   [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
   return 0
 }
@@ -496,7 +498,7 @@ if [[ -n "${ETC_PASSWD}" ]]; then
     eval "$(awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs)"
 
   zstyle ':completion:*:users' users \
-    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
+    $(awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }" <<< "${ETC_PASSWD}")
   unset ETC_PASSWD UID_MIN UID_MAX
 fi
 
@@ -730,8 +732,8 @@ function mkmv() {
   case "${#}" in
     '0' )
       cat <<HELP 1>&2
-Usage: ${0} DIRECTORY
-Usage: ${0} FILES... DIRECTORY
+Usage: ${0} directory
+Usage: ${0} files... directory
 HELP
       return 1
     ;;
@@ -821,19 +823,18 @@ function pane() {
       -* )
         cat <<HELP 1>&2
 Usage: ${0} [-s] [count]
-Usage: ${0} -h
 
 Options:
   -s, --sync          Set 'synchronize-panes on'
   -h, --help          Show this help message and exit
 
 
-Example:
+Examples:
   ${0} 3
-  Open tmux with 3 pane
+    Open tmux with 3 pane
 
   ${0} -s
-  Open tmux with 2 pane and set synchronize-panes on
+    Open tmux with 2 pane and set synchronize-panes on
 HELP
         return 1;;
 
@@ -944,19 +945,18 @@ function package() {
         cat <<HELP 1>&2
 Usage: ${0} [-y] install [ packages ... ]
 Usage: ${0} [-y] update
-Usage: ${0} -h
 
 Options:
   -y, --yes           Answer "yes" to any question
   -h, --help          Show this help message and exit
 
 
-Example:
+Examples:
   ${0} install vim gcc
-  Install 'vim' and 'gcc' package
+    Install 'vim' and 'gcc' package
 
   ${0} -y update
-  Update all packages in any case
+    Update all packages in any case
 HELP
         return 1;;
 
@@ -1077,6 +1077,7 @@ function createpasswd() {
   local P_LENGTH="${LENGTH}"
   local P_NUMBER="${NUMBER}"
 
+  local ARG
   while getopts hpc:l:n: ARG; do
     case "${ARG}" in
       'c' ) F_CHARACTER=1
@@ -1089,12 +1090,14 @@ function createpasswd() {
         cat <<HELP 1>&2
 Usage: ${0} [-p | -c <chars>] [-l <length>] [-n <number>]
 
-  -c <chars>    Specify candidate characters for passwords
-  -l <length>   Specify the length of password(s) (Default = ${LENGTH})
-  -n <number>   Specify the number of password(s) (Default = ${NUMBER})
-  -p            Paranoid mode (Generated password contains all letter type)
+Options:
+  -c <chars>          Specify candidate characters for passwords
+  -l <length>         Specify the length of password(s) (Default = ${LENGTH})
+  -n <number>         Specify the number of password(s) (Default = ${NUMBER})
+  -p                  Paranoid mode (Generated password contains all letter type)
 
-Example:
+
+Examples:
   ${0}
   ${0} -c "0-9A-Za-z"
   ${0} -c "[:alnum:]"
@@ -1123,6 +1126,159 @@ HELP
         cat ; \
       fi \
     | head -n "${P_NUMBER}"
+}
+
+function aws-ec2-spot() {
+  if ! exists aws; then
+    warning 'install "awscli" command'
+    return 1
+  fi
+  if ! exists ruby; then
+    warning 'install "ruby" command'
+    return 1
+  fi
+
+
+  # Default
+  local DAY=3
+  local HOUR=0
+  local INSTANCE=c4.8xlarge
+
+  # Arguments
+  local -aU P_INSTANCE
+  local P_DAY P_HOUR
+
+  local ARG SKIP
+  for ARG in "${@}"; do
+    shift
+
+    if [[ -n "${SKIP}" ]]; then
+      SKIP=
+      continue
+    fi
+
+    case "${ARG}" in
+      --day )
+        P_DAY="$1"
+        if [[ -z "${P_DAY}" ]]; then
+          warning '--day option requires an argument'
+          return 1
+        fi
+
+        SKIP=1
+      ;;
+      --hour )
+        P_HOUR="$1"
+        if [[ -z "${P_HOUR}" ]]; then
+          warning '--hour option requires an argument'
+          return 1
+        fi
+
+        SKIP=1
+      ;;
+
+      -* )
+        cat <<HELP
+Usage: ${0} [--day <days>] [--hour <hours>] [ instance_types ... ]
+
+Options:
+      --day <days>    Specify the duration in day to retrieve the price (Default = ${DAY})
+      --hour <hours>  Specify the duration in hour to retrieve the price (Default = ${HOUR})
+  -h, --help          Show this help message and exit
+
+
+Examples:
+  ${0} --hour 12
+    Display price statistics of ${INSTANCE} for the last half a day
+
+  ${0} --day 1 c4.8xlarge c3.8xlarge
+    Display price statistics of c4.8xlarge and c3.8xlarge for the last one day
+HELP
+        return 1;;
+
+      * )
+        P_INSTANCE+=( "${ARG}" );;
+    esac
+  done
+
+  (( ${#P_INSTANCE[@]} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
+  [[ -n "${P_HOUR}" && -z "${P_DAY}" ]] && P_DAY=0
+
+  local FROM=$(date --utc --date="-${P_DAY:-${DAY}} day -${P_HOUR:-${HOUR}} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
+  local TO=$(date --utc +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
+
+  if [[ -z "${FROM}" || ( -n "${P_DAY}" && "${P_DAY}" != <-> ) || ( -n "${P_HOUR}" && "${P_HOUR}" != <-> ) ]]; then
+    warning '--day and/or --hour option contains illegal character'
+    return 1
+  fi
+
+  printf '%30s%10s%10s%10s%10s%10s\n' '' 'ave.r' 'stdev.s' 'max' 'min' 'latest'
+
+  aws ec2 describe-regions --query 'sort(Regions[].RegionName)' --output text \
+    | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-spot-price-history \
+      --output text \
+      --instance-types "${P_INSTANCE[@]}" \
+      --product-description 'Linux/UNIX (Amazon VPC)' \
+      --start-time "${FROM}" \
+      --end-time "${TO}" \
+      --query 'SpotPriceHistory[].[AvailabilityZone,InstanceType,SpotPrice,Timestamp]' \
+      --region \
+    | ruby -rtime -e '
+db = Hash.new{|h1,k1| h1[k1] = Hash.new{|h2,k2| h2[k2] = [] }}
+while STDIN.gets
+  az, type, price, time = $_.split(" ")
+  db[az][type] << { price: price.to_f, timestamp: Time.parse(time) }
+end
+
+result = []
+db.each_key{|az|
+  db[az].each{|type, record|
+    next if record.length < 1
+
+    ave_s = record.inject(0.0){|sum, v| sum + v[:price] } / record.length
+
+    sum_r = 0.0
+    (record + [{timestamp: Time.parse(ARGV.first)}]).sort_by{|v| v[:timestamp] }.each_cons(2){|base, subseq|
+      sum_r += base[:price] * (subseq[:timestamp] - base[:timestamp])
+    }
+
+    result << {
+      type:    type,
+      az:      az,
+      ave_r:   sum_r / (Time.parse(ARGV.first) - record.min_by{|v| v[:timestamp]}[:timestamp]),
+      ave_s:   ave_s,
+      stdev_s: record.length < 2 ? 0.0 : Math.sqrt(record.inject(0.0){|sum, v| sum + (v[:price] - ave_s) ** 2 } / (record.length - 1)),
+      max:     record.max_by{|v| v[:price] }[:price],
+      min:     record.min_by{|v| v[:price] }[:price],
+      latest:  record.max_by{|v| v[:timestamp]}[:price]
+    }
+  }
+}
+
+if result.length < 1
+  puts "... no record ...".center(80)
+else
+  result.sort_by{|v| v.values }.each{|v|
+    rank = result.select{|r| r[:type] == v[:type] }
+    color = lambda {|k|
+      case true
+      when v[k] <= rank.map{|r| r[k] }.min(3).last then "\e[32;7m"
+      when v[k] >= rank.map{|r| r[k] }.max(3).last then "\e[31;7m"
+      else ""
+      end
+    }
+
+    printf("%-14s%-16s%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m\n",
+           v[:type], v[:az],
+           color.call(:ave_r),   v[:ave_r],
+           color.call(:stdev_s), v[:stdev_s],
+           color.call(:max),     v[:max],
+           color.call(:min),     v[:min],
+           color.call(:latest),  v[:latest]
+          )
+  }
+end
+' "${TO}"
 }
 #}}}
 
