@@ -595,10 +595,10 @@ function magic-abbrev-expand-and-accept() {
   zle accept-line
 }
 function magic-abbrev-expand-and-complete() {
-  echo -en "\e[32m....\e[0m"
+  printf '\e[32m....\e[0m'
   magic-abbrev-expand
   zle expand-or-complete
-  echo -en "\e[4D    "
+  printf '\e[4D    '
   zle redisplay
 }
 
@@ -680,7 +680,7 @@ zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
 function force_reset_screen() {
-  echo -en "\033c"
+  printf '\ec'
   tput clear
 
   zle clear-screen
@@ -910,8 +910,8 @@ EOC
 function 256color() {
   local CODE
   for CODE in {0..15}; do
-    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-    (( ${CODE} % 8 == 7 )) && echo -e "\e[0m"
+    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+    (( ${CODE} % 8 == 7 )) && printf '\e[0m\n'
   done
   echo
 
@@ -920,9 +920,9 @@ function 256color() {
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
         CODE=$(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
-        echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+        printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
       done
-      echo -en "\e[0m  "
+      printf '\e[0m  '
     done
     echo
     (( ${BASE} == 5 )) && echo
@@ -930,9 +930,9 @@ function 256color() {
   echo
 
   for CODE in {232..255}; do
-    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
   done
-  echo -e "\e[0m"
+  printf '\e[0m\n'
 }
 
 function package() {
