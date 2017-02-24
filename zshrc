@@ -1226,13 +1226,13 @@ HELP
 
   aws ec2 describe-regions --query 'sort(Regions[].RegionName)' --output text \
     | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-spot-price-history \
-      --output text \
-      --instance-types "${P_INSTANCE[@]}" \
-      --product-description 'Linux/UNIX (Amazon VPC)' \
-      --start-time "${FROM}" \
-      --end-time "${TO}" \
-      --query 'SpotPriceHistory[].[AvailabilityZone,InstanceType,SpotPrice,Timestamp]' \
-      --region \
+        --output text \
+        --instance-types "${P_INSTANCE[@]}" \
+        --product-description 'Linux/UNIX (Amazon VPC)' \
+        --start-time "${FROM}" \
+        --end-time "${TO}" \
+        --query 'SpotPriceHistory[].[AvailabilityZone,InstanceType,SpotPrice,Timestamp]' \
+        --region \
     | ruby -rtime -e '
 db = Hash.new{|h1,k1| h1[k1] = Hash.new{|h2,k2| h2[k2] = [] }}
 while STDIN.gets
