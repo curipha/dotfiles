@@ -1166,7 +1166,6 @@ function aws-ec2-spot() {
     return 1
   fi
 
-
   # Default
   local DAY=3
   local HOUR=0
