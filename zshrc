@@ -1124,6 +1124,38 @@ HELP
     | head -n "${P_NUMBER}"
 }
 
+function aws-ec2-instances() {
+  if ! exists aws; then
+    warning 'install "awscli" command'
+    return 1
+  fi
+
+  local REPORTTIME=-1
+  (
+    echo 'az stat type name id public-ip private-ip' && \
+    aws ec2 describe-regions --query 'Regions[].RegionName' --output text \
+      | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
+          --query 'Reservations[].Instances[].[
+                    Placement.AvailabilityZone,
+                    State.Name,
+                    InstanceType,
+                    Tags[?Key==`Name`].Value|[0],
+                    InstanceId,
+                    PublicIpAddress,
+                    PrivateIpAddress
+                  ]' \
+          --output=text \
+          --region \
+      | sort
+  ) \
+    | column -t \
+    | sed \
+        -e "s/\b\(stopped\)\b/$(printf '\e[31m')\1$(printf '\e[0m')/" \
+        -e "s/\b\(running\)\b/$(printf '\e[32m')\1$(printf '\e[0m')/" \
+        -e "s/\b\(pending|shutting-down|stopping\)\b/$(printf '\e[33m')\1$(printf '\e[0m')/" \
+        -e "s/\b\(terminated\)\b/$(printf '\e[31;7m')\1$(printf '\e[0m')/"
+}
+
 function aws-ec2-spot() {
   if ! exists aws; then
     warning 'install "awscli" command'
