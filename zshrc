@@ -266,8 +266,8 @@ bindkey -e
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
 
-bindkey '^[OC'    forward-word
-bindkey '^[OD'    backward-word
+bindkey '^[[1;3C' forward-word
+bindkey '^[[1;3D' backward-word
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 
