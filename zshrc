@@ -727,7 +727,7 @@ alias rst='
 
 function zman() {
   if (( ${#} > 0 )); then
-    PAGER="less --squeeze-blank-lines -p '${1//(#b)(?)/\\${match[1]}}'" man zshall
+    PAGER="less --squeeze-blank-lines -p '${1}'" man zshall
   else
     man zshall
   fi
