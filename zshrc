@@ -783,40 +783,33 @@ function wol() {
 }
 
 function whois() {
-  {
-    local REPORTTIME_ORIG="${REPORTTIME}"
-    REPORTTIME=-1
+  local WHOIS
+  exists jwhois && WHOIS=$(whence -p jwhois)
+  exists whois  && WHOIS=$(whence -p whois)
 
-    local WHOIS
-    exists jwhois && WHOIS=$(whence -p jwhois)
-    exists whois  && WHOIS=$(whence -p whois)
+  if [[ -z "${WHOIS}" ]]; then
+    warning 'install "whois" command'
+    return 1
+  fi
 
-    if [[ -z "${WHOIS}" ]]; then
-      warning 'install "whois" command'
-      return 1
-    fi
+  local REPORTTIME=-1
 
-    local ARG DOMAIN
-    local -a OPTION
-    for ARG in "${@}"; do
-      case "${ARG}" in
-        -* )
-          OPTION+=( "${ARG}" );;
-        * )
-          DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
-      esac
-    done
+  local ARG DOMAIN
+  local -a OPTION
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      -* )
+        OPTION+=( "${ARG}" );;
+      * )
+        DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
+    esac
+  done
 
-    if [[ -z "${DOMAIN}" ]]; then
-      "${WHOIS}" "${OPTION[@]}"
-    else
-      ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
-    fi
-  } always {
-    local RETURN="${?}"
-    REPORTTIME="${REPORTTIME_ORIG}"
-    return "${RETURN}"
-  }
+  if [[ -z "${DOMAIN}" ]]; then
+    "${WHOIS}" "${OPTION[@]}"
+  else
+    ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
+  fi
 }
 
 function pane() {
@@ -984,95 +977,88 @@ HELP
     return 1
   fi
 
-  {
-    local REPORTTIME_ORIG="${REPORTTIME}"
-    REPORTTIME=-1
+  local REPORTTIME=-1
 
-    local OPTIONS
-    if exists apt-get; then
-      [[ -n "${YES}" ]] && OPTIONS=--assume-yes
+  local OPTIONS
+  if exists apt-get; then
+    [[ -n "${YES}" ]] && OPTIONS=--assume-yes
 
-      case "${MODE}" in
-        install )
-          sudo apt-get ${OPTIONS} clean                    && \
-          sudo apt-get ${OPTIONS} update                   && \
-          sudo apt-get ${OPTIONS} dist-upgrade             && \
-          sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
-          sudo apt-get ${OPTIONS} autoremove
-        ;;
+    case "${MODE}" in
+      install )
+        sudo apt-get ${OPTIONS} clean                    && \
+        sudo apt-get ${OPTIONS} update                   && \
+        sudo apt-get ${OPTIONS} dist-upgrade             && \
+        sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo apt-get ${OPTIONS} autoremove
+      ;;
 
-        update )
-          sudo apt-get ${OPTIONS} clean        && \
-          sudo apt-get ${OPTIONS} update       && \
-          sudo apt-get ${OPTIONS} dist-upgrade && \
-          sudo apt-get ${OPTIONS} autoremove
-        ;;
-      esac
+      update )
+        sudo apt-get ${OPTIONS} clean        && \
+        sudo apt-get ${OPTIONS} update       && \
+        sudo apt-get ${OPTIONS} dist-upgrade && \
+        sudo apt-get ${OPTIONS} autoremove
+      ;;
+    esac
 
-      sudo -K
-    elif exists dnf; then
-      [[ -n "${YES}" ]] && OPTIONS=--assumeyes
+    sudo -K
+  elif exists dnf; then
+    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
-      case "${MODE}" in
-        install )
-          sudo dnf ${OPTIONS} clean all                && \
-          sudo dnf ${OPTIONS} upgrade                  && \
-          sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
-          sudo dnf ${OPTIONS} autoremove
-        ;;
+    case "${MODE}" in
+      install )
+        sudo dnf ${OPTIONS} clean all                && \
+        sudo dnf ${OPTIONS} upgrade                  && \
+        sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo dnf ${OPTIONS} autoremove
+      ;;
 
-        update )
-          sudo dnf ${OPTIONS} clean all  && \
-          sudo dnf ${OPTIONS} upgrade    && \
-          sudo dnf ${OPTIONS} autoremove
-        ;;
-      esac
+      update )
+        sudo dnf ${OPTIONS} clean all  && \
+        sudo dnf ${OPTIONS} upgrade    && \
+        sudo dnf ${OPTIONS} autoremove
+      ;;
+    esac
 
-      sudo -K
-    elif exists yum; then
-      [[ -n "${YES}" ]] && OPTIONS=--assumeyes
+    sudo -K
+  elif exists yum; then
+    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
-      case "${MODE}" in
-        install )
-          sudo yum ${OPTIONS} clean all                && \
-          sudo yum ${OPTIONS} upgrade                  && \
-          sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
-          sudo yum ${OPTIONS} autoremove
-        ;;
+    case "${MODE}" in
+      install )
+        sudo yum ${OPTIONS} clean all                && \
+        sudo yum ${OPTIONS} upgrade                  && \
+        sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo yum ${OPTIONS} autoremove
+      ;;
 
-        update )
-          sudo yum ${OPTIONS} clean all  && \
-          sudo yum ${OPTIONS} upgrade    && \
-          sudo yum ${OPTIONS} autoremove
-        ;;
-      esac
+      update )
+        sudo yum ${OPTIONS} clean all  && \
+        sudo yum ${OPTIONS} upgrade    && \
+        sudo yum ${OPTIONS} autoremove
+      ;;
+    esac
 
-      sudo -K
-    elif exists pacman; then
-      [[ -n "${YES}" ]] && OPTIONS=--noconfirm
+    sudo -K
+  elif exists pacman; then
+    [[ -n "${YES}" ]] && OPTIONS=--noconfirm
 
-      case "${MODE}" in
-        install )
-          sudo pacman -Sc ${OPTIONS}                   && \
-          sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
-        ;;
+    case "${MODE}" in
+      install )
+        sudo pacman -Sc ${OPTIONS}                   && \
+        sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
+      ;;
 
-        update )
-          sudo pacman -Sc ${OPTIONS}  && \
-          sudo pacman -Syu ${OPTIONS}
-        ;;
-      esac
+      update )
+        sudo pacman -Sc ${OPTIONS}  && \
+        sudo pacman -Syu ${OPTIONS}
+      ;;
+    esac
 
-      sudo -K
-    else
-      warning 'no package manager can be found'
-      return 1
-    fi
-  } always {
-    local RETURN="${?}"
-    REPORTTIME="${REPORTTIME_ORIG}"
-    return "${RETURN}"
-  }
+    sudo -K
+  else
+    warning 'no package manager can be found'
+    return 1
+  fi
 }
 
 function createpasswd() {
