@@ -648,8 +648,18 @@ bindkey '^S^S' prefix_with_sudo
 
 function magic_ctrlz() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    BUFFER='fg'
-    zle accept-line
+    if (( ${#jobtexts} < 1 )); then
+      if is_tmux; then
+        BUFFER='tmux detach-client'
+      elif tmux has-session 2> /dev/null; then
+        BUFFER='tmux attach-session'
+      else
+        zle -M 'zsh: Nothing to do for CTRL-Z'
+      fi
+    else
+      BUFFER='fg'
+    fi
+    [[ -n "${BUFFER}" ]] && zle accept-line
   else
     zle -M "zsh: Buffer pushed to stack: ${BUFFER}"
     zle push-line-or-edit
