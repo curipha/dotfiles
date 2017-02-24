@@ -858,7 +858,7 @@ HELP
   done
 
   [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
-  is_tmux || COMMAND+=( attach \; )
+  is_tmux || COMMAND+=( attach-session \; )
 
   tmux "${COMMAND[@]}"
 }
