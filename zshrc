@@ -1222,7 +1222,7 @@ HELP
     return 1
   fi
 
-  printf '%30s%10s%10s%10s%10s%10s\n' '' 'ave.r' 'stdev.s' 'max' 'min' 'latest'
+  printf '%30s%10s%10s%10s%10s%10s%10s\n' '' 'ave.r' 'stdev.s' 'max' 'min' 'latest' '(count)'
 
   aws ec2 describe-regions --query 'sort(Regions[].RegionName)' --output text \
     | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-spot-price-history \
@@ -1260,7 +1260,8 @@ db.each_key{|az|
       stdev_s: record.length < 2 ? 0.0 : Math.sqrt(record.inject(0.0){|sum, v| sum + (v[:price] - ave_s) ** 2 } / (record.length - 1)),
       max:     record.max_by{|v| v[:price] }[:price],
       min:     record.min_by{|v| v[:price] }[:price],
-      latest:  record.max_by{|v| v[:timestamp]}[:price]
+      latest:  record.max_by{|v| v[:timestamp]}[:price],
+      count:   record.length
     }
   }
 }
@@ -1278,13 +1279,14 @@ else
       end
     }
 
-    printf("%-14s%-16s%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m\n",
+    printf("%-14s%-16s%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m   (%5d)\n",
            v[:type], v[:az],
            color.call(:ave_r),   v[:ave_r],
            color.call(:stdev_s), v[:stdev_s],
            color.call(:max),     v[:max],
            color.call(:min),     v[:min],
-           color.call(:latest),  v[:latest]
+           color.call(:latest),  v[:latest],
+                                 v[:count]
           )
   }
 end
