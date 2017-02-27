@@ -1152,7 +1152,7 @@ function aws-ec2-instances() {
     | sed \
         -e "s/\b\(stopped\)\b/$(printf '\e[31m')\1$(printf '\e[0m')/" \
         -e "s/\b\(running\)\b/$(printf '\e[32m')\1$(printf '\e[0m')/" \
-        -e "s/\b\(pending|shutting-down|stopping\)\b/$(printf '\e[33m')\1$(printf '\e[0m')/" \
+        -e "s/\b\(pending\|shutting-down\|stopping\)\b/$(printf '\e[33m')\1$(printf '\e[0m')/" \
         -e "s/\b\(terminated\)\b/$(printf '\e[31;7m')\1$(printf '\e[0m')/"
 }
 
