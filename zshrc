@@ -266,8 +266,8 @@ bindkey -e
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
 
-bindkey '^[OC'    forward-word
-bindkey '^[OD'    backward-word
+bindkey '^[[1;3C' forward-word
+bindkey '^[[1;3D' backward-word
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 
@@ -498,7 +498,7 @@ if [[ -n "${ETC_PASSWD}" ]]; then
     eval "$(awk '$1 ~ /^UID_(MAX|MIN)$/ && $2 ~ /^[0-9]+$/ { print $1 "=" $2 }' /etc/login.defs)"
 
   zstyle ':completion:*:users' users \
-    $(echo "${ETC_PASSWD}" | awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }")
+    $(awk -F: "\$3 >= ${UID_MIN:-1000} && \$3 <= ${UID_MAX:-60000} { print \$1 }" <<< "${ETC_PASSWD}")
   unset ETC_PASSWD UID_MIN UID_MAX
 fi
 
@@ -595,10 +595,10 @@ function magic-abbrev-expand-and-accept() {
   zle accept-line
 }
 function magic-abbrev-expand-and-complete() {
-  echo -en "\e[32m....\e[0m"
+  printf '\e[32m....\e[0m'
   magic-abbrev-expand
   zle expand-or-complete
-  echo -en "\e[4D    "
+  printf '\e[4D    '
   zle redisplay
 }
 
@@ -648,8 +648,18 @@ bindkey '^S^S' prefix_with_sudo
 
 function magic_ctrlz() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
-    BUFFER='fg'
-    zle accept-line
+    if (( ${#jobtexts} < 1 )); then
+      if is_tmux; then
+        BUFFER='tmux detach-client'
+      elif tmux has-session 2> /dev/null; then
+        BUFFER='tmux attach-session'
+      else
+        zle -M 'zsh: Nothing to do for CTRL-Z'
+      fi
+    else
+      BUFFER='fg'
+    fi
+    [[ -n "${BUFFER}" ]] && zle accept-line
   else
     zle -M "zsh: Buffer pushed to stack: ${BUFFER}"
     zle push-line-or-edit
@@ -670,7 +680,7 @@ zle -N magic_circumflex
 bindkey '\^' magic_circumflex
 
 function force_reset_screen() {
-  echo -en "\033c"
+  printf '\ec'
   tput clear
 
   zle clear-screen
@@ -717,7 +727,7 @@ alias rst='
 
 function zman() {
   if (( ${#} > 0 )); then
-    PAGER="less --squeeze-blank-lines -p '${1//(#b)(?)/\\${match[1]}}'" man zshall
+    PAGER="less --squeeze-blank-lines -p '${1}'" man zshall
   else
     man zshall
   fi
@@ -768,45 +778,38 @@ function wol() {
     return 1
   fi
 
-  echo -en "$( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' )" \
+  printf "$( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' )" \
     | nc -w0 -u 255.255.255.255 4000
 }
 
 function whois() {
-  {
-    local REPORTTIME_ORIG="${REPORTTIME}"
-    REPORTTIME=-1
+  local WHOIS
+  exists jwhois && WHOIS=$(whence -p jwhois)
+  exists whois  && WHOIS=$(whence -p whois)
 
-    local WHOIS
-    exists jwhois && WHOIS=$(whence -p jwhois)
-    exists whois  && WHOIS=$(whence -p whois)
+  if [[ -z "${WHOIS}" ]]; then
+    warning 'install "whois" command'
+    return 1
+  fi
 
-    if [[ -z "${WHOIS}" ]]; then
-      warning 'install "whois" command'
-      return 1
-    fi
+  local REPORTTIME=-1
 
-    local ARG DOMAIN
-    local -a OPTION
-    for ARG in "${@}"; do
-      case "${ARG}" in
-        -* )
-          OPTION+=( "${ARG}" );;
-        * )
-          DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
-      esac
-    done
+  local ARG DOMAIN
+  local -a OPTION
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      -* )
+        OPTION+=( "${ARG}" );;
+      * )
+        DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
+    esac
+  done
 
-    if [[ -z "${DOMAIN}" ]]; then
-      "${WHOIS}" "${OPTION[@]}"
-    else
-      ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
-    fi
-  } always {
-    local RETURN="${?}"
-    REPORTTIME="${REPORTTIME_ORIG}"
-    return "${RETURN}"
-  }
+  if [[ -z "${DOMAIN}" ]]; then
+    "${WHOIS}" "${OPTION[@]}"
+  else
+    ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
+  fi
 }
 
 function pane() {
@@ -858,7 +861,7 @@ HELP
   done
 
   [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
-  is_tmux || COMMAND+=( attach \; )
+  is_tmux || COMMAND+=( attach-session \; )
 
   tmux "${COMMAND[@]}"
 }
@@ -900,8 +903,8 @@ EOC
 function 256color() {
   local CODE
   for CODE in {0..15}; do
-    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-    (( ${CODE} % 8 == 7 )) && echo -e "\e[0m"
+    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+    (( ${CODE} % 8 == 7 )) && printf '\e[0m\n'
   done
   echo
 
@@ -910,9 +913,9 @@ function 256color() {
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
         CODE=$(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
-        echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+        printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
       done
-      echo -en "\e[0m  "
+      printf '\e[0m  '
     done
     echo
     (( ${BASE} == 5 )) && echo
@@ -920,9 +923,9 @@ function 256color() {
   echo
 
   for CODE in {232..255}; do
-    echo -en "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
   done
-  echo -e "\e[0m"
+  printf '\e[0m\n'
 }
 
 function package() {
@@ -974,95 +977,88 @@ HELP
     return 1
   fi
 
-  {
-    local REPORTTIME_ORIG="${REPORTTIME}"
-    REPORTTIME=-1
+  local REPORTTIME=-1
 
-    local OPTIONS
-    if exists apt-get; then
-      [[ -n "${YES}" ]] && OPTIONS=--assume-yes
+  local OPTIONS
+  if exists apt-get; then
+    [[ -n "${YES}" ]] && OPTIONS=--assume-yes
 
-      case "${MODE}" in
-        install )
-          sudo apt-get ${OPTIONS} clean                    && \
-          sudo apt-get ${OPTIONS} update                   && \
-          sudo apt-get ${OPTIONS} dist-upgrade             && \
-          sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
-          sudo apt-get ${OPTIONS} autoremove
-        ;;
+    case "${MODE}" in
+      install )
+        sudo apt-get ${OPTIONS} clean                    && \
+        sudo apt-get ${OPTIONS} update                   && \
+        sudo apt-get ${OPTIONS} dist-upgrade             && \
+        sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo apt-get ${OPTIONS} autoremove
+      ;;
 
-        update )
-          sudo apt-get ${OPTIONS} clean        && \
-          sudo apt-get ${OPTIONS} update       && \
-          sudo apt-get ${OPTIONS} dist-upgrade && \
-          sudo apt-get ${OPTIONS} autoremove
-        ;;
-      esac
+      update )
+        sudo apt-get ${OPTIONS} clean        && \
+        sudo apt-get ${OPTIONS} update       && \
+        sudo apt-get ${OPTIONS} dist-upgrade && \
+        sudo apt-get ${OPTIONS} autoremove
+      ;;
+    esac
 
-      sudo -K
-    elif exists dnf; then
-      [[ -n "${YES}" ]] && OPTIONS=--assumeyes
+    sudo -K
+  elif exists dnf; then
+    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
-      case "${MODE}" in
-        install )
-          sudo dnf ${OPTIONS} clean all                && \
-          sudo dnf ${OPTIONS} upgrade                  && \
-          sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
-          sudo dnf ${OPTIONS} autoremove
-        ;;
+    case "${MODE}" in
+      install )
+        sudo dnf ${OPTIONS} clean all                && \
+        sudo dnf ${OPTIONS} upgrade                  && \
+        sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo dnf ${OPTIONS} autoremove
+      ;;
 
-        update )
-          sudo dnf ${OPTIONS} clean all  && \
-          sudo dnf ${OPTIONS} upgrade    && \
-          sudo dnf ${OPTIONS} autoremove
-        ;;
-      esac
+      update )
+        sudo dnf ${OPTIONS} clean all  && \
+        sudo dnf ${OPTIONS} upgrade    && \
+        sudo dnf ${OPTIONS} autoremove
+      ;;
+    esac
 
-      sudo -K
-    elif exists yum; then
-      [[ -n "${YES}" ]] && OPTIONS=--assumeyes
+    sudo -K
+  elif exists yum; then
+    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
 
-      case "${MODE}" in
-        install )
-          sudo yum ${OPTIONS} clean all                && \
-          sudo yum ${OPTIONS} upgrade                  && \
-          sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
-          sudo yum ${OPTIONS} autoremove
-        ;;
+    case "${MODE}" in
+      install )
+        sudo yum ${OPTIONS} clean all                && \
+        sudo yum ${OPTIONS} upgrade                  && \
+        sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo yum ${OPTIONS} autoremove
+      ;;
 
-        update )
-          sudo yum ${OPTIONS} clean all  && \
-          sudo yum ${OPTIONS} upgrade    && \
-          sudo yum ${OPTIONS} autoremove
-        ;;
-      esac
+      update )
+        sudo yum ${OPTIONS} clean all  && \
+        sudo yum ${OPTIONS} upgrade    && \
+        sudo yum ${OPTIONS} autoremove
+      ;;
+    esac
 
-      sudo -K
-    elif exists pacman; then
-      [[ -n "${YES}" ]] && OPTIONS=--noconfirm
+    sudo -K
+  elif exists pacman; then
+    [[ -n "${YES}" ]] && OPTIONS=--noconfirm
 
-      case "${MODE}" in
-        install )
-          sudo pacman -Sc ${OPTIONS}                   && \
-          sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
-        ;;
+    case "${MODE}" in
+      install )
+        sudo pacman -Sc ${OPTIONS}                   && \
+        sudo pacman -Syu ${OPTIONS} "${PACKAGES[@]}"
+      ;;
 
-        update )
-          sudo pacman -Sc ${OPTIONS}  && \
-          sudo pacman -Syu ${OPTIONS}
-        ;;
-      esac
+      update )
+        sudo pacman -Sc ${OPTIONS}  && \
+        sudo pacman -Syu ${OPTIONS}
+      ;;
+    esac
 
-      sudo -K
-    else
-      warning 'no package manager can be found'
-      return 1
-    fi
-  } always {
-    local RETURN="${?}"
-    REPORTTIME="${REPORTTIME_ORIG}"
-    return "${RETURN}"
-  }
+    sudo -K
+  else
+    warning 'no package manager can be found'
+    return 1
+  fi
 }
 
 function createpasswd() {
@@ -1126,6 +1122,214 @@ HELP
         cat ; \
       fi \
     | head -n "${P_NUMBER}"
+}
+
+function aws-ec2-instances() {
+  if ! exists aws; then
+    warning 'install "awscli" command'
+    return 1
+  fi
+
+  local ARG LOCAL
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      -l | --local )
+        LOCAL=1;;
+
+      -* )
+        cat <<HELP 1>&2
+Usage: ${0} [--local]
+
+Options:
+  -l, --local         Get instance lists only from the current region ($(aws configure get region))
+  -h, --help          Show this help message and exit
+HELP
+        return 1;;
+    esac
+  done
+
+  local REPORTTIME=-1
+  (
+    echo 'az stat type name id public-ip private-ip' && \
+    if [[ -n "${LOCAL}" ]]; then \
+      aws configure get region ; \
+    else \
+      aws ec2 describe-regions --query 'Regions[].RegionName' --output text ; \
+    fi \
+      | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
+          --query 'Reservations[].Instances[].[
+                    Placement.AvailabilityZone,
+                    State.Name,
+                    InstanceType,
+                    Tags[?Key==`Name`].Value|[0],
+                    InstanceId,
+                    PublicIpAddress,
+                    PrivateIpAddress
+                  ]' \
+          --output=text \
+          --region \
+      | sort
+  ) \
+    | column -t \
+    | sed \
+        -e "s/\b\(stopped\)\b/$(printf '\e[31m')\1$(printf '\e[0m')/" \
+        -e "s/\b\(running\)\b/$(printf '\e[32m')\1$(printf '\e[0m')/" \
+        -e "s/\b\(pending\|shutting-down\|stopping\)\b/$(printf '\e[33m')\1$(printf '\e[0m')/" \
+        -e "s/\b\(terminated\)\b/$(printf '\e[31;7m')\1$(printf '\e[0m')/"
+}
+
+function aws-ec2-spot() {
+  if ! exists aws; then
+    warning 'install "awscli" command'
+    return 1
+  fi
+  if ! exists ruby; then
+    warning 'install "ruby" command'
+    return 1
+  fi
+
+  # Default
+  local DAY=3
+  local HOUR=0
+  local INSTANCE=c4.8xlarge
+
+  # Arguments
+  local -aU P_INSTANCE
+  local P_DAY P_HOUR
+
+  local ARG SKIP
+  for ARG in "${@}"; do
+    shift
+
+    if [[ -n "${SKIP}" ]]; then
+      SKIP=
+      continue
+    fi
+
+    case "${ARG}" in
+      --day )
+        P_DAY="$1"
+        if [[ -z "${P_DAY}" ]]; then
+          warning '--day option requires an argument'
+          return 1
+        fi
+
+        SKIP=1
+      ;;
+      --hour )
+        P_HOUR="$1"
+        if [[ -z "${P_HOUR}" ]]; then
+          warning '--hour option requires an argument'
+          return 1
+        fi
+
+        SKIP=1
+      ;;
+
+      -* )
+        cat <<HELP
+Usage: ${0} [--day <days>] [--hour <hours>] [ instance_types ... ]
+
+Options:
+      --day <days>    Specify the duration in day to retrieve the price (Default = ${DAY})
+      --hour <hours>  Specify the duration in hour to retrieve the price (Default = ${HOUR})
+  -h, --help          Show this help message and exit
+
+
+Examples:
+  ${0} --hour 12
+    Display price statistics of ${INSTANCE} for the last half a day
+
+  ${0} --day 1 c4.8xlarge c3.8xlarge
+    Display price statistics of c4.8xlarge and c3.8xlarge for the last one day
+HELP
+        return 1;;
+
+      * )
+        P_INSTANCE+=( "${ARG}" );;
+    esac
+  done
+
+  (( ${#P_INSTANCE[@]} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
+  [[ -n "${P_HOUR}" && -z "${P_DAY}" ]] && P_DAY=0
+
+  local FROM=$(date --utc --date="-${P_DAY:-${DAY}} day -${P_HOUR:-${HOUR}} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
+  local TO=$(date --utc +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
+
+  if [[ -z "${FROM}" || ( -n "${P_DAY}" && "${P_DAY}" != <-> ) || ( -n "${P_HOUR}" && "${P_HOUR}" != <-> ) ]]; then
+    warning '--day and/or --hour option contains illegal character'
+    return 1
+  fi
+
+  printf '%30s%10s%10s%10s%10s%10s%10s\n' '' 'ave.r' 'stdev.s' 'max' 'min' 'latest' '(count)'
+
+  aws ec2 describe-regions --query 'sort(Regions[].RegionName)' --output text \
+    | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-spot-price-history \
+        --output text \
+        --instance-types "${P_INSTANCE[@]}" \
+        --product-description 'Linux/UNIX (Amazon VPC)' \
+        --start-time "${FROM}" \
+        --end-time "${TO}" \
+        --query 'SpotPriceHistory[].[AvailabilityZone,InstanceType,SpotPrice,Timestamp]' \
+        --region \
+    | ruby -rtime -e '
+db = Hash.new{|h1,k1| h1[k1] = Hash.new{|h2,k2| h2[k2] = [] }}
+while STDIN.gets
+  az, type, price, time = $_.split(" ")
+  db[az][type] << { price: price.to_f, timestamp: Time.parse(time) }
+end
+
+result = []
+db.each_key{|az|
+  db[az].each{|type, record|
+    next if record.length < 1
+
+    ave_s = record.inject(0.0){|sum, v| sum + v[:price] } / record.length
+
+    sum_r = 0.0
+    (record + [{timestamp: Time.parse(ARGV.first)}]).sort_by{|v| v[:timestamp] }.each_cons(2){|base, subseq|
+      sum_r += base[:price] * (subseq[:timestamp] - base[:timestamp])
+    }
+
+    result << {
+      type:    type,
+      az:      az,
+      ave_r:   sum_r / (Time.parse(ARGV.first) - record.min_by{|v| v[:timestamp]}[:timestamp]),
+      ave_s:   ave_s,
+      stdev_s: record.length < 2 ? 0.0 : Math.sqrt(record.inject(0.0){|sum, v| sum + (v[:price] - ave_s) ** 2 } / (record.length - 1)),
+      max:     record.max_by{|v| v[:price] }[:price],
+      min:     record.min_by{|v| v[:price] }[:price],
+      latest:  record.max_by{|v| v[:timestamp]}[:price],
+      count:   record.length
+    }
+  }
+}
+
+if result.length < 1
+  puts "... no record ...".center(80)
+else
+  result.sort_by{|v| v.values }.each{|v|
+    rank = result.select{|r| r[:type] == v[:type] }
+    color = lambda {|k|
+      case true
+      when v[k] <= rank.map{|r| r[k] }.min(3).last then "\e[32;7m"
+      when v[k] >= rank.map{|r| r[k] }.max(3).last then "\e[31;7m"
+      else ""
+      end
+    }
+
+    printf("%-14s%-16s%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m   (%5d)\n",
+           v[:type], v[:az],
+           color.call(:ave_r),   v[:ave_r],
+           color.call(:stdev_s), v[:stdev_s],
+           color.call(:max),     v[:max],
+           color.call(:min),     v[:min],
+           color.call(:latest),  v[:latest],
+                                 v[:count]
+          )
+  }
+end
+' "${TO}"
 }
 #}}}
 
