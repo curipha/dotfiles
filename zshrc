@@ -1130,10 +1130,32 @@ function aws-ec2-instances() {
     return 1
   fi
 
+  local ARG LOCAL
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      -l | --local )
+        LOCAL=1;;
+
+      -* )
+        cat <<HELP 1>&2
+Usage: ${0} [--local]
+
+Options:
+  -l, --local         Get instance lists only from the current region ($(aws configure get region))
+  -h, --help          Show this help message and exit
+HELP
+        return 1;;
+    esac
+  done
+
   local REPORTTIME=-1
   (
     echo 'az stat type name id public-ip private-ip' && \
-    aws ec2 describe-regions --query 'Regions[].RegionName' --output text \
+    if [[ -n "${LOCAL}" ]]; then \
+      aws configure get region ; \
+    else \
+      aws ec2 describe-regions --query 'Regions[].RegionName' --output text ; \
+    fi \
       | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
           --query 'Reservations[].Instances[].[
                     Placement.AvailabilityZone,
