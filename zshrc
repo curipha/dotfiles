@@ -1055,6 +1055,27 @@ HELP
     esac
 
     sudo -K
+  elif exists pkg; then
+    [[ -n "${YES}" ]] && OPTIONS=--yes
+
+    case "${MODE}" in
+      install )
+        sudo pkg clean      ${OPTIONS}                  && \
+        sudo pkg update                                 && \
+        sudo pkg upgrade    ${OPTIONS}                  && \
+        sudo pkg install    ${OPTIONS} "${PACKAGES[@]}" && \
+        sudo pkg autoremove ${OPTIONS}
+      ;;
+
+      update )
+        sudo pkg clean      ${OPTIONS} && \
+        sudo pkg update                && \
+        sudo pkg upgrade    ${OPTIONS} && \
+        sudo pkg autoremove ${OPTIONS}
+      ;;
+    esac
+
+    sudo -K
   else
     warning 'no package manager can be found'
     return 1
