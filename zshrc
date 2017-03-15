@@ -176,6 +176,7 @@ case "${OSTYPE}" in
     limit coredumpsize 0
 
     export CLICOLOR=1
+    export LSCOLORS=Exfxcxdxbxegedabagacad
 
     setopt hist_fcntl_lock
   ;;
@@ -184,6 +185,7 @@ case "${OSTYPE}" in
     limit coredumpsize 0
 
     export CLICOLOR=1
+    export LSCOLORS=Exfxcxdxbxegedabagacad
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
