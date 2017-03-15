@@ -175,7 +175,7 @@ case "${OSTYPE}" in
   darwin*)
     limit coredumpsize 0
 
-    alias ls='ls -G'
+    export CLICOLOR=1
 
     setopt hist_fcntl_lock
   ;;
@@ -183,7 +183,7 @@ case "${OSTYPE}" in
   freebsd*)
     limit coredumpsize 0
 
-    alias ls='ls -G'
+    export CLICOLOR=1
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
