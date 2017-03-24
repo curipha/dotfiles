@@ -175,7 +175,8 @@ case "${OSTYPE}" in
   darwin*)
     limit coredumpsize 0
 
-    alias ls='ls -G'
+    export CLICOLOR=1
+    export LSCOLORS=Exfxcxdxbxegedabagacad
 
     setopt hist_fcntl_lock
   ;;
@@ -183,7 +184,8 @@ case "${OSTYPE}" in
   freebsd*)
     limit coredumpsize 0
 
-    alias ls='ls -G'
+    export CLICOLOR=1
+    export LSCOLORS=Exfxcxdxbxegedabagacad
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
@@ -650,9 +652,9 @@ function magic_ctrlz() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if (( ${#jobtexts} < 1 )); then
       if is_tmux; then
-        BUFFER='tmux detach-client'
+        BUFFER=' tmux detach-client'
       elif tmux has-session 2> /dev/null; then
-        BUFFER='tmux attach-session'
+        BUFFER=' tmux attach-session'
       else
         zle -M 'zsh: Nothing to do for CTRL-Z'
       fi
@@ -1051,6 +1053,27 @@ HELP
       update )
         sudo pacman -Sc ${OPTIONS}  && \
         sudo pacman -Syu ${OPTIONS}
+      ;;
+    esac
+
+    sudo -K
+  elif exists pkg; then
+    [[ -n "${YES}" ]] && OPTIONS=--yes
+
+    case "${MODE}" in
+      install )
+        sudo pkg clean      ${OPTIONS}                  && \
+        sudo pkg update                                 && \
+        sudo pkg upgrade    ${OPTIONS}                  && \
+        sudo pkg install    ${OPTIONS} "${PACKAGES[@]}" && \
+        sudo pkg autoremove ${OPTIONS}
+      ;;
+
+      update )
+        sudo pkg clean      ${OPTIONS} && \
+        sudo pkg update                && \
+        sudo pkg upgrade    ${OPTIONS} && \
+        sudo pkg autoremove ${OPTIONS}
       ;;
     esac
 
