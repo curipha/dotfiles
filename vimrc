@@ -108,6 +108,9 @@ set shiftround
 set tabstop=2
 set shiftwidth=2
 set softtabstop=0
+autocmd MyAutoCmd FileType * setlocal tabstop=2
+autocmd MyAutoCmd FileType * setlocal shiftwidth=2
+autocmd MyAutoCmd FileType * setlocal softtabstop=0
 
 set complete& complete+=d
 set pumheight=18
