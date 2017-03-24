@@ -175,7 +175,8 @@ case "${OSTYPE}" in
   darwin*)
     limit coredumpsize 0
 
-    alias ls='ls -G'
+    export CLICOLOR=1
+    export LSCOLORS=Exfxcxdxbxegedabagacad
 
     setopt hist_fcntl_lock
   ;;
@@ -183,7 +184,8 @@ case "${OSTYPE}" in
   freebsd*)
     limit coredumpsize 0
 
-    alias ls='ls -G'
+    export CLICOLOR=1
+    export LSCOLORS=Exfxcxdxbxegedabagacad
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
@@ -613,9 +615,9 @@ bindkey '^I' magic-abbrev-expand-and-complete
 function magic_enter() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if isinrepo; then
-      BUFFER='git status --branch --short --untracked-files=all && git diff --patch-with-stat'
+      BUFFER=' git status --branch --short --untracked-files=all && git diff --patch-with-stat'
     else
-      BUFFER='ls -AF'
+      BUFFER=' ls -AF'
     fi
   else
     magic-abbrev-expand
@@ -1055,6 +1057,27 @@ HELP
     esac
 
     sudo -K
+  elif exists pkg; then
+    [[ -n "${YES}" ]] && OPTIONS=--yes
+
+    case "${MODE}" in
+      install )
+        sudo pkg clean      ${OPTIONS}                  && \
+        sudo pkg update                                 && \
+        sudo pkg upgrade    ${OPTIONS}                  && \
+        sudo pkg install    ${OPTIONS} "${PACKAGES[@]}" && \
+        sudo pkg autoremove ${OPTIONS}
+      ;;
+
+      update )
+        sudo pkg clean      ${OPTIONS} && \
+        sudo pkg update                && \
+        sudo pkg upgrade    ${OPTIONS} && \
+        sudo pkg autoremove ${OPTIONS}
+      ;;
+    esac
+
+    sudo -K
   else
     warning 'no package manager can be found'
     return 1
@@ -1130,10 +1153,32 @@ function aws-ec2-instances() {
     return 1
   fi
 
+  local ARG LOCAL
+  for ARG in "${@}"; do
+    case "${ARG}" in
+      -l | --local )
+        LOCAL=1;;
+
+      -* )
+        cat <<HELP 1>&2
+Usage: ${0} [--local]
+
+Options:
+  -l, --local         Get instance lists only from the current region ($(aws configure get region))
+  -h, --help          Show this help message and exit
+HELP
+        return 1;;
+    esac
+  done
+
   local REPORTTIME=-1
   (
     echo 'az stat type name id public-ip private-ip' && \
-    aws ec2 describe-regions --query 'Regions[].RegionName' --output text \
+    if [[ -n "${LOCAL}" ]]; then \
+      aws configure get region ; \
+    else \
+      aws ec2 describe-regions --query 'Regions[].RegionName' --output text ; \
+    fi \
       | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
           --query 'Reservations[].Instances[].[
                     Placement.AvailabilityZone,
