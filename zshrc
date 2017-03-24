@@ -652,9 +652,9 @@ function magic_ctrlz() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if (( ${#jobtexts} < 1 )); then
       if is_tmux; then
-        BUFFER='tmux detach-client'
+        BUFFER=' tmux detach-client'
       elif tmux has-session 2> /dev/null; then
-        BUFFER='tmux attach-session'
+        BUFFER=' tmux attach-session'
       else
         zle -M 'zsh: Nothing to do for CTRL-Z'
       fi
