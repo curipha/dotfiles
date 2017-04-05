@@ -321,14 +321,13 @@ zle -N self-insert url-quote-magic
 [[ $(whence -w run-help) == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-is_ssh  && SSH_INDICATOR='@ssh'
-is_tmux || DATE_INDICATOR='  %D{%b.%f (%a) %K:%M}'
+is_ssh && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT="  %1v${DATE_INDICATOR}"
+RPROMPT='  %1v'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
-unset SSH_INDICATOR DATE_INDICATOR
+unset SSH_INDICATOR
 
 function precmd_title() { print -Pn "\e]0;%n@%m: %~\a" }
 add-zsh-hook -Uz precmd precmd_title
