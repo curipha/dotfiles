@@ -30,7 +30,7 @@ done
 
 if [[ -n "${SSH_CONFIG}" ]]; then
   if [[ ! -d "${HOME}/.ssh" ]]; then
-    mkdir -vp "${HOME}/.ssh"
+    mkdir -v "${HOME}/.ssh"
     chmod -v 0700 "${HOME}/.ssh"
   fi
 
