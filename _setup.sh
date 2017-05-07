@@ -29,10 +29,7 @@ for file in "${DOTFILES[@]}"; do
 done
 
 if [[ -n "${SSH_CONFIG}" ]]; then
-  if [[ ! -d "${HOME}/.ssh" ]]; then
-    mkdir -v "${HOME}/.ssh"
-    chmod -v 0700 "${HOME}/.ssh"
-  fi
+  [[ ! -d "${HOME}/.ssh" ]] && mkdir -v -m 0700 "${HOME}/.ssh"
 
   makeln "${PWD}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
