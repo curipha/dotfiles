@@ -902,31 +902,26 @@ EOC
 }
 
 function 256color() {
-  local CODE
-  for CODE in {0..15}; do
-    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-    (( ${CODE} % 8 == 7 )) && printf '\e[0m\n'
-  done
+  printf '\e[48;5;%1$dm %1$x \e[0m' {0..7}
   echo
+  printf '\e[48;5;%1$dm %1$x \e[0m' {8..15}
+  printf '\n\n'
 
   local BASE ITERATION COUNT
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
-        CODE=$(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
-        printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+        printf '\e[48;5;%1$dm %1$x \e[0m' $(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
       done
-      printf '\e[0m  '
+      printf '  '
     done
     echo
     (( ${BASE} == 5 )) && echo
   done
   echo
 
-  for CODE in {232..255}; do
-    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-  done
-  printf '\e[0m\n'
+  printf '\e[48;5;%1$dm %1$x \e[0m' {232..255}
+  echo
 }
 
 function package() {
