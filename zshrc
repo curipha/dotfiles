@@ -921,6 +921,17 @@ function 256color() {
   echo
 
   printf '\e[48;5;%1$dm %1$x \e[0m' {232..255}
+  printf '\n\n'
+
+  local WIDTH COL R G B
+  WIDTH=95
+  for COL in {0..${WIDTH}}; do
+    R=$(( 255 - ( ${COL} * 255 / ${WIDTH} ) ))
+    G=$(( ${COL} * 510 / ${WIDTH} ))
+    B=$(( ${COL} * 255 / ${WIDTH} ))
+    (( ${G} > 255 )) && G=$(( 510 - ${G} ))
+    printf '\e[48;2;%d;%d;%dm \e[0m' "${R}" "${G}" "${B}"
+  done
   echo
 }
 
