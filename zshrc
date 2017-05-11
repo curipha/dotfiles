@@ -1019,7 +1019,7 @@ HELP
     warning 'operation mode is required'
     return 1
   fi
-  if [[ "${MODE}" == 'install' && "${#PACKAGES[@]}" == '0' ]]; then
+  if [[ "${MODE}" == 'install' && "${#PACKAGES}" == '0' ]]; then
     warning 'no packages are specified in install mode'
     return 1
   fi
@@ -1259,41 +1259,30 @@ function aws-ec2-spot() {
   fi
 
   # Default
-  local -i DAY=3
-  local -i HOUR=0
+  local -r DAY=3
   local INSTANCE=c4.8xlarge
 
   # Arguments
   local -aU P_INSTANCE
   local -i P_DAY P_HOUR
 
-  local ARG SKIP
-  for ARG in "${@}"; do
-    shift
-
-    if [[ -n "${SKIP}" ]]; then
-      SKIP=
-      continue
-    fi
-
-    case "${ARG}" in
+  while (( ${#} > 0 )); do
+    case "${1}" in
       --day )
-        P_DAY="$1"
-        if [[ -z "${P_DAY}" ]]; then
-          warning '--day option requires an argument'
+        if [[ -z "${2}" || "${2}" != <-> ]]; then
+          warning '--day option requires an integer argument'
           return 1
         fi
-
-        SKIP=1
+        P_DAY="${2}"
+        shift
       ;;
       --hour )
-        P_HOUR="$1"
-        if [[ -z "${P_HOUR}" ]]; then
-          warning '--hour option requires an argument'
+        if [[ -z "${2}" || "${2}" != <-> ]]; then
+          warning '--hour option requires an integer argument'
           return 1
         fi
-
-        SKIP=1
+        P_HOUR="${2}"
+        shift
       ;;
 
       -* )
@@ -1302,7 +1291,7 @@ Usage: ${0} [--day <days>] [--hour <hours>] [ instance_types ... ]
 
 Options:
       --day <days>    Specify the duration in day to retrieve the price (Default = ${DAY})
-      --hour <hours>  Specify the duration in hour to retrieve the price (Default = ${HOUR})
+      --hour <hours>  Specify the duration in hour to retrieve the price (Default = 0)
   -h, --help          Show this help message and exit
 
 
@@ -1316,17 +1305,18 @@ HELP
         return 1;;
 
       * )
-        P_INSTANCE+=( "${ARG}" );;
+        P_INSTANCE+=( "${1}" );;
     esac
+    shift
   done
 
-  (( ${#P_INSTANCE[@]} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
-  [[ -n "${P_HOUR}" && -z "${P_DAY}" ]] && P_DAY=0
+  (( ${#P_INSTANCE} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
+  (( ${P_DAY} == 0 && ${P_HOUR} == 0 )) && P_DAY="${DAY}"
 
-  local FROM=$(date --utc --date="-${P_DAY:-${DAY}} day -${P_HOUR:-${HOUR}} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
+  local FROM=$(date --utc --date="-${P_DAY} day -${P_HOUR} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
   local TO=$(date --utc +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
 
-  if [[ -z "${FROM}" || ( -n "${P_DAY}" && "${P_DAY}" != <-> ) || ( -n "${P_HOUR}" && "${P_HOUR}" != <-> ) ]]; then
+  if [[ -z "${FROM}" ]]; then
     warning '--day and/or --hour option contains illegal character'
     return 1
   fi
