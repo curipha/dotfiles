@@ -1259,7 +1259,7 @@ function aws-ec2-spot() {
   fi
 
   # Default
-  local -i DAY=3
+  local -r DAY=3
   local INSTANCE=c4.8xlarge
 
   # Arguments
