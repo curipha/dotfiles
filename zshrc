@@ -813,58 +813,98 @@ function whois() {
   fi
 }
 
-function pane() {
+function xpanes() {
   if ! exists tmux; then
     warning 'install "tmux" command'
     return 1
   fi
+  if ! is_tmux; then
+    warning 'run inside a tmux session'
+    return 1
+  fi
 
-  local ARG SYNC PANE
-  for ARG in "${@}"; do
-    case "${ARG}" in
-      -s | --sync )
-        SYNC=1;;
+  local COMMAND NOSYNC NOCMD
+  while (( ${#} > 0 )); do
+    case "${1}" in
+      -z | --nosync )
+        NOSYNC=1
+        shift
+      ;;
+      --ssh )
+        NOCMD=1
+        COMMAND='ssh'
+        shift
+      ;;
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [-s] [count]
+Usage: ${0} [-z] [ command [ initial arguments ... ] ]
 
 Options:
-  -s, --sync          Set 'synchronize-panes on'
+  -z, --nosync        Run without setting 'synchronize-panes on'
+      --ssh           SSH mode
   -h, --help          Show this help message and exit
 
 
 Examples:
-  ${0} 3
-    Open tmux with 3 pane
+  dig jp. ns +short | ${0} ping
+    Run ping to all authoritative name server of .jp
 
-  ${0} -s
-    Open tmux with 2 pane and set synchronize-panes on
+  ${0} --ssh user@host1 user@host2
+  echo user@host1 user@host2 | ${0} --ssh
+    Run ssh to user@host1 and user@host2
 HELP
-        return 1;;
+        return 1
+      ;;
 
-      <-> )
-        PANE="${ARG}";;
+      * )
+        if [[ -z "${NOCMD}" ]]; then
+          COMMAND="${1}"
+          shift
+        fi
+        break
+      ;;
     esac
   done
 
-  [[ -z "${PANE}" ]] && PANE=2
-  (( ${PANE} < 2 ))  && PANE=2
-
-  local -a COMMAND
-  if is_tmux; then
-    COMMAND+=( new-window -a \; )
-  else
-    COMMAND+=( new-session -d \; )
+  [[ -z "${COMMAND}" ]] && COMMAND='echo'
+  if ! exists "${COMMAND}"; then
+    warning "no such command: ${COMMAND}"
+    return 1
   fi
 
-  for PANE in {2.."${PANE}"}; do
-    COMMAND+=( split-window -d \; select-layout tiled \; )
+  local ARG
+  local -a ARGUMENTS
+  if [[ -n "${NOCMD}" && "${#}" != '0' ]]; then
+    ARGUMENTS+=( "${@}" )
+    shift "${#}"
+  else
+    for ARG in $(< /dev/stdin); do
+      ARGUMENTS+=( "${ARG}" )
+    done
+  fi
+
+  if (( ${#ARGUMENTS} < 1 )); then
+    warning 'no arguments found'
+    return 1
+  fi
+  (( ${#ARGUMENTS} == 1 )) && NOSYNC=1
+
+
+  tmux new-window -a
+
+  local -i i=1
+  for ARG in "${ARGUMENTS[@]}"; do
+    tmux split-window -d \; select-layout tiled
+  done
+  for ARG in "${ARGUMENTS[@]}"; do
+    tmux send-keys -t ".$(( i++ ))" "${COMMAND} ${*} ${ARG}" C-m
   done
 
-  [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
-  is_tmux || COMMAND+=( attach-session \; )
+  tmux kill-pane -t .0
+  tmux select-layout tiled
 
-  tmux "${COMMAND[@]}"
+  [[ -z "${NOSYNC}" ]] && tmux set-window-option synchronize-panes on
+  tmux refresh-client
 }
 
 function mailsend() {
