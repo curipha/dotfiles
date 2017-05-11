@@ -1177,6 +1177,11 @@ HELP
   if [[ -n "${PARANOID}" ]]; then
     [[ -n "${CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
     CHARACTER='[:graph:]'
+
+    if (( ${P_LENGTH} < 4 )); then
+      warning 'minimum length is 4 in paranoid mode'
+      return 1
+    fi
   fi
 
   LC_CTYPE=C tr -cd "${CHARACTER:-[:alnum:]}" < /dev/urandom \
