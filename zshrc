@@ -1131,24 +1131,21 @@ HELP
 
 function createpasswd() {
   # Default
-  local CHARACTER='[:alnum:]'
-  local -i LENGTH=18
-  local -i NUMBER=1
+  local -r LENGTH=18
+  local -r NUMBER=1
 
   # Arguments
-  local F_CHARACTER F_PARANOID
-  local P_CHARACTER="${CHARACTER}"
+  local CHARACTER PARANOID
   local -i P_LENGTH="${LENGTH}"
   local -i P_NUMBER="${NUMBER}"
 
   local ARG
   while getopts hpc:l:n: ARG; do
     case "${ARG}" in
-      'c' ) F_CHARACTER=1
-            P_CHARACTER="${OPTARG}";;
+      'c' ) CHARACTER="${OPTARG}";;
       'l' ) P_LENGTH="${OPTARG}";;
       'n' ) P_NUMBER="${OPTARG}";;
-      'p' ) F_PARANOID=1;;
+      'p' ) PARANOID=1;;
 
       * )
         cat <<HELP 1>&2
@@ -1177,14 +1174,19 @@ HELP
     esac
   done
 
-  if [[ -n "${F_PARANOID}" ]]; then
-    P_CHARACTER='[:graph:]'
-    [[ -n "${F_CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
+  if [[ -n "${PARANOID}" ]]; then
+    [[ -n "${CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
+    CHARACTER='[:graph:]'
+
+    if (( ${P_LENGTH} < 4 )); then
+      warning 'minimum length is 4 in paranoid mode'
+      return 1
+    fi
   fi
 
-  LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
+  LC_CTYPE=C tr -cd "${CHARACTER:-[:alnum:]}" < /dev/urandom \
     | fold -w "${P_LENGTH}" \
-    | if [[ -n "${F_PARANOID}" ]]; then \
+    | if [[ -n "${PARANOID}" ]]; then \
         grep '[[:digit:]]' | grep '[[:punct:]]' | grep '[[:upper:]]' | grep '[[:lower:]]' ; \
       else \
         cat ; \
