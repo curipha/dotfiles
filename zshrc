@@ -796,7 +796,7 @@ function whois() {
   local REPORTTIME=-1
 
   local ARG DOMAIN
-  local -a OPTION
+  local -aU OPTION
   for ARG in "${@}"; do
     case "${ARG}" in
       -* )
@@ -813,58 +813,98 @@ function whois() {
   fi
 }
 
-function pane() {
+function xpanes() {
   if ! exists tmux; then
     warning 'install "tmux" command'
     return 1
   fi
+  if ! is_tmux; then
+    warning 'run inside a tmux session'
+    return 1
+  fi
 
-  local ARG SYNC PANE
-  for ARG in "${@}"; do
-    case "${ARG}" in
-      -s | --sync )
-        SYNC=1;;
+  local COMMAND NOSYNC NOCMD
+  while (( ${#} > 0 )); do
+    case "${1}" in
+      -z | --nosync )
+        NOSYNC=1
+        shift
+      ;;
+      --ssh )
+        NOCMD=1
+        COMMAND='ssh'
+        shift
+      ;;
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [-s] [count]
+Usage: ${0} [-z] [ command [ initial arguments ... ] ]
 
 Options:
-  -s, --sync          Set 'synchronize-panes on'
+  -z, --nosync        Run without setting 'synchronize-panes on'
+      --ssh           SSH mode
   -h, --help          Show this help message and exit
 
 
 Examples:
-  ${0} 3
-    Open tmux with 3 pane
+  dig jp. ns +short | ${0} ping
+    Run ping to all authoritative name server of .jp
 
-  ${0} -s
-    Open tmux with 2 pane and set synchronize-panes on
+  ${0} --ssh user@host1 user@host2
+  echo user@host1 user@host2 | ${0} --ssh
+    Run ssh to user@host1 and user@host2
 HELP
-        return 1;;
+        return 1
+      ;;
 
-      <-> )
-        PANE="${ARG}";;
+      * )
+        if [[ -z "${NOCMD}" ]]; then
+          COMMAND="${1}"
+          shift
+        fi
+        break
+      ;;
     esac
   done
 
-  [[ -z "${PANE}" ]] && PANE=2
-  (( ${PANE} < 2 ))  && PANE=2
-
-  local -a COMMAND
-  if is_tmux; then
-    COMMAND+=( new-window -a \; )
-  else
-    COMMAND+=( new-session -d \; )
+  [[ -z "${COMMAND}" ]] && COMMAND='echo'
+  if ! exists "${COMMAND}"; then
+    warning "no such command: ${COMMAND}"
+    return 1
   fi
 
-  for PANE in {2.."${PANE}"}; do
-    COMMAND+=( split-window -d \; select-layout tiled \; )
+  local ARG
+  local -a ARGUMENTS
+  if [[ -n "${NOCMD}" && "${#}" != '0' ]]; then
+    ARGUMENTS+=( "${@}" )
+    shift "${#}"
+  else
+    for ARG in $(< /dev/stdin); do
+      ARGUMENTS+=( "${ARG}" )
+    done
+  fi
+
+  if (( ${#ARGUMENTS} < 1 )); then
+    warning 'no arguments found'
+    return 1
+  fi
+  (( ${#ARGUMENTS} == 1 )) && NOSYNC=1
+
+
+  tmux new-window -a
+
+  local -i i=1
+  for ARG in "${ARGUMENTS[@]}"; do
+    tmux split-window -d \; select-layout tiled
+  done
+  for ARG in "${ARGUMENTS[@]}"; do
+    tmux send-keys -t ".$(( i++ ))" "${COMMAND} ${*} ${ARG}" C-m
   done
 
-  [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
-  is_tmux || COMMAND+=( attach-session \; )
+  tmux kill-pane -t .0
+  tmux select-layout tiled
 
-  tmux "${COMMAND[@]}"
+  [[ -z "${NOSYNC}" ]] && tmux set-window-option synchronize-panes on
+  tmux refresh-client
 }
 
 function mailsend() {
@@ -902,31 +942,37 @@ EOC
 }
 
 function 256color() {
-  local CODE
-  for CODE in {0..15}; do
-    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-    (( ${CODE} % 8 == 7 )) && printf '\e[0m\n'
-  done
+  printf '\e[48;5;%1$dm %1$x \e[0m' {0..7}
   echo
+  printf '\e[48;5;%1$dm %1$x \e[0m' {8..15}
+  printf '\n\n'
 
-  local BASE ITERATION COUNT
+  local -i BASE ITERATION COUNT
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
-        CODE=$(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
-        printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+        printf '\e[48;5;%1$dm %1$x \e[0m' $(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
       done
-      printf '\e[0m  '
+      printf '  '
     done
     echo
     (( ${BASE} == 5 )) && echo
   done
   echo
 
-  for CODE in {232..255}; do
-    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+  printf '\e[48;5;%1$dm %1$x \e[0m' {232..255}
+  printf '\n\n'
+
+  local -i WIDTH COL R G B
+  WIDTH=95
+  for COL in {0..${WIDTH}}; do
+    R=$(( 255 - ( ${COL} * 255 / ${WIDTH} ) ))
+    G=$(( ${COL} * 510 / ${WIDTH} ))
+    B=$(( ${COL} * 255 / ${WIDTH} ))
+    (( ${G} > 255 )) && G=$(( 510 - ${G} ))
+    printf '\e[48;2;%d;%d;%dm \e[0m' "${R}" "${G}" "${B}"
   done
-  printf '\e[0m\n'
+  echo
 }
 
 function package() {
@@ -1086,14 +1132,14 @@ HELP
 function createpasswd() {
   # Default
   local CHARACTER='[:alnum:]'
-  local LENGTH=18
-  local NUMBER=1
+  local -i LENGTH=18
+  local -i NUMBER=1
 
   # Arguments
   local F_CHARACTER F_PARANOID
   local P_CHARACTER="${CHARACTER}"
-  local P_LENGTH="${LENGTH}"
-  local P_NUMBER="${NUMBER}"
+  local -i P_LENGTH="${LENGTH}"
+  local -i P_NUMBER="${NUMBER}"
 
   local ARG
   while getopts hpc:l:n: ARG; do
@@ -1211,13 +1257,13 @@ function aws-ec2-spot() {
   fi
 
   # Default
-  local DAY=3
-  local HOUR=0
+  local -i DAY=3
+  local -i HOUR=0
   local INSTANCE=c4.8xlarge
 
   # Arguments
   local -aU P_INSTANCE
-  local P_DAY P_HOUR
+  local -i P_DAY P_HOUR
 
   local ARG SKIP
   for ARG in "${@}"; do
