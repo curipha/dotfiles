@@ -796,7 +796,7 @@ function whois() {
   local REPORTTIME=-1
 
   local ARG DOMAIN
-  local -a OPTION
+  local -aU OPTION
   for ARG in "${@}"; do
     case "${ARG}" in
       -* )
@@ -947,7 +947,7 @@ function 256color() {
   printf '\e[48;5;%1$dm %1$x \e[0m' {8..15}
   printf '\n\n'
 
-  local BASE ITERATION COUNT
+  local -i BASE ITERATION COUNT
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
@@ -963,7 +963,7 @@ function 256color() {
   printf '\e[48;5;%1$dm %1$x \e[0m' {232..255}
   printf '\n\n'
 
-  local WIDTH COL R G B
+  local -i WIDTH COL R G B
   WIDTH=95
   for COL in {0..${WIDTH}}; do
     R=$(( 255 - ( ${COL} * 255 / ${WIDTH} ) ))
@@ -1132,14 +1132,14 @@ HELP
 function createpasswd() {
   # Default
   local CHARACTER='[:alnum:]'
-  local LENGTH=18
-  local NUMBER=1
+  local -i LENGTH=18
+  local -i NUMBER=1
 
   # Arguments
   local F_CHARACTER F_PARANOID
   local P_CHARACTER="${CHARACTER}"
-  local P_LENGTH="${LENGTH}"
-  local P_NUMBER="${NUMBER}"
+  local -i P_LENGTH="${LENGTH}"
+  local -i P_NUMBER="${NUMBER}"
 
   local ARG
   while getopts hpc:l:n: ARG; do
@@ -1257,13 +1257,13 @@ function aws-ec2-spot() {
   fi
 
   # Default
-  local DAY=3
-  local HOUR=0
+  local -i DAY=3
+  local -i HOUR=0
   local INSTANCE=c4.8xlarge
 
   # Arguments
   local -aU P_INSTANCE
-  local P_DAY P_HOUR
+  local -i P_DAY P_HOUR
 
   local ARG SKIP
   for ARG in "${@}"; do
