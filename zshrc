@@ -1131,8 +1131,8 @@ HELP
 
 function createpasswd() {
   # Default
-  local -i LENGTH=18
-  local -i NUMBER=1
+  local -r LENGTH=18
+  local -r NUMBER=1
 
   # Arguments
   local CHARACTER PARANOID
