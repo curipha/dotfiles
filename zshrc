@@ -1019,7 +1019,7 @@ HELP
     warning 'operation mode is required'
     return 1
   fi
-  if [[ "${MODE}" == 'install' && "${#PACKAGES[@]}" == '0' ]]; then
+  if [[ "${MODE}" == 'install' && "${#PACKAGES}" == '0' ]]; then
     warning 'no packages are specified in install mode'
     return 1
   fi
@@ -1310,7 +1310,7 @@ HELP
     shift
   done
 
-  (( ${#P_INSTANCE[@]} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
+  (( ${#P_INSTANCE} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
   (( ${P_DAY} == 0 && ${P_HOUR} == 0 )) && P_DAY="${DAY}"
 
   local FROM=$(date --utc --date="-${P_DAY} day -${P_HOUR} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
