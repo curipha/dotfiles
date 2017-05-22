@@ -220,13 +220,11 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-DIFF_PARAM='--unified --report-identical-files --minimal'
-if exists colordiff; then
-  alias diff="colordiff ${DIFF_PARAM}"
+if exists git; then
+  alias diff='git diff'
 else
-  alias diff="diff ${DIFF_PARAM}"
+  alias diff='diff --unified --report-identical-files --minimal'
 fi
-unset DIFF_PARAM
 
 GREP_PARAM='--color=auto --binary-files=text'
 if [[ $(grep --help 2>&1) =~ '--exclude-dir' ]]; then
@@ -569,11 +567,7 @@ abbrev_expand=(
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
-  'V'   '| vim -'
-  'X'   '| xargs -r'
-  'XN'  '| xargs -r -n1'
-  'Z'   '| openssl enc -e -aes-256-cbc'
-  'ZD'  '| openssl enc -d -aes-256-cbc'
+  'X'   '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
@@ -712,8 +706,6 @@ bindkey '^]' insert-last-word
 bindkey '^[m' copy-prev-shell-word
 #}}}
 # Utility {{{
-alias wipe='shred --verbose --iterations=3 --zero --remove'
-
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'
 #alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
 
