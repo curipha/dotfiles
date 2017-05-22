@@ -221,9 +221,6 @@ vnoremap v  V
 
 nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 
-nnoremap <silent> <C-s> :<C-u>update<CR>
-inoremap <silent> <C-s> <C-o>:update<CR>
-
 inoremap <Left>  <C-g>U<Left>
 inoremap <Right> <C-g>U<Right>
 
@@ -337,22 +334,6 @@ autocmd MyAutoCmd BufWritePost *
 \   if &l:binary && &l:filetype ==# 'xxd'
 \ |   execute 'silent %!xxd -g 1'
 \ |   setlocal nomodified
-\ | endif
-
-autocmd MyAutoCmd BufWritePre *
-\   let b:dir = expand('<afile>:p:h')
-\ | if !isdirectory(b:dir)
-\ |   if v:cmdbang || input(printf('"%s" does not exist. Create? [y/N]: ', b:dir)) =~? '^y\%[es]$'
-\ |     call mkdir(iconv(b:dir, &encoding, &termencoding), 'p')
-\ |   endif
-\ | endif
-autocmd MyAutoCmd BufWriteCmd *[,*]
-\   let b:file = expand('<afile>')
-\ | if input(printf('Write to "%s". OK? [y/N]: ', b:file)) =~? '^y\%[es]$'
-\ |   execute 'write' . (v:cmdbang ? '!' : '') fnameescape(b:file)
-\ | else
-\ |   redraw
-\ |   echo 'File not saved.'
 \ | endif
 
 if !has('gui_running') && !s:iswin

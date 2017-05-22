@@ -569,10 +569,7 @@ abbrev_expand=(
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
-  'V'   '| vim -'
   'X'   '| xargs -r -n1'
-  'Z'   '| openssl enc -e -aes-256-cbc'
-  'ZD'  '| openssl enc -d -aes-256-cbc'
 )
 
 function magic-abbrev-expand() {
@@ -711,8 +708,6 @@ bindkey '^]' insert-last-word
 bindkey '^[m' copy-prev-shell-word
 #}}}
 # Utility {{{
-alias wipe='shred --verbose --iterations=3 --zero --remove'
-
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'
 #alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
 
