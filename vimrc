@@ -247,7 +247,7 @@ autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<C-g>U<Lef
 autocmd MyAutoCmd FileType ruby     inoremap <buffer> :// ://
 autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
 
-autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php inoremap <buffer> </ </<C-x><C-o><C-y>
+autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php,markdown inoremap <buffer> </ </<C-x><C-o><C-y>
 
 for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
