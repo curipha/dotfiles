@@ -220,13 +220,11 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-DIFF_PARAM='--unified --report-identical-files --minimal'
-if exists colordiff; then
-  alias diff="colordiff ${DIFF_PARAM}"
+if exists git; then
+  alias diff='git diff'
 else
-  alias diff="diff ${DIFF_PARAM}"
+  alias diff='diff --unified --report-identical-files --minimal'
 fi
-unset DIFF_PARAM
 
 GREP_PARAM='--color=auto --binary-files=text'
 if [[ $(grep --help 2>&1) =~ '--exclude-dir' ]]; then
