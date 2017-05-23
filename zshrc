@@ -221,7 +221,7 @@ fi
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
 if exists git; then
-  alias diff='git diff'
+  alias diff='git diff --no-index'
 else
   alias diff='diff --unified --report-identical-files --minimal'
 fi
