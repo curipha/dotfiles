@@ -1024,10 +1024,10 @@ HELP
 
     case "${MODE}" in
       install )
-        sudo apt-get ${OPTIONS} clean                    && \
-        sudo apt-get ${OPTIONS} update                   && \
-        sudo apt-get ${OPTIONS} dist-upgrade             && \
-        sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo apt-get ${OPTIONS} clean        && \
+        sudo apt-get ${OPTIONS} update       && \
+        sudo apt-get ${OPTIONS} dist-upgrade && \
+        sudo apt-get ${OPTIONS} install --no-install-recommends "${PACKAGES[@]}" && \
         sudo apt-get ${OPTIONS} autoremove
       ;;
 
