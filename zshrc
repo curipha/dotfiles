@@ -1192,17 +1192,19 @@ function aws-ec2-instances() {
     return 1
   fi
 
-  local ARG LOCAL
+  local ARG LOCAL NOHEADER
   for ARG in "${@}"; do
     case "${ARG}" in
-      -l | --local ) LOCAL=1;;
+      -l | --local     ) LOCAL=1;;
+      -H | --no-header ) NOHEADER=1;;
 
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [--local]
+Usage: ${0} [--local] [--no-header]
 
 Options:
   -l, --local         Get instance lists only from the current region ($(aws configure get region))
+  -H, --no-header     Print no header line at all
   -h, --help          Show this help message and exit
 HELP
         return 1;;
@@ -1211,7 +1213,7 @@ HELP
 
   local REPORTTIME=-1
   (
-    echo 'az stat type name id public-ip private-ip' && \
+    [[ -z "${NOHEADER}" ]] && echo 'az stat type name id public-ip private-ip' ; \
     if [[ -n "${LOCAL}" ]]; then \
       aws configure get region ; \
     else \
