@@ -1195,8 +1195,7 @@ function aws-ec2-instances() {
   local ARG LOCAL
   for ARG in "${@}"; do
     case "${ARG}" in
-      -l | --local )
-        LOCAL=1;;
+      -l | --local ) LOCAL=1;;
 
       -* )
         cat <<HELP 1>&2
