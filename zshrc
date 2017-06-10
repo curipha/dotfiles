@@ -322,7 +322,7 @@ is_ssh && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT='  %1v'
+RPROMPT='  ${vcs_info_msg_0_}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR
 
@@ -356,7 +356,7 @@ zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
 zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
-zstyle ':vcs_info:*' actionformats '*%a* [%s:%b%c%u%m]'
+zstyle ':vcs_info:*' actionformats '%B<%a>%%b [%s:%b%c%u%m]'
 zstyle ':vcs_info:*' max-exports 1
 
 zstyle ':vcs_info:git+set-message:*' hooks git-hook
@@ -375,9 +375,7 @@ function +vi-git-hook() {
 }
 
 function precmd_vcs_info() {
-  psvar=()
   LANG=en_US.UTF-8 vcs_info
-  [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
 add-zsh-hook -Uz precmd precmd_vcs_info
 #}}}
