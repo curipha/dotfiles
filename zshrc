@@ -103,7 +103,6 @@ stty -ixon -ixoff
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
-autoload -Uz colors   && colors
 autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
 autoload -Uz is-at-least
