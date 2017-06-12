@@ -916,8 +916,12 @@ EOC
 
 function 256color() {
   printf '\e[48;5;%1$dm %1$x \e[0m' {0..7}
+  printf '  '
+  printf '\e[%1$dm %1$d \e[0m' {30..37}
   echo
   printf '\e[48;5;%1$dm %1$x \e[0m' {8..15}
+  printf '  '
+  printf '\e[1;%1$dm %1$d \e[0m' {30..37}
   printf '\n\n'
 
   local -i BASE ITERATION COUNT
