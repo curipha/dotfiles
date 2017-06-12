@@ -115,11 +115,8 @@ autoload -Uz vcs_info
 autoload -Uz zmv
 #}}}
 # Functions {{{
-function exists() { whence -p -- "${1}" &> /dev/null }
-
-function warning() {
-  (( ${#} > 0 )) && echo "${funcstack[2]:-zsh}:" "${@}" 1>&2
-}
+function exists()  { whence -p -- "${1}" &> /dev/null }
+function warning() { echo "${funcstack[2]:-zsh}:" "${@}" 1>&2 }
 
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || $(ps -o comm= -p "${PPID}" 2> /dev/null) == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
@@ -787,10 +784,8 @@ function whois() {
   local -aU OPTION
   for ARG in "${@}"; do
     case "${ARG}" in
-      -* )
-        OPTION+=( "${ARG}" );;
-      * )
-        DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
+      -* ) OPTION+=( "${ARG}" );;
+      *  ) DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
     esac
   done
 
