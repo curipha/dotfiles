@@ -125,34 +125,36 @@ function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] }
 
 function set_cc() {
-  case "${1}" in
-    'clang' )
-      export CC=clang
-      export CXX=clang++
-    ;;
+  if (( ${#} < 1 )); then
+    unset CC CXX CFLAGS CXXFLAGS
+    warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
+    return
+  fi
 
-    'gcc' )
-      export CC=gcc
-      export CXX=g++
-    ;;
+  if ! exists "${1}"; then
+    warning "no such command: ${1}"
+    return 1
+  fi
+
+  case "${1}" in
+    'clang' ) export CC=clang CXX=clang++;;
+    'gcc'   ) export CC=gcc   CXX=g++;;
 
     * )
-      unset CC CXX CFLAGS CXXFLAGS
-      warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
+      warning "nothing to do for: ${1}"
+      return 1
     ;;
   esac
 
-  if [[ -n "${CC}" ]]; then
-    CFLAGS='-march=native -mtune=native -O2 -pipe -w'
-    if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
-      CFLAGS+=' -fstack-protector-strong'
-    else
-      CFLAGS+=' -fstack-protector-all'
-    fi
-
-    export CFLAGS
-    export CXXFLAGS="${CFLAGS}"
+  CFLAGS='-march=native -mtune=native -O2 -pipe -w'
+  if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
+    CFLAGS+=' -fstack-protector-strong'
+  else
+    CFLAGS+=' -fstack-protector-all'
   fi
+
+  export CFLAGS
+  export CXXFLAGS="${CFLAGS}"
 }
 #}}}
 # Macros {{{
