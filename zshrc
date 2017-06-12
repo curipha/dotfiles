@@ -119,7 +119,6 @@ function exists() { whence -p -- "${1}" &> /dev/null }
 
 function warning() {
   (( ${#} > 0 )) && echo "${funcstack[2]:-zsh}:" "${@}" 1>&2
-  return 1
 }
 
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || $(ps -o comm= -p "${PPID}" 2> /dev/null) == 'sshd' ]] }
