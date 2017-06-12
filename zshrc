@@ -159,19 +159,18 @@ function set_cc() {
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
-  linux*)
+  linux* | freebsd* )
     limit coredumpsize 0
+    setopt hist_fcntl_lock
+  ;|
 
+  linux* )
     alias ls='ls --color=auto'
     alias open=xdg-open
     alias start=xdg-open
+  ;|
 
-    setopt hist_fcntl_lock
-  ;;
-
-  freebsd*)
-    limit coredumpsize 0
-
+  freebsd* )
     export CLICOLOR=1
     export LSCOLORS=Exfxcxdxbxegedabagacad
 
@@ -179,15 +178,13 @@ case "${OSTYPE}" in
     exists gmake && export MAKE=$(whence -p gmake)
 
     exists jot   && alias seq=jot
+  ;|
 
-    setopt hist_fcntl_lock
-  ;;
-
-  cygwin)
+  cygwin* )
     alias ls='ls --color=auto'
     alias open=cygstart
     alias start=cygstart
-  ;;
+  ;|
 esac
 
 is_x && xset -b
