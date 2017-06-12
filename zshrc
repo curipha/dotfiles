@@ -169,15 +169,6 @@ case "${OSTYPE}" in
     setopt hist_fcntl_lock
   ;;
 
-  darwin*)
-    limit coredumpsize 0
-
-    export CLICOLOR=1
-    export LSCOLORS=Exfxcxdxbxegedabagacad
-
-    setopt hist_fcntl_lock
-  ;;
-
   freebsd*)
     limit coredumpsize 0
 
