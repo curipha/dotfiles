@@ -103,7 +103,6 @@ stty -ixon -ixoff
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
-autoload -Uz colors   && colors
 autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
 autoload -Uz is-at-least
@@ -116,12 +115,8 @@ autoload -Uz vcs_info
 autoload -Uz zmv
 #}}}
 # Functions {{{
-function exists() { whence -p -- "${1}" &> /dev/null }
-
-function warning() {
-  (( ${#} > 0 )) && echo "${funcstack[2]:-zsh}:" "${@}" 1>&2
-  return 1
-}
+function exists()  { whence -p -- "${1}" &> /dev/null }
+function warning() { echo "${funcstack[2]:-zsh}:" "${@}" 1>&2 }
 
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || $(ps -o comm= -p "${PPID}" 2> /dev/null) == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
@@ -130,60 +125,52 @@ function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] }
 
 function set_cc() {
-  case "${1}" in
-    'clang' )
-      export CC=clang
-      export CXX=clang++
-    ;;
+  if (( ${#} < 1 )); then
+    unset CC CXX CFLAGS CXXFLAGS
+    warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
+    return
+  fi
 
-    'gcc' )
-      export CC=gcc
-      export CXX=g++
-    ;;
+  if ! exists "${1}"; then
+    warning "no such command: ${1}"
+    return 1
+  fi
+
+  case "${1}" in
+    'clang' ) export CC=clang CXX=clang++;;
+    'gcc'   ) export CC=gcc   CXX=g++;;
 
     * )
-      unset CC CXX CFLAGS CXXFLAGS
-      warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
+      warning "nothing to do for: ${1}"
+      return 1
     ;;
   esac
 
-  if [[ -n "${CC}" ]]; then
-    CFLAGS='-march=native -mtune=native -O2 -pipe -w'
-    if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
-      CFLAGS+=' -fstack-protector-strong'
-    else
-      CFLAGS+=' -fstack-protector-all'
-    fi
-
-    export CFLAGS
-    export CXXFLAGS="${CFLAGS}"
+  CFLAGS='-march=native -mtune=native -O2 -pipe -w'
+  if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
+    CFLAGS+=' -fstack-protector-strong'
+  else
+    CFLAGS+=' -fstack-protector-all'
   fi
+
+  export CFLAGS
+  export CXXFLAGS="${CFLAGS}"
 }
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
-  linux*)
+  linux* | freebsd* )
     limit coredumpsize 0
+    setopt hist_fcntl_lock
+  ;|
 
+  linux* )
     alias ls='ls --color=auto'
     alias open=xdg-open
     alias start=xdg-open
+  ;|
 
-    setopt hist_fcntl_lock
-  ;;
-
-  darwin*)
-    limit coredumpsize 0
-
-    export CLICOLOR=1
-    export LSCOLORS=Exfxcxdxbxegedabagacad
-
-    setopt hist_fcntl_lock
-  ;;
-
-  freebsd*)
-    limit coredumpsize 0
-
+  freebsd* )
     export CLICOLOR=1
     export LSCOLORS=Exfxcxdxbxegedabagacad
 
@@ -191,15 +178,13 @@ case "${OSTYPE}" in
     exists gmake && export MAKE=$(whence -p gmake)
 
     exists jot   && alias seq=jot
+  ;|
 
-    setopt hist_fcntl_lock
-  ;;
-
-  cygwin)
+  cygwin* )
     alias ls='ls --color=auto'
     alias open=cygstart
     alias start=cygstart
-  ;;
+  ;|
 esac
 
 is_x && xset -b
@@ -323,7 +308,7 @@ is_ssh && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT='  %1v'
+RPROMPT='  ${vcs_info_msg_0_}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR
 
@@ -357,7 +342,7 @@ zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
 zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
-zstyle ':vcs_info:*' actionformats '*%a* [%s:%b%c%u%m]'
+zstyle ':vcs_info:*' actionformats '%B<%a>%%b [%s:%b%c%u%m]'
 zstyle ':vcs_info:*' max-exports 1
 
 zstyle ':vcs_info:git+set-message:*' hooks git-hook
@@ -376,9 +361,7 @@ function +vi-git-hook() {
 }
 
 function precmd_vcs_info() {
-  psvar=()
   LANG=en_US.UTF-8 vcs_info
-  [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
 add-zsh-hook -Uz precmd precmd_vcs_info
 #}}}
@@ -476,10 +459,10 @@ zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
 
-zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:descriptions' format '%B%F{yellow}%d%f%b'
 zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+zstyle ':completion:*:warnings' format '%B%F{red}No matches for:%f%b %d'
+zstyle ':completion:*:corrections' format '%B%F{yellow}%d%f %F{red}(errors: %e)%f%b'
 
 zstyle ':completion:*:manuals' separate-sections true
 
@@ -791,10 +774,8 @@ function whois() {
   local -aU OPTION
   for ARG in "${@}"; do
     case "${ARG}" in
-      -* )
-        OPTION+=( "${ARG}" );;
-      * )
-        DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
+      -* ) OPTION+=( "${ARG}" );;
+      *  ) DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
     esac
   done
 
@@ -935,8 +916,12 @@ EOC
 
 function 256color() {
   printf '\e[48;5;%1$dm %1$x \e[0m' {0..7}
+  printf '  '
+  printf '\e[%1$dm %1$d \e[0m' {30..37}
   echo
   printf '\e[48;5;%1$dm %1$x \e[0m' {8..15}
+  printf '  '
+  printf '\e[1;%1$dm %1$d \e[0m' {30..37}
   printf '\n\n'
 
   local -i BASE ITERATION COUNT
@@ -1192,18 +1177,19 @@ function aws-ec2-instances() {
     return 1
   fi
 
-  local ARG LOCAL
+  local ARG LOCAL NOHEADER
   for ARG in "${@}"; do
     case "${ARG}" in
-      -l | --local )
-        LOCAL=1;;
+      -l | --local     ) LOCAL=1;;
+      -H | --no-header ) NOHEADER=1;;
 
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [--local]
+Usage: ${0} [--local] [--no-header]
 
 Options:
   -l, --local         Get instance lists only from the current region ($(aws configure get region))
+  -H, --no-header     Print no header line at all
   -h, --help          Show this help message and exit
 HELP
         return 1;;
@@ -1212,7 +1198,7 @@ HELP
 
   local REPORTTIME=-1
   (
-    echo 'az stat type name id public-ip private-ip' && \
+    [[ -z "${NOHEADER}" ]] && echo 'az stat type name id public-ip private-ip' ; \
     if [[ -n "${LOCAL}" ]]; then \
       aws configure get region ; \
     else \
