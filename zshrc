@@ -212,13 +212,9 @@ else
 fi
 
 GREP_PARAM='--color=auto --binary-files=text'
-if [[ $(grep --help 2>&1) =~ '--exclude-dir' ]]; then
-  for EXCLUDE_DIR in .git .deps .libs; do
-    GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
-  done
-fi
+[[ $(grep --help 2>&1) =~ '--exclude-dir' ]] && GREP_PARAM+=' --exclude-dir=".*"'
 alias grep="grep ${GREP_PARAM}"
-unset GREP_PARAM EXCLUDE_DIR
+unset GREP_PARAM
 
 if exists clang; then
   set_cc clang
