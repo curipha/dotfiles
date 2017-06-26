@@ -427,8 +427,8 @@ set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':'
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 
-autocmd MyAutoCmd Filetype help let &l:statusline = '%t %=%m%y  %3l/%3L (%P)'
-autocmd MyAutoCmd Filetype qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y'
+autocmd MyAutoCmd FileType help let &l:statusline = '%t %=%m%y  %3l/%3L (%P)'
+autocmd MyAutoCmd FileType qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y'
 
 if has('gui_running')
   set cursorline
@@ -472,7 +472,7 @@ nnoremap <silent> <Leader>v :<C-u>vsplit<CR>
 nnoremap <silent> <Leader>d :<C-u>windo diffthis<CR>
 
 set diffopt=filler,context:3,vertical
-autocmd MyAutoCmd InsertLeave *
+autocmd MyAutoCmd BufLeave,InsertLeave,TextChanged *
 \   if &l:diff
 \ |   diffupdate
 \ | endif
@@ -559,10 +559,8 @@ highlight Pmenu     ctermbg=white ctermfg=darkgray
 highlight PmenuSel  ctermbg=blue  ctermfg=white
 highlight PmenuSbar ctermbg=black ctermfg=lightblue
 
-highlight StatusLine ctermfg=red ctermbg=white
-
-autocmd MyAutoCmd InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
-autocmd MyAutoCmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
+autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
+autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
 " }}}
 
 " Command {{{
@@ -663,6 +661,14 @@ let g:loaded_vimball         = 1
 let g:loaded_vimballPlugin   = 1
 let g:loaded_zip             = 1
 let g:loaded_zipPlugin       = 1
+" }}}
+" Colorscheme {{{
+if &t_Co >= 256
+  try
+    colorscheme gruvbox
+  catch
+  endtry
+endif
 " }}}
 " matchit.vim {{{
 packadd! matchit
