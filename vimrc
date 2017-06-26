@@ -664,6 +664,14 @@ let g:loaded_vimballPlugin   = 1
 let g:loaded_zip             = 1
 let g:loaded_zipPlugin       = 1
 " }}}
+" Colorscheme {{{
+if &t_Co >= 256
+  try
+    colorscheme gruvbox
+  catch
+  endtry
+endif
+" }}}
 " matchit.vim {{{
 packadd! matchit
 
