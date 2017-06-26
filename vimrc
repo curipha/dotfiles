@@ -559,10 +559,8 @@ highlight Pmenu     ctermbg=white ctermfg=darkgray
 highlight PmenuSel  ctermbg=blue  ctermfg=white
 highlight PmenuSbar ctermbg=black ctermfg=lightblue
 
-highlight StatusLine ctermfg=red ctermbg=white
-
-autocmd MyAutoCmd InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
-autocmd MyAutoCmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
+autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
+autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
 " }}}
 
 " Command {{{
