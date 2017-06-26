@@ -451,6 +451,7 @@ zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
 zstyle ':completion:*' single-ignored show
@@ -485,8 +486,6 @@ if [[ -n "${ETC_PASSWD}" ]]; then
 fi
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
-zstyle ':completion:*:-subscript-:*' list-separator ':'
-
 zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
 
 zstyle ':completion:*:sudo:*' command-path
