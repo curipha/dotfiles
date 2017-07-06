@@ -30,6 +30,8 @@ I made it because there was an environment where it could not `chsh`.
 
 Links
 --------------------
-- Migmix (Japanese font) https://mix-mplus-ipa.osdn.jp/migmix/
-- Fira (font) https://mozilla.github.io/Fira/
-
+### Fonts
+- [Migmix](https://mix-mplus-ipa.osdn.jp/migmix/) (Japanese font)
+- [Source Han Code JP](https://github.com/adobe-fonts/source-han-code-jp) (Japanese font)
+- [Fira](https://github.com/mozilla/Fira)
+- [Source Code Pro](https://github.com/adobe-fonts/source-code-pro)
