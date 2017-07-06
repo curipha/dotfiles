@@ -206,8 +206,8 @@ vnoremap <S-Space> <C-u>
 
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
-cnoremap <expr> <C-u> empty(getcmdline()) ? "\<C-c>" : "\<C-u>"
-cnoremap <expr> <C-w> empty(getcmdline()) ? "\<C-c>" : "\<C-w>"
+cnoremap <expr> <C-u> empty(getcmdline()) ? '<C-c>' : '<C-u>'
+cnoremap <expr> <C-w> empty(getcmdline()) ? '<C-c>' : '<C-w>'
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
@@ -708,13 +708,13 @@ if g:neocomplete#enable_at_startup && &runtimepath =~# '\<neocomplete\>'
 
   inoremap <expr> <C-g> neocomplete#undo_completion()
   inoremap <expr> <C-l> neocomplete#complete_common_string()
-  inoremap <expr> <CR>  pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  inoremap <expr> <CR>  pumvisible() ? neocomplete#close_popup() : '<CR>'
 
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
+  inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<C-h>'
 
-  inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup()."\<Up>" : "\<Up>"
-  inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup()."\<Down>" : "\<Down>"
+  inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup().'<Up>'   : '<Up>'
+  inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup().'<Down>' : '<Down>'
 endif
 " }}}
 " }}}
