@@ -447,10 +447,10 @@ zstyle ':completion:*' menu select=long-list
 
 zstyle ':completion:*' auto-description '%d (provided by auto-description)'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' single-ignored show
 zstyle ':completion:*' squeeze-slashes true
 
