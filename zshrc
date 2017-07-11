@@ -454,7 +454,7 @@ zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' single-ignored show
 zstyle ':completion:*' squeeze-slashes true
 
-zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*:default' list-prompt '%SHit TAB for more, or the character to insert%s'
 zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
 
 zstyle ':completion:*:descriptions' format '%B%F{yellow}%d%f%b'
