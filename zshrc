@@ -445,6 +445,7 @@ zstyle -e ':completion:*' completer '
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=long-list
 
+zstyle ':completion:*' auto-description '%d (provided by auto-description)'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-separator ':'
