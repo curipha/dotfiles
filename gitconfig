@@ -32,6 +32,8 @@
   lla   = log --decorate --oneline --graph
   lp    = log --decorate --patch-with-stat --no-merges
   lpa   = log --decorate --patch-with-stat
+  lpw   = log --decorate --patch-with-stat --no-merges --ignore-all-space
+  lpww  = log --decorate --patch-with-stat --no-merges --ignore-all-space --word-diff=color
   pf    = push --force-with-lease
   pl    = pull
   pu    = push

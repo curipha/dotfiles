@@ -44,9 +44,11 @@ Host *
   ForwardX11   no
   UseRoaming   no
 
+  ConnectionAttempts 2
+
   TCPKeepAlive        yes
-  ServerAliveInterval 3
-  ServerAliveCountMax 5
+  ServerAliveInterval 10
+  ServerAliveCountMax  3
 
   RekeyLimit 100M 1h
 

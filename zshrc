@@ -445,16 +445,17 @@ zstyle -e ':completion:*' completer '
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=long-list
 
+zstyle ':completion:*' auto-description '%d (provided by auto-description)'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' single-ignored show
 zstyle ':completion:*' squeeze-slashes true
 
-zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*:default' list-prompt '%SHit TAB for more, or the character to insert%s'
+zstyle ':completion:*:default' select-prompt '%SCandidate: %l (%p)%s'
 
 zstyle ':completion:*:descriptions' format '%B%F{yellow}%d%f%b'
 zstyle ':completion:*:messages' format '%d'
