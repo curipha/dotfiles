@@ -234,6 +234,7 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
 endfor
 inoremap [[]] [[  ]]<C-g>U<Left><C-g>U<Left><C-g>U<Left>
 inoremap (()) ((  ))<C-g>U<Left><C-g>U<Left><C-g>U<Left>
+inoremap {{}} {{  }}<C-g>U<Left><C-g>U<Left><C-g>U<Left>
 
 inoremap #! #!/usr/bin/env <C-r>=&l:filetype<CR>
 
