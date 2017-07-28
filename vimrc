@@ -157,7 +157,6 @@ vnoremap <Down> gj
 vnoremap <Up>   gk
 
 nnoremap <CR>  O<Esc>
-nnoremap <Tab> %
 nnoremap R     gR
 nnoremap Y     y$
 nnoremap X     "_X
