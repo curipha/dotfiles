@@ -103,7 +103,6 @@ stty -ixon -ixoff
 # Autoloads {{{
 autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
-autoload -Uz colors   && colors
 autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
 autoload -Uz is-at-least
@@ -116,12 +115,8 @@ autoload -Uz vcs_info
 autoload -Uz zmv
 #}}}
 # Functions {{{
-function exists() { whence -p -- "${1}" &> /dev/null }
-
-function warning() {
-  (( ${#} > 0 )) && echo "${funcstack[2]:-zsh}:" "${@}" 1>&2
-  return 1
-}
+function exists()  { whence -p -- "${1}" &> /dev/null }
+function warning() { echo "${funcstack[2]:-zsh}:" "${@}" 1>&2 }
 
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || $(ps -o comm= -p "${PPID}" 2> /dev/null) == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
@@ -130,60 +125,52 @@ function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] }
 
 function set_cc() {
-  case "${1}" in
-    'clang' )
-      export CC=clang
-      export CXX=clang++
-    ;;
+  if (( ${#} < 1 )); then
+    unset CC CXX CFLAGS CXXFLAGS
+    warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
+    return
+  fi
 
-    'gcc' )
-      export CC=gcc
-      export CXX=g++
-    ;;
+  if ! exists "${1}"; then
+    warning "no such command: ${1}"
+    return 1
+  fi
+
+  case "${1}" in
+    'clang' ) export CC=clang CXX=clang++;;
+    'gcc'   ) export CC=gcc   CXX=g++;;
 
     * )
-      unset CC CXX CFLAGS CXXFLAGS
-      warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
+      warning "nothing to do for: ${1}"
+      return 1
     ;;
   esac
 
-  if [[ -n "${CC}" ]]; then
-    CFLAGS='-march=native -mtune=native -O2 -pipe -w'
-    if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
-      CFLAGS+=' -fstack-protector-strong'
-    else
-      CFLAGS+=' -fstack-protector-all'
-    fi
-
-    export CFLAGS
-    export CXXFLAGS="${CFLAGS}"
+  CFLAGS='-march=native -mtune=native -O2 -pipe -w'
+  if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
+    CFLAGS+=' -fstack-protector-strong'
+  else
+    CFLAGS+=' -fstack-protector-all'
   fi
+
+  export CFLAGS
+  export CXXFLAGS="${CFLAGS}"
 }
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
-  linux*)
+  linux* | freebsd* )
     limit coredumpsize 0
+    setopt hist_fcntl_lock
+  ;|
 
+  linux* )
     alias ls='ls --color=auto'
     alias open=xdg-open
     alias start=xdg-open
+  ;|
 
-    setopt hist_fcntl_lock
-  ;;
-
-  darwin*)
-    limit coredumpsize 0
-
-    export CLICOLOR=1
-    export LSCOLORS=Exfxcxdxbxegedabagacad
-
-    setopt hist_fcntl_lock
-  ;;
-
-  freebsd*)
-    limit coredumpsize 0
-
+  freebsd* )
     export CLICOLOR=1
     export LSCOLORS=Exfxcxdxbxegedabagacad
 
@@ -191,15 +178,13 @@ case "${OSTYPE}" in
     exists gmake && export MAKE=$(whence -p gmake)
 
     exists jot   && alias seq=jot
+  ;|
 
-    setopt hist_fcntl_lock
-  ;;
-
-  cygwin)
+  cygwin* )
     alias ls='ls --color=auto'
     alias open=cygstart
     alias start=cygstart
-  ;;
+  ;|
 esac
 
 is_x && xset -b
@@ -220,22 +205,16 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-DIFF_PARAM='--unified --report-identical-files --minimal'
-if exists colordiff; then
-  alias diff="colordiff ${DIFF_PARAM}"
+if exists git; then
+  alias diff='git diff --no-index'
 else
-  alias diff="diff ${DIFF_PARAM}"
+  alias diff='diff --unified --report-identical-files --minimal'
 fi
-unset DIFF_PARAM
 
 GREP_PARAM='--color=auto --binary-files=text'
-if [[ $(grep --help 2>&1) =~ '--exclude-dir' ]]; then
-  for EXCLUDE_DIR in .git .deps .libs; do
-    GREP_PARAM+=" --exclude-dir=${EXCLUDE_DIR}"
-  done
-fi
+[[ $(grep --help 2>&1) =~ '--exclude-dir' ]] && GREP_PARAM+=' --exclude-dir=".*"'
 alias grep="grep ${GREP_PARAM}"
-unset GREP_PARAM EXCLUDE_DIR
+unset GREP_PARAM
 
 if exists clang; then
   set_cc clang
@@ -325,7 +304,7 @@ is_ssh && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT='  %1v'
+RPROMPT='  ${vcs_info_msg_0_}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR
 
@@ -359,7 +338,7 @@ zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
 zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
-zstyle ':vcs_info:*' actionformats '*%a* [%s:%b%c%u%m]'
+zstyle ':vcs_info:*' actionformats '%B<%a>%%b [%s:%b%c%u%m]'
 zstyle ':vcs_info:*' max-exports 1
 
 zstyle ':vcs_info:git+set-message:*' hooks git-hook
@@ -378,9 +357,7 @@ function +vi-git-hook() {
 }
 
 function precmd_vcs_info() {
-  psvar=()
   LANG=en_US.UTF-8 vcs_info
-  [[ -n "${vcs_info_msg_0_}" ]] && psvar[1]="${vcs_info_msg_0_}"
 }
 add-zsh-hook -Uz precmd precmd_vcs_info
 #}}}
@@ -468,20 +445,22 @@ zstyle -e ':completion:*' completer '
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=long-list
 
+zstyle ':completion:*' auto-description '%d (provided by auto-description)'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' single-ignored show
 zstyle ':completion:*' squeeze-slashes true
 
-zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*:default' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*:default' list-prompt '%SHit TAB for more, or the character to insert%s'
+zstyle ':completion:*:default' select-prompt '%SCandidate: %l (%p)%s'
 
-zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:descriptions' format '%B%F{yellow}%d%f%b'
 zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+zstyle ':completion:*:warnings' format '%B%F{red}No matches for:%f%b %d'
+zstyle ':completion:*:corrections' format '%B%F{yellow}%d%f %F{red}(errors: %e)%f%b'
 
 zstyle ':completion:*:manuals' separate-sections true
 
@@ -504,8 +483,6 @@ if [[ -n "${ETC_PASSWD}" ]]; then
 fi
 
 zstyle ':completion:*:-subscript-:*' tag-order indexes parameters
-zstyle ':completion:*:-subscript-:*' list-separator ':'
-
 zstyle ':completion:*:-tilde-:*' group-order named-directories path-directories users expand
 
 zstyle ':completion:*:sudo:*' command-path
@@ -558,7 +535,7 @@ abbrev_expand=(
   '.....' '../../../../'
 
   '?'   "--help |& ${PAGER}"
-  'C'   '| sort | uniq -c | sort -nr'
+  'C'   '| sort | uniq -c | sort -nrs'
   'D'   "| hexdump -C | ${PAGER}"
   'E'   '> /dev/null'
   'G'   '| grep -iE'
@@ -569,11 +546,7 @@ abbrev_expand=(
   'S'   '| sort'
   'T'   '| tail -20'
   'U'   '| sort | uniq'
-  'V'   '| vim -'
-  'X'   '| xargs -r'
-  'XN'  '| xargs -r -n1'
-  'Z'   '| openssl enc -e -aes-256-cbc'
-  'ZD'  '| openssl enc -d -aes-256-cbc'
+  'X'   '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
@@ -712,8 +685,6 @@ bindkey '^]' insert-last-word
 bindkey '^[m' copy-prev-shell-word
 #}}}
 # Utility {{{
-alias wipe='shred --verbose --iterations=3 --zero --remove'
-
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'
 #alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
 
@@ -796,13 +767,11 @@ function whois() {
   local REPORTTIME=-1
 
   local ARG DOMAIN
-  local -a OPTION
+  local -aU OPTION
   for ARG in "${@}"; do
     case "${ARG}" in
-      -* )
-        OPTION+=( "${ARG}" );;
-      * )
-        DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
+      -* ) OPTION+=( "${ARG}" );;
+      *  ) DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
     esac
   done
 
@@ -813,58 +782,98 @@ function whois() {
   fi
 }
 
-function pane() {
+function xpanes() {
   if ! exists tmux; then
     warning 'install "tmux" command'
     return 1
   fi
+  if ! is_tmux; then
+    warning 'run inside a tmux session'
+    return 1
+  fi
 
-  local ARG SYNC PANE
-  for ARG in "${@}"; do
-    case "${ARG}" in
-      -s | --sync )
-        SYNC=1;;
+  local COMMAND NOSYNC NOCMD
+  while (( ${#} > 0 )); do
+    case "${1}" in
+      -z | --nosync )
+        NOSYNC=1
+        shift
+      ;;
+      --ssh )
+        NOCMD=1
+        COMMAND='ssh'
+        shift
+      ;;
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [-s] [count]
+Usage: ${0} [-z] [ command [ initial arguments ... ] ]
 
 Options:
-  -s, --sync          Set 'synchronize-panes on'
+  -z, --nosync        Run without setting 'synchronize-panes on'
+      --ssh           SSH mode
   -h, --help          Show this help message and exit
 
 
 Examples:
-  ${0} 3
-    Open tmux with 3 pane
+  dig jp. ns +short | ${0} ping
+    Run ping to all authoritative name server of .jp
 
-  ${0} -s
-    Open tmux with 2 pane and set synchronize-panes on
+  ${0} --ssh user@host1 user@host2
+  echo user@host1 user@host2 | ${0} --ssh
+    Run ssh to user@host1 and user@host2
 HELP
-        return 1;;
+        return 1
+      ;;
 
-      <-> )
-        PANE="${ARG}";;
+      * )
+        if [[ -z "${NOCMD}" ]]; then
+          COMMAND="${1}"
+          shift
+        fi
+        break
+      ;;
     esac
   done
 
-  [[ -z "${PANE}" ]] && PANE=2
-  (( ${PANE} < 2 ))  && PANE=2
-
-  local -a COMMAND
-  if is_tmux; then
-    COMMAND+=( new-window -a \; )
-  else
-    COMMAND+=( new-session -d \; )
+  [[ -z "${COMMAND}" ]] && COMMAND='echo'
+  if ! exists "${COMMAND}"; then
+    warning "no such command: ${COMMAND}"
+    return 1
   fi
 
-  for PANE in {2.."${PANE}"}; do
-    COMMAND+=( split-window -d \; select-layout tiled \; )
+  local ARG
+  local -a ARGUMENTS
+  if [[ -n "${NOCMD}" && "${#}" != '0' ]]; then
+    ARGUMENTS+=( "${@}" )
+    shift "${#}"
+  else
+    for ARG in $(< /dev/stdin); do
+      ARGUMENTS+=( "${ARG}" )
+    done
+  fi
+
+  if (( ${#ARGUMENTS} < 1 )); then
+    warning 'no arguments found'
+    return 1
+  fi
+  (( ${#ARGUMENTS} == 1 )) && NOSYNC=1
+
+
+  tmux new-window -a
+
+  local -i i=1
+  for ARG in "${ARGUMENTS[@]}"; do
+    tmux split-window -d \; select-layout tiled
+  done
+  for ARG in "${ARGUMENTS[@]}"; do
+    tmux send-keys -t ".$(( i++ ))" "${COMMAND} ${*} ${ARG}" C-m
   done
 
-  [[ -n "${SYNC}" ]] && COMMAND+=( set-window-option synchronize-panes on \; )
-  is_tmux || COMMAND+=( attach-session \; )
+  tmux kill-pane -t .0
+  tmux select-layout tiled
 
-  tmux "${COMMAND[@]}"
+  [[ -z "${NOSYNC}" ]] && tmux set-window-option synchronize-panes on
+  tmux refresh-client
 }
 
 function mailsend() {
@@ -902,31 +911,41 @@ EOC
 }
 
 function 256color() {
-  local CODE
-  for CODE in {0..15}; do
-    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
-    (( ${CODE} % 8 == 7 )) && printf '\e[0m\n'
-  done
+  printf '\e[48;5;%1$dm %1$x \e[0m' {0..7}
+  printf '  '
+  printf '\e[%1$dm %1$d \e[0m' {30..37}
   echo
+  printf '\e[48;5;%1$dm %1$x \e[0m' {8..15}
+  printf '  '
+  printf '\e[1;%1$dm %1$d \e[0m' {30..37}
+  printf '\n\n'
 
-  local BASE ITERATION COUNT
+  local -i BASE ITERATION COUNT
   for BASE in {0..11}; do
     for ITERATION in {0..2}; do
       for COUNT in {0..5}; do
-        CODE=$(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
-        printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+        printf '\e[48;5;%1$dm %1$x \e[0m' $(( 16 + ${BASE} * 6 + ${ITERATION} * 72 + ${COUNT} ))
       done
-      printf '\e[0m  '
+      printf '  '
     done
     echo
     (( ${BASE} == 5 )) && echo
   done
   echo
 
-  for CODE in {232..255}; do
-    printf "\e[48;5;${CODE}m $(( [##16] ${CODE} )) "
+  printf '\e[48;5;%1$dm %1$x \e[0m' {232..255}
+  printf '\n\n'
+
+  local -i WIDTH COL R G B
+  WIDTH=95
+  for COL in {0..${WIDTH}}; do
+    R=$(( 255 - ( ${COL} * 255 / ${WIDTH} ) ))
+    G=$(( ${COL} * 510 / ${WIDTH} ))
+    B=$(( ${COL} * 255 / ${WIDTH} ))
+    (( ${G} > 255 )) && G=$(( 510 - ${G} ))
+    printf '\e[48;2;%d;%d;%dm \e[0m' "${R}" "${G}" "${B}"
   done
-  printf '\e[0m\n'
+  echo
 }
 
 function package() {
@@ -973,7 +992,7 @@ HELP
     warning 'operation mode is required'
     return 1
   fi
-  if [[ "${MODE}" == 'install' && "${#PACKAGES[@]}" == '0' ]]; then
+  if [[ "${MODE}" == 'install' && "${#PACKAGES}" == '0' ]]; then
     warning 'no packages are specified in install mode'
     return 1
   fi
@@ -986,10 +1005,10 @@ HELP
 
     case "${MODE}" in
       install )
-        sudo apt-get ${OPTIONS} clean                    && \
-        sudo apt-get ${OPTIONS} update                   && \
-        sudo apt-get ${OPTIONS} dist-upgrade             && \
-        sudo apt-get ${OPTIONS} install "${PACKAGES[@]}" && \
+        sudo apt-get ${OPTIONS} clean        && \
+        sudo apt-get ${OPTIONS} update       && \
+        sudo apt-get ${OPTIONS} dist-upgrade && \
+        sudo apt-get ${OPTIONS} install --no-install-recommends "${PACKAGES[@]}" && \
         sudo apt-get ${OPTIONS} autoremove
       ;;
 
@@ -1085,24 +1104,21 @@ HELP
 
 function createpasswd() {
   # Default
-  local CHARACTER='[:alnum:]'
-  local LENGTH=18
-  local NUMBER=1
+  local -r LENGTH=18
+  local -r NUMBER=1
 
   # Arguments
-  local F_CHARACTER F_PARANOID
-  local P_CHARACTER="${CHARACTER}"
-  local P_LENGTH="${LENGTH}"
-  local P_NUMBER="${NUMBER}"
+  local CHARACTER PARANOID
+  local -i P_LENGTH="${LENGTH}"
+  local -i P_NUMBER="${NUMBER}"
 
   local ARG
   while getopts hpc:l:n: ARG; do
     case "${ARG}" in
-      'c' ) F_CHARACTER=1
-            P_CHARACTER="${OPTARG}";;
+      'c' ) CHARACTER="${OPTARG}";;
       'l' ) P_LENGTH="${OPTARG}";;
       'n' ) P_NUMBER="${OPTARG}";;
-      'p' ) F_PARANOID=1;;
+      'p' ) PARANOID=1;;
 
       * )
         cat <<HELP 1>&2
@@ -1131,14 +1147,19 @@ HELP
     esac
   done
 
-  if [[ -n "${F_PARANOID}" ]]; then
-    P_CHARACTER='[:graph:]'
-    [[ -n "${F_CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
+  if [[ -n "${PARANOID}" ]]; then
+    [[ -n "${CHARACTER}" ]] && warning '-c option is ignored in paranoid mode'
+    CHARACTER='[:graph:]'
+
+    if (( ${P_LENGTH} < 4 )); then
+      warning 'minimum length is 4 in paranoid mode'
+      return 1
+    fi
   fi
 
-  LC_CTYPE=C tr -cd "${P_CHARACTER}" < /dev/urandom \
+  LC_CTYPE=C tr -cd "${CHARACTER:-[:alnum:]}" < /dev/urandom \
     | fold -w "${P_LENGTH}" \
-    | if [[ -n "${F_PARANOID}" ]]; then \
+    | if [[ -n "${PARANOID}" ]]; then \
         grep '[[:digit:]]' | grep '[[:punct:]]' | grep '[[:upper:]]' | grep '[[:lower:]]' ; \
       else \
         cat ; \
@@ -1152,18 +1173,19 @@ function aws-ec2-instances() {
     return 1
   fi
 
-  local ARG LOCAL
+  local ARG LOCAL NOHEADER
   for ARG in "${@}"; do
     case "${ARG}" in
-      -l | --local )
-        LOCAL=1;;
+      -l | --local     ) LOCAL=1;;
+      -H | --no-header ) NOHEADER=1;;
 
       -* )
         cat <<HELP 1>&2
-Usage: ${0} [--local]
+Usage: ${0} [--local] [--no-header]
 
 Options:
   -l, --local         Get instance lists only from the current region ($(aws configure get region))
+  -H, --no-header     Print no header line at all
   -h, --help          Show this help message and exit
 HELP
         return 1;;
@@ -1172,7 +1194,7 @@ HELP
 
   local REPORTTIME=-1
   (
-    echo 'az stat type name id public-ip private-ip' && \
+    [[ -z "${NOHEADER}" ]] && echo 'az stat type name id public-ip private-ip' ; \
     if [[ -n "${LOCAL}" ]]; then \
       aws configure get region ; \
     else \
@@ -1211,41 +1233,30 @@ function aws-ec2-spot() {
   fi
 
   # Default
-  local DAY=3
-  local HOUR=0
+  local -r DAY=3
   local INSTANCE=c4.8xlarge
 
   # Arguments
   local -aU P_INSTANCE
-  local P_DAY P_HOUR
+  local -i P_DAY P_HOUR
 
-  local ARG SKIP
-  for ARG in "${@}"; do
-    shift
-
-    if [[ -n "${SKIP}" ]]; then
-      SKIP=
-      continue
-    fi
-
-    case "${ARG}" in
+  while (( ${#} > 0 )); do
+    case "${1}" in
       --day )
-        P_DAY="$1"
-        if [[ -z "${P_DAY}" ]]; then
-          warning '--day option requires an argument'
+        if [[ -z "${2}" || "${2}" != <-> ]]; then
+          warning '--day option requires an integer argument'
           return 1
         fi
-
-        SKIP=1
+        P_DAY="${2}"
+        shift
       ;;
       --hour )
-        P_HOUR="$1"
-        if [[ -z "${P_HOUR}" ]]; then
-          warning '--hour option requires an argument'
+        if [[ -z "${2}" || "${2}" != <-> ]]; then
+          warning '--hour option requires an integer argument'
           return 1
         fi
-
-        SKIP=1
+        P_HOUR="${2}"
+        shift
       ;;
 
       -* )
@@ -1254,7 +1265,7 @@ Usage: ${0} [--day <days>] [--hour <hours>] [ instance_types ... ]
 
 Options:
       --day <days>    Specify the duration in day to retrieve the price (Default = ${DAY})
-      --hour <hours>  Specify the duration in hour to retrieve the price (Default = ${HOUR})
+      --hour <hours>  Specify the duration in hour to retrieve the price (Default = 0)
   -h, --help          Show this help message and exit
 
 
@@ -1268,17 +1279,18 @@ HELP
         return 1;;
 
       * )
-        P_INSTANCE+=( "${ARG}" );;
+        P_INSTANCE+=( "${1}" );;
     esac
+    shift
   done
 
-  (( ${#P_INSTANCE[@]} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
-  [[ -n "${P_HOUR}" && -z "${P_DAY}" ]] && P_DAY=0
+  (( ${#P_INSTANCE} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
+  (( ${P_DAY} == 0 && ${P_HOUR} == 0 )) && P_DAY="${DAY}"
 
-  local FROM=$(date --utc --date="-${P_DAY:-${DAY}} day -${P_HOUR:-${HOUR}} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
+  local FROM=$(date --utc --date="-${P_DAY} day -${P_HOUR} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
   local TO=$(date --utc +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
 
-  if [[ -z "${FROM}" || ( -n "${P_DAY}" && "${P_DAY}" != <-> ) || ( -n "${P_HOUR}" && "${P_HOUR}" != <-> ) ]]; then
+  if [[ -z "${FROM}" ]]; then
     warning '--day and/or --hour option contains illegal character'
     return 1
   fi
@@ -1394,7 +1406,7 @@ alias h='fc -l -t "%b.%e %k:%M:%S"'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
-alias l="last -a | ${PAGER}"
+#alias l=''
 #alias m=''
 #alias n=''
 #alias o=''

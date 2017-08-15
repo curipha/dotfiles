@@ -44,7 +44,6 @@ endif
 
 syntax enable
 filetype plugin indent on
-
 " }}}
 
 " Edit {{{
@@ -158,7 +157,6 @@ vnoremap <Down> gj
 vnoremap <Up>   gk
 
 nnoremap <CR>  O<Esc>
-nnoremap <Tab> %
 nnoremap R     gR
 nnoremap Y     y$
 nnoremap X     "_X
@@ -170,6 +168,11 @@ nnoremap gJ mzgJ`z
 nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
+
+nnoremap <silent> <Leader>p "0p`]
+vnoremap <silent> <Leader>p "0p`]
+nnoremap <silent> <Leader>P "0P`]
+vnoremap <silent> <Leader>P "0P`]
 
 inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
@@ -202,8 +205,8 @@ vnoremap <S-Space> <C-u>
 
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
-cnoremap <expr> <C-u> empty(getcmdline()) ? "\<C-c>" : "\<C-u>"
-cnoremap <expr> <C-w> empty(getcmdline()) ? "\<C-c>" : "\<C-w>"
+cnoremap <expr> <C-u> empty(getcmdline()) ? '<C-c>' : '<C-u>'
+cnoremap <expr> <C-w> empty(getcmdline()) ? '<C-c>' : '<C-w>'
 
 nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
@@ -222,9 +225,6 @@ vnoremap v  V
 
 nnoremap <silent> <Leader><Leader> :<C-u>update<CR>
 
-nnoremap <silent> <C-s> :<C-u>update<CR>
-inoremap <silent> <C-s> <C-o>:update<CR>
-
 inoremap <Left>  <C-g>U<Left>
 inoremap <Right> <C-g>U<Right>
 
@@ -234,6 +234,7 @@ for s:p in ['""', '''''', '``', '()', '<>', '[]', '{}']
 endfor
 inoremap [[]] [[  ]]<C-g>U<Left><C-g>U<Left><C-g>U<Left>
 inoremap (()) ((  ))<C-g>U<Left><C-g>U<Left><C-g>U<Left>
+inoremap {{}} {{  }}<C-g>U<Left><C-g>U<Left><C-g>U<Left>
 
 inoremap #! #!/usr/bin/env <C-r>=&l:filetype<CR>
 
@@ -247,7 +248,7 @@ autocmd MyAutoCmd FileType autohotkey,dosbatch inoremap <buffer> %% %%<C-g>U<Lef
 autocmd MyAutoCmd FileType ruby     inoremap <buffer> :// ://
 autocmd MyAutoCmd FileType markdown inoremap <buffer> ``` ```
 
-autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php inoremap <buffer> </ </<C-x><C-o>
+autocmd MyAutoCmd FileType html,xhtml,xml,xslt,php,markdown inoremap <buffer> </ </<C-x><C-o><C-y>
 
 for s:p in ['(', ')', '[', ']', '{', '}', ',']
   execute 'onoremap ' . s:p . ' t' . s:p
@@ -340,22 +341,6 @@ autocmd MyAutoCmd BufWritePost *
 \ |   setlocal nomodified
 \ | endif
 
-autocmd MyAutoCmd BufWritePre *
-\   let b:dir = expand('<afile>:p:h')
-\ | if !isdirectory(b:dir)
-\ |   if v:cmdbang || input(printf('"%s" does not exist. Create? [y/N]: ', b:dir)) =~? '^y\%[es]$'
-\ |     call mkdir(iconv(b:dir, &encoding, &termencoding), 'p')
-\ |   endif
-\ | endif
-autocmd MyAutoCmd BufWriteCmd *[,*]
-\   let b:file = expand('<afile>')
-\ | if input(printf('Write to "%s". OK? [y/N]: ', b:file)) =~? '^y\%[es]$'
-\ |   execute 'write' . (v:cmdbang ? '!' : '') fnameescape(b:file)
-\ | else
-\ |   redraw
-\ |   echo 'File not saved.'
-\ | endif
-
 if !has('gui_running') && !s:iswin
   autocmd MyAutoCmd BufWritePost $MYVIMRC nested source $MYVIMRC
 else
@@ -442,8 +427,8 @@ set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':'
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
 set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 
-autocmd MyAutoCmd Filetype help let &l:statusline = '%t %=%m%y  %3l/%3L (%P)'
-autocmd MyAutoCmd Filetype qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""} %=%m%y'
+autocmd MyAutoCmd FileType help let &l:statusline = '[Help] %t %= %3l/%3L (%P)'
+autocmd MyAutoCmd FileType qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""}'
 
 if has('gui_running')
   set cursorline
@@ -487,7 +472,7 @@ nnoremap <silent> <Leader>v :<C-u>vsplit<CR>
 nnoremap <silent> <Leader>d :<C-u>windo diffthis<CR>
 
 set diffopt=filler,context:3,vertical
-autocmd MyAutoCmd InsertLeave *
+autocmd MyAutoCmd BufLeave,InsertLeave,TextChanged *
 \   if &l:diff
 \ |   diffupdate
 \ | endif
@@ -574,10 +559,8 @@ highlight Pmenu     ctermbg=white ctermfg=darkgray
 highlight PmenuSel  ctermbg=blue  ctermfg=white
 highlight PmenuSbar ctermbg=black ctermfg=lightblue
 
-highlight StatusLine ctermfg=red ctermbg=white
-
-autocmd MyAutoCmd InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
-autocmd MyAutoCmd InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
+autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
+autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
 " }}}
 
 " Command {{{
@@ -679,6 +662,14 @@ let g:loaded_vimballPlugin   = 1
 let g:loaded_zip             = 1
 let g:loaded_zipPlugin       = 1
 " }}}
+" Colorscheme {{{
+if &t_Co >= 256
+  try
+    colorscheme gruvbox
+  catch
+  endtry
+endif
+" }}}
 " matchit.vim {{{
 packadd! matchit
 
@@ -717,13 +708,13 @@ if g:neocomplete#enable_at_startup && &runtimepath =~# '\<neocomplete\>'
 
   inoremap <expr> <C-g> neocomplete#undo_completion()
   inoremap <expr> <C-l> neocomplete#complete_common_string()
-  inoremap <expr> <CR>  pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  inoremap <expr> <CR>  pumvisible() ? neocomplete#close_popup() : '<CR>'
 
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
+  inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<C-h>'
 
-  inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup()."\<Up>" : "\<Up>"
-  inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup()."\<Down>" : "\<Down>"
+  inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup().'<Up>'   : '<Up>'
+  inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup().'<Down>' : '<Down>'
 endif
 " }}}
 " }}}
