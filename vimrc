@@ -122,7 +122,7 @@ autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 nnoremap <silent> <Leader>z 1z=
 
-set clipboard=unnamed,autoselect
+set clipboard=unnamed
 if has('unnamedplus')
   set clipboard+=unnamedplus
 endif
