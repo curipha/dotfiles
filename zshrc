@@ -606,7 +606,7 @@ function change_command() {
 
   zle beginning-of-line
 
-  [[ "${BUFFER}" =~ '^sudo .*' ]] && zle kill-word
+  [[ "${BUFFER}" =~ '^sudo .*' ]] && zle forward-word
   zle kill-word
 }
 zle -N change_command
