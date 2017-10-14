@@ -222,6 +222,13 @@ elif exists gcc; then
   set_cc gcc
 fi
 
+if exists nproc; then
+  export CPUS=$(nproc)
+elif exists getconf; then
+  export CPUS=$( ( getconf NPROCESSORS_ONLN || getconf _NPROCESSORS_ONLN ) 2> /dev/null )
+fi
+[[ -z "${CPUS}" ]] && export CPUS=1
+
 if exists manpath; then
   MANPATH=$(MANPATH= manpath)
 
@@ -606,7 +613,7 @@ function change_command() {
 
   zle beginning-of-line
 
-  [[ "${BUFFER}" =~ '^sudo .*' ]] && zle kill-word
+  [[ "${BUFFER}" =~ '^sudo .*' ]] && zle forward-word
   zle kill-word
 }
 zle -N change_command
@@ -681,8 +688,6 @@ bindkey '^[d' surround_with_double_quote
 zle -N insert-last-word smart-insert-last-word
 zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
 bindkey '^]' insert-last-word
-
-bindkey '^[m' copy-prev-shell-word
 #}}}
 # Utility {{{
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'

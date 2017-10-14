@@ -11,7 +11,8 @@ let s:isunix = has('unix') || has('win32unix')
 "}}}
 " Environment specific {{{
 if s:iswin
-  set guifont=MigMix_2M:h10:cSHIFTJIS
+  set guifont=Consolas:h10:cANSI
+  set guifontwide=MigMix_2M:h10:cSHIFTJIS
   set renderoptions=type:directx,renmode:5,taamode:1
   set linespace=2
 

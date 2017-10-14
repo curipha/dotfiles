@@ -430,9 +430,7 @@ set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 autocmd MyAutoCmd FileType help let &l:statusline = '[Help] %t %= %3l/%3L (%P)'
 autocmd MyAutoCmd FileType qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""}'
 
-if has('gui_running')
-  set cursorline
-endif
+set cursorline
 autocmd MyAutoCmd WinLeave *
 \   let b:vimrc_cursorline = &l:cursorline
 \ | setlocal nocursorline
