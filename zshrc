@@ -714,7 +714,7 @@ function zman() {
   fi
 }
 
-function +x() { chmod +x -- "${@}" }
+function +x() { chmod a+x -- "${@}" }
 
 function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
 function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
