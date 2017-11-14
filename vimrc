@@ -344,7 +344,7 @@ autocmd MyAutoCmd BufWritePost *
 if !has('gui_running') && !s:iswin
   autocmd MyAutoCmd BufWritePost $MYVIMRC nested source $MYVIMRC
 else
-  autocmd MyAutoCmd BufWritePost $MYVIMRC,$MYGVIMRC
+  autocmd MyAutoCmd BufWritePost $MYVIMRC,$MYGVIMRC nested
   \   source $MYVIMRC
   \ | if has('gui_running')
   \ |   source $MYGVIMRC
