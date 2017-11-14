@@ -702,6 +702,10 @@ alias rst='
     exec zsh
   fi'
 
+function rr() {
+  ruby -rtime -e "include Math; puts eval(ARGV.join(' '))" -- "${@}"
+}
+
 function zman() {
   if (( ${#} > 0 )); then
     PAGER="less --squeeze-blank-lines -p '${1}'" man zshall
@@ -710,7 +714,7 @@ function zman() {
   fi
 }
 
-function +x() { chmod +x -- "${@}" }
+function +x() { chmod a+x -- "${@}" }
 
 function bak() { [[ "${#}" == '1' ]] && cp -fv -- "${1}"{,.bak} }
 function rvt() { [[ "${#}" == '1' ]] && mv -iv -- "${1}"{,.new} && mv -iv -- "${1}"{.bak,} }
