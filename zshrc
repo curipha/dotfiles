@@ -702,6 +702,10 @@ alias rst='
     exec zsh
   fi'
 
+function rr() {
+  ruby -rtime -e "include Math; puts eval(ARGV.join(' '))" -- "${@}"
+}
+
 function zman() {
   if (( ${#} > 0 )); then
     PAGER="less --squeeze-blank-lines -p '${1}'" man zshall
