@@ -588,7 +588,7 @@ zle -N magic-abbrev-expand-and-space
 zle -N magic-abbrev-expand-and-complete
 zle -N magic-abbrev-expand-and-accept
 bindkey ' '  magic-abbrev-expand-and-space
-bindkey '^I' magic-abbrev-expand-and-complete
+#bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
 
 function magic_enter() {
