@@ -344,7 +344,7 @@ autocmd MyAutoCmd BufWritePost *
 if !has('gui_running') && !s:iswin
   autocmd MyAutoCmd BufWritePost $MYVIMRC nested source $MYVIMRC
 else
-  autocmd MyAutoCmd BufWritePost $MYVIMRC,$MYGVIMRC
+  autocmd MyAutoCmd BufWritePost $MYVIMRC,$MYGVIMRC nested
   \   source $MYVIMRC
   \ | if has('gui_running')
   \ |   source $MYGVIMRC
@@ -479,15 +479,15 @@ autocmd MyAutoCmd WinEnter *
 \ |   diffoff
 \ | endif
 
-nnoremap <silent> [w :<C-u>wincmd W<CR>
-nnoremap <silent> ]w :<C-u>wincmd w<CR>
-nnoremap <silent> [W :<C-u>wincmd t<CR>
-nnoremap <silent> ]W :<C-u>wincmd b<CR>
+nnoremap <silent> [w <C-w>W
+nnoremap <silent> ]w <C-w>w
+nnoremap <silent> [W <C-w>t
+nnoremap <silent> ]W <C-w>b
 
-nnoremap <silent> <S-Left>  :<C-u>wincmd ><CR>
-nnoremap <silent> <S-Right> :<C-u>wincmd <<CR>
-nnoremap <silent> <S-Up>    :<C-u>wincmd +<CR>
-nnoremap <silent> <S-Down>  :<C-u>wincmd -<CR>
+nnoremap <silent> <S-Left>  <C-w>>
+nnoremap <silent> <S-Right> <C-w><
+nnoremap <silent> <S-Up>    <C-w>+
+nnoremap <silent> <S-Down>  <C-w>-
 
 for [s:k, s:p, s:a] in [['b', 'b', ''], ['t', 'tab', ''], ['q', 'c', 'zv']]
   execute 'nnoremap <silent> [' . s:k . ' :' . s:p . 'previous<CR>' . s:a

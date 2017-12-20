@@ -588,7 +588,7 @@ zle -N magic-abbrev-expand-and-space
 zle -N magic-abbrev-expand-and-complete
 zle -N magic-abbrev-expand-and-accept
 bindkey ' '  magic-abbrev-expand-and-space
-bindkey '^I' magic-abbrev-expand-and-complete
+#bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
 
 function magic_enter() {
@@ -607,6 +607,14 @@ function magic_enter() {
 zle -N magic_enter
 bindkey '^M' magic_enter
 
+function magic_tab() {
+  printf '\e[32m....\e[0m'
+  zle expand-or-complete
+  printf '\e[4D    '
+  zle redisplay
+}
+zle -N magic_tab
+bindkey '^I' magic_tab
 
 function change_command() {
   [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]] && zle up-history
