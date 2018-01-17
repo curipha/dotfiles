@@ -208,8 +208,8 @@ vnoremap <Space>   <C-d>
 nnoremap <S-Space> <C-u>
 vnoremap <S-Space> <C-u>
 
-cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
+cnoremap <C-p> <Up>
 cnoremap <expr> <C-u> empty(getcmdline()) ? '<C-c>' : '<C-u>'
 cnoremap <expr> <C-w> empty(getcmdline()) ? '<C-c>' : '<C-w>'
 
