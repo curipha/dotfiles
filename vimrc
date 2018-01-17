@@ -189,6 +189,11 @@ vnoremap <silent> <Leader>u :sort u<CR>
 vnoremap <C-a> <C-a>gv
 vnoremap <C-x> <C-x>gv
 
+inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
+inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<C-h>'
+inoremap <expr> <Down>  pumvisible() ? '<C-e><Down>' : '<Down>'
+inoremap <expr> <Up>    pumvisible() ? '<C-e><Up>'   : '<Up>'
+
 cnoremap <C-z> :<C-u>suspend<CR>
 
 inoremap <C-t> <C-v><Tab>
@@ -668,48 +673,6 @@ endif
 packadd! matchit
 
 nmap <Tab> %
-" }}}
-" neocomplete {{{
-"  - https://github.com/Shougo/neocomplete.vim
-let g:neocomplete#enable_at_startup = has('lua')
-
-if g:neocomplete#enable_at_startup && &runtimepath =~# '\<neocomplete\>'
-  let g:neocomplete#enable_auto_select = 1
-
-  let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#enable_fuzzy_completion = 1
-
-  let g:neocomplete#max_list = 80
-  let g:neocomplete#max_keyword_width = 50
-
-  let g:neocomplete#auto_completion_start_length = 2
-  let g:neocomplete#manual_completion_start_length = 0
-  let g:neocomplete#min_keyword_length = 4
-
-  if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-  endif
-  let g:neocomplete#keyword_patterns._ = '\h\w*'
-
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-  let g:neocomplete#sources#omni#input_patterns.c    = '[^.[:digit:] *\t]\%(\.\|->\)'
-  let g:neocomplete#sources#omni#input_patterns.cpp  = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.php  = '[^. \t]->\h\w*\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-
-  inoremap <expr> <C-g> neocomplete#undo_completion()
-  inoremap <expr> <C-l> neocomplete#complete_common_string()
-  inoremap <expr> <CR>  pumvisible() ? neocomplete#close_popup() : '<CR>'
-
-  inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
-  inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<C-h>'
-
-  inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup().'<Up>'   : '<Up>'
-  inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup().'<Down>' : '<Down>'
-endif
 " }}}
 " }}}
 
