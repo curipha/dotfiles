@@ -28,6 +28,7 @@ ScrollbackLines=100000
 Scrollbar=none
 SwitchShortcuts=no
 Term=xterm-256color
+ThemeFile=mintty
 Transparency=medium
 WideExtra=true
 WindowShortcuts=no
