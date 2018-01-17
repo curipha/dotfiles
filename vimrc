@@ -57,7 +57,7 @@ set fileformats=unix,dos
 
 set wildmenu
 set wildchar=<tab>
-set wildmode=list:full
+set wildmode=list:longest,full
 set wildignorecase
 set infercase
 set browsedir=buffer
