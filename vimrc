@@ -195,6 +195,7 @@ inoremap <expr> <Down>  pumvisible() ? '<C-e><Down>' : '<Down>'
 inoremap <expr> <Up>    pumvisible() ? '<C-e><Up>'   : '<Up>'
 
 cnoremap <C-z> :<C-u>suspend<CR>
+inoremap <C-l> <C-o><C-l>
 
 inoremap <C-t> <C-v><Tab>
 
