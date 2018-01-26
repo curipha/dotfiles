@@ -18,6 +18,7 @@ FontHeight=10
 FontSmoothing=full
 IMECursorColour=255,0,0
 Locale=C
+Logging=no
 MiddleClickAction=void
 OpaqueWhenFocused=no
 PgUpDnScroll=no
