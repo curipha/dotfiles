@@ -5,6 +5,7 @@ BellType=0
 BoldAsColour=yes
 BoldAsFont=yes
 Charset=UTF-8
+CheckVersionUpdate=0
 ClickTargetMod=off
 ClicksTargetApp=no
 ClipShortcuts=yes
