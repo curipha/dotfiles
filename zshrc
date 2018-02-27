@@ -459,7 +459,6 @@ zstyle ':completion:*' ignore-parents parent pwd ..
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' single-ignored show
-zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' squeeze-slashes true
 
 zstyle ':completion:*:default' list-prompt '%SHit TAB for more, or the character to insert%s'
