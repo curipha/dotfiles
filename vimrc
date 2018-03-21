@@ -57,7 +57,7 @@ set fileformats=unix,dos
 
 set wildmenu
 set wildchar=<tab>
-set wildmode=list:full
+set wildmode=list:longest,full
 set wildignorecase
 set infercase
 set browsedir=buffer
@@ -111,7 +111,8 @@ autocmd MyAutoCmd FileType * setlocal tabstop=2
 autocmd MyAutoCmd FileType * setlocal shiftwidth=2
 autocmd MyAutoCmd FileType * setlocal softtabstop=0
 
-set complete& complete+=d
+set complete& complete+=d complete+=k
+set completeopt& completeopt+=menuone
 set pumheight=18
 set showfulltag
 
@@ -132,7 +133,6 @@ set virtualedit=block
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
-inoremap <C-j> <Esc>
 
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
@@ -189,7 +189,13 @@ vnoremap <silent> <Leader>u :sort u<CR>
 vnoremap <C-a> <C-a>gv
 vnoremap <C-x> <C-x>gv
 
+inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
+inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<C-h>'
+inoremap <expr> <Down>  pumvisible() ? '<C-e><Down>' : '<Down>'
+inoremap <expr> <Up>    pumvisible() ? '<C-e><Up>'   : '<Up>'
+
 cnoremap <C-z> :<C-u>suspend<CR>
+inoremap <C-l> <C-o><C-l>
 
 inoremap <C-t> <C-v><Tab>
 
@@ -203,8 +209,8 @@ vnoremap <Space>   <C-d>
 nnoremap <S-Space> <C-u>
 vnoremap <S-Space> <C-u>
 
-cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
+cnoremap <C-p> <Up>
 cnoremap <expr> <C-u> empty(getcmdline()) ? '<C-c>' : '<C-u>'
 cnoremap <expr> <C-w> empty(getcmdline()) ? '<C-c>' : '<C-w>'
 
@@ -668,48 +674,6 @@ endif
 packadd! matchit
 
 nmap <Tab> %
-" }}}
-" neocomplete {{{
-"  - https://github.com/Shougo/neocomplete.vim
-let g:neocomplete#enable_at_startup = has('lua')
-
-if g:neocomplete#enable_at_startup && &runtimepath =~# '\<neocomplete\>'
-  let g:neocomplete#enable_auto_select = 1
-
-  let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#enable_fuzzy_completion = 1
-
-  let g:neocomplete#max_list = 80
-  let g:neocomplete#max_keyword_width = 50
-
-  let g:neocomplete#auto_completion_start_length = 2
-  let g:neocomplete#manual_completion_start_length = 0
-  let g:neocomplete#min_keyword_length = 4
-
-  if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-  endif
-  let g:neocomplete#keyword_patterns._ = '\h\w*'
-
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-  let g:neocomplete#sources#omni#input_patterns.c    = '[^.[:digit:] *\t]\%(\.\|->\)'
-  let g:neocomplete#sources#omni#input_patterns.cpp  = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.php  = '[^. \t]->\h\w*\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-
-  inoremap <expr> <C-g> neocomplete#undo_completion()
-  inoremap <expr> <C-l> neocomplete#complete_common_string()
-  inoremap <expr> <CR>  pumvisible() ? neocomplete#close_popup() : '<CR>'
-
-  inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
-  inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<C-h>'
-
-  inoremap <expr> <Up>   pumvisible() ? neocomplete#cancel_popup().'<Up>'   : '<Up>'
-  inoremap <expr> <Down> pumvisible() ? neocomplete#cancel_popup().'<Down>' : '<Down>'
-endif
 " }}}
 " }}}
 
