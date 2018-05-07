@@ -666,6 +666,11 @@ let g:loaded_zipPlugin       = 1
 if &t_Co >= 256
   try
     colorscheme gruvbox
+
+    highlight SpellBad   cterm=underline
+    highlight SpellCap   cterm=underline
+    highlight SpellRare  cterm=underline
+    highlight SpellLocal cterm=underline
   catch
   endtry
 endif

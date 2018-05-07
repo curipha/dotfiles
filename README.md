@@ -1,4 +1,4 @@
-dotfiles
+dotfiles [![CircleCI](https://circleci.com/gh/curipha/dotfiles.svg?style=svg)](https://circleci.com/gh/curipha/dotfiles)
 ====================
 dotfiles for Linux/BSD/Cygwin.
 
