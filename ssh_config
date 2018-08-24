@@ -44,6 +44,7 @@ Host *
   UseRoaming   no
 
   ConnectionAttempts 2
+  ConnectTimeout     5
 
   TCPKeepAlive        yes
   ServerAliveInterval 10
