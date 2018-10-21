@@ -133,6 +133,7 @@ set virtualedit=block
 
 nnoremap <F1>  <Esc>
 inoremap <C-c> <Esc>
+inoremap <C-@> <Esc>
 
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
@@ -185,6 +186,9 @@ xnoremap <S-Tab> <gv
 
 vnoremap <silent> <Leader>m :sort<CR>
 vnoremap <silent> <Leader>u :sort u<CR>
+
+nnoremap <silent> <Leader>r V:!sh<CR>
+vnoremap <silent> <Leader>r :!sh<CR>
 
 vnoremap <C-a> <C-a>gv
 vnoremap <C-x> <C-x>gv
