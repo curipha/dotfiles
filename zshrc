@@ -17,7 +17,7 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-[[ -z "${SHELL}" ]]    && export SHELL=$(whence -p zsh)
+export SHELL=$(whence -p zsh)
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME="${HOST}"
 [[ -z "${USER}" ]]     && export USER="${USERNAME}"
 
