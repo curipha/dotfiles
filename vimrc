@@ -545,7 +545,7 @@ set ttimeoutlen=100
 
 set shortmess=aTI
 set report=0
-set synmaxcol=270
+set synmaxcol=420
 
 autocmd MyAutoCmd FileType help nnoremap <buffer><silent><nowait> q :<C-u>helpclose<CR>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
