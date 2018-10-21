@@ -51,6 +51,7 @@ path=(
   ~/bin(N-/)
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
+  ~/.local/bin(N-/)
   /opt/*/bin(N-/)
   /opt/bin(N-/)
   /usr/local/sbin(N-/)
