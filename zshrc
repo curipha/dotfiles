@@ -17,7 +17,7 @@ export LC_TIME=en_US.UTF-8
 
 export TZ=Asia/Tokyo
 
-[[ -z "${SHELL}" ]]    && export SHELL=$(whence -p zsh)
+export SHELL=$(whence -p zsh)
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME="${HOST}"
 [[ -z "${USER}" ]]     && export USER="${USERNAME}"
 
@@ -51,6 +51,7 @@ path=(
   ~/bin(N-/)
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
+  ~/.local/bin(N-/)
   /opt/*/bin(N-/)
   /opt/bin(N-/)
   /usr/local/sbin(N-/)
