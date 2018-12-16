@@ -545,7 +545,7 @@ set ttimeoutlen=100
 
 set shortmess=aTI
 set report=0
-set synmaxcol=270
+set synmaxcol=420
 
 autocmd MyAutoCmd FileType help nnoremap <buffer><silent><nowait> q :<C-u>helpclose<CR>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
@@ -556,15 +556,15 @@ autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 
-highlight IdeographicSpace cterm=underline ctermfg=lightblue
+autocmd MyAutoCmd Colorscheme       * highlight IdeographicSpace cterm=underline ctermfg=lightblue gui=underline guifg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 highlight Pmenu     ctermbg=white ctermfg=darkgray
 highlight PmenuSel  ctermbg=blue  ctermfg=white
 highlight PmenuSbar ctermbg=black ctermfg=lightblue
 
-autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black
-autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red ctermbg=white
+autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black guifg=gray  guibg=black
+autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red  ctermbg=white guifg=brown guibg=white
 " }}}
 
 " Command {{{
