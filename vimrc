@@ -113,7 +113,7 @@ autocmd MyAutoCmd FileType * setlocal softtabstop=0
 
 set complete& complete+=d complete+=k
 set completeopt& completeopt+=menuone
-set pumheight=18
+set pumheight=12
 set showfulltag
 
 set spelllang=en_us,cjk
