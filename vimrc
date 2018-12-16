@@ -562,9 +562,9 @@ autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black guifg=gray  guibg=black
 autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red  ctermbg=white guifg=brown guibg=white
 
-highlight Pmenu     ctermbg=white ctermfg=darkgray
-highlight PmenuSel  ctermbg=blue  ctermfg=white
-highlight PmenuSbar ctermbg=black ctermfg=lightblue
+highlight Pmenu     ctermfg=darkgray ctermbg=white
+highlight PmenuSel  ctermfg=white    ctermbg=blue
+highlight PmenuSbar ctermfg=darkgray
 " }}}
 
 " Command {{{
