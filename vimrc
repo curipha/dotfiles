@@ -475,7 +475,7 @@ nnoremap <silent> <Leader>v :<C-u>vsplit<CR>
 
 nnoremap <silent> <Leader>d :<C-u>windo diffthis<CR>
 
-set diffopt=filler,context:3,vertical
+set diffopt=filler,context:3,vertical,hiddenoff
 autocmd MyAutoCmd BufLeave,InsertLeave,TextChanged *
 \   if &l:diff
 \ |   diffupdate
