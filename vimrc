@@ -113,7 +113,7 @@ autocmd MyAutoCmd FileType * setlocal softtabstop=0
 
 set complete& complete+=d complete+=k
 set completeopt& completeopt+=menuone
-set pumheight=18
+set pumheight=12
 set showfulltag
 
 set spelllang=en_us,cjk
@@ -559,12 +559,12 @@ autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 autocmd MyAutoCmd Colorscheme       * highlight IdeographicSpace cterm=underline ctermfg=lightblue gui=underline guifg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
-highlight Pmenu     ctermbg=white ctermfg=darkgray
-highlight PmenuSel  ctermbg=blue  ctermfg=white
-highlight PmenuSbar ctermbg=black ctermfg=lightblue
-
 autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black guifg=gray  guibg=black
 autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red  ctermbg=white guifg=brown guibg=white
+
+highlight Pmenu     ctermfg=darkgray ctermbg=white
+highlight PmenuSel  ctermfg=white    ctermbg=blue
+highlight PmenuSbar ctermfg=darkgray
 " }}}
 
 " Command {{{
