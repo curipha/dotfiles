@@ -31,7 +31,7 @@ catch
   colorscheme desert
 endtry
 
-set guioptions=ciM
+set guioptions=!ciM
 set guicursor=a:blinkon0
 
 set title titlelen=80
