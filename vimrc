@@ -415,7 +415,8 @@ cnoremap <expr> ? getcmdtype() ==# '?' ? '\?' : '?'
 nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 
-autocmd MyAutoCmd FileType ruby setlocal iskeyword+=?,!
+autocmd MyAutoCmd FileType css  setlocal iskeyword+=-
+autocmd MyAutoCmd FileType ruby setlocal iskeyword+=?,!,@-@
 " }}}
 " Display {{{
 set notitle
