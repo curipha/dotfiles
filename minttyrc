@@ -28,7 +28,6 @@ Rows=48
 ScrollMod=off
 ScrollbackLines=100000
 Scrollbar=none
-SuppressMouseWheel=scrollwin
 SwitchShortcuts=no
 Term=xterm-256color
 ThemeFile=mintty
