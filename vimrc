@@ -565,8 +565,10 @@ autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 autocmd MyAutoCmd Colorscheme       * highlight IdeographicSpace cterm=underline ctermfg=lightblue gui=underline guifg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
-autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black guifg=gray  guibg=black
-autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red  ctermbg=white guifg=brown guibg=white
+autocmd MyAutoCmd                   InsertEnter *
+\ highlight StatusLine cterm=bold,reverse ctermfg=gray ctermbg=black gui=bold,reverse guifg=gray  guibg=black
+autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave *
+\ highlight StatusLine cterm=bold,reverse ctermfg=red  ctermbg=white gui=bold,reverse guifg=brown guibg=white
 
 highlight Pmenu     ctermfg=darkgray ctermbg=white
 highlight PmenuSel  ctermfg=white    ctermbg=blue
