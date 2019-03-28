@@ -595,7 +595,7 @@ bindkey ' '  magic-abbrev-expand-and-space
 function magic_enter() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if isinrepo; then
-      BUFFER=' git status --branch --short --untracked-files=all && git diff --patch-with-stat'
+      BUFFER=' git status --branch --short --untracked-files=all && git diff --patch-with-stat --ignore-all-space'
     else
       BUFFER=' ls -AF'
     fi
