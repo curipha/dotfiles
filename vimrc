@@ -54,6 +54,7 @@ endif
 
 set fileformat=unix
 set fileformats=unix,dos
+set fixendofline
 
 set wildmenu
 set wildchar=<tab>
@@ -414,7 +415,8 @@ cnoremap <expr> ? getcmdtype() ==# '?' ? '\?' : '?'
 nnoremap <Leader>s :<C-u>%s!\v!!g<Left><Left><Left>
 vnoremap <Leader>s :s!\v!!g<Left><Left><Left>
 
-autocmd MyAutoCmd FileType ruby setlocal iskeyword+=?,!
+autocmd MyAutoCmd FileType css  setlocal iskeyword+=-
+autocmd MyAutoCmd FileType ruby setlocal iskeyword+=?,!,@-@
 " }}}
 " Display {{{
 set notitle
@@ -547,7 +549,7 @@ set timeout
 set timeoutlen=800
 set ttimeoutlen=100
 
-set shortmess=aTI
+set shortmess=acTI
 set report=0
 set synmaxcol=420
 
@@ -563,8 +565,10 @@ autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 autocmd MyAutoCmd VimEnter,Colorscheme * highlight IdeographicSpace cterm=underline ctermfg=lightblue gui=underline guifg=lightblue
 autocmd MyAutoCmd VimEnter,WinEnter    * match IdeographicSpace /　/
 
-autocmd MyAutoCmd                   InsertEnter * highlight StatusLine ctermfg=gray ctermbg=black guifg=gray  guibg=black
-autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave * highlight StatusLine ctermfg=red  ctermbg=white guifg=brown guibg=white
+autocmd MyAutoCmd                   InsertEnter *
+\ highlight StatusLine cterm=bold,reverse ctermfg=gray ctermbg=black gui=bold,reverse guifg=gray  guibg=black
+autocmd MyAutoCmd VimEnter,WinEnter,InsertLeave *
+\ highlight StatusLine cterm=bold,reverse ctermfg=red  ctermbg=white gui=bold,reverse guifg=brown guibg=white
 
 highlight Pmenu     ctermfg=darkgray ctermbg=white
 highlight PmenuSel  ctermfg=white    ctermbg=blue
