@@ -1039,44 +1039,6 @@ HELP
     esac
 
     sudo -K
-  elif exists dnf; then
-    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
-
-    case "${MODE}" in
-      install )
-        sudo dnf ${OPTIONS} clean all                && \
-        sudo dnf ${OPTIONS} upgrade                  && \
-        sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
-        sudo dnf ${OPTIONS} autoremove
-      ;;
-
-      update )
-        sudo dnf ${OPTIONS} clean all  && \
-        sudo dnf ${OPTIONS} upgrade    && \
-        sudo dnf ${OPTIONS} autoremove
-      ;;
-    esac
-
-    sudo -K
-  elif exists yum; then
-    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
-
-    case "${MODE}" in
-      install )
-        sudo yum ${OPTIONS} clean all                && \
-        sudo yum ${OPTIONS} upgrade                  && \
-        sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
-        sudo yum ${OPTIONS} autoremove
-      ;;
-
-      update )
-        sudo yum ${OPTIONS} clean all  && \
-        sudo yum ${OPTIONS} upgrade    && \
-        sudo yum ${OPTIONS} autoremove
-      ;;
-    esac
-
-    sudo -K
   elif exists pacman; then
     [[ -n "${YES}" ]] && OPTIONS=--noconfirm
 
