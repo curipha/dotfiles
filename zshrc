@@ -1018,23 +1018,23 @@ HELP
   local REPORTTIME=-1
 
   local OPTIONS
-  if exists apt-get; then
+  if exists apt; then
     [[ -n "${YES}" ]] && OPTIONS=--assume-yes
 
     case "${MODE}" in
       install )
-        sudo apt-get ${OPTIONS} clean        && \
-        sudo apt-get ${OPTIONS} update       && \
-        sudo apt-get ${OPTIONS} dist-upgrade && \
-        sudo apt-get ${OPTIONS} install --no-install-recommends "${PACKAGES[@]}" && \
-        sudo apt-get ${OPTIONS} autoremove
+        sudo apt ${OPTIONS} clean        && \
+        sudo apt ${OPTIONS} update       && \
+        sudo apt ${OPTIONS} full-upgrade && \
+        sudo apt ${OPTIONS} install --no-install-recommends "${PACKAGES[@]}" && \
+        sudo apt ${OPTIONS} autoremove
       ;;
 
       update )
-        sudo apt-get ${OPTIONS} clean        && \
-        sudo apt-get ${OPTIONS} update       && \
-        sudo apt-get ${OPTIONS} dist-upgrade && \
-        sudo apt-get ${OPTIONS} autoremove
+        sudo apt ${OPTIONS} clean        && \
+        sudo apt ${OPTIONS} update       && \
+        sudo apt ${OPTIONS} full-upgrade && \
+        sudo apt ${OPTIONS} autoremove
       ;;
     esac
 
