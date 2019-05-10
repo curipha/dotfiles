@@ -173,7 +173,7 @@ case "${OSTYPE}" in
 
   freebsd* )
     export CLICOLOR=1
-    export LSCOLORS=Exfxcxdxbxegedabagacad
+    export LSCOLORS=hefxcxdxbxegedabagacad
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
