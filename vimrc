@@ -562,8 +562,8 @@ autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
 
-autocmd MyAutoCmd Colorscheme       * highlight IdeographicSpace cterm=underline ctermfg=lightblue gui=underline guifg=lightblue
-autocmd MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
+autocmd MyAutoCmd VimEnter,Colorscheme * highlight IdeographicSpace cterm=underline ctermfg=lightblue gui=underline guifg=lightblue
+autocmd MyAutoCmd VimEnter,WinEnter    * match IdeographicSpace /　/
 
 autocmd MyAutoCmd                   InsertEnter *
 \ highlight StatusLine cterm=bold,reverse ctermfg=gray ctermbg=black gui=bold,reverse guifg=gray  guibg=black

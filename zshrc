@@ -173,7 +173,7 @@ case "${OSTYPE}" in
 
   freebsd* )
     export CLICOLOR=1
-    export LSCOLORS=Exfxcxdxbxegedabagacad
+    export LSCOLORS=hefxcxdxbxegedabagacad
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
@@ -1018,61 +1018,23 @@ HELP
   local REPORTTIME=-1
 
   local OPTIONS
-  if exists apt-get; then
+  if exists apt; then
     [[ -n "${YES}" ]] && OPTIONS=--assume-yes
 
     case "${MODE}" in
       install )
-        sudo apt-get ${OPTIONS} clean        && \
-        sudo apt-get ${OPTIONS} update       && \
-        sudo apt-get ${OPTIONS} dist-upgrade && \
-        sudo apt-get ${OPTIONS} install --no-install-recommends "${PACKAGES[@]}" && \
-        sudo apt-get ${OPTIONS} autoremove
+        sudo apt ${OPTIONS} clean        && \
+        sudo apt ${OPTIONS} update       && \
+        sudo apt ${OPTIONS} full-upgrade && \
+        sudo apt ${OPTIONS} install --no-install-recommends "${PACKAGES[@]}" && \
+        sudo apt ${OPTIONS} autoremove
       ;;
 
       update )
-        sudo apt-get ${OPTIONS} clean        && \
-        sudo apt-get ${OPTIONS} update       && \
-        sudo apt-get ${OPTIONS} dist-upgrade && \
-        sudo apt-get ${OPTIONS} autoremove
-      ;;
-    esac
-
-    sudo -K
-  elif exists dnf; then
-    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
-
-    case "${MODE}" in
-      install )
-        sudo dnf ${OPTIONS} clean all                && \
-        sudo dnf ${OPTIONS} upgrade                  && \
-        sudo dnf ${OPTIONS} install "${PACKAGES[@]}" && \
-        sudo dnf ${OPTIONS} autoremove
-      ;;
-
-      update )
-        sudo dnf ${OPTIONS} clean all  && \
-        sudo dnf ${OPTIONS} upgrade    && \
-        sudo dnf ${OPTIONS} autoremove
-      ;;
-    esac
-
-    sudo -K
-  elif exists yum; then
-    [[ -n "${YES}" ]] && OPTIONS=--assumeyes
-
-    case "${MODE}" in
-      install )
-        sudo yum ${OPTIONS} clean all                && \
-        sudo yum ${OPTIONS} upgrade                  && \
-        sudo yum ${OPTIONS} install "${PACKAGES[@]}" && \
-        sudo yum ${OPTIONS} autoremove
-      ;;
-
-      update )
-        sudo yum ${OPTIONS} clean all  && \
-        sudo yum ${OPTIONS} upgrade    && \
-        sudo yum ${OPTIONS} autoremove
+        sudo apt ${OPTIONS} clean        && \
+        sudo apt ${OPTIONS} update       && \
+        sudo apt ${OPTIONS} full-upgrade && \
+        sudo apt ${OPTIONS} autoremove
       ;;
     esac
 
