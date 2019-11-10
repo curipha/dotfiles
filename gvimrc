@@ -20,8 +20,8 @@ if s:iswin
 elseif s:ismac
   set guifont=MigMix_2M:h10
 elseif s:isunix
-  set guifont=Fira\ Mono\ 9
-  set guifontwide=MigMix\ 2M\ 10
+  set guifont=Source\ Han\ Mono\ 10
+  set guifontwide=Source\ Han\ Mono\ 10
 endif
 "}}}
 " GUI {{{
