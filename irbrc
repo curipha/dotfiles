@@ -31,16 +31,16 @@ def pwd
 end
 
 def ls(dir = Dir.pwd)
-  system("ls #{dir}")
+  system('ls', dir)
 end
 def la(dir = Dir.pwd)
-  system("ls -AF #{dir}")
+  system('ls', '-AF', dir)
 end
 def ll(dir = Dir.pwd)
-  system("ls -l #{dir}")
+  system('ls', '-l', dir)
 end
 def lla(dir = Dir.pwd)
-  system("ls -AFl #{dir}")
+  system('ls', '-AFl', dir)
 end
 
 def cd(dir = File.expand_path('~'))
