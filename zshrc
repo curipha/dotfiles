@@ -890,7 +890,7 @@ HELP
   tmux kill-pane -t .0
   tmux select-layout tiled
 
-  [[ -z "${NOSYNC}" ]] && tmux set-window-option synchronize-panes on
+  [[ -z "${NOSYNC}" ]] && tmux set-option -w synchronize-panes on
   tmux refresh-client
 }
 
