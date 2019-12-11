@@ -17,6 +17,7 @@ end
 # Configure {{{
 IRB.conf[:AUTO_INDENT] = true
 IRB.conf[:PROMPT_MODE] = :SIMPLE
+IRB.conf[:INSPECT_MODE] = :pp
 #}}}
 
 # Methods {{{
