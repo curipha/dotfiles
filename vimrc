@@ -588,7 +588,7 @@ for s:f in ['dos', 'unix', 'mac']
 endfor
 
 command! -bar PluginUpdate call s:plugin_update()
-function! s:plugin_update()
+function! s:plugin_update() abort
   if executable('git')
     let l:pwd = getcwd()
 
