@@ -430,6 +430,52 @@ set laststatus=2
 set showtabline=2
 set tabpagemax=32
 
+set tabline=%!g:MyTabline()
+
+function! g:MyTabline() abort
+  let labels = map(range(1, tabpagenr('$')), 's:tablabel(v:val)')
+  return join(labels, '') . '%T%#TabLineFill#%='
+endfunction
+
+function! s:tablabel(nr) abort
+  let buflist = tabpagebuflist(a:nr)
+  let winnr = tabpagewinnr(a:nr)
+  let bufnr = buflist[winnr - 1]
+
+  let flag = ''
+
+  let wincnt = len(buflist)
+  if wincnt > 1
+    let flag .= wincnt
+  endif
+
+  if len(filter(buflist, 'getbufvar(v:val, "&l:modified")')) > 0
+    let flag .= '+'
+  endif
+
+  let label  = '%' . a:nr . 'T'
+  let label .= a:nr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#'
+  let label .= ' '
+
+  if strlen(flag) > 0
+    let label .= flag . ' '
+  endif
+
+  let buftype = getbufvar(bufnr, '&l:buftype')
+  if empty(buftype)
+    let bufname = bufname(bufnr)
+    if empty(bufname)
+      let label .= '[No Name]'
+    else
+      let label .= fnamemodify(bufname, ':t')
+    endif
+  else
+    let label .= '[' . buftype . ']'
+  endif
+
+  return label . ' '
+endfunction
+
 set statusline=%t\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
