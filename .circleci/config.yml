@@ -21,9 +21,6 @@ jobs:
           name: OS release
           command: cat /etc/os-release
       - run:
-          name: Kernel version
-          command: uname -a
-      - run:
           name: Python version
           command: python --version
       - run:
