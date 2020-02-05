@@ -23,9 +23,9 @@ augroup END
 if &term =~# '\<256color\>'
   set t_Co=256
 
-  if has('termguicolors')
-    set termguicolors
-  endif
+" if has('termguicolors')
+"   set termguicolors
+" endif
 endif
 set background=dark
 
