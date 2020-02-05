@@ -1410,7 +1410,7 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
 done
 unset ZFILE
 
-if [[ -n "${TTY}" && "${SHLVL}" == '1' && "${OSTYPE}" != 'cygwin' ]] && exists tmux; then
+if [[ -n "${TTY}" && "${SHLVL}" == '1' ]] && exists tmux && is_ssh; then
   tmux new-session -AD -s "${TTY:-/dev/null}"
 fi
 
