@@ -751,9 +751,9 @@ HELP
       local DIR="${@: -1}"
       if [[ -d "${DIR}" ]]; then
         warning 'directory already exists'
-        mv -iv -- "${@}"
+        mv -iv -- "${@}" && builtin cd -- "${DIR}"
       else
-        mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
+        mkdir -vp -- "${DIR}" && mv -iv -- "${@}" && builtin cd -- "${DIR}"
       fi
     ;;
   esac
