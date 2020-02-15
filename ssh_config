@@ -23,8 +23,8 @@ Host *
 
   PubKeyAuthentication     yes
   PreferredAuthentications publickey
-  PubkeyAcceptedKeyTypes   ssh-ed25519,ecdsa-sha2-nistp521,rsa-sha2-512,ssh-rsa
-  HostKeyAlgorithms        ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp256,rsa-sha2-512,rsa-sha2-256,ssh-rsa
+  PubkeyAcceptedKeyTypes   ssh-ed25519,ecdsa-sha2-nistp521,rsa-sha2-512
+  HostKeyAlgorithms        ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp256,rsa-sha2-512,rsa-sha2-256
 
   ChallengeResponseAuthentication no
   GSSAPIAuthentication            no
