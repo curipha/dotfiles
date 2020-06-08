@@ -772,6 +772,16 @@ function wol() {
     | nc -w0 -u 255.255.255.255 4000
 }
 
+function docker-update() {
+  if ! exists docker; then
+    warning 'install "docker" command'
+    return 1
+  fi
+
+  docker images --format '{{.Repository}}:{{.Tag}}' | xargs -r -n1 -P2 docker pull -q
+  docker image prune -f
+}
+
 function whois() {
   local WHOIS
   exists jwhois && WHOIS=$(whence -p jwhois)
