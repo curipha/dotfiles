@@ -35,6 +35,7 @@ if [[ -n "${SSH_CONFIG}" ]]; then
 fi
 
 if [[ ! "${SHELL}" =~ /zsh$ ]]; then
+  # Exit if /etc/shells does not contain "zsh" because errexit is set
   ZSH=$(grep -m1 zsh /etc/shells)
 
   echo Change login shell to Zsh...
