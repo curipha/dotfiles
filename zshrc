@@ -1364,9 +1364,9 @@ end
 alias sudo='sudo '
 alias sort='LC_ALL=C sort'
 
-alias zmv='noglob zmv -vW'
-alias zcp='noglob zmv -vWC'
-alias zln='noglob zmv -vWL'
+alias zmv='noglob zmv -v'
+alias zcp='noglob zmv -vC'
+alias zln='noglob zmv -vL'
 
 alias l.='ls -d .*'
 alias la='ls -AF'
