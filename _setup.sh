@@ -39,6 +39,6 @@ if [[ ! "${SHELL}" =~ /zsh$ ]]; then
   ZSH=$(grep -F -m1 zsh /etc/shells)
 
   echo Change login shell to Zsh...
-  chsh -s "${ZSH}"
+  sudo chsh -s "${ZSH}" "$(whoami)"
 fi
 
