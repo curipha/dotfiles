@@ -751,9 +751,9 @@ HELP
       local DIR="${@: -1}"
       if [[ -d "${DIR}" ]]; then
         warning 'directory already exists'
-        mv -iv -- "${@}"
+        mv -iv -- "${@}" && builtin cd -- "${DIR}"
       else
-        mkdir -vp -- "${DIR}" && mv -iv -- "${@}"
+        mkdir -vp -- "${DIR}" && mv -iv -- "${@}" && builtin cd -- "${DIR}"
       fi
     ;;
   esac
@@ -770,6 +770,16 @@ function wol() {
 
   printf "$( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' )" \
     | nc -w0 -u 255.255.255.255 4000
+}
+
+function docker-update() {
+  if ! exists docker; then
+    warning 'install "docker" command'
+    return 1
+  fi
+
+  docker images --format '{{.Repository}}:{{.Tag}}' | xargs -r -n1 -P2 docker pull -q
+  docker image prune -f
 }
 
 function whois() {
@@ -1037,6 +1047,9 @@ HELP
         sudo apt ${OPTIONS} autoremove
       ;;
     esac
+
+    [[ -s /var/run/reboot-required      ]] && cat /var/run/reboot-required
+    [[ -s /var/run/reboot-required.pkgs ]] && cat /var/run/reboot-required.pkgs
 
     sudo -K
   elif exists pacman; then
@@ -1351,9 +1364,9 @@ end
 alias sudo='sudo '
 alias sort='LC_ALL=C sort'
 
-alias zmv='noglob zmv -vW'
-alias zcp='noglob zmv -vWC'
-alias zln='noglob zmv -vWL'
+alias zmv='noglob zmv -v'
+alias zcp='noglob zmv -vC'
+alias zln='noglob zmv -vL'
 
 alias l.='ls -d .*'
 alias la='ls -AF'
@@ -1410,7 +1423,7 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
 done
 unset ZFILE
 
-if [[ -n "${TTY}" && "${SHLVL}" == '1' && "${OSTYPE}" != 'cygwin' ]] && exists tmux; then
+if [[ -n "${TTY}" && "${SHLVL}" == '1' ]] && exists tmux && is_ssh; then
   tmux new-session -AD -s "${TTY:-/dev/null}"
 fi
 

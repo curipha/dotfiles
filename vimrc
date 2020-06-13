@@ -22,6 +22,10 @@ augroup END
 
 if &term =~# '\<256color\>'
   set t_Co=256
+
+" if has('termguicolors')
+"   set termguicolors
+" endif
 endif
 set background=dark
 
@@ -430,10 +434,56 @@ set laststatus=2
 set showtabline=2
 set tabpagemax=32
 
+set tabline=%!g:MyTabline()
+
+function! g:MyTabline() abort
+  let labels = map(range(1, tabpagenr('$')), 's:tablabel(v:val)')
+  return join(labels, '') . '%T%#TabLineFill#%='
+endfunction
+
+function! s:tablabel(nr) abort
+  let buflist = tabpagebuflist(a:nr)
+  let winnr = tabpagewinnr(a:nr)
+  let bufnr = buflist[winnr - 1]
+
+  let flag = ''
+
+  let wincnt = len(buflist)
+  if wincnt > 1
+    let flag .= wincnt
+  endif
+
+  if len(filter(buflist, 'getbufvar(v:val, "&l:modified")')) > 0
+    let flag .= '+'
+  endif
+
+  let label  = '%' . a:nr . 'T'
+  let label .= a:nr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#'
+  let label .= ' '
+
+  if strlen(flag) > 0
+    let label .= flag . ' '
+  endif
+
+  let buftype = getbufvar(bufnr, '&l:buftype')
+  if empty(buftype)
+    let bufname = bufname(bufnr)
+    if empty(bufname)
+      let label .= '[No Name]'
+    else
+      let label .= fnamemodify(bufname, ':t')
+    endif
+  else
+    let label .= '[' . buftype . ']'
+  endif
+
+  return label . ' '
+endfunction
+
 set statusline=%t\ %m%r%y
 set statusline+=[%{empty(&fileencoding)?&encoding:&fileencoding}%{&bomb?':bom':''}]
 set statusline+=[%{&fileformat}]%{empty(&binary)?'':'[binary]'}
-set statusline+=\ \(%<%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
+set statusline+=\ %<\(%{expand('%:p:h')}\)\ %=[U+%04B]\ %3c\ \ %3l/%3L\ \(%P\)
 
 autocmd MyAutoCmd FileType help let &l:statusline = '[Help] %t %= %3l/%3L (%P)'
 autocmd MyAutoCmd FileType qf   let &l:statusline = '%q (%3l/%3L) %{exists("w:quickfix_title") ? w:quickfix_title : ""}'
@@ -588,7 +638,7 @@ for s:f in ['dos', 'unix', 'mac']
 endfor
 
 command! -bar PluginUpdate call s:plugin_update()
-function! s:plugin_update()
+function! s:plugin_update() abort
   if executable('git')
     let l:pwd = getcwd()
 
@@ -666,12 +716,10 @@ let g:vimsyn_folding = 0
 let g:loaded_2html_plugin    = 1
 let g:loaded_getscriptPlugin = 1
 let g:loaded_gzip            = 1
-let g:loaded_logipat         = 1
-let g:loaded_tar             = 1
+let g:loaded_logiPat         = 1
+let g:loaded_rrhelper        = 1
 let g:loaded_tarPlugin       = 1
-let g:loaded_vimball         = 1
 let g:loaded_vimballPlugin   = 1
-let g:loaded_zip             = 1
 let g:loaded_zipPlugin       = 1
 " }}}
 " Colorscheme {{{
