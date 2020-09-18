@@ -28,6 +28,7 @@ export GOPATH=~/app/go
 
 export GIT_MERGE_AUTOEDIT=no
 export MAKEFLAGS='--jobs=2 --silent'
+export QUOTING_STYLE=literal
 export RUBYOPT=-EUTF-8
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
