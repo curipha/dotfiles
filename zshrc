@@ -1377,7 +1377,7 @@ alias llh='ls -Flh'
 alias llha='ls -AFlh'
 alias lls='ls -AFl'
 
-alias rm='rm -i'
+alias rm='rm -I'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
