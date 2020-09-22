@@ -23,4 +23,3 @@ xcompmgr &
 
 
 exec startlxde
-

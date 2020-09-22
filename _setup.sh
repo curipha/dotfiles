@@ -41,4 +41,3 @@ if [[ ! "${SHELL}" =~ /zsh$ ]]; then
   echo Change login shell to Zsh...
   sudo chsh -s "${ZSH}" "$(whoami)"
 fi
-

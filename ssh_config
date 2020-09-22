@@ -54,4 +54,3 @@ Host *
 
 # ControlMaster auto
 # ControlPath   ~/.ssh/control-%r@%h:%p
-

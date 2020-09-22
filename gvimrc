@@ -50,4 +50,3 @@ set nomousefocus
 
 set winaltkeys=no
 "}}}
-

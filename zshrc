@@ -1427,4 +1427,3 @@ unset ZFILE
 if [[ -n "${TTY}" && "${SHLVL}" == '1' ]] && exists tmux && is_ssh; then
   tmux new-session -AD -s "${TTY:-/dev/null}"
 fi
-
