@@ -780,7 +780,7 @@ function docker-update() {
     return 1
   fi
 
-  docker images --format '{{.Repository}}:{{.Tag}}' | xargs -r -n1 -P2 docker pull -q
+  docker images --format '{{.Repository}}:{{.Tag}}' | shuf | xargs -r -n1 -P2 docker pull -q
   docker image prune -f
 }
 
