@@ -1197,14 +1197,14 @@ HELP
     fi \
       | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
           --query 'Reservations[].Instances[].[
-                    Placement.AvailabilityZone,
-                    State.Name,
-                    InstanceType,
-                    Tags[?Key==`Name`].Value|[0],
-                    InstanceId,
-                    PublicIpAddress,
-                    PrivateIpAddress
-                  ]' \
+                     Placement.AvailabilityZone,
+                     State.Name,
+                     InstanceType,
+                     Tags[?Key==`Name`].Value|[0],
+                     InstanceId,
+                     PublicIpAddress,
+                     PrivateIpAddress
+                   ]' \
           --output=text \
           --region \
       | sort
