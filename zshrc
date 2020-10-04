@@ -1205,7 +1205,7 @@ HELP
                      PublicIpAddress,
                      PrivateIpAddress
                    ]' \
-          --output=text \
+          --output text \
           --region \
       | sort
   ) \
