@@ -1193,7 +1193,7 @@ HELP
     if [[ -n "${LOCAL}" ]]; then \
       aws configure get region ; \
     else \
-      aws ec2 describe-regions --query 'Regions[].RegionName' --output text ; \
+      aws ec2 describe-regions --query 'Regions[].{Name:RegionName}' --output text ; \
     fi \
       | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
           --query 'Reservations[].Instances[].[
