@@ -71,7 +71,6 @@
 
 [diff]
   algorithm       = histogram
-  indentHeuristic = true
   mnemonicPrefix  = true
   renames         = copy
   statGraphWidth  = 48
