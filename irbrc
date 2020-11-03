@@ -53,7 +53,6 @@ def cd(dir = File.expand_path('~'))
 end
 #}}}
 # Alias {{{
-alias q exit
 alias x exit
 #}}}
 # Banner {{{
