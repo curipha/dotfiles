@@ -105,7 +105,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
-autoload -Uz is-at-least
 autoload -Uz modify-current-argument
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
@@ -269,7 +268,7 @@ bindkey '^[[Z' reverse-menu-complete
 setopt correct
 setopt hash_list_all
 
-is-at-least '5.1' && setopt append_create
+setopt append_create
 setopt no_clobber
 setopt no_flow_control
 setopt ignore_eof
@@ -279,7 +278,7 @@ setopt multios
 setopt path_dirs
 setopt print_eight_bit
 setopt print_exit_value
-is-at-least '5.2' && setopt warn_create_global
+setopt warn_create_global
 
 setopt no_beep
 setopt combining_chars
