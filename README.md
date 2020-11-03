@@ -2,7 +2,7 @@ dotfiles [![CircleCI](https://circleci.com/gh/curipha/dotfiles.svg?style=svg)](h
 ====================
 dotfiles for Linux/BSD.
 
-`vimrc` and `gvimrc` are also used by Vim on Windows.
+`vimrc` and `gvimrc` are also used with Vim on Windows.
 Refer to the `dotfiles_w` repository for what is used on Windows only.
 
 
@@ -25,13 +25,13 @@ Remarks
 --------------------
 ### bash_profile
 Hide bash and run zsh.
-I made it because there was an environment where it could not `chsh`.
+For an environment where it could not run `chsh`.
 
 
 Links
 --------------------
 ### Fonts
-- [Migmix](https://mix-mplus-ipa.osdn.jp/migmix/) (Japanese font)
-- [Source Han Code JP](https://github.com/adobe-fonts/source-han-code-jp) (Japanese font)
+- [Google Noto Fonts](https://www.google.com/get/noto/)
+- [Source Han Mono](https://github.com/adobe-fonts/source-han-mono)
 - [Fira](https://github.com/mozilla/Fira)
-- [Source Code Pro](https://github.com/adobe-fonts/source-code-pro)
+- [Migmix](https://mix-mplus-ipa.osdn.jp/migmix/) (Japanese font)
