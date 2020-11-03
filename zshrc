@@ -534,13 +534,11 @@ abbrev_expand=(
 
   '?'  "--help |& ${PAGER}"
   'C'  '| sort | uniq -c | sort -nrs'
-  'D'  "| hexdump -C | ${PAGER}"
   'E'  '> /dev/null'
   'G'  '| grep -iE'
   'GV' '| grep -ivE'
   'H'  '| head -20'
   'L'  "|& ${PAGER}"
-  'N'  '| wc -l'
   'S'  '| sort'
   'T'  '| tail -20'
   'U'  '| sort | uniq'
