@@ -39,9 +39,6 @@ end
 def ll(dir = Dir.pwd)
   system('ls', '-l', dir)
 end
-def lla(dir = Dir.pwd)
-  system('ls', '-AFl', dir)
-end
 
 def cd(dir = File.expand_path('~'))
   unless File.directory?(dir)
