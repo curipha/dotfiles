@@ -40,9 +40,6 @@
   revert-to-head  = checkout HEAD --
   revert-to-index = checkout --
 
-[blame]
-  date = relative
-
 [color]
   branch      = auto
   diff        = auto
