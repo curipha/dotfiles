@@ -274,7 +274,6 @@ setopt no_flow_control
 setopt interactive_comments
 setopt no_mail_warning
 setopt multios
-setopt path_dirs
 setopt print_eight_bit
 setopt print_exit_value
 setopt warn_create_global
