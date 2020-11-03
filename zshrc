@@ -533,7 +533,7 @@ abbrev_expand=(
   '.....' '../../../../'
 
   '?'  "--help |& ${PAGER}"
-  'C'  '| sort | uniq -c | sort -nrs'
+  'C'  "| sort | uniq -c | sort -nrs |& ${PAGER}"
   'E'  '> /dev/null'
   'G'  '| grep -iE'
   'GV' '| grep -ivE'
