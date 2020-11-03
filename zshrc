@@ -160,7 +160,6 @@ function set_cc() {
 case "${OSTYPE}" in
   linux* | freebsd* )
     limit coredumpsize 0
-    setopt hist_fcntl_lock
   ;|
 
   linux* )
@@ -376,6 +375,7 @@ SAVEHIST=100000
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
+setopt hist_fcntl_lock
 setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
