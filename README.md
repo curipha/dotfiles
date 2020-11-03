@@ -1,6 +1,6 @@
 dotfiles [![CircleCI](https://circleci.com/gh/curipha/dotfiles.svg?style=svg)](https://circleci.com/gh/curipha/dotfiles)
 ====================
-dotfiles for Linux/BSD/Cygwin.
+dotfiles for Linux/BSD.
 
 `vimrc` and `gvimrc` are also used by Vim on Windows.
 Refer to the `dotfiles_w` repository for what is used on Windows only.

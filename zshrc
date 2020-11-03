@@ -21,8 +21,6 @@ export SHELL=$(whence -p zsh)
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME="${HOST}"
 [[ -z "${USER}" ]]     && export USER="${USERNAME}"
 
-export CYGWIN='nodosfilewarning winsymlinks:native'
-
 export GEM_HOME=~/app/gem
 export GOPATH=~/app/go
 
@@ -180,12 +178,6 @@ case "${OSTYPE}" in
     exists gmake && export MAKE=$(whence -p gmake)
 
     exists jot   && alias seq=jot
-  ;|
-
-  cygwin* )
-    alias ls='ls --color=auto'
-    alias open=cygstart
-    alias start=cygstart
   ;|
 esac
 
