@@ -500,7 +500,6 @@ setopt always_last_prompt
 setopt always_to_end
 setopt auto_list
 setopt auto_menu
-setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_param_slash
 setopt auto_remove_slash
