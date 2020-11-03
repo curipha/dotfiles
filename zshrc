@@ -389,7 +389,7 @@ setopt inc_append_history
 setopt share_history
 
 function add_history() {
-  (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+  (( ${#1} < 5 )) && return 1  # $1 = BUFFER + 0x0A
 
   local -a match mbegin mend
   [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
@@ -532,19 +532,19 @@ abbrev_expand=(
   '....'  '../../../'
   '.....' '../../../../'
 
-  '?'   "--help |& ${PAGER}"
-  'C'   '| sort | uniq -c | sort -nrs'
-  'D'   "| hexdump -C | ${PAGER}"
-  'E'   '> /dev/null'
-  'G'   '| grep -iE'
-  'GV'  '| grep -ivE'
-  'H'   '| head -20'
-  'L'   "|& ${PAGER}"
-  'N'   '| wc -l'
-  'S'   '| sort'
-  'T'   '| tail -20'
-  'U'   '| sort | uniq'
-  'X'   '| xargs -r -n1'
+  '?'  "--help |& ${PAGER}"
+  'C'  '| sort | uniq -c | sort -nrs'
+  'D'  "| hexdump -C | ${PAGER}"
+  'E'  '> /dev/null'
+  'G'  '| grep -iE'
+  'GV' '| grep -ivE'
+  'H'  '| head -20'
+  'L'  "|& ${PAGER}"
+  'N'  '| wc -l'
+  'S'  '| sort'
+  'T'  '| tail -20'
+  'U'  '| sort | uniq'
+  'X'  '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
