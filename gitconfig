@@ -66,9 +66,6 @@
 [core]
   quotepath    = false
 
-  editor = vim
-  pager  = less
-
 [diff]
   algorithm       = histogram
   mnemonicPrefix  = true
