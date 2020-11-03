@@ -276,6 +276,7 @@ setopt multios
 setopt print_eight_bit
 setopt print_exit_value
 setopt warn_create_global
+#setopt warn_nested_var  # for testing
 
 setopt no_beep
 setopt combining_chars
@@ -541,7 +542,7 @@ abbrev_expand=(
 )
 
 function magic-abbrev-expand() {
-  local MATCH BASE EXPAND
+  local MATCH BASE EXPAND MBEGIN MEND
   BASE="${LBUFFER%%(#m)[^[:IFS:]]#}"
   EXPAND="${abbrev_expand[${MATCH}]}"
 
