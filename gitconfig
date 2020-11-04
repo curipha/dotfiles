@@ -7,7 +7,6 @@
   aa    = add --all --verbose
   ap    = add --patch
   au    = add --update --verbose
-  bl    = blame -w
   br    = branch --verbose --verbose
   brr   = branch --all --verbose --verbose
   ca    = commit --all --verbose --verbose
@@ -18,23 +17,13 @@
   dc    = diff --patch-with-stat --cached
   dcw   = diff --patch-with-stat --cached --ignore-all-space
   dcww  = diff --patch-with-stat --cached --ignore-all-space --word-diff=color
-  dd    = diff --patch-with-stat HEAD~
-  ddd   = diff --patch-with-stat HEAD~2
-  dddd  = diff --patch-with-stat HEAD~3
-  ddddd = diff --patch-with-stat HEAD~4
   dw    = diff --patch-with-stat --ignore-all-space
   dww   = diff --patch-with-stat --ignore-all-space --word-diff=color
-  fe    = fetch --verbose
-  g     = grep --break --heading --line-number --show-function
-  l     = log --decorate --stat --no-merges
-  la    = log --decorate --stat
   ll    = log --decorate --oneline --graph --no-merges
   lla   = log --decorate --oneline --graph
   lp    = log --decorate --patch-with-stat --no-merges
-  lpa   = log --decorate --patch-with-stat
   lpw   = log --decorate --patch-with-stat --no-merges --ignore-all-space
   lpww  = log --decorate --patch-with-stat --no-merges --ignore-all-space --word-diff=color
-  pf    = push --force-with-lease
   pl    = pull
   pu    = push
   r     = remote --verbose
@@ -50,9 +39,6 @@
 
   revert-to-head  = checkout HEAD --
   revert-to-index = checkout --
-
-[blame]
-  date = relative
 
 [color]
   branch      = auto
@@ -78,15 +64,10 @@
   untracked   = cyan bold
 
 [core]
-  preloadindex = true
   quotepath    = false
-
-  editor = vim
-  pager  = less
 
 [diff]
   algorithm       = histogram
-  indentHeuristic = true
   mnemonicPrefix  = true
   renames         = copy
   statGraphWidth  = 48

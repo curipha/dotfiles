@@ -46,10 +46,4 @@ set skip-completed-text on
 
 "\e[3~": delete-char
 "\e[2~": quoted-insert
-
-$if ruby
-  "\C-l": " => "
-  "\C-r": "\C-urequire ''\C-b"
-$endif
 #}}}
-

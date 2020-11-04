@@ -15,8 +15,6 @@ if s:iswin
   set guifontwide=Cica:h10:cSHIFTJIS
   set renderoptions=type:directx,renmode:5,taamode:1
   set linespace=2
-
-  let $PATH .= ';C:\cygwin\bin'
 elseif s:ismac
   set guifont=MigMix_2M:h10
 elseif s:isunix
@@ -50,4 +48,3 @@ set nomousefocus
 
 set winaltkeys=no
 "}}}
-
