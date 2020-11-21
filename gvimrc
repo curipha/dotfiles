@@ -6,7 +6,6 @@ scriptencoding utf-8
 
 " Variables {{{
 let s:iswin  = has('win32')
-let s:ismac  = has('mac')
 let s:isunix = has('unix') || has('win32unix')
 "}}}
 " Environment specific {{{
@@ -15,8 +14,6 @@ if s:iswin
   set guifontwide=Cica:h10:cSHIFTJIS
   set renderoptions=type:directx,renmode:5,taamode:1
   set linespace=2
-elseif s:ismac
-  set guifont=MigMix_2M:h10
 elseif s:isunix
   set guifont=Source\ Han\ Mono\ 10
   set guifontwide=Source\ Han\ Mono\ 10
