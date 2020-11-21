@@ -91,6 +91,8 @@
 [merge]
   ff = false
 
+[pull]
+  rebase = false
 [push]
   default = current
 
