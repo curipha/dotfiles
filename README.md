@@ -26,4 +26,4 @@ Links
 - [Google Noto Fonts](https://www.google.com/get/noto/)
 - [Source Han Mono](https://github.com/adobe-fonts/source-han-mono)
 - [Fira](https://github.com/mozilla/Fira)
-- [Migmix](https://mix-mplus-ipa.osdn.jp/migmix/) (Japanese font)
+- [Cica](https://github.com/miiton/Cica) (Japanese font)
