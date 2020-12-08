@@ -907,8 +907,8 @@ function mailsend() {
 
   nc -C "${HOST}" "${PORT}" <<EOC
 HELO ${HOST}
-MAIL FROM: <${FROM}>
-RCPT TO: <${TO}>
+MAIL FROM:<${FROM}>
+RCPT TO:<${TO}>
 DATA
 From: <${FROM}>
 To: <${TO}>
