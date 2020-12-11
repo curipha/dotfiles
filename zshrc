@@ -46,8 +46,6 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[4;36m'
 
 path=(
-  ~/sbin(N-/)
-  ~/bin(N-/)
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
   ~/.local/bin(N-/)
@@ -66,7 +64,6 @@ export PATH
 
 typeset -T LD_LIBRARY_PATH ld_library_path
 ld_library_path=(
-  ~/lib(N-/)
   ~/app/*/lib(N-/)
   /opt/*/lib(N-/)
   /opt/lib(N-/)
@@ -78,7 +75,6 @@ export LD_LIBRARY_PATH
 
 typeset -T PKG_CONFIG_PATH pkg_config_path
 pkg_config_path=(
-  ~/lib/pkgconfig(N-/)
   ~/app/*/lib/pkgconfig(N-/)
   /opt/*/lib/pkgconfig(N-/)
   /opt/lib/pkgconfig(N-/)
