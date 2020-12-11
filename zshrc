@@ -49,14 +49,13 @@ path=(
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
   ~/.local/bin(N-/)
-  /opt/*/bin(N-/)
-  /opt/bin(N-/)
   /usr/local/sbin(N-/)
   /usr/sbin(N-/)
   /sbin(N-/)
   /usr/local/bin(N-/)
   /usr/bin(N-/)
   /bin(N-/)
+  /opt/*/bin(N-/)
   $path
 )
 typeset -gU path
@@ -65,8 +64,6 @@ export PATH
 typeset -T LD_LIBRARY_PATH ld_library_path
 ld_library_path=(
   ~/app/*/lib(N-/)
-  /opt/*/lib(N-/)
-  /opt/lib(N-/)
   /usr/local/lib(N-/)
   $ld_library_path
 )
@@ -76,8 +73,6 @@ export LD_LIBRARY_PATH
 typeset -T PKG_CONFIG_PATH pkg_config_path
 pkg_config_path=(
   ~/app/*/lib/pkgconfig(N-/)
-  /opt/*/lib/pkgconfig(N-/)
-  /opt/lib/pkgconfig(N-/)
   /usr/local/lib/pkgconfig(N-/)
   $pkg_config_path
 )
@@ -221,9 +216,6 @@ if exists manpath; then
   manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
-    /opt/*/man(N-/)
-    /opt/*/share/man(N-/)
-    /opt/man(N-/)
     /usr/local/man(N-/)
     /usr/local/share/man(N-/)
     /usr/share/man(N-/)
