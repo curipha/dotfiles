@@ -50,10 +50,10 @@ path=(
   ~/app/*/bin(N-/)
   ~/.local/bin(N-/)
   /usr/local/sbin(N-/)
-  /usr/sbin(N-/)
-  /sbin(N-/)
   /usr/local/bin(N-/)
+  /usr/sbin(N-/)
   /usr/bin(N-/)
+  /sbin(N-/)
   /bin(N-/)
   /opt/*/bin(N-/)
   $path
