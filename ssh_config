@@ -38,7 +38,6 @@ Host *
   Compression  no
   ForwardAgent no
   ForwardX11   no
-  UseRoaming   no
 
   ConnectionAttempts 2
   ConnectTimeout     5
