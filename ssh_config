@@ -2,7 +2,6 @@
 #  ~/.ssh/config
 # ===============
 
-Protocol 2
 IgnoreUnknown PubkeyAcceptedKeyTypes,Include
 
 Include ~/.ssh/config.include
