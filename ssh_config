@@ -2,8 +2,6 @@
 #  ~/.ssh/config
 # ===============
 
-IgnoreUnknown PubkeyAcceptedKeyTypes,Include
-
 Include ~/.ssh/config.include
 
 Host github.com
