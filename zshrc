@@ -3,7 +3,6 @@
 # ===============
 
 # Environments {{{
-#export LANG=ja_JP.UTF-8
 #export LANG=C.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -21,14 +20,12 @@ export SHELL=$(whence -p zsh)
 [[ -z "${HOSTNAME}" ]] && export HOSTNAME="${HOST}"
 [[ -z "${USER}" ]]     && export USER="${USERNAME}"
 
-export CYGWIN='nodosfilewarning winsymlinks:native'
-
 export GEM_HOME=~/app/gem
 export GOPATH=~/app/go
 
 export GIT_MERGE_AUTOEDIT=no
 export MAKEFLAGS='--jobs=2 --silent'
-export RUBYOPT=-EUTF-8
+export QUOTING_STYLE=literal
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
 export WINEARCH=win32
@@ -47,19 +44,16 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[4;36m'
 
 path=(
-  ~/sbin(N-/)
-  ~/bin(N-/)
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
   ~/.local/bin(N-/)
-  /opt/*/bin(N-/)
-  /opt/bin(N-/)
   /usr/local/sbin(N-/)
-  /usr/sbin(N-/)
-  /sbin(N-/)
   /usr/local/bin(N-/)
+  /usr/sbin(N-/)
   /usr/bin(N-/)
+  /sbin(N-/)
   /bin(N-/)
+  /opt/*/bin(N-/)
   $path
 )
 typeset -gU path
@@ -67,10 +61,7 @@ export PATH
 
 typeset -T LD_LIBRARY_PATH ld_library_path
 ld_library_path=(
-  ~/lib(N-/)
   ~/app/*/lib(N-/)
-  /opt/*/lib(N-/)
-  /opt/lib(N-/)
   /usr/local/lib(N-/)
   $ld_library_path
 )
@@ -79,10 +70,7 @@ export LD_LIBRARY_PATH
 
 typeset -T PKG_CONFIG_PATH pkg_config_path
 pkg_config_path=(
-  ~/lib/pkgconfig(N-/)
   ~/app/*/lib/pkgconfig(N-/)
-  /opt/*/lib/pkgconfig(N-/)
-  /opt/lib/pkgconfig(N-/)
   /usr/local/lib/pkgconfig(N-/)
   $pkg_config_path
 )
@@ -106,7 +94,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
-autoload -Uz is-at-least
 autoload -Uz modify-current-argument
 autoload -Uz run-help
 autoload -Uz smart-insert-last-word
@@ -162,7 +149,6 @@ function set_cc() {
 case "${OSTYPE}" in
   linux* | freebsd* )
     limit coredumpsize 0
-    setopt hist_fcntl_lock
   ;|
 
   linux* )
@@ -177,14 +163,6 @@ case "${OSTYPE}" in
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
-
-    exists jot   && alias seq=jot
-  ;|
-
-  cygwin* )
-    alias ls='ls --color=auto'
-    alias open=cygstart
-    alias start=cygstart
   ;|
 esac
 
@@ -236,9 +214,6 @@ if exists manpath; then
   manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
-    /opt/*/man(N-/)
-    /opt/*/share/man(N-/)
-    /opt/man(N-/)
     /usr/local/man(N-/)
     /usr/local/share/man(N-/)
     /usr/share/man(N-/)
@@ -278,23 +253,21 @@ bindkey '^[[Z' reverse-menu-complete
 setopt correct
 setopt hash_list_all
 
-is-at-least '5.1' && setopt append_create
+setopt append_create
 setopt no_clobber
 setopt no_flow_control
-setopt ignore_eof
 setopt interactive_comments
 setopt no_mail_warning
 setopt multios
-setopt path_dirs
 setopt print_eight_bit
 setopt print_exit_value
-is-at-least '5.2' && setopt warn_create_global
+setopt warn_create_global
+#setopt warn_nested_var  # for testing
 
 setopt no_beep
 setopt combining_chars
 
 setopt c_bases
-setopt octal_zeroes
 
 REPORTTIME=2
 TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
@@ -346,7 +319,7 @@ zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
 zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
-zstyle ':vcs_info:*' actionformats '%B<%a>%%b [%s:%b%c%u%m]'
+zstyle ':vcs_info:*' actionformats '%B%a/%m%%b [%s:%b%c%u]'
 zstyle ':vcs_info:*' max-exports 1
 
 zstyle ':vcs_info:git+set-message:*' hooks git-hook
@@ -388,6 +361,7 @@ SAVEHIST=100000
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
+setopt hist_fcntl_lock
 setopt hist_find_no_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
@@ -395,11 +369,10 @@ setopt hist_ignore_space
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt hist_verify
-setopt inc_append_history
 setopt share_history
 
 function add_history() {
-  (( ${#1} < 5 )) && return 1   # $1 = BUFFER + 0x0A
+  (( ${#1} < 5 )) && return 1  # $1 = BUFFER + 0x0A
 
   local -a match mbegin mend
   [[ "${1}" =~ '^(sudo )?(reboot|poweroff|halt|shutdown)\b' ]] && return 1
@@ -514,7 +487,6 @@ setopt always_last_prompt
 setopt always_to_end
 setopt auto_list
 setopt auto_menu
-setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_param_slash
 setopt auto_remove_slash
@@ -542,23 +514,21 @@ abbrev_expand=(
   '....'  '../../../'
   '.....' '../../../../'
 
-  '?'   "--help |& ${PAGER}"
-  'C'   '| sort | uniq -c | sort -nrs'
-  'D'   "| hexdump -C | ${PAGER}"
-  'E'   '> /dev/null'
-  'G'   '| grep -iE'
-  'GV'  '| grep -ivE'
-  'H'   '| head -20'
-  'L'   "|& ${PAGER}"
-  'N'   '| wc -l'
-  'S'   '| sort'
-  'T'   '| tail -20'
-  'U'   '| sort | uniq'
-  'X'   '| xargs -r -n1'
+  '?'  "--help |& ${PAGER}"
+  'C'  "| sort | uniq -c | sort -nrs |& ${PAGER}"
+  'E'  '> /dev/null'
+  'G'  '| grep -iE'
+  'GV' '| grep -ivE'
+  'H'  '| head -20'
+  'L'  "|& ${PAGER}"
+  'S'  '| sort'
+  'T'  '| tail -20'
+  'U'  '| sort | uniq'
+  'X'  '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
-  local MATCH BASE EXPAND
+  local MATCH BASE EXPAND MBEGIN MEND
   BASE="${LBUFFER%%(#m)[^[:IFS:]]#}"
   EXPAND="${abbrev_expand[${MATCH}]}"
 
@@ -701,6 +671,7 @@ bindkey '^]' insert-last-word
 # Utility {{{
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short'
 #alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
+#alias myip='dig @1.1.1.1 whoami.cloudflare. chaos txt +short'
 
 alias rst='
   if [[ -n $(jobs) ]]; then
@@ -770,6 +741,16 @@ function wol() {
 
   printf "$( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' )" \
     | nc -w0 -u 255.255.255.255 4000
+}
+
+function docker-update() {
+  if ! exists docker; then
+    warning 'install "docker" command'
+    return 1
+  fi
+
+  docker images --format '{{.Repository}}:{{.Tag}}' | shuf | xargs -r -n1 -P2 docker pull -q
+  docker image prune -f
 }
 
 function whois() {
@@ -912,8 +893,8 @@ function mailsend() {
 
   nc -C "${HOST}" "${PORT}" <<EOC
 HELO ${HOST}
-MAIL FROM: <${FROM}>
-RCPT TO: <${TO}>
+MAIL FROM:<${FROM}>
+RCPT TO:<${TO}>
 DATA
 From: <${FROM}>
 To: <${TO}>
@@ -1037,6 +1018,9 @@ HELP
         sudo apt ${OPTIONS} autoremove
       ;;
     esac
+
+    [[ -s /var/run/reboot-required      ]] && cat /var/run/reboot-required
+    [[ -s /var/run/reboot-required.pkgs ]] && cat /var/run/reboot-required.pkgs
 
     sudo -K
   elif exists pacman; then
@@ -1178,19 +1162,19 @@ HELP
     if [[ -n "${LOCAL}" ]]; then \
       aws configure get region ; \
     else \
-      aws ec2 describe-regions --query 'Regions[].RegionName' --output text ; \
+      aws ec2 describe-regions --query 'Regions[].{Name:RegionName}' --output text ; \
     fi \
       | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
           --query 'Reservations[].Instances[].[
-                    Placement.AvailabilityZone,
-                    State.Name,
-                    InstanceType,
-                    Tags[?Key==`Name`].Value|[0],
-                    InstanceId,
-                    PublicIpAddress,
-                    PrivateIpAddress
-                  ]' \
-          --output=text \
+                     Placement.AvailabilityZone,
+                     State.Name,
+                     InstanceType,
+                     Tags[?Key==`Name`].Value|[0],
+                     InstanceId,
+                     PublicIpAddress,
+                     PrivateIpAddress
+                   ]' \
+          --output text \
           --region \
       | sort
   ) \
@@ -1351,19 +1335,15 @@ end
 alias sudo='sudo '
 alias sort='LC_ALL=C sort'
 
-alias zmv='noglob zmv -vW'
-alias zcp='noglob zmv -vWC'
-alias zln='noglob zmv -vWL'
+alias zmv='noglob zmv -v'
+alias zcp='noglob zmv -vC'
+alias zln='noglob zmv -vL'
 
 alias l.='ls -d .*'
 alias la='ls -AF'
 alias ll='ls -l'
-alias lla='ls -AFl'
-alias llh='ls -Flh'
-alias llha='ls -AFlh'
-alias lls='ls -AFl'
 
-alias rm='rm -i'
+alias rm='rm -I'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias ln='ln -v'
@@ -1382,7 +1362,7 @@ alias d='dirs -pv'
 #alias e=''
 #alias f=''
 #alias g=''
-alias h='fc -l -t "%b.%e %k:%M:%S"'
+alias h='fc -l -t "%b.%e %k:%M"'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
@@ -1391,7 +1371,7 @@ alias j='jobs -l'
 #alias n=''
 #alias o=''
 #alias p=''
-alias q='exit'
+#alias q=''
 #alias r='' # Shell built-in command already exists
 #alias s=''
 #alias t=''
@@ -1413,4 +1393,3 @@ unset ZFILE
 if [[ -n "${TTY}" && "${SHLVL}" == '1' ]] && exists tmux && is_ssh; then
   tmux new-session -AD -s "${TTY:-/dev/null}"
 fi
-
