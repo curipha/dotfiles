@@ -47,6 +47,3 @@ Host *
   ServerAliveCountMax  3
 
   RekeyLimit 100M 1h
-
-# ControlMaster auto
-# ControlPath   ~/.ssh/control-%r@%h:%p
