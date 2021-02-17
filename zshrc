@@ -3,7 +3,6 @@
 # ===============
 
 # Environments {{{
-#export LANG=ja_JP.UTF-8
 #export LANG=C.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
