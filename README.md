@@ -3,7 +3,6 @@ dotfiles [![CircleCI](https://circleci.com/gh/curipha/dotfiles.svg?style=svg)](h
 dotfiles for Linux/BSD.
 
 `vimrc` and `gvimrc` are also used with Vim on Windows.
-Refer to the `dotfiles_w` repository for what is used on Windows only.
 
 
 Installation
@@ -21,17 +20,10 @@ git clone git@github.com:curipha/dotfiles.git
 ```
 
 
-Remarks
---------------------
-### bash_profile
-Hide bash and run zsh.
-For an environment where it could not run `chsh`.
-
-
 Links
 --------------------
 ### Fonts
 - [Google Noto Fonts](https://www.google.com/get/noto/)
 - [Source Han Mono](https://github.com/adobe-fonts/source-han-mono)
 - [Fira](https://github.com/mozilla/Fira)
-- [Migmix](https://mix-mplus-ipa.osdn.jp/migmix/) (Japanese font)
+- [Cica](https://github.com/miiton/Cica) (Japanese font)

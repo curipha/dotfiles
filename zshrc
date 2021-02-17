@@ -3,7 +3,6 @@
 # ===============
 
 # Environments {{{
-#export LANG=ja_JP.UTF-8
 #export LANG=C.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -27,7 +26,6 @@ export GOPATH=~/app/go
 export GIT_MERGE_AUTOEDIT=no
 export MAKEFLAGS='--jobs=2 --silent'
 export QUOTING_STYLE=literal
-export RUBYOPT=-EUTF-8
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
 export WINEARCH=win32
@@ -46,19 +44,16 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[4;36m'
 
 path=(
-  ~/sbin(N-/)
-  ~/bin(N-/)
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
   ~/.local/bin(N-/)
-  /opt/*/bin(N-/)
-  /opt/bin(N-/)
   /usr/local/sbin(N-/)
-  /usr/sbin(N-/)
-  /sbin(N-/)
   /usr/local/bin(N-/)
+  /usr/sbin(N-/)
   /usr/bin(N-/)
+  /sbin(N-/)
   /bin(N-/)
+  /opt/*/bin(N-/)
   $path
 )
 typeset -gU path
@@ -66,10 +61,7 @@ export PATH
 
 typeset -T LD_LIBRARY_PATH ld_library_path
 ld_library_path=(
-  ~/lib(N-/)
   ~/app/*/lib(N-/)
-  /opt/*/lib(N-/)
-  /opt/lib(N-/)
   /usr/local/lib(N-/)
   $ld_library_path
 )
@@ -78,10 +70,7 @@ export LD_LIBRARY_PATH
 
 typeset -T PKG_CONFIG_PATH pkg_config_path
 pkg_config_path=(
-  ~/lib/pkgconfig(N-/)
   ~/app/*/lib/pkgconfig(N-/)
-  /opt/*/lib/pkgconfig(N-/)
-  /opt/lib/pkgconfig(N-/)
   /usr/local/lib/pkgconfig(N-/)
   $pkg_config_path
 )
@@ -225,9 +214,6 @@ if exists manpath; then
   manpath=(
     ~/app/*/man(N-/)
     ~/app/*/share/man(N-/)
-    /opt/*/man(N-/)
-    /opt/*/share/man(N-/)
-    /opt/man(N-/)
     /usr/local/man(N-/)
     /usr/local/share/man(N-/)
     /usr/share/man(N-/)
@@ -907,8 +893,8 @@ function mailsend() {
 
   nc -C "${HOST}" "${PORT}" <<EOC
 HELO ${HOST}
-MAIL FROM: <${FROM}>
-RCPT TO: <${TO}>
+MAIL FROM:<${FROM}>
+RCPT TO:<${TO}>
 DATA
 From: <${FROM}>
 To: <${TO}>
@@ -1376,7 +1362,7 @@ alias d='dirs -pv'
 #alias e=''
 #alias f=''
 #alias g=''
-alias h='fc -l -t "%b.%e %k:%M:%S"'
+alias h='fc -l -t "%b.%e %k:%M"'
 #alias i=''
 alias j='jobs -l'
 #alias k=''
