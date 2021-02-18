@@ -84,8 +84,6 @@ set whichwrap=b,s,h,l,<,>,[,],~
 
 set nojoinspaces
 set formatoptions=qnlmMj
-set formatlistpat&
-let &formatlistpat .= '\|^\s*[*+-]\s*'
 autocmd MyAutoCmd FileType * setlocal formatoptions-=c formatoptions-=o formatoptions-=r formatoptions-=t
 
 set textwidth=0
@@ -222,7 +220,6 @@ nnoremap gf <C-w>f<C-w>L
 vnoremap gf <C-w>f<C-w>L
 nnoremap gF <C-w>gf
 vnoremap gF <C-w>gf
-autocmd MyAutoCmd FileType html,xhtml setlocal path& path+=;/
 
 nnoremap gI `.a
 nnoremap gc `[v`]
