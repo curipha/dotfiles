@@ -4,11 +4,11 @@
 
 scriptencoding utf-8
 
-" Variables {{{
+" Variables
 let s:iswin  = has('win32')
 let s:isunix = has('unix')
-"}}}
-" Environment specific {{{
+
+" Environment specific
 if s:iswin
   set guifont=Consolas:h10:cANSI
   set guifontwide=Cica:h10:cSHIFTJIS
@@ -18,8 +18,8 @@ elseif s:isunix
   set guifont=Source\ Han\ Mono\ 10
   set guifontwide=Source\ Han\ Mono\ 10
 endif
-"}}}
-" GUI {{{
+
+" GUI
 try
   colorscheme gruvbox
 catch
@@ -44,4 +44,3 @@ set mousehide
 set nomousefocus
 
 set winaltkeys=no
-"}}}

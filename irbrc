@@ -2,7 +2,7 @@
 #  .irbrc
 # ===============
 
-# Requires {{{
+# Requires
 %w(
 irb/completion
 pp
@@ -13,14 +13,13 @@ pp
     puts e.message
   end
 end
-#}}}
-# Configure {{{
+
+# Configure
 IRB.conf[:AUTO_INDENT] = true
 IRB.conf[:PROMPT_MODE] = :SIMPLE
 IRB.conf[:INSPECT_MODE] = :pp
-#}}}
 
-# Methods {{{
+# Methods
 def req(lib)
   puts "require '#{lib.to_s}'"
   require(lib.to_s)
@@ -48,10 +47,9 @@ def cd(dir = File.expand_path('~'))
   Dir.chdir(dir)
   Dir.pwd
 end
-#}}}
-# Alias {{{
+
+# Alias
 alias x exit
-#}}}
-# Banner {{{
+
+# Banner
 puts RUBY_DESCRIPTION
-#}}}
