@@ -553,8 +553,8 @@ set foldcolumn=0
 set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
-autocmd MyAutoCmd FileType css                 setlocal foldmethod=marker foldmarker={,}
-autocmd MyAutoCmd FileType *commit*,diff,xxd   setlocal nofoldenable
+autocmd MyAutoCmd FileType css               setlocal foldmethod=marker foldmarker={,}
+autocmd MyAutoCmd FileType *commit*,diff,xxd setlocal nofoldenable
 
 set lazyredraw
 set ttyfast
