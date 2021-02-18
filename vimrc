@@ -209,9 +209,7 @@ cnoremap <RightMouse> <C-r><C-o>*
 nnoremap <RightMouse> "*p
 
 nnoremap <Space>   <C-d>
-vnoremap <Space>   <C-d>
 nnoremap <S-Space> <C-u>
-vnoremap <S-Space> <C-u>
 
 cnoremap <C-n> <Down>
 cnoremap <C-p> <Up>
@@ -575,9 +573,7 @@ set synmaxcol=420
 
 autocmd MyAutoCmd FileType help nnoremap <buffer><silent><nowait> q :<C-u>helpclose<CR>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <CR> <C-]>
-autocmd MyAutoCmd FileType help vnoremap <buffer> <CR> <C-]>
 autocmd MyAutoCmd FileType help nnoremap <buffer> <BS> <C-t>
-autocmd MyAutoCmd FileType help vnoremap <buffer> <BS> <C-c><C-t>
 
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent><nowait> q :<C-u>cclose<CR>
 autocmd MyAutoCmd FileType qf nnoremap <buffer><silent> <CR> :<C-u>.cc<CR>zv
