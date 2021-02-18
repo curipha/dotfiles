@@ -175,11 +175,6 @@ nnoremap p p`]
 vnoremap p p`]
 vnoremap y y`]
 
-nnoremap <silent> <Leader>p "0p`]
-vnoremap <silent> <Leader>p "0p`]
-nnoremap <silent> <Leader>P "0P`]
-vnoremap <silent> <Leader>P "0P`]
-
 inoremap <C-a> <C-g>u<C-a>
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
@@ -504,10 +499,6 @@ set noequalalways
 autocmd MyAutoCmd VimResized * wincmd =
 
 nnoremap <silent> <Leader>o :<C-u>only<CR>
-nnoremap <silent> <Leader>h :<C-u>split<CR>
-nnoremap <silent> <Leader>v :<C-u>vsplit<CR>
-
-nnoremap <silent> <Leader>d :<C-u>windo diffthis<CR>
 
 set diffopt=filler,context:3,vertical,hiddenoff
 if has('patch-8.1.0360')
@@ -567,11 +558,8 @@ set foldcolumn=0
 set foldmethod=marker
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
-nnoremap zl zMzv
-
 autocmd MyAutoCmd FileType css                 setlocal foldmethod=marker foldmarker={,}
 autocmd MyAutoCmd FileType *commit*,diff,xxd   setlocal nofoldenable
-autocmd MyAutoCmd FileType html,xhtml,xml,xslt nnoremap <buffer> <Leader>f Vatzf
 
 set lazyredraw
 set ttyfast
