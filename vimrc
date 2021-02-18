@@ -276,16 +276,6 @@ for [s:k, s:p] in [['a', '>'], ['r', ']'], ['q', ''''], ['d', '"']]
   execute 'vnoremap i' . s:k . ' i' . s:p
 endfor
 
-autocmd MyAutoCmd FileType c          setlocal omnifunc=ccomplete#Complete
-autocmd MyAutoCmd FileType css        setlocal omnifunc=csscomplete#CompleteCSS
-autocmd MyAutoCmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd MyAutoCmd FileType java       setlocal omnifunc=javacomplete#Complete
-autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd MyAutoCmd FileType php        setlocal omnifunc=phpcomplete#CompletePHP
-autocmd MyAutoCmd FileType python     setlocal omnifunc=pythoncomplete#Complete
-autocmd MyAutoCmd FileType ruby       setlocal omnifunc=rubycomplete#Complete
-autocmd MyAutoCmd FileType xml,xslt   setlocal omnifunc=xmlcomplete#CompleteTags
-
 autocmd MyAutoCmd FileType *
 \   if empty(&l:omnifunc)
 \ |   setlocal omnifunc=syntaxcomplete#Complete
