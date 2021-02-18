@@ -116,7 +116,7 @@ autocmd MyAutoCmd FileType * setlocal tabstop=2
 autocmd MyAutoCmd FileType * setlocal shiftwidth=2
 autocmd MyAutoCmd FileType * setlocal softtabstop=0
 
-set complete& complete+=d complete+=k
+set complete& complete+=d
 set completeopt& completeopt+=menuone
 set pumheight=12
 set showfulltag
