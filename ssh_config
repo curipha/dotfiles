@@ -38,7 +38,6 @@ Host *
   Compression  no
   ForwardAgent no
   ForwardX11   no
-  UseRoaming   no
 
   ConnectionAttempts 2
   ConnectTimeout     5
@@ -48,6 +47,3 @@ Host *
   ServerAliveCountMax  3
 
   RekeyLimit 100M 1h
-
-# ControlMaster auto
-# ControlPath   ~/.ssh/control-%r@%h:%p
