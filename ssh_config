@@ -30,7 +30,6 @@ Host *
   PasswordAuthentication          no
 
   CheckHostIP           yes
-  VerifyHostKeyDNS      ask
   StrictHostKeyChecking ask
   VisualHostKey         yes
   HashKnownHosts        yes
