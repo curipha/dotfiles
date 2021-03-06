@@ -20,8 +20,8 @@ Host *
 
   PubKeyAuthentication     yes
   PreferredAuthentications publickey
-  PubkeyAcceptedKeyTypes   -*ecdsa*,*dss*
-  HostKeyAlgorithms        -*ecdsa*,*dss*
+  PubkeyAcceptedKeyTypes   -*ecdsa*,*dss*,*ssh-rsa*
+  HostKeyAlgorithms        -*ecdsa*,*dss*,*ssh-rsa*
 
   ChallengeResponseAuthentication no
   GSSAPIAuthentication            no
