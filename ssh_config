@@ -8,7 +8,6 @@ Host github.com
   User git
 
   RequestTTY    no
-  VisualHostKey no
 
 Host *
   IdentityFile   ~/.ssh/id_ed25519
@@ -31,7 +30,6 @@ Host *
 
   CheckHostIP           yes
   StrictHostKeyChecking ask
-  VisualHostKey         yes
   HashKnownHosts        yes
 
   Compression  no
