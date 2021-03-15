@@ -29,7 +29,7 @@ Host *
   PasswordAuthentication          no
 
   CheckHostIP           yes
-  StrictHostKeyChecking ask
+  StrictHostKeyChecking accept-new
   HashKnownHosts        yes
 
   Compression  no
