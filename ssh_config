@@ -7,7 +7,7 @@ Include ~/.ssh/config.include
 Host github.com
   User git
 
-  RequestTTY    no
+  RequestTTY no
 
 Host *
   IdentityFile   ~/.ssh/id_ed25519
