@@ -29,17 +29,17 @@ Host *
   PasswordAuthentication          no
 
   CheckHostIP           yes
-  StrictHostKeyChecking accept-new
   HashKnownHosts        yes
+  StrictHostKeyChecking accept-new
 
   Compression  no
   ForwardAgent no
   ForwardX11   no
 
-  ConnectionAttempts 2
   ConnectTimeout     5
+  ConnectionAttempts 2
 
-  ServerAliveInterval 10
   ServerAliveCountMax  3
+  ServerAliveInterval 10
 
   RekeyLimit 100M 1h
