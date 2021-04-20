@@ -39,7 +39,6 @@ Host *
   ConnectionAttempts 2
   ConnectTimeout     5
 
-  TCPKeepAlive        yes
   ServerAliveInterval 10
   ServerAliveCountMax  3
 
