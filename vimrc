@@ -126,10 +126,7 @@ autocmd MyAutoCmd FileType diff,qf,xxd       setlocal nospell
 nnoremap <silent> <Leader>c :<C-u>setlocal spell! spell?<CR>
 nnoremap <silent> <Leader>z 1z=
 
-set clipboard=unnamed
-if has('unnamedplus')
-  set clipboard+=unnamedplus
-endif
+set clipboard=unnamed,unnamedplus
 
 set nrformats=alpha,bin,hex
 set virtualedit=block
@@ -470,13 +467,10 @@ autocmd MyAutoCmd WinEnter *
 set nowrap
 nnoremap <silent> <Leader>l :<C-u>setlocal wrap! wrap?<CR>
 
-if has('linebreak') && exists('+breakindent')
-  set linebreak
-
-  set breakindent
-  set breakindentopt=min:42,shift:0,sbr
-  set showbreak=..
-endif
+set linebreak
+set breakindent
+set breakindentopt=min:42,shift:0,sbr
+set showbreak=..
 
 set scrolloff=4
 set sidescrolloff=12
@@ -495,10 +489,7 @@ autocmd MyAutoCmd VimResized * wincmd =
 
 nnoremap <silent> <Leader>o :<C-u>only<CR>
 
-set diffopt=filler,context:3,vertical,hiddenoff
-if has('patch-8.1.0360')
-  set diffopt^=internal,indent-heuristic,algorithm:histogram
-endif
+set diffopt=internal,indent-heuristic,algorithm:histogram,filler,context:3,vertical,hiddenoff
 
 autocmd MyAutoCmd BufLeave,InsertLeave,TextChanged *
 \   if &l:diff
