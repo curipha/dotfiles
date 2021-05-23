@@ -76,9 +76,6 @@
 [fetch]
   prune = true
 
-[github]
-  user = curipha
-
 [help]
   autocorrect = -1
 
