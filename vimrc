@@ -528,8 +528,7 @@ set listchars=tab:>.,trail:_,extends:>,precedes:<
 set fillchars=fold:\ 
 
 set showmatch
-set matchpairs=(:),<:>,[:],{:},«:»,‹:›,≪:≫,〈:〉,《:》,「:」,『:』,【:】,〔:〕,（:）,＜:＞,［:］,｛:｝,｢:｣,‘:’,“:”
-autocmd MyAutoCmd FileType c,cpp,java setlocal matchpairs+==:;
+set matchpairs=(:),<:>,[:],{:}
 
 if has('kaoriya')
   set ambiwidth=auto
