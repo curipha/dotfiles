@@ -1,6 +1,7 @@
-version: 2
+version: 2.1
+
 jobs:
-  build:
+  vint:
     docker:
       - image: python:alpine
     steps:
@@ -32,3 +33,20 @@ jobs:
       - run:
           name: Run Vint (gvimrc)
           command: ~/.local/bin/vint --color --style-problem -- ./gvimrc
+  shellcheck:
+    docker:
+      - image: koalaman/shellcheck-alpine:stable
+    steps:
+      - checkout
+      - run:
+          name: ShellCheck version
+          command: shellcheck --version
+      - run:
+          name: Run ShellCheck
+          command: shellcheck -- ./*.sh
+
+workflows:
+  lints:
+    jobs:
+      - vint
+      - shellcheck
