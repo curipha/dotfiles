@@ -10,7 +10,6 @@ let s:iswin = has('win32')
 
 if s:iswin
   language message en
-
   set termencoding=cp932
 else
   language message C
@@ -22,10 +21,6 @@ augroup END
 
 if &term =~# '\<256color\>'
   set t_Co=256
-
-" if has('termguicolors')
-"   set termguicolors
-" endif
 endif
 set background=dark
 
@@ -157,11 +152,11 @@ nnoremap <Up>   gk
 vnoremap <Down> gj
 vnoremap <Up>   gk
 
-nnoremap <CR>  O<Esc>
-nnoremap R     gR
-nnoremap Y     y$
-nnoremap X     "_X
-nnoremap x     "_x
+nnoremap <CR> O<Esc>
+nnoremap R    gR
+nnoremap Y    y$
+nnoremap X    "_X
+nnoremap x    "_x
 
 nnoremap J  mzJ`z
 nnoremap gJ mzgJ`z
