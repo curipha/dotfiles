@@ -3,36 +3,36 @@
 # ===============
 
 [alias]
-  a     = add
-  aa    = add --all --verbose
-  ap    = add --patch
-  au    = add --update --verbose
-  br    = branch --verbose --verbose
-  brr   = branch --all --verbose --verbose
-  ca    = commit --all --verbose --verbose
-  ci    = commit --verbose --verbose
-  co    = checkout
-  cp    = commit --patch --verbose --verbose
-  d     = diff --patch-with-stat
-  dc    = diff --patch-with-stat --cached
-  dcw   = diff --patch-with-stat --cached --ignore-all-space
-  dcww  = diff --patch-with-stat --cached --ignore-all-space --word-diff=color
-  dw    = diff --patch-with-stat --ignore-all-space
-  dww   = diff --patch-with-stat --ignore-all-space --word-diff=color
-  ll    = log --decorate --oneline --graph --no-merges
-  lla   = log --decorate --oneline --graph
-  lp    = log --decorate --patch-with-stat --no-merges
-  lpw   = log --decorate --patch-with-stat --no-merges --ignore-all-space
-  lpww  = log --decorate --patch-with-stat --no-merges --ignore-all-space --word-diff=color
-  pl    = pull
-  pu    = push
-  r     = remote --verbose
-  sl    = stash list
-  sp    = stash show --patch
-  ss    = stash
-  st    = status --branch --short --untracked-files=all
+  a    = add
+  aa   = add --all --verbose
+  ap   = add --patch
+  au   = add --update --verbose
+  br   = branch --verbose --verbose
+  brr  = branch --all --verbose --verbose
+  ca   = commit --all --verbose --verbose
+  ci   = commit --verbose --verbose
+  co   = checkout
+  cp   = commit --patch --verbose --verbose
+  d    = diff --patch-with-stat
+  dc   = diff --patch-with-stat --cached
+  dcw  = diff --patch-with-stat --cached --ignore-all-space
+  dcww = diff --patch-with-stat --cached --ignore-all-space --word-diff=color
+  dw   = diff --patch-with-stat --ignore-all-space
+  dww  = diff --patch-with-stat --ignore-all-space --word-diff=color
+  ll   = log --decorate --oneline --graph --no-merges
+  lla  = log --decorate --oneline --graph
+  lp   = log --decorate --patch-with-stat --no-merges
+  lpw  = log --decorate --patch-with-stat --no-merges --ignore-all-space
+  lpww = log --decorate --patch-with-stat --no-merges --ignore-all-space --word-diff=color
+  pl   = pull
+  pu   = push
+  r    = remote --verbose
+  sl   = stash list
+  sp   = stash show --patch
+  ss   = stash
+  st   = status --branch --short --untracked-files=all
 
-  sync  = !git stash save && git fetch && git reset --hard FETCH_HEAD && git gc --quiet
+  sync = !git stash save && git fetch && git reset --hard FETCH_HEAD && git gc --quiet
 
   unstage = reset HEAD --
 
@@ -63,14 +63,14 @@
   untracked   = cyan bold
 
 [core]
-  quotepath    = false
+  quotepath = false
 
 [diff]
-  algorithm       = histogram
-  mnemonicPrefix  = true
-  renames         = copy
-  statGraphWidth  = 48
-  wordRegex       = [[:alnum:]]+|[^[:space:]]
+  algorithm      = histogram
+  mnemonicPrefix = true
+  renames        = copy
+  statGraphWidth = 48
+  wordRegex      = [[:alnum:]]+|[^[:space:]]
 
 [fetch]
   prune = true
