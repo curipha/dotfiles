@@ -1389,7 +1389,3 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
   [[ -s "${ZFILE}" && ( ! -s "${ZFILE}.zwc" || "${ZFILE}" -nt "${ZFILE}.zwc" ) ]] && zcompile "${ZFILE}" &!
 done
 unset ZFILE
-
-if [[ -n "${TTY}" && "${SHLVL}" == '1' ]] && exists tmux && is_ssh; then
-  tmux new-session -AD -s "${TTY:-/dev/null}"
-fi
