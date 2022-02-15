@@ -682,10 +682,6 @@ alias rst='
     exec zsh
   fi'
 
-function rr() {
-  ruby -rtime -e "include Math; puts eval(ARGV.join(' '))" -- "${@}"
-}
-
 function zman() {
   if (( ${#} > 0 )); then
     PAGER="less --squeeze-blank-lines -p '${1}'" man zshall
@@ -730,28 +726,6 @@ HELP
   esac
 }
 alias mkcd=mkmv
-
-function wol() {
-  MAC="${1//[^0-9A-Fa-f]/}"
-
-  if (( ${#MAC} != 12 )); then
-    warning 'MAC address must be 12 hexdigits'
-    return 1
-  fi
-
-  printf "$( ( printf 'f%.0s' {1..12} && printf "${MAC}%.0s" {1..16} ) | sed -e 's/../\\x&/g' )" \
-    | nc -w0 -u 255.255.255.255 4000
-}
-
-function docker-update() {
-  if ! exists docker; then
-    warning 'install "docker" command'
-    return 1
-  fi
-
-  docker images --format '{{.Repository}}:{{.Tag}}' | shuf | xargs -r -n1 -P2 docker pull -q
-  docker image prune -f
-}
 
 function whois() {
   local WHOIS
@@ -873,40 +847,6 @@ HELP
 
   [[ -z "${NOSYNC}" ]] && tmux set-option -w synchronize-panes on
   tmux refresh-client
-}
-
-function mailsend() {
-  if ! exists openssl; then
-    warning 'install "openssl" command'
-    return 1
-  fi
-
-  local HOST PORT FROM TO SUBJECT
-  HOST=${1:-localhost}
-  PORT=${2:-25}
-
-  read -r 'FROM?From: '
-  read -r 'TO?To: '
-  read -r 'SUBJECT?Subject: '
-
-  echo 'Body (end with Ctrl-D):'
-
-  nc -C "${HOST}" "${PORT}" <<EOC
-HELO ${HOST}
-MAIL FROM:<${FROM}>
-RCPT TO:<${TO}>
-DATA
-From: <${FROM}>
-To: <${TO}>
-Subject: =?UTF-8?B?$(echo -n "${SUBJECT}" | openssl base64 | tr -d '\r\n')?=
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-$(< /dev/stdin)
-
-.
-QUIT
-EOC
 }
 
 function 256color() {
@@ -1035,27 +975,6 @@ HELP
       update )
         sudo pacman -Sc ${OPTIONS}  && \
         sudo pacman -Syu ${OPTIONS}
-      ;;
-    esac
-
-    sudo -K
-  elif exists pkg; then
-    [[ -n "${YES}" ]] && OPTIONS=--yes
-
-    case "${MODE}" in
-      install )
-        sudo pkg clean      ${OPTIONS}                  && \
-        sudo pkg update                                 && \
-        sudo pkg upgrade    ${OPTIONS}                  && \
-        sudo pkg install    ${OPTIONS} "${PACKAGES[@]}" && \
-        sudo pkg autoremove ${OPTIONS}
-      ;;
-
-      update )
-        sudo pkg clean      ${OPTIONS} && \
-        sudo pkg update                && \
-        sudo pkg upgrade    ${OPTIONS} && \
-        sudo pkg autoremove ${OPTIONS}
       ;;
     esac
 
