@@ -450,7 +450,7 @@ zstyle ':completion:*:(processes|jobs)' menu yes select
 zstyle ':completion:*:(processes|jobs)' force-list always
 
 zstyle ':completion:*:functions' ignored-patterns '_*'
-zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain'
+zstyle ':completion:*:hosts' ignored-patterns localhost 'localhost.*' '*.localdomain' 'ip6-*'
 
 exists getent && ETC_PASSWD=$(getent passwd 2> /dev/null)
 [[ ( "${?}" != '0' || -z "${ETC_PASSWD}" ) && -r /etc/passwd ]] && ETC_PASSWD=$(cat /etc/passwd)
