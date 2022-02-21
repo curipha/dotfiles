@@ -136,12 +136,6 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-if exists git; then
-  alias diff='git diff --no-index'
-else
-  alias diff='diff --unified --report-identical-files --minimal'
-fi
-
 GREP_PARAM='--color=auto --binary-files=text'
 [[ $(grep --help 2>&1) =~ '--exclude-dir' ]] && GREP_PARAM+=' --exclude-dir=".*"'
 alias grep="grep ${GREP_PARAM}"
@@ -1198,6 +1192,7 @@ end
 
 # Alias {{{
 alias sudo='sudo '
+alias diff='diff --unified --report-identical-files --minimal'
 alias sort='LC_ALL=C sort'
 
 alias zmv='noglob zmv -v'
