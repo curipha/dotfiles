@@ -81,7 +81,6 @@ autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
 autoload -Uz modify-current-argument
 autoload -Uz run-help
-autoload -Uz smart-insert-last-word
 autoload -Uz up-line-or-beginning-search
 autoload -Uz url-quote-magic
 autoload -Uz vcs_info
@@ -602,11 +601,6 @@ function surround_with_double_quote() {
 }
 zle -N surround_with_double_quote
 bindkey '^[d' surround_with_double_quote
-
-
-zle -N insert-last-word smart-insert-last-word
-zstyle ':insert-last-word' match '*([[:alpha:]/\\]?|?[[:alpha:]/\\])*'
-bindkey '^]' insert-last-word
 #}}}
 # Utility {{{
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short +norec'
