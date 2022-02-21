@@ -43,6 +43,9 @@ export LESS_TERMCAP_so=$'\e[30;47m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;36m'
 
+export CFLAGS='-march=native -mtune=native -O2 -pipe -w -fstack-protector-strong'
+export CXXFLAGS="${CFLAGS}"
+
 path=(
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
@@ -93,39 +96,6 @@ function is_x()    { [[ -n "${DISPLAY}" ]] }
 function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] }
-
-function set_cc() {
-  if (( ${#} < 1 )); then
-    unset CC CXX CFLAGS CXXFLAGS
-    warning '$CC, $CXX, $CFLANGS and $CXXFLAGS are removed'
-    return
-  fi
-
-  if ! exists "${1}"; then
-    warning "no such command: ${1}"
-    return 1
-  fi
-
-  case "${1}" in
-    'clang' ) export CC=clang CXX=clang++;;
-    'gcc'   ) export CC=gcc   CXX=g++;;
-
-    * )
-      warning "nothing to do for: ${1}"
-      return 1
-    ;;
-  esac
-
-  CFLAGS='-march=native -mtune=native -O2 -pipe -w'
-  if [[ $(${CC} -v --help 2> /dev/null) =~ '-fstack-protector-strong' ]]; then
-    CFLAGS+=' -fstack-protector-strong'
-  else
-    CFLAGS+=' -fstack-protector-all'
-  fi
-
-  export CFLAGS
-  export CXXFLAGS="${CFLAGS}"
-}
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
@@ -176,12 +146,6 @@ GREP_PARAM='--color=auto --binary-files=text'
 [[ $(grep --help 2>&1) =~ '--exclude-dir' ]] && GREP_PARAM+=' --exclude-dir=".*"'
 alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM
-
-if exists clang; then
-  set_cc clang
-elif exists gcc; then
-  set_cc gcc
-fi
 
 if exists nproc; then
   export CPUS=$(nproc)
