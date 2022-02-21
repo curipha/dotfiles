@@ -59,24 +59,6 @@ path=(
 typeset -gU path
 export PATH
 
-typeset -T LD_LIBRARY_PATH ld_library_path
-ld_library_path=(
-  ~/app/*/lib(N-/)
-  /usr/local/lib(N-/)
-  $ld_library_path
-)
-typeset -gU ld_library_path
-export LD_LIBRARY_PATH
-
-typeset -T PKG_CONFIG_PATH pkg_config_path
-pkg_config_path=(
-  ~/app/*/lib/pkgconfig(N-/)
-  /usr/local/lib/pkgconfig(N-/)
-  $pkg_config_path
-)
-typeset -gU pkg_config_path
-export PKG_CONFIG_PATH
-
 cdpath=(
   $HOME
   ..
