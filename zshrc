@@ -137,13 +137,6 @@ GREP_PARAM='--color=auto --binary-files=text'
 alias grep="grep ${GREP_PARAM}"
 unset GREP_PARAM
 
-if exists nproc; then
-  export CPUS=$(nproc)
-elif exists getconf; then
-  export CPUS=$( ( getconf NPROCESSORS_ONLN || getconf _NPROCESSORS_ONLN ) 2> /dev/null )
-fi
-[[ -z "${CPUS}" ]] && export CPUS=1
-
 if exists manpath; then
   MANPATH=$(MANPATH= manpath)
 
