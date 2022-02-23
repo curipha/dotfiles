@@ -446,8 +446,6 @@ abbrev_expand=(
   '?'  "--help |& ${PAGER}"
   'C'  "| sort | uniq -c | sort -nrs |& ${PAGER}"
   'E'  '> /dev/null'
-  'G'  '| grep -iE'
-  'GV' '| grep -ivE'
   'H'  '| head -20'
   'L'  "|& ${PAGER}"
   'S'  '| sort'
