@@ -76,7 +76,6 @@ autoload -Uz add-zsh-hook
 autoload -Uz bracketed-paste-magic
 autoload -Uz compinit && compinit
 autoload -Uz down-line-or-beginning-search
-autoload -Uz modify-current-argument
 autoload -Uz run-help
 autoload -Uz up-line-or-beginning-search
 autoload -Uz url-quote-magic
@@ -561,20 +560,6 @@ function force_reset_screen() {
 }
 zle -N force_reset_screen
 bindkey '^L' force_reset_screen
-
-function surround_with_single_quote() {
-  modify-current-argument '${(qq)${(Q)ARG}}'
-  zle vi-forward-blank-word
-}
-zle -N surround_with_single_quote
-bindkey '^[s' surround_with_single_quote
-
-function surround_with_double_quote() {
-  modify-current-argument '${(qqq)${(Q)ARG}}'
-  zle vi-forward-blank-word
-}
-zle -N surround_with_double_quote
-bindkey '^[d' surround_with_double_quote
 #}}}
 # Utility {{{
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short +norec'
