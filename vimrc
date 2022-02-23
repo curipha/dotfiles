@@ -79,11 +79,11 @@ set whichwrap=b,s,h,l,<,>,[,],~
 
 set nojoinspaces
 set formatoptions=qnlmMj
-autocmd MyAutoCmd FileType * setlocal formatoptions-=c formatoptions-=o formatoptions-=r formatoptions-=t
+autocmd MyAutoCmd FileType * setlocal formatoptions<
 
 set textwidth=0
 set wrapmargin=0
-autocmd MyAutoCmd FileType * setlocal textwidth=0
+autocmd MyAutoCmd FileType * setlocal textwidth<
 
 set nobackup
 set nowritebackup
@@ -105,9 +105,9 @@ set shiftround
 set tabstop=2
 set shiftwidth=2
 set softtabstop=0
-autocmd MyAutoCmd FileType * setlocal tabstop=2
-autocmd MyAutoCmd FileType * setlocal shiftwidth=2
-autocmd MyAutoCmd FileType * setlocal softtabstop=0
+autocmd MyAutoCmd FileType * setlocal tabstop<
+autocmd MyAutoCmd FileType * setlocal shiftwidth<
+autocmd MyAutoCmd FileType * setlocal softtabstop<
 
 set complete& complete+=d
 set completeopt& completeopt+=menuone
