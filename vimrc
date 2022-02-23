@@ -177,9 +177,6 @@ xnoremap <S-Tab> <gv
 vnoremap <silent> <Leader>m :sort<CR>
 vnoremap <silent> <Leader>u :sort u<CR>
 
-nnoremap <silent> <Leader>r V:!sh<CR>
-vnoremap <silent> <Leader>r :!sh<CR>
-
 vnoremap <C-a> <C-a>gv
 vnoremap <C-x> <C-x>gv
 
@@ -201,12 +198,8 @@ nnoremap <RightMouse> "*p
 nnoremap <Space>   <C-d>
 nnoremap <S-Space> <C-u>
 
-cnoremap <C-n> <Down>
-cnoremap <C-p> <Up>
 cnoremap <expr> <C-u> empty(getcmdline()) ? '<C-c>' : '<C-u>'
 cnoremap <expr> <C-w> empty(getcmdline()) ? '<C-c>' : '<C-w>'
-
-nnoremap <expr> 0 col('.') ==# 1 ? '^' : '0'
 
 nnoremap gf <C-w>f<C-w>L
 vnoremap gf <C-w>f<C-w>L
@@ -497,8 +490,6 @@ autocmd MyAutoCmd WinEnter *
 
 nnoremap <silent> [w <C-w>W
 nnoremap <silent> ]w <C-w>w
-nnoremap <silent> [W <C-w>t
-nnoremap <silent> ]W <C-w>b
 
 nnoremap <silent> <S-Left>  <C-w>>
 nnoremap <silent> <S-Right> <C-w><
@@ -511,9 +502,6 @@ for [s:k, s:p, s:a] in [['b', 'b', ''], ['t', 'tab', ''], ['q', 'c', 'zv']]
   execute 'nnoremap <silent> [' . toupper(s:k) . ' :<C-u>' . s:p . 'first<CR>' . s:a
   execute 'nnoremap <silent> ]' . toupper(s:k) . ' :<C-u>' . s:p . 'last<CR>' . s:a
 endfor
-
-nnoremap <silent> <C-Left>  :tabprevious<CR>
-nnoremap <silent> <C-Right> :tabnext<CR>
 
 nnoremap <silent> tt :<C-u>$tabnew<CR>
 
