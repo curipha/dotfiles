@@ -461,10 +461,6 @@ function magic-abbrev-expand() {
 
   [[ -n "${EXPAND}" ]] && LBUFFER="${BASE}${EXPAND}"
 }
-function magic-abbrev-expand-and-insert() {
-  magic-abbrev-expand
-  zle self-insert
-}
 function magic-abbrev-expand-and-space() {
   magic-abbrev-expand
   zle magic-space
@@ -473,20 +469,10 @@ function magic-abbrev-expand-and-accept() {
   magic-abbrev-expand
   zle accept-line
 }
-function magic-abbrev-expand-and-complete() {
-  printf '\e[32m....\e[0m'
-  magic-abbrev-expand
-  zle expand-or-complete
-  printf '\e[4D    '
-  zle redisplay
-}
 
-zle -N magic-abbrev-expand-and-insert
 zle -N magic-abbrev-expand-and-space
-zle -N magic-abbrev-expand-and-complete
 zle -N magic-abbrev-expand-and-accept
 bindkey ' '  magic-abbrev-expand-and-space
-#bindkey '^I' magic-abbrev-expand-and-complete
 #bindkey '^M' magic-abbrev-expand-and-accept   # ^M will be handled by 'magic_enter'
 
 function magic_enter() {
