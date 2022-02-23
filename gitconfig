@@ -36,9 +36,6 @@
 
   unstage = reset HEAD --
 
-  revert-to-head  = checkout HEAD --
-  revert-to-index = checkout --
-
 [color]
   branch      = auto
   diff        = auto
