@@ -72,7 +72,7 @@ set wildignore+=*/$RECYCLE.BIN/*,*/System\ Volume\ Information/*
 set suffixes=.bak,.tmp,.log,.out,.aux,.toc,.pdf
 
 set history=100
-set undolevels=4000
+set undolevels=2000
 
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,],~
