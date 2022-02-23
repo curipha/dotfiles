@@ -93,14 +93,10 @@
   default = current
 
 [url "git@github.com:"]
-  insteadOf     = gh:
-  pushInsteadOf = gh:
   pushInsteadOf = https://github.com/
   pushInsteadOf = git://github.com/
 
 [url "git@gist.github.com:"]
-  insteadOf     = gist:
-  pushInsteadOf = gist:
   pushInsteadOf = https://gist.github.com/
   pushInsteadOf = git://gist.github.com/
 
