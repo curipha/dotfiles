@@ -563,8 +563,6 @@ bindkey '^L' force_reset_screen
 #}}}
 # Utility {{{
 alias myip='dig @za.akamaitech.net. whoami.akamai.net. a +short +norec'
-#alias myip='dig @ns1.google.com. o-o.myaddr.l.google.com. txt +short'
-#alias myip='dig @1.1.1.1 whoami.cloudflare. chaos txt +short'
 
 alias rst='
   if [[ -n $(jobs) ]]; then
