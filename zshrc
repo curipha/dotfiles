@@ -308,6 +308,7 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' use-cache true
+#zstyle ':completion:*' show-completer true
 
 #zstyle ':completion:*' completer _expand _complete _history _correct _approximate _match _prefix _list
 zstyle -e ':completion:*' completer '
