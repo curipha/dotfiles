@@ -163,7 +163,6 @@ setopt hash_list_all
 setopt append_create
 setopt no_clobber
 setopt no_flow_control
-setopt interactive_comments
 setopt no_mail_warning
 setopt multios
 setopt print_eight_bit
