@@ -401,11 +401,6 @@ setopt rc_expand_param
 
 typeset -A abbrev_expand
 abbrev_expand=(
-  '..'    '../'
-  '...'   '../../'
-  '....'  '../../../'
-  '.....' '../../../../'
-
   '?'  "--help |& ${PAGER}"
   'C'  "| sort | uniq -c | sort -nrs |& ${PAGER}"
   'E'  '> /dev/null'
