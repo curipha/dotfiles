@@ -29,7 +29,6 @@ export QUOTING_STYLE=literal
 export XZ_DEFAULTS='--check=sha256 --keep --verbose'
 
 export LESS='--LONG-PROMPT --QUIET --RAW-CONTROL-CHARS --chop-long-lines --ignore-case --jump-target=5 --no-init --quit-if-one-screen --tabs=2'
-export LESSCHARSET=utf-8
 export LESSHISTFILE=/dev/null
 export LESSSECURE=1
 export LESS_TERMCAP_mb=$'\e[1;31m'
