@@ -157,11 +157,10 @@ bindkey -e
 [[ -n "${terminfo[kcbt]}" ]] && bindkey "${terminfo[kcbt]}" reverse-menu-complete
 bindkey '^[[Z' reverse-menu-complete
 
-setopt correct
-setopt hash_list_all
-
 setopt append_create
+setopt c_bases
 setopt no_clobber
+setopt correct
 setopt no_flow_control
 setopt no_mail_warning
 setopt multios
@@ -172,8 +171,6 @@ setopt warn_create_global
 
 setopt no_beep
 setopt combining_chars
-
-setopt c_bases
 
 REPORTTIME=2
 TIMEFMT='%J | user: %U, system: %S, cpu: %P, total: %*E'
@@ -253,11 +250,10 @@ add-zsh-hook -Uz precmd precmd_vcs_info
 setopt auto_continue
 setopt auto_resume
 setopt bg_nice
-setopt long_list_jobs
-setopt monitor
-
 setopt check_jobs
 setopt no_hup
+setopt long_list_jobs
+setopt monitor
 #}}}
 # History {{{
 HISTFILE=~/.zsh_history
@@ -394,6 +390,7 @@ setopt auto_param_slash
 setopt auto_remove_slash
 setopt no_complete_aliases
 setopt complete_in_word
+setopt hash_list_all
 setopt list_packed
 setopt list_types
 
