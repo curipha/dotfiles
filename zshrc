@@ -184,25 +184,6 @@ zle -N self-insert url-quote-magic
 [[ $(whence -w run-help) == 'run-help: alias' ]] && unalias run-help
 #}}}
 # Prompt {{{
-is_ssh && SSH_INDICATOR='@ssh'
-
-PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
-PROMPT2='%_ %# '
-RPROMPT='  ${vcs_info_msg_0_}'
-SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
-unset SSH_INDICATOR
-
-function precmd_title() { print -Pn "\e]0;%n@%m: %~\a" }
-add-zsh-hook -Uz precmd precmd_title
-
-
-setopt prompt_cr
-setopt prompt_sp
-PROMPT_EOL_MARK='%B%S<NOEOL>%s%b'
-
-setopt prompt_subst
-setopt transient_rprompt
-
 function accept-line() {
   region_highlight=("0 ${#BUFFER} bold")
   zle .accept-line
@@ -215,6 +196,23 @@ function kill-whole-line() {
 }
 zle -N kill-whole-line
 
+function precmd_title() { print -Pn "\e]0;%n@%m: %~\a" }
+add-zsh-hook -Uz precmd precmd_title
+
+is_ssh && SSH_INDICATOR='@ssh'
+
+PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
+PROMPT2='%_ %# '
+RPROMPT='  ${vcs_info_msg_0_}'
+SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
+unset SSH_INDICATOR
+
+setopt prompt_cr
+setopt prompt_sp
+PROMPT_EOL_MARK='%B%S<NOEOL>%s%b'
+
+setopt prompt_subst
+setopt transient_rprompt
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' stagedstr '(+)'
