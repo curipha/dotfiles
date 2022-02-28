@@ -382,9 +382,6 @@ zstyle ':completion:*:scp:*:files' command command -
 DIRSTACKSIZE=20
 
 setopt auto_cd
-setopt auto_pushd
-setopt pushd_ignore_dups
-setopt pushd_to_home
 
 function chpwd_ls() { ls -AF }
 add-zsh-hook -Uz chpwd chpwd_ls
