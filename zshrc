@@ -313,10 +313,10 @@ zstyle ':completion:*' use-cache true
 zstyle -e ':completion:*' completer '
   COMPLETER_TRY_CURRENT="${HISTNO}${BUFFER}${CURSOR}"
   if [[ "${COMPLETER_TRY_PREVIOUS}" == "${COMPLETER_TRY_CURRENT}" ]]; then
-    reply=(_expand _complete _history _correct _approximate _match _prefix _list)
+    reply=(_expand _extensions _complete _history _correct _approximate _match _prefix _list)
   else
     COMPLETER_TRY_PREVIOUS="${COMPLETER_TRY_CURRENT}"
-    reply=(_expand _complete _correct _match _prefix _list)
+    reply=(_expand _extensions _complete _correct _match _prefix _list)
   fi'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|[.,_-]=* r:|=*' 'l:|=* r:|=*'
