@@ -475,6 +475,7 @@ function prefix_with_sudo() {
   zle end-of-line
 }
 zle -N prefix_with_sudo
+bindkey -r '^S'
 bindkey '^S^S' prefix_with_sudo
 
 function magic_ctrlz() {
