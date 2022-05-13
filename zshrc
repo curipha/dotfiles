@@ -132,10 +132,7 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-GREP_PARAM='--color=auto --binary-files=text'
-[[ $(grep --help 2>&1) =~ '--exclude-dir' ]] && GREP_PARAM+=' --exclude-dir=".*"'
-alias grep="grep ${GREP_PARAM}"
-unset GREP_PARAM
+alias grep="$(whence grep) --color=auto --binary-files=text --exclude-dir=\".*\""
 
 if exists manpath; then
   MANPATH=$(MANPATH= manpath)
