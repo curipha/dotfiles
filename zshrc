@@ -153,6 +153,9 @@ fi
 # Core {{{
 bindkey -e
 
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
 [[ -n "${terminfo[kcbt]}" ]] && bindkey "${terminfo[kcbt]}" reverse-menu-complete
 bindkey '^[[Z' reverse-menu-complete
 
