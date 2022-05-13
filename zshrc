@@ -109,6 +109,8 @@ case "${OSTYPE}" in
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
+
+    exists bsdgrep && alias grep=bsdgrep
   ;|
 esac
 
