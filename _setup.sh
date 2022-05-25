@@ -3,8 +3,9 @@
 # Dotfiles initializer
 #  * Create symlinks to dotfiles in your repository.
 
-set -o nounset
 set -o errexit
+set -o nounset
+set -o pipefail
 
 DOTFILES=( curlrc gitconfig inputrc tmux.conf vimrc zshrc )
 SSH_CONFIG=ssh_config
