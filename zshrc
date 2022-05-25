@@ -109,6 +109,8 @@ case "${OSTYPE}" in
 
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
+
+    exists bsdgrep && alias grep=bsdgrep
   ;|
 esac
 
@@ -130,10 +132,7 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-GREP_PARAM='--color=auto --binary-files=text'
-[[ $(grep --help 2>&1) =~ '--exclude-dir' ]] && GREP_PARAM+=' --exclude-dir=".*"'
-alias grep="grep ${GREP_PARAM}"
-unset GREP_PARAM
+alias grep="$(whence grep) --color=auto --binary-files=text --exclude-dir=\".*\""
 
 if exists manpath; then
   MANPATH=$(MANPATH= manpath)
@@ -153,6 +152,9 @@ fi
 
 # Core {{{
 bindkey -e
+
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
 
 [[ -n "${terminfo[kcbt]}" ]] && bindkey "${terminfo[kcbt]}" reverse-menu-complete
 bindkey '^[[Z' reverse-menu-complete
@@ -475,6 +477,7 @@ function prefix_with_sudo() {
   zle end-of-line
 }
 zle -N prefix_with_sudo
+bindkey -r '^S'
 bindkey '^S^S' prefix_with_sudo
 
 function magic_ctrlz() {
