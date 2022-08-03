@@ -93,7 +93,7 @@ function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> 
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
-  linux* | freebsd* )
+  linux* | freebsd* | darwin* )
     limit coredumpsize 0
   ;|
 
@@ -103,10 +103,12 @@ case "${OSTYPE}" in
     alias start=xdg-open
   ;|
 
-  freebsd* )
+  freebsd* | darwin* )
     export CLICOLOR=1
     export LSCOLORS=Gxdxcxdxbxegedabagacad
+  ;|
 
+  freebsd* )
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
 
