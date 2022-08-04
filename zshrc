@@ -42,6 +42,9 @@ export LESS_TERMCAP_us=$'\e[1;4;36m'
 export CFLAGS='-march=native -mtune=native -O2 -pipe -w -fstack-protector-strong'
 export CXXFLAGS="${CFLAGS}"
 
+export HOMEBREW_NO_ANALYTICS=1
+export NEXT_TELEMETRY_DISABLED=1
+
 path=(
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
