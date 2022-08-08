@@ -42,6 +42,9 @@ export LESS_TERMCAP_us=$'\e[1;4;36m'
 export CFLAGS='-march=native -mtune=native -O2 -pipe -w -fstack-protector-strong'
 export CXXFLAGS="${CFLAGS}"
 
+export HOMEBREW_NO_ANALYTICS=1
+export NEXT_TELEMETRY_DISABLED=1
+
 path=(
   ~/app/*/sbin(N-/)
   ~/app/*/bin(N-/)
@@ -93,7 +96,7 @@ function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> 
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
-  linux* | freebsd* )
+  linux* | freebsd* | darwin* )
     limit coredumpsize 0
   ;|
 
@@ -103,10 +106,12 @@ case "${OSTYPE}" in
     alias start=xdg-open
   ;|
 
-  freebsd* )
+  freebsd* | darwin* )
     export CLICOLOR=1
     export LSCOLORS=Gxdxcxdxbxegedabagacad
+  ;|
 
+  freebsd* )
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
 
@@ -327,7 +332,7 @@ zstyle ':completion:*' menu select=long-list
 zstyle ':completion:*' auto-description '%d (provided by auto-description)'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' ignore-line other
-zstyle ':completion:*' ignore-parents parent pwd ..
+zstyle ':completion:*' ignore-parents parent pwd directory
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-separator ':'
 zstyle ':completion:*' single-ignored show
