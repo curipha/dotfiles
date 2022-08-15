@@ -61,6 +61,16 @@ path=(
 typeset -gU path
 export PATH
 
+fpath=(
+  ~/app/*/share/zsh/site-functions(N-/)
+  /usr/local/share/zsh/site-functions(N-/)
+  /usr/share/zsh/site-functions(N-/)
+  /opt/*/share/zsh/site-functions(N-/)
+  $fpath
+)
+typeset -gU fpath
+export FPATH
+
 cdpath=(
   $HOME
   ..
