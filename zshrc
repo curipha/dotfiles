@@ -248,7 +248,13 @@ function +vi-git-hook() {
 
   local COUNT
   COUNT=$(git rev-list --count '@{upstream}..HEAD' 2> /dev/null)
-  (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":@{upstream}+${COUNT}"
+  if (( ${COUNT:-0} > 0 )); then
+    hook_com[misc]+=":@{upstream}+${COUNT}"
+  else
+    COUNT=$(git rev-list --count '@{push}..HEAD' 2> /dev/null)
+    (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":@{push}+${COUNT}"
+  fi
+
   COUNT=$(git rev-list --count 'master..HEAD' 2> /dev/null)
   (( ${COUNT:-0} > 0 )) && hook_com[misc]+=":master+${COUNT}"
   COUNT=$(git stash list 2> /dev/null | wc -l)
