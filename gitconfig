@@ -80,7 +80,8 @@
   rebase = false
 
 [push]
-  default = current
+  default         = current
+  autoSetupRemote = true
 
 [url "git@github.com:"]
   pushInsteadOf = https://github.com/
