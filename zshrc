@@ -832,6 +832,7 @@ HELP
 
     [[ -s /var/run/reboot-required      ]] && cat /var/run/reboot-required
     [[ -s /var/run/reboot-required.pkgs ]] && cat /var/run/reboot-required.pkgs
+    return 0
   elif exists pacman; then
     [[ -n "${YES}" ]] && OPTIONS=--noconfirm
 
