@@ -39,7 +39,7 @@
 [color "branch"]
   current     = green bold
   remote      = red bold
-  upstream    = blue bold
+  upstream    = cyan bold
 [color "diff"]
   commit      = yellow bold
   frag        = cyan bold
