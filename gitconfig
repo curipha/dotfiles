@@ -37,19 +37,19 @@
   unstage = reset HEAD --
 
 [color "branch"]
-  current     = green bold
-  remote      = red bold
-  upstream    = cyan bold
+  current   = green bold
+  remote    = red bold
+  upstream  = cyan bold
 [color "diff"]
-  commit      = yellow bold
-  frag        = cyan bold
-  new         = green bold
-  old         = red bold
+  commit    = yellow bold
+  frag      = cyan bold
+  new       = green bold
+  old       = red bold
 [color "status"]
-  header      = bold
-  added       = yellow bold
-  changed     = green bold
-  untracked   = cyan bold
+  header    = bold
+  added     = yellow bold
+  changed   = green bold
+  untracked = cyan bold
 
 [core]
   quotepath = false
