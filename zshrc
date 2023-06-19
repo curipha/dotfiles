@@ -147,7 +147,7 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-alias grep="$(whence grep) --color=auto --binary-files=text --exclude-dir=\".*\""
+alias grep="$(whence grep) --color=auto --binary-files=text"
 
 if exists manpath; then
   MANPATH=$(MANPATH= manpath)
@@ -1120,7 +1120,7 @@ end
 
 # Alias {{{
 alias sudo='sudo '
-alias diff='diff --unified --report-identical-files --minimal'
+alias diff='diff --color --unified --report-identical-files --minimal --'
 alias sort='LC_ALL=C sort'
 
 alias zmv='noglob zmv -v'
