@@ -121,6 +121,10 @@ case "${OSTYPE}" in
     export LSCOLORS=Gxdxcxdxbxegedabagacad
   ;|
 
+  darwin* )
+    exists ggrep && alias grep=ggrep
+  ;|
+
   freebsd* )
     exists gmake && alias make=gmake
     exists gmake && export MAKE=$(whence -p gmake)
