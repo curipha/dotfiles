@@ -147,7 +147,7 @@ fi
 
 exists dircolors && eval "$(dircolors --bourne-shell)"
 
-alias grep="$(whence grep) --color=auto --binary-files=text --exclude-dir=\".*\""
+alias grep="$(whence grep) --color=auto --binary-files=text"
 
 if exists manpath; then
   MANPATH=$(MANPATH= manpath)
@@ -220,7 +220,7 @@ is_ssh && SSH_INDICATOR='@ssh'
 
 PROMPT="[%m${SSH_INDICATOR}:%~] %n%1(j.(%j%).)%# "
 PROMPT2='%_ %# '
-RPROMPT='  ${vcs_info_msg_0_}'
+RPROMPT='  %(?..%B%F{red}[zsh:exit %?]%f%b) ${vcs_info_msg_0_}'
 SPROMPT='zsh: Did you mean %B%r%b ?  [%UN%uo, %Uy%ues, %Ua%ubort, %Ue%udit]: '
 unset SSH_INDICATOR
 
@@ -1120,7 +1120,7 @@ end
 
 # Alias {{{
 alias sudo='sudo '
-alias diff='diff --unified --report-identical-files --minimal'
+alias diff='diff --color --unified --report-identical-files --minimal --'
 alias sort='LC_ALL=C sort'
 
 alias zmv='noglob zmv -v'
