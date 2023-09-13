@@ -101,7 +101,6 @@ function warning() { echo "${funcstack[2]:-zsh}:" "${@}" 1>&2 }
 
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || $(ps -o comm= -p "${PPID}" 2> /dev/null) == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
-function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] }
 #}}}
@@ -509,13 +508,7 @@ bindkey '^S^S' prefix_with_sudo
 function magic_ctrlz() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if (( ${#jobtexts} < 1 )); then
-      if is_tmux; then
-        BUFFER=' tmux detach-client'
-      elif tmux has-session 2> /dev/null; then
-        BUFFER=' tmux attach-session'
-      else
-        zle -M 'zsh: Nothing to do for CTRL-Z'
-      fi
+      zle -M 'zsh: Nothing to do for CTRL-Z'
     else
       BUFFER='fg'
     fi
@@ -629,100 +622,6 @@ function whois() {
   else
     ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
   fi
-}
-
-function xpanes() {
-  if ! exists tmux; then
-    warning 'install "tmux" command'
-    return 1
-  fi
-  if ! is_tmux; then
-    warning 'run inside a tmux session'
-    return 1
-  fi
-
-  local COMMAND NOSYNC NOCMD
-  while (( ${#} > 0 )); do
-    case "${1}" in
-      -z | --nosync )
-        NOSYNC=1
-        shift
-      ;;
-      --ssh )
-        NOCMD=1
-        COMMAND='ssh'
-        shift
-      ;;
-      -* )
-        cat <<HELP 1>&2
-Usage: ${0} [-z] [ command [ initial arguments ... ] ]
-
-Options:
-  -z, --nosync        Run without setting 'synchronize-panes on'
-      --ssh           SSH mode
-  -h, --help          Show this help message and exit
-
-
-Examples:
-  dig jp. ns +short | ${0} ping
-    Run ping to all authoritative name server of .jp
-
-  ${0} --ssh user@host1 user@host2
-  echo user@host1 user@host2 | ${0} --ssh
-    Run ssh to user@host1 and user@host2
-HELP
-        return 1
-      ;;
-
-      * )
-        if [[ -z "${NOCMD}" ]]; then
-          COMMAND="${1}"
-          shift
-        fi
-        break
-      ;;
-    esac
-  done
-
-  [[ -z "${COMMAND}" ]] && COMMAND='echo'
-  if ! exists "${COMMAND}"; then
-    warning "no such command: ${COMMAND}"
-    return 1
-  fi
-
-  local ARG
-  local -a ARGUMENTS
-  if [[ -n "${NOCMD}" && "${#}" != '0' ]]; then
-    ARGUMENTS+=( "${@}" )
-    shift "${#}"
-  else
-    for ARG in $(< /dev/stdin); do
-      ARGUMENTS+=( "${ARG}" )
-    done
-  fi
-
-  if (( ${#ARGUMENTS} < 1 )); then
-    warning 'no arguments found'
-    return 1
-  fi
-  (( ${#ARGUMENTS} == 1 )) && NOSYNC=1
-
-
-  tmux new-window -a
-
-  local -i i=1
-  for ARG in "${ARGUMENTS[@]}"; do
-    tmux split-window -d \; select-layout tiled
-  done
-  for ARG in "${ARGUMENTS[@]}"; do
-    tmux send-keys -t ".$(( i++ ))" "${COMMAND} ${*} ${ARG}" C-m
-  done
-
-  tmux kill-pane -t .0
-  tmux select-layout tiled
-
-  [[ -z "${NOSYNC}" ]] && tmux set-option -w synchronize-panes on
-  tmux refresh-client
 }
 
 function 256color() {
@@ -1182,7 +1081,3 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
   [[ -s "${ZFILE}" && ( ! -s "${ZFILE}.zwc" || "${ZFILE}" -nt "${ZFILE}.zwc" ) ]] && zcompile "${ZFILE}" &!
 done
 unset ZFILE
-
-if [[ -n "${TTY}" && "${SHLVL}" == '1' ]] && exists tmux && is_ssh; then
-  tmux new-session -AD -s "${TTY:-/dev/null}"
-fi
