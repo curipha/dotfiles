@@ -429,15 +429,15 @@ setopt rc_expand_param
 
 typeset -A abbrev_expand
 abbrev_expand=(
-  '?'  "--help |& ${PAGER}"
-  'C'  "| sort | uniq -c | sort -nrs |& ${PAGER}"
-  'E'  '> /dev/null'
-  'H'  '| head -20'
-  'L'  "|& ${PAGER}"
-  'S'  '| sort'
-  'T'  '| tail -20'
-  'U'  '| sort | uniq'
-  'X'  '| xargs -r -n1'
+  '?' "--help |& ${PAGER}"
+  'C' "| sort | uniq -c | sort -nrs |& ${PAGER}"
+  'E' '> /dev/null'
+  'H' '| head -20'
+  'L' "|& ${PAGER}"
+  'S' '| sort'
+  'T' '| tail -20'
+  'U' '| sort | uniq'
+  'X' '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
