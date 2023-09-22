@@ -145,6 +145,7 @@ fi
 
 if exists less; then
   export PAGER=less
+  export GIT_PAGER='COLUMNS= less'
 else
   export PAGER=cat
 fi
