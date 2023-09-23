@@ -43,6 +43,7 @@ export CFLAGS='-march=native -mtune=native -O2 -pipe -w -fstack-protector-strong
 export CXXFLAGS="${CFLAGS}"
 
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 export NEXT_TELEMETRY_DISABLED=1
 
 path=(
@@ -100,7 +101,6 @@ function warning() { echo "${funcstack[2]:-zsh}:" "${@}" 1>&2 }
 
 function is_ssh()  { [[ -n "${SSH_CONNECTION}" || $(ps -o comm= -p "${PPID}" 2> /dev/null) == 'sshd' ]] }
 function is_x()    { [[ -n "${DISPLAY}" ]] }
-function is_tmux() { [[ -n "${STY}${TMUX}" ]] }
 
 function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] }
 #}}}
@@ -145,6 +145,7 @@ fi
 
 if exists less; then
   export PAGER=less
+  export GIT_PAGER='COLUMNS= less'
 else
   export PAGER=cat
 fi
@@ -428,15 +429,15 @@ setopt rc_expand_param
 
 typeset -A abbrev_expand
 abbrev_expand=(
-  '?'  "--help |& ${PAGER}"
-  'C'  "| sort | uniq -c | sort -nrs |& ${PAGER}"
-  'E'  '> /dev/null'
-  'H'  '| head -20'
-  'L'  "|& ${PAGER}"
-  'S'  '| sort'
-  'T'  '| tail -20'
-  'U'  '| sort | uniq'
-  'X'  '| xargs -r -n1'
+  '?' "--help |& ${PAGER}"
+  'C' "| sort | uniq -c | sort -nrs |& ${PAGER}"
+  'E' '> /dev/null'
+  'H' '| head -20'
+  'L' "|& ${PAGER}"
+  'S' '| sort'
+  'T' '| tail -20'
+  'U' '| sort | uniq'
+  'X' '| xargs -r -n1'
 )
 
 function magic-abbrev-expand() {
@@ -508,13 +509,7 @@ bindkey '^S^S' prefix_with_sudo
 function magic_ctrlz() {
   if [[ -z "${BUFFER}" && "${CONTEXT}" == 'start' ]]; then
     if (( ${#jobtexts} < 1 )); then
-      if is_tmux; then
-        BUFFER=' tmux detach-client'
-      elif tmux has-session 2> /dev/null; then
-        BUFFER=' tmux attach-session'
-      else
-        zle -M 'zsh: Nothing to do for CTRL-Z'
-      fi
+      zle -M 'zsh: Nothing to do for CTRL-Z'
     else
       BUFFER='fg'
     fi
@@ -601,128 +596,6 @@ HELP
   esac
 }
 alias mkcd=mkmv
-
-function whois() {
-  local WHOIS
-  exists jwhois && WHOIS=$(whence -p jwhois)
-  exists whois  && WHOIS=$(whence -p whois)
-
-  if [[ -z "${WHOIS}" ]]; then
-    warning 'install "whois" command'
-    return 1
-  fi
-
-  local REPORTTIME=-1
-
-  local ARG DOMAIN
-  local -aU OPTION
-  for ARG in "${@}"; do
-    case "${ARG}" in
-      -* ) OPTION+=( "${ARG}" );;
-      *  ) DOMAIN=$(perl -pe 's!^(?:[^:]+://)?(?:www.)?([^/.]+\.[^/]+)(?:/.*)?$!\1!' <<< "${ARG}");;
-    esac
-  done
-
-  if [[ -z "${DOMAIN}" ]]; then
-    "${WHOIS}" "${OPTION[@]}"
-  else
-    ( echo "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" && "${WHOIS}" "${OPTION[@]}" "${DOMAIN}" ) |& ${PAGER}
-  fi
-}
-
-function xpanes() {
-  if ! exists tmux; then
-    warning 'install "tmux" command'
-    return 1
-  fi
-  if ! is_tmux; then
-    warning 'run inside a tmux session'
-    return 1
-  fi
-
-  local COMMAND NOSYNC NOCMD
-  while (( ${#} > 0 )); do
-    case "${1}" in
-      -z | --nosync )
-        NOSYNC=1
-        shift
-      ;;
-      --ssh )
-        NOCMD=1
-        COMMAND='ssh'
-        shift
-      ;;
-      -* )
-        cat <<HELP 1>&2
-Usage: ${0} [-z] [ command [ initial arguments ... ] ]
-
-Options:
-  -z, --nosync        Run without setting 'synchronize-panes on'
-      --ssh           SSH mode
-  -h, --help          Show this help message and exit
-
-
-Examples:
-  dig jp. ns +short | ${0} ping
-    Run ping to all authoritative name server of .jp
-
-  ${0} --ssh user@host1 user@host2
-  echo user@host1 user@host2 | ${0} --ssh
-    Run ssh to user@host1 and user@host2
-HELP
-        return 1
-      ;;
-
-      * )
-        if [[ -z "${NOCMD}" ]]; then
-          COMMAND="${1}"
-          shift
-        fi
-        break
-      ;;
-    esac
-  done
-
-  [[ -z "${COMMAND}" ]] && COMMAND='echo'
-  if ! exists "${COMMAND}"; then
-    warning "no such command: ${COMMAND}"
-    return 1
-  fi
-
-  local ARG
-  local -a ARGUMENTS
-  if [[ -n "${NOCMD}" && "${#}" != '0' ]]; then
-    ARGUMENTS+=( "${@}" )
-    shift "${#}"
-  else
-    for ARG in $(< /dev/stdin); do
-      ARGUMENTS+=( "${ARG}" )
-    done
-  fi
-
-  if (( ${#ARGUMENTS} < 1 )); then
-    warning 'no arguments found'
-    return 1
-  fi
-  (( ${#ARGUMENTS} == 1 )) && NOSYNC=1
-
-
-  tmux new-window -a
-
-  local -i i=1
-  for ARG in "${ARGUMENTS[@]}"; do
-    tmux split-window -d \; select-layout tiled
-  done
-  for ARG in "${ARGUMENTS[@]}"; do
-    tmux send-keys -t ".$(( i++ ))" "${COMMAND} ${*} ${ARG}" C-m
-  done
-
-  tmux kill-pane -t .0
-  tmux select-layout tiled
-
-  [[ -z "${NOSYNC}" ]] && tmux set-option -w synchronize-panes on
-  tmux refresh-client
-}
 
 function 256color() {
   printf '\e[48;5;%1$dm %1$x \e[0m' {0..7}
@@ -921,205 +794,6 @@ HELP
       fi \
     | head -n "${P_NUMBER}"
 }
-
-function aws-ec2-instances() {
-  if ! exists aws; then
-    warning 'install "awscli" command'
-    return 1
-  fi
-
-  local ARG LOCAL NOHEADER
-  for ARG in "${@}"; do
-    case "${ARG}" in
-      -l | --local     ) LOCAL=1;;
-      -H | --no-header ) NOHEADER=1;;
-
-      -* )
-        cat <<HELP 1>&2
-Usage: ${0} [--local] [--no-header]
-
-Options:
-  -l, --local         Get instance lists only from the current region ($(aws configure get region))
-  -H, --no-header     Print no header line at all
-  -h, --help          Show this help message and exit
-HELP
-        return 1;;
-    esac
-  done
-
-  local REPORTTIME=-1
-  (
-    [[ -z "${NOHEADER}" ]] && echo 'az stat type name id public-ip private-ip' ; \
-    if [[ -n "${LOCAL}" ]]; then \
-      aws configure get region ; \
-    else \
-      aws ec2 describe-regions --query 'Regions[].{Name:RegionName}' --output text ; \
-    fi \
-      | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-instances \
-          --query 'Reservations[].Instances[].[
-                     Placement.AvailabilityZone,
-                     State.Name,
-                     InstanceType,
-                     Tags[?Key==`Name`].Value|[0],
-                     InstanceId,
-                     PublicIpAddress,
-                     PrivateIpAddress
-                   ]' \
-          --output text \
-          --region \
-      | sort
-  ) \
-    | column -t \
-    | sed \
-        -e "s/\b\(stopped\)\b/$(printf '\e[31m')\1$(printf '\e[0m')/" \
-        -e "s/\b\(running\)\b/$(printf '\e[32m')\1$(printf '\e[0m')/" \
-        -e "s/\b\(pending\|shutting-down\|stopping\)\b/$(printf '\e[33m')\1$(printf '\e[0m')/" \
-        -e "s/\b\(terminated\)\b/$(printf '\e[31;7m')\1$(printf '\e[0m')/"
-}
-
-function aws-ec2-spot() {
-  if ! exists aws; then
-    warning 'install "awscli" command'
-    return 1
-  fi
-  if ! exists ruby; then
-    warning 'install "ruby" command'
-    return 1
-  fi
-
-  # Default
-  local -r DAY=3
-  local INSTANCE=c4.8xlarge
-
-  # Arguments
-  local -aU P_INSTANCE
-  local -i P_DAY P_HOUR
-
-  while (( ${#} > 0 )); do
-    case "${1}" in
-      --day )
-        if [[ -z "${2}" || "${2}" != <-> ]]; then
-          warning '--day option requires an integer argument'
-          return 1
-        fi
-        P_DAY="${2}"
-        shift
-      ;;
-      --hour )
-        if [[ -z "${2}" || "${2}" != <-> ]]; then
-          warning '--hour option requires an integer argument'
-          return 1
-        fi
-        P_HOUR="${2}"
-        shift
-      ;;
-
-      -* )
-        cat <<HELP
-Usage: ${0} [--day <days>] [--hour <hours>] [ instance_types ... ]
-
-Options:
-      --day <days>    Specify the duration in day to retrieve the price (Default = ${DAY})
-      --hour <hours>  Specify the duration in hour to retrieve the price (Default = 0)
-  -h, --help          Show this help message and exit
-
-
-Examples:
-  ${0} --hour 12
-    Display price statistics of ${INSTANCE} for the last half a day
-
-  ${0} --day 1 c4.8xlarge c3.8xlarge
-    Display price statistics of c4.8xlarge and c3.8xlarge for the last one day
-HELP
-        return 1;;
-
-      * )
-        P_INSTANCE+=( "${1}" );;
-    esac
-    shift
-  done
-
-  (( ${#P_INSTANCE} < 1 )) && P_INSTANCE=( "${INSTANCE}" )
-  (( ${P_DAY} == 0 && ${P_HOUR} == 0 )) && P_DAY="${DAY}"
-
-  local FROM=$(date --utc --date="-${P_DAY} day -${P_HOUR} hour" +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
-  local TO=$(date --utc +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null)
-
-  if [[ -z "${FROM}" ]]; then
-    warning '--day and/or --hour option contains illegal character'
-    return 1
-  fi
-
-  printf '%30s%10s%10s%10s%10s%10s%10s\n' '' 'ave.r' 'stdev.s' 'max' 'min' 'latest' '(count)'
-
-  aws ec2 describe-regions --query 'sort(Regions[].RegionName)' --output text \
-    | xargs -r -n1 -P4 stdbuf -oL aws ec2 describe-spot-price-history \
-        --output text \
-        --instance-types "${P_INSTANCE[@]}" \
-        --product-description 'Linux/UNIX (Amazon VPC)' \
-        --start-time "${FROM}" \
-        --end-time "${TO}" \
-        --query 'SpotPriceHistory[].[AvailabilityZone,InstanceType,SpotPrice,Timestamp]' \
-        --region \
-    | ruby -rtime -e '
-db = Hash.new{|h1,k1| h1[k1] = Hash.new{|h2,k2| h2[k2] = [] }}
-while STDIN.gets
-  az, type, price, time = $_.split(" ")
-  db[az][type] << { price: price.to_f, timestamp: Time.parse(time) }
-end
-
-result = []
-db.each_key{|az|
-  db[az].each{|type, record|
-    next if record.length < 1
-
-    ave_s = record.inject(0.0){|sum, v| sum + v[:price] } / record.length
-
-    sum_r = 0.0
-    (record + [{timestamp: Time.parse(ARGV.first)}]).sort_by{|v| v[:timestamp] }.each_cons(2){|base, subseq|
-      sum_r += base[:price] * (subseq[:timestamp] - base[:timestamp])
-    }
-
-    result << {
-      type:    type,
-      az:      az,
-      ave_r:   sum_r / (Time.parse(ARGV.first) - record.min_by{|v| v[:timestamp]}[:timestamp]),
-      ave_s:   ave_s,
-      stdev_s: record.length < 2 ? 0.0 : Math.sqrt(record.inject(0.0){|sum, v| sum + (v[:price] - ave_s) ** 2 } / (record.length - 1)),
-      max:     record.max_by{|v| v[:price] }[:price],
-      min:     record.min_by{|v| v[:price] }[:price],
-      latest:  record.max_by{|v| v[:timestamp]}[:price],
-      count:   record.length
-    }
-  }
-}
-
-if result.length < 1
-  puts "... no record ...".center(80)
-else
-  result.sort_by{|v| v.values }.each{|v|
-    rank = result.select{|r| r[:type] == v[:type] }
-    color = lambda {|k|
-      case true
-      when v[k] <= rank.map{|r| r[k] }.min(3).last then "\e[32;7m"
-      when v[k] >= rank.map{|r| r[k] }.max(3).last then "\e[31;7m"
-      else ""
-      end
-    }
-
-    printf("%-14s%-16s%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m%s%10.3f\e[0m   (%5d)\n",
-           v[:type], v[:az],
-           color.call(:ave_r),   v[:ave_r],
-           color.call(:stdev_s), v[:stdev_s],
-           color.call(:max),     v[:max],
-           color.call(:min),     v[:min],
-           color.call(:latest),  v[:latest],
-                                 v[:count]
-          )
-  }
-end
-' "${TO}"
-}
 #}}}
 
 # Alias {{{
@@ -1181,7 +855,3 @@ for ZFILE in ~/.zshrc ~/.zcompdump; do
   [[ -s "${ZFILE}" && ( ! -s "${ZFILE}.zwc" || "${ZFILE}" -nt "${ZFILE}.zwc" ) ]] && zcompile "${ZFILE}" &!
 done
 unset ZFILE
-
-if [[ -n "${TTY}" && "${SHLVL}" == '1' ]] && exists tmux && is_ssh; then
-  tmux new-session -AD -s "${TTY:-/dev/null}"
-fi
