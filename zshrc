@@ -243,7 +243,7 @@ zstyle ':vcs_info:*' unstagedstr '(!)'
 zstyle ':vcs_info:git:*' check-for-changes true
 
 zstyle ':vcs_info:*' formats '[%s:%b%c%u%m]'
-zstyle ':vcs_info:*' actionformats '%B%a/%m%%b [%s:%b%c%u]'
+zstyle ':vcs_info:*' actionformats '[%s/%a:%b%c%u]'
 zstyle ':vcs_info:*' max-exports 1
 
 zstyle ':vcs_info:git+set-message:*' hooks git-hook
