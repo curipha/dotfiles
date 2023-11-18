@@ -111,7 +111,7 @@ case "${OSTYPE}" in
   ;|
 
   linux* )
-    alias ls='ls --color=auto'
+    alias ls='ls --color=auto -v'
     alias open=xdg-open
     alias start=xdg-open
   ;|
