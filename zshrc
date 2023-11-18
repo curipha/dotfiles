@@ -357,8 +357,10 @@ zstyle ':completion:*' ignore-line other
 zstyle ':completion:*' ignore-parents parent pwd directory
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-separator ':'
+zstyle ':completion:*' remove-all-dups true
 zstyle ':completion:*' single-ignored show
 zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*' stop true
 
 zstyle ':completion:*:default' list-prompt '%SHit TAB for more, or the character to insert%s'
 zstyle ':completion:*:default' select-prompt '%SCandidate: %l (%p)%s'
