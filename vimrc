@@ -294,25 +294,6 @@ autocmd MyAutoCmd BufEnter,BufFilePost,BufWritePost *
 autocmd MyAutoCmd FileType ruby compiler ruby
 autocmd MyAutoCmd BufWritePost,FileWritePost *.rb silent make -cw % | redraw!
 
-autocmd MyAutoCmd BufReadPost *
-\   if &l:binary && executable('xxd')
-\ |   setlocal filetype=xxd
-\ |   setlocal noendofline
-\ | endif
-autocmd MyAutoCmd BufReadPost *
-\   if &l:binary && &l:filetype ==# 'xxd'
-\ |   execute 'silent %!xxd -g 1'
-\ | endif
-autocmd MyAutoCmd BufWritePre *
-\   if &l:binary && &l:filetype ==# 'xxd'
-\ |   execute '%!xxd -r'
-\ | endif
-autocmd MyAutoCmd BufWritePost *
-\   if &l:binary && &l:filetype ==# 'xxd'
-\ |   execute 'silent %!xxd -g 1'
-\ |   setlocal nomodified
-\ | endif
-
 autocmd MyAutoCmd BufWritePost $MYVIMRC,$MYGVIMRC nested
 \   source $MYVIMRC
 \ | if has('gui_running')
