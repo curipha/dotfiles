@@ -32,7 +32,7 @@
   ss   = stash
   st   = status --branch --short --untracked-files=all
 
-  sync = !git stash save --include-untracked && git fetch && git reset --hard FETCH_HEAD && git gc --quiet
+  sync = !git stash push --include-untracked && git fetch && git reset --hard FETCH_HEAD && git gc --quiet
 
   unstage = reset HEAD --
 
