@@ -36,6 +36,9 @@
 
   unstage = reset HEAD --
 
+[branch]
+  sort = -committerdate
+
 [color "branch"]
   current   = green bold
   remote    = red bold
@@ -82,6 +85,9 @@
 [push]
   default         = current
   autoSetupRemote = true
+
+[rerere]
+  enabled = true
 
 [url "git@github.com:"]
   pushInsteadOf = https://github.com/
