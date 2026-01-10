@@ -123,7 +123,18 @@ case "${OSTYPE}" in
   ;|
 
   darwin* )
-    exists ggrep && alias grep=ggrep
+    exists /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
+    exists gls && alias ls='ls --color=auto -v'
+
+    path=(
+      /opt/homebrew/opt/coreutils/libexec/gnubin(N-/)
+      /opt/homebrew/opt/gnu-sed/libexec/gnubin(N-/)
+      /opt/homebrew/opt/grep/libexec/gnubin(N-/)
+      /opt/homebrew/opt/curl/bin(N-/)
+      $path
+    )
+    typeset -gU path
+    export PATH
 
     export GIT_PAGER='COLUMNS= less'
   ;|
