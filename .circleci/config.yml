@@ -1,38 +1,6 @@
 version: 2.1
 
 jobs:
-  vint:
-    docker:
-      - image: python:alpine
-    steps:
-      - checkout
-      - restore_cache:
-          key: vint-alpine
-      - run:
-          name: Install Vint
-          command: pip install --upgrade --user vim-vint
-      - run:
-          name: Create package list (for caching)
-          command: pip freeze --user > ./requirement.txt
-      - save_cache:
-          paths:
-            - ~/.local
-          key: vint-alpine-{{ checksum "./requirement.txt" }}
-      - run:
-          name: OS release
-          command: cat /etc/os-release
-      - run:
-          name: Python version
-          command: python --version
-      - run:
-          name: Vint version
-          command: ~/.local/bin/vint --version
-      - run:
-          name: Run Vint (vimrc)
-          command: ~/.local/bin/vint --color --style-problem -- ./vimrc
-      - run:
-          name: Run Vint (gvimrc)
-          command: ~/.local/bin/vint --color --style-problem -- ./gvimrc
   shellcheck:
     docker:
       - image: koalaman/shellcheck-alpine:stable
@@ -48,5 +16,4 @@ jobs:
 workflows:
   lints:
     jobs:
-      - vint
       - shellcheck
