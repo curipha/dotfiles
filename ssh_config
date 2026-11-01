@@ -22,7 +22,6 @@ Host *
   PubkeyAcceptedAlgorithms -*ecdsa*,*dss*,*ssh-rsa*
   HostKeyAlgorithms        -*ecdsa*,*dss*,*ssh-rsa*
 
-  ChallengeResponseAuthentication no
   GSSAPIAuthentication            no
   HostbasedAuthentication         no
   KbdInteractiveAuthentication    no
