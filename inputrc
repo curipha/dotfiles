@@ -12,7 +12,7 @@ set convert-meta off
 set input-meta on
 set output-meta on
 
-# Visual and Bahavior
+# Visual and Behavior
 set bell-style none
 set blink-matching-paren on
 set colored-completion-prefix on
