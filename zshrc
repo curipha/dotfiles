@@ -82,6 +82,7 @@ typeset -gU cdpath
 
 umask 022
 ulimit -c 0
+limit coredumpsize 0
 
 stty -ixon -ixoff
 #}}}
@@ -107,10 +108,6 @@ function isinrepo() { exists git && [[ $(git rev-parse --is-inside-work-tree 2> 
 #}}}
 # Macros {{{
 case "${OSTYPE}" in
-  linux* | freebsd* | darwin* )
-    limit coredumpsize 0
-  ;|
-
   linux* )
     alias ls='ls --color=auto -v'
     alias open=xdg-open
