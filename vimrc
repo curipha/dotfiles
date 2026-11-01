@@ -174,9 +174,6 @@ xnoremap <       <gv
 xnoremap <Tab>   >gv
 xnoremap <S-Tab> <gv
 
-vnoremap <silent> <Leader>m :sort<CR>
-vnoremap <silent> <Leader>u :sort u<CR>
-
 vnoremap <C-a> <C-a>gv
 vnoremap <C-x> <C-x>gv
 
