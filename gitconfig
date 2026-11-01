@@ -71,9 +71,6 @@
 [help]
   autocorrect = -1
 
-[include]
-  path = ~/.gitconfig.local
-
 [interactive]
   singlekey = true
 
@@ -102,5 +99,8 @@
 [user]
   name  = Taichi
   email = taichi@curipha.jp
+
+[include]
+  path = ~/.gitconfig.local
 
 # vim: filetype=gitconfig
