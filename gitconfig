@@ -75,7 +75,6 @@
   singlekey = true
 
 [merge]
-  ff = false
   conflictstyle = zdiff3
 
 [pull]
