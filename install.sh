@@ -35,7 +35,7 @@ if [[ -n "${SSH_CONFIG}" ]]; then
   makeln "${PWD}/${SSH_CONFIG}" "${HOME}/.ssh/config"
 fi
 
-if [[ ! "${SHELL}" =~ /zsh$ ]]; then
+if [[ ! "${SHELL:-}" =~ /zsh$ ]]; then
   # Exit if /etc/shells does not contain "zsh" because errexit is set
   ZSH=$(grep -F -m1 zsh /etc/shells)
 
