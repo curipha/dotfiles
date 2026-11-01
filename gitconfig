@@ -66,6 +66,7 @@
 
 [fetch]
   prune = true
+  pruneTags = true
 
 [help]
   autocorrect = -1
@@ -78,6 +79,7 @@
 
 [merge]
   ff = false
+  conflictstyle = zdiff3
 
 [pull]
   rebase = false
