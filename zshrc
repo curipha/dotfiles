@@ -809,8 +809,9 @@ HELP
 #}}}
 
 # Alias {{{
+function diff() { command diff --color --unified --report-identical-files --minimal "$@" }
+
 alias sudo='sudo '
-alias diff='diff --color --unified --report-identical-files --minimal --'
 alias sort='LC_ALL=C sort'
 
 alias zmv='noglob zmv -v'
