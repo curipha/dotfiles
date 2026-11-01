@@ -9,14 +9,14 @@ Installation
 --------------------
 ```bash
 git clone https://github.com/curipha/dotfiles.git
-./dotfiles/_setup.sh
+./dotfiles/install.sh
 ```
 
 or
 
 ```bash
 git clone git@github.com:curipha/dotfiles.git
-./dotfiles/_setup.sh
+./dotfiles/install.sh
 ```
 
 
