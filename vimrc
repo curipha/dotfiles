@@ -268,21 +268,6 @@ endif
 
 autocmd MyAutoCmd InsertLeave * set nopaste
 
-if &term =~# '^xterm' || &term =~# '^screen'
-  set t_ti&
-  set t_te&
-
-  let &t_ti .= "\e[?2004h"
-  let &t_te .= "\e[?2004l"
-  let &pastetoggle = "\e[201~"
-
-  nnoremap <silent> <Esc>[200~ :<C-u>set paste<CR>i
-  vnoremap <silent> <Esc>[200~ c<C-o>:set paste<CR>
-  inoremap <silent> <Esc>[200~ <C-o>:set paste<CR>
-  cnoremap <silent> <Esc>[200~ <Nop>
-  cnoremap <silent> <Esc>[201~ <Nop>
-endif
-
 autocmd MyAutoCmd BufEnter,BufFilePost,BufWritePost *
 \   if empty(&l:buftype) && isdirectory(expand('%:p:h'))
 \ |   execute 'lcd ' fnameescape(expand('%:p:h'))
