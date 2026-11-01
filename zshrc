@@ -39,9 +39,6 @@ export LESS_TERMCAP_so=$'\e[30;47m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;36m'
 
-export CFLAGS='-march=native -mtune=native -O2 -pipe -w -fstack-protector-strong'
-export CXXFLAGS="${CFLAGS}"
-
 export DO_NOT_TRACK=1
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSTALL_CLEANUP=1
@@ -737,7 +734,7 @@ alias rmdir='rmdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias a='./a.out'
+#alias a=''
 #alias b=''
 #alias c=''
 #alias d=''
