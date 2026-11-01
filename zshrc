@@ -834,8 +834,6 @@ alias rmdir='rmdir -vp'
 alias chmod='chmod -v'
 alias chown='chown -v'
 
-alias .='pwd'
-
 alias a='./a.out'
 #alias b=''
 #alias c=''
